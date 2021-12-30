@@ -1,0 +1,1378 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0467A78A6954EC6013F5D583 /* Pods_simple_quran.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF3AEC5E06A8681F9A0BA6C7 /* Pods_simple_quran.framework */; };
+		1B1AAA48260E183A00E03B0B /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA47260E183A00E03B0B /* TableViewDataSource.swift */; };
+		1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA4F260E185100E03B0B /* SectionSetter.swift */; };
+		1B1AAA55260E18C300E03B0B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA54260E18C300E03B0B /* RootView.swift */; };
+		1B1AAA5A260E192A00E03B0B /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA59260E192A00E03B0B /* RootViewModel.swift */; };
+		1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA77260E1F0300E03B0B /* SectionTitleTableViewCell.swift */; };
+		1B1AAA7D260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA7C260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift */; };
+		1B1AAA82260E21F700E03B0B /* RootSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA81260E21F700E03B0B /* RootSection.swift */; };
+		1B1AAA88260E227200E03B0B /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA87260E227200E03B0B /* UITableView+Extension.swift */; };
+		1B1AAA91260E29DF00E03B0B /* SurahDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA90260E29DF00E03B0B /* SurahDetailView.swift */; };
+		1B1AAA99260E29F200E03B0B /* SurahDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA98260E29F200E03B0B /* SurahDetailViewController.swift */; };
+		1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA9D260E2A0200E03B0B /* SurahDetailViewModel.swift */; };
+		1B1AAAA3260E2A1300E03B0B /* SurahDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAAA2260E2A1300E03B0B /* SurahDetailSection.swift */; };
+		1B1AAAB6260E416500E03B0B /* Fonts.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B1AAAB5260E416500E03B0B /* Fonts.bundle */; };
+		1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */; };
+		1B1AAAC0260E48D200E03B0B /* DetailTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAABF260E48D200E03B0B /* DetailTitleTableViewCell.swift */; };
+		1B1AAAC5260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAAC4260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift */; };
+		1B3761A1260EF74A000ADF3D /* Edition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761A0260EF74A000ADF3D /* Edition.swift */; };
+		1B3761AA260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761A9260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift */; };
+		1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761B1260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift */; };
+		1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */; };
+		1B3761BD260F7301000ADF3D /* DetailCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761BC260F7301000ADF3D /* DetailCardTableViewCell.swift */; };
+		1B3761C5260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761C4260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift */; };
+		1B3DA572260EDC37003E4F96 /* HomePageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA571260EDC37003E4F96 /* HomePageContainerViewController.swift */; };
+		1B3DA580260EDD0F003E4F96 /* SurahListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA57F260EDD0F003E4F96 /* SurahListViewController.swift */; };
+		1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */; };
+		1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA589260EDD2A003E4F96 /* SurahListSection.swift */; };
+		1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA58F260EDEF8003E4F96 /* SettingView.swift */; };
+		1B3DA598260EDF07003E4F96 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA597260EDF07003E4F96 /* SettingViewController.swift */; };
+		1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */; };
+		1B3DA5A2260EDF45003E4F96 /* SettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA5A1260EDF45003E4F96 /* SettingSection.swift */; };
+		1B3DA5AA260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA5A9260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift */; };
+		1B3DA5AF260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA5AE260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift */; };
+		1B42CF58261C97C80096F77F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B42CF57261C97C80096F77F /* Storage.swift */; };
+		1B436752261891DD002878B8 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436751261891DD002878B8 /* ShimmerView.swift */; };
+		1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */; };
+		1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */; };
+		1B5427E9261DC678003C6100 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427E8261DC678003C6100 /* HomeViewController.swift */; };
+		1B5427EE261DC683003C6100 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427ED261DC683003C6100 /* HomeViewModel.swift */; };
+		1B5427F3261DC68C003C6100 /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427F2261DC68C003C6100 /* HomeSection.swift */; };
+		1B5427F9261DFCA8003C6100 /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427F8261DFCA8003C6100 /* PickerTableViewCell.swift */; };
+		1B542801261DFCE4003C6100 /* PickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542800261DFCE4003C6100 /* PickerTableViewCellViewModel.swift */; };
+		1B542806261E00CF003C6100 /* PickerItemSelectorObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542805261E00CF003C6100 /* PickerItemSelectorObj.swift */; };
+		1B54280E261E054B003C6100 /* BaseAnimatorTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54280D261E054B003C6100 /* BaseAnimatorTransition.swift */; };
+		1B542816261E0568003C6100 /* DismissPanelAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542815261E0568003C6100 /* DismissPanelAnimationController.swift */; };
+		1B54281B261E0580003C6100 /* PresentPanelAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54281A261E057F003C6100 /* PresentPanelAnimationController.swift */; };
+		1B542820261E059E003C6100 /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54281F261E059E003C6100 /* SwipeInteractionController.swift */; };
+		1B542825261E05C7003C6100 /* FloatingPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542824261E05C7003C6100 /* FloatingPanelViewController.swift */; };
+		1B54282A261E05E7003C6100 /* DrawerPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542829261E05E7003C6100 /* DrawerPanelViewController.swift */; };
+		1B542835261E065E003C6100 /* PickerDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542834261E065E003C6100 /* PickerDrawerViewController.swift */; };
+		1B54283D261E069E003C6100 /* PickerDrawerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54283C261E069E003C6100 /* PickerDrawerViewModel.swift */; };
+		1B542842261E06A9003C6100 /* PickerDrawerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542841261E06A9003C6100 /* PickerDrawerSection.swift */; };
+		1B542856261E0AFC003C6100 /* PopupPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542855261E0AFC003C6100 /* PopupPanelViewController.swift */; };
+		1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */; };
+		1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285F261E0BD3003C6100 /* UIView+Extension.swift */; };
+		1B5E7B792626D1710006244D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B5E7B782626D1710006244D /* GoogleService-Info.plist */; };
+		1B6256EF2640582E0073F03D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256EE2640582E0073F03D /* HomeView.swift */; };
+		1B6256F1264058550073F03D /* PrayerTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F0264058550073F03D /* PrayerTime.swift */; };
+		1B6256F32640587D0073F03D /* SurahListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F22640587D0073F03D /* SurahListView.swift */; };
+		1B6256F5264058A20073F03D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F4264058A20073F03D /* UIViewController+Extension.swift */; };
+		1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB14260B327E004E07CD /* AppDelegate.swift */; };
+		1B78EB17260B327E004E07CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB16260B327E004E07CD /* SceneDelegate.swift */; };
+		1B78EB1E260B3284004E07CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B78EB1D260B3284004E07CD /* Assets.xcassets */; };
+		1B78EB21260B3284004E07CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B78EB1F260B3284004E07CD /* LaunchScreen.storyboard */; };
+		1B78EB2C260B3284004E07CD /* simple_quranTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB2B260B3284004E07CD /* simple_quranTests.swift */; };
+		1B78EB37260B3284004E07CD /* simple_quranUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB36260B3284004E07CD /* simple_quranUITests.swift */; };
+		1B78EB67260B338E004E07CD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B78EB69260B338E004E07CD /* Localizable.strings */; };
+		1B78EB71260B33CB004E07CD /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB70260B33CB004E07CD /* RootViewController.swift */; };
+		1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB7E260B362B004E07CD /* SurahList.swift */; };
+		1B78EB84260B36F1004E07CD /* Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB83260B36F1004E07CD /* Surah.swift */; };
+		1B78EB89260B3990004E07CD /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB88260B3990004E07CD /* ApiError.swift */; };
+		1B78EB8E260B39D9004E07CD /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB8D260B39D9004E07CD /* API.swift */; };
+		1B8339382626A710007B5ADB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8339372626A710007B5ADB /* Constants.swift */; };
+		1B8FC263263D0EC400DF12C8 /* Qiblah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC262263D0EC400DF12C8 /* Qiblah.swift */; };
+		1B8FC269263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */; };
+		1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */; };
+		1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */; };
+		1B8FC285263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */; };
+		1B9A1241261DACBC00DA1023 /* API+Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9A1240261DACBC00DA1023 /* API+Prayer.swift */; };
+		1BA750B4260E65D100A27A2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA750B3260E65D100A27A2F /* AVFoundation.framework */; };
+		1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */; };
+		1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */; };
+		1BA832342618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832332618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift */; };
+		1BA832392618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832382618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift */; };
+		1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */; };
+		1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */; };
+		1BF1DECE260B3C380060A371 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF1DECD260B3C380060A371 /* ErrorResponse.swift */; };
+		1BF1DED3260B3E810060A371 /* API+Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF1DED2260B3E810060A371 /* API+Surah.swift */; };
+		C4AF465AA7E6203764A274ED /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB518A380ED9989301B2A4D /* Pods_simple_quran_simple_quranUITests.framework */; };
+		D909FE6794AD7429C88A01EE /* Pods_simple_quranTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA729E4699F25238EC556510 /* Pods_simple_quranTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1B78EB28260B3284004E07CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
+			remoteInfo = "simple-quran";
+		};
+		1B78EB33260B3284004E07CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
+			remoteInfo = "simple-quran";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01CE0003DD410F975019A5D0 /* Pods-simple-quran.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran.debug.xcconfig"; path = "Target Support Files/Pods-simple-quran/Pods-simple-quran.debug.xcconfig"; sourceTree = "<group>"; };
+		0A62FEB90E835C4A90CCE0D6 /* Pods-simple-quran.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran.release.xcconfig"; path = "Target Support Files/Pods-simple-quran/Pods-simple-quran.release.xcconfig"; sourceTree = "<group>"; };
+		0D1CADDF8CF75C5A899BBC0E /* Pods-simple-quranTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quranTests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quranTests/Pods-simple-quranTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1B1AAA47260E183A00E03B0B /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
+		1B1AAA4F260E185100E03B0B /* SectionSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionSetter.swift; sourceTree = "<group>"; };
+		1B1AAA54260E18C300E03B0B /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		1B1AAA59260E192A00E03B0B /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		1B1AAA77260E1F0300E03B0B /* SectionTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleTableViewCell.swift; sourceTree = "<group>"; };
+		1B1AAA7C260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B1AAA81260E21F700E03B0B /* RootSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSection.swift; sourceTree = "<group>"; };
+		1B1AAA87260E227200E03B0B /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		1B1AAA90260E29DF00E03B0B /* SurahDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahDetailView.swift; sourceTree = "<group>"; };
+		1B1AAA98260E29F200E03B0B /* SurahDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahDetailViewController.swift; sourceTree = "<group>"; };
+		1B1AAA9D260E2A0200E03B0B /* SurahDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahDetailViewModel.swift; sourceTree = "<group>"; };
+		1B1AAAA2260E2A1300E03B0B /* SurahDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahDetailSection.swift; sourceTree = "<group>"; };
+		1B1AAAB5260E416500E03B0B /* Fonts.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Fonts.bundle; sourceTree = "<group>"; };
+		1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		1B1AAABF260E48D200E03B0B /* DetailTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleTableViewCell.swift; sourceTree = "<group>"; };
+		1B1AAAC4260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B3761A0260EF74A000ADF3D /* Edition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edition.swift; sourceTree = "<group>"; };
+		1B3761A9260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHeaderTitleWithSubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		1B3761B1260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		1B3761BC260F7301000ADF3D /* DetailCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTableViewCell.swift; sourceTree = "<group>"; };
+		1B3761C4260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B3DA571260EDC37003E4F96 /* HomePageContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageContainerViewController.swift; sourceTree = "<group>"; };
+		1B3DA57F260EDD0F003E4F96 /* SurahListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListViewController.swift; sourceTree = "<group>"; };
+		1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListViewModel.swift; sourceTree = "<group>"; };
+		1B3DA589260EDD2A003E4F96 /* SurahListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListSection.swift; sourceTree = "<group>"; };
+		1B3DA58F260EDEF8003E4F96 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		1B3DA597260EDF07003E4F96 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		1B3DA5A1260EDF45003E4F96 /* SettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSection.swift; sourceTree = "<group>"; };
+		1B3DA5A9260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithSubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		1B3DA5AE260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithSubtitleTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B42CF57261C97C80096F77F /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		1B436751261891DD002878B8 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
+		1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCell.swift; sourceTree = "<group>"; };
+		1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B5427E8261DC678003C6100 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		1B5427ED261DC683003C6100 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		1B5427F2261DC68C003C6100 /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
+		1B5427F8261DFCA8003C6100 /* PickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
+		1B542800261DFCE4003C6100 /* PickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B542805261E00CF003C6100 /* PickerItemSelectorObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerItemSelectorObj.swift; sourceTree = "<group>"; };
+		1B54280D261E054B003C6100 /* BaseAnimatorTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAnimatorTransition.swift; sourceTree = "<group>"; };
+		1B542815261E0568003C6100 /* DismissPanelAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissPanelAnimationController.swift; sourceTree = "<group>"; };
+		1B54281A261E057F003C6100 /* PresentPanelAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentPanelAnimationController.swift; sourceTree = "<group>"; };
+		1B54281F261E059E003C6100 /* SwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
+		1B542824261E05C7003C6100 /* FloatingPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelViewController.swift; sourceTree = "<group>"; };
+		1B542829261E05E7003C6100 /* DrawerPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerPanelViewController.swift; sourceTree = "<group>"; };
+		1B542834261E065E003C6100 /* PickerDrawerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDrawerViewController.swift; sourceTree = "<group>"; };
+		1B54283C261E069E003C6100 /* PickerDrawerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDrawerViewModel.swift; sourceTree = "<group>"; };
+		1B542841261E06A9003C6100 /* PickerDrawerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDrawerSection.swift; sourceTree = "<group>"; };
+		1B542855261E0AFC003C6100 /* PopupPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPanelViewController.swift; sourceTree = "<group>"; };
+		1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
+		1B54285F261E0BD3003C6100 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		1B5E7B782626D1710006244D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1B5E7BBA2626DD5B0006244D /* Hidayah Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hidayah Debug.entitlements"; sourceTree = "<group>"; };
+		1B6256EE2640582E0073F03D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		1B6256F0264058550073F03D /* PrayerTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTime.swift; sourceTree = "<group>"; };
+		1B6256F22640587D0073F03D /* SurahListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListView.swift; sourceTree = "<group>"; };
+		1B6256F4264058A20073F03D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		1B78EB11260B327E004E07CD /* Hidayah Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hidayah Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B78EB14260B327E004E07CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1B78EB16260B327E004E07CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1B78EB1D260B3284004E07CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B78EB20260B3284004E07CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1B78EB22260B3284004E07CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B78EB27260B3284004E07CD /* simple-quranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B78EB2B260B3284004E07CD /* simple_quranTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simple_quranTests.swift; sourceTree = "<group>"; };
+		1B78EB2D260B3284004E07CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B78EB32260B3284004E07CD /* simple-quranUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B78EB36260B3284004E07CD /* simple_quranUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simple_quranUITests.swift; sourceTree = "<group>"; };
+		1B78EB38260B3284004E07CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B78EB68260B338E004E07CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1B78EB70260B33CB004E07CD /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		1B78EB7E260B362B004E07CD /* SurahList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahList.swift; sourceTree = "<group>"; };
+		1B78EB83260B36F1004E07CD /* Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surah.swift; sourceTree = "<group>"; };
+		1B78EB88260B3990004E07CD /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
+		1B78EB8D260B39D9004E07CD /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		1B8339372626A710007B5ADB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1B8FC262263D0EC400DF12C8 /* Qiblah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qiblah.swift; sourceTree = "<group>"; };
+		1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCell.swift; sourceTree = "<group>"; };
+		1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1B9A1240261DACBC00DA1023 /* API+Prayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Prayer.swift"; sourceTree = "<group>"; };
+		1BA750B3260E65D100A27A2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
+		1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1BA832332618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift; sourceTree = "<group>"; };
+		1BA832382618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
+		1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1BF1DECD260B3C380060A371 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		1BF1DED2260B3E810060A371 /* API+Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Surah.swift"; sourceTree = "<group>"; };
+		9DB518A380ED9989301B2A4D /* Pods_simple_quran_simple_quranUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quran_simple_quranUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA729E4699F25238EC556510 /* Pods_simple_quranTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quranTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D54199C6E11E947797F31E8D /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		EF3AEC5E06A8681F9A0BA6C7 /* Pods_simple_quran.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quran.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F13054EA5E8076ADCBA59480 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.release.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.release.xcconfig"; sourceTree = "<group>"; };
+		F83B24CD6083E5A7887EFD6E /* Pods-simple-quranTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quranTests.release.xcconfig"; path = "Target Support Files/Pods-simple-quranTests/Pods-simple-quranTests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1B78EB0E260B327E004E07CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BA750B4260E65D100A27A2F /* AVFoundation.framework in Frameworks */,
+				0467A78A6954EC6013F5D583 /* Pods_simple_quran.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B78EB24260B3284004E07CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D909FE6794AD7429C88A01EE /* Pods_simple_quranTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B78EB2F260B3284004E07CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4AF465AA7E6203764A274ED /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E07FA50391EC7018A832128 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				01CE0003DD410F975019A5D0 /* Pods-simple-quran.debug.xcconfig */,
+				0A62FEB90E835C4A90CCE0D6 /* Pods-simple-quran.release.xcconfig */,
+				D54199C6E11E947797F31E8D /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */,
+				F13054EA5E8076ADCBA59480 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */,
+				0D1CADDF8CF75C5A899BBC0E /* Pods-simple-quranTests.debug.xcconfig */,
+				F83B24CD6083E5A7887EFD6E /* Pods-simple-quranTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		1B1AAA46260E182800E03B0B /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				1B1AAA47260E183A00E03B0B /* TableViewDataSource.swift */,
+				1B1AAA4F260E185100E03B0B /* SectionSetter.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		1B1AAA86260E223600E03B0B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1B1AAA87260E227200E03B0B /* UITableView+Extension.swift */,
+				1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */,
+				1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */,
+				1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */,
+				1B54285F261E0BD3003C6100 /* UIView+Extension.swift */,
+				1B6256F4264058A20073F03D /* UIViewController+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1B1AAA8F260E29B300E03B0B /* Surah Detail */ = {
+			isa = PBXGroup;
+			children = (
+				1B1AAA90260E29DF00E03B0B /* SurahDetailView.swift */,
+				1B1AAA98260E29F200E03B0B /* SurahDetailViewController.swift */,
+				1B1AAA9D260E2A0200E03B0B /* SurahDetailViewModel.swift */,
+				1B1AAAA2260E2A1300E03B0B /* SurahDetailSection.swift */,
+			);
+			path = "Surah Detail";
+			sourceTree = "<group>";
+		};
+		1B3761A8260F20CD000ADF3D /* Button Header Title With Subtitle */ = {
+			isa = PBXGroup;
+			children = (
+				1B3761A9260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift */,
+				1B3761B1260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift */,
+			);
+			path = "Button Header Title With Subtitle";
+			sourceTree = "<group>";
+		};
+		1B3761BB260F72DA000ADF3D /* Detail Card */ = {
+			isa = PBXGroup;
+			children = (
+				1B3761BC260F7301000ADF3D /* DetailCardTableViewCell.swift */,
+				1B3761C4260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift */,
+			);
+			path = "Detail Card";
+			sourceTree = "<group>";
+		};
+		1B3DA570260EDBF6003E4F96 /* Home Page Container */ = {
+			isa = PBXGroup;
+			children = (
+				1B3DA571260EDC37003E4F96 /* HomePageContainerViewController.swift */,
+			);
+			path = "Home Page Container";
+			sourceTree = "<group>";
+		};
+		1B3DA576260EDCD5003E4F96 /* Surah List */ = {
+			isa = PBXGroup;
+			children = (
+				1B6256F22640587D0073F03D /* SurahListView.swift */,
+				1B3DA57F260EDD0F003E4F96 /* SurahListViewController.swift */,
+				1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */,
+				1B3DA589260EDD2A003E4F96 /* SurahListSection.swift */,
+			);
+			path = "Surah List";
+			sourceTree = "<group>";
+		};
+		1B3DA58E260EDEE5003E4F96 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				1B3DA58F260EDEF8003E4F96 /* SettingView.swift */,
+				1B3DA597260EDF07003E4F96 /* SettingViewController.swift */,
+				1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */,
+				1B3DA5A1260EDF45003E4F96 /* SettingSection.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		1B3DA5A6260EE495003E4F96 /* Section Title */ = {
+			isa = PBXGroup;
+			children = (
+				1B1AAA77260E1F0300E03B0B /* SectionTitleTableViewCell.swift */,
+				1B1AAA7C260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift */,
+			);
+			path = "Section Title";
+			sourceTree = "<group>";
+		};
+		1B3DA5A7260EE4B2003E4F96 /* Detail Title */ = {
+			isa = PBXGroup;
+			children = (
+				1B1AAABF260E48D200E03B0B /* DetailTitleTableViewCell.swift */,
+				1B1AAAC4260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift */,
+			);
+			path = "Detail Title";
+			sourceTree = "<group>";
+		};
+		1B3DA5A8260EE5BD003E4F96 /* Title With Subtitle */ = {
+			isa = PBXGroup;
+			children = (
+				1B3DA5A9260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift */,
+				1B3DA5AE260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift */,
+			);
+			path = "Title With Subtitle";
+			sourceTree = "<group>";
+		};
+		1B42CF56261C97AD0096F77F /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				1B42CF57261C97C80096F77F /* Storage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		1B42CF62261CB5290096F77F /* Detail Card Placeholder */ = {
+			isa = PBXGroup;
+			children = (
+				1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */,
+				1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */,
+			);
+			path = "Detail Card Placeholder";
+			sourceTree = "<group>";
+		};
+		1B42CF63261CB54A0096F77F /* Button Header Title With Subtitle Placeholder */ = {
+			isa = PBXGroup;
+			children = (
+				1BA832332618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift */,
+				1BA832382618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift */,
+			);
+			path = "Button Header Title With Subtitle Placeholder";
+			sourceTree = "<group>";
+		};
+		1B42CF64261CB5800096F77F /* Detail Title Placeholder */ = {
+			isa = PBXGroup;
+			children = (
+				1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */,
+				1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */,
+			);
+			path = "Detail Title Placeholder";
+			sourceTree = "<group>";
+		};
+		1B436750261891C6002878B8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1B54280A261E0516003C6100 /* Floating Panel */,
+				1B542832261E0631003C6100 /* Drawer */,
+				1B542831261E061F003C6100 /* Shimmer */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1B5427DF261DC651003C6100 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				1B6256EE2640582E0073F03D /* HomeView.swift */,
+				1B5427E8261DC678003C6100 /* HomeViewController.swift */,
+				1B5427ED261DC683003C6100 /* HomeViewModel.swift */,
+				1B5427F2261DC68C003C6100 /* HomeSection.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		1B5427F7261DFC94003C6100 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				1B5427F8261DFCA8003C6100 /* PickerTableViewCell.swift */,
+				1B542800261DFCE4003C6100 /* PickerTableViewCellViewModel.swift */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		1B54280A261E0516003C6100 /* Floating Panel */ = {
+			isa = PBXGroup;
+			children = (
+				1B54280B261E052A003C6100 /* Animation Controller */,
+				1B54280C261E0534003C6100 /* Swipe Controller */,
+				1B542824261E05C7003C6100 /* FloatingPanelViewController.swift */,
+				1B542829261E05E7003C6100 /* DrawerPanelViewController.swift */,
+				1B542855261E0AFC003C6100 /* PopupPanelViewController.swift */,
+			);
+			path = "Floating Panel";
+			sourceTree = "<group>";
+		};
+		1B54280B261E052A003C6100 /* Animation Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1B54280D261E054B003C6100 /* BaseAnimatorTransition.swift */,
+				1B542815261E0568003C6100 /* DismissPanelAnimationController.swift */,
+				1B54281A261E057F003C6100 /* PresentPanelAnimationController.swift */,
+			);
+			path = "Animation Controller";
+			sourceTree = "<group>";
+		};
+		1B54280C261E0534003C6100 /* Swipe Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1B54281F261E059E003C6100 /* SwipeInteractionController.swift */,
+			);
+			path = "Swipe Controller";
+			sourceTree = "<group>";
+		};
+		1B542831261E061F003C6100 /* Shimmer */ = {
+			isa = PBXGroup;
+			children = (
+				1B436751261891DD002878B8 /* ShimmerView.swift */,
+			);
+			path = Shimmer;
+			sourceTree = "<group>";
+		};
+		1B542832261E0631003C6100 /* Drawer */ = {
+			isa = PBXGroup;
+			children = (
+				1B542833261E0649003C6100 /* Picker Drawer */,
+			);
+			path = Drawer;
+			sourceTree = "<group>";
+		};
+		1B542833261E0649003C6100 /* Picker Drawer */ = {
+			isa = PBXGroup;
+			children = (
+				1B542834261E065E003C6100 /* PickerDrawerViewController.swift */,
+				1B54283C261E069E003C6100 /* PickerDrawerViewModel.swift */,
+				1B542841261E06A9003C6100 /* PickerDrawerSection.swift */,
+			);
+			path = "Picker Drawer";
+			sourceTree = "<group>";
+		};
+		1B542864261E216D003C6100 /* Table View */ = {
+			isa = PBXGroup;
+			children = (
+				1B8FC275263D29C500DF12C8 /* Labels With Right Icon Header */,
+				1B8FC267263D214300DF12C8 /* Label With Left Icon */,
+				1BD3393C2620481700CB412D /* Switch */,
+				1B5427F7261DFC94003C6100 /* Picker */,
+				1B3761BB260F72DA000ADF3D /* Detail Card */,
+				1B42CF62261CB5290096F77F /* Detail Card Placeholder */,
+				1B3761A8260F20CD000ADF3D /* Button Header Title With Subtitle */,
+				1B42CF63261CB54A0096F77F /* Button Header Title With Subtitle Placeholder */,
+				1B3DA5A6260EE495003E4F96 /* Section Title */,
+				1B3DA5A7260EE4B2003E4F96 /* Detail Title */,
+				1B42CF64261CB5800096F77F /* Detail Title Placeholder */,
+				1B3DA5A8260EE5BD003E4F96 /* Title With Subtitle */,
+			);
+			path = "Table View";
+			sourceTree = "<group>";
+		};
+		1B78EB08260B327E004E07CD = {
+			isa = PBXGroup;
+			children = (
+				1B78EB13260B327E004E07CD /* simple-quran */,
+				1B78EB2A260B3284004E07CD /* simple-quranTests */,
+				1B78EB35260B3284004E07CD /* simple-quranUITests */,
+				1B78EB12260B327E004E07CD /* Products */,
+				0E07FA50391EC7018A832128 /* Pods */,
+				57432DF57683D06809F12458 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1B78EB12260B327E004E07CD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB11260B327E004E07CD /* Hidayah Debug.app */,
+				1B78EB27260B3284004E07CD /* simple-quranTests.xctest */,
+				1B78EB32260B3284004E07CD /* simple-quranUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1B78EB13260B327E004E07CD /* simple-quran */ = {
+			isa = PBXGroup;
+			children = (
+				1B5E7BBA2626DD5B0006244D /* Hidayah Debug.entitlements */,
+				1B78EB5E260B3348004E07CD /* Resources */,
+				1B78EB78260B3401004E07CD /* Apis */,
+				1B78EB79260B3406004E07CD /* Models */,
+				1B42CF56261C97AD0096F77F /* Storage */,
+				1B78EB7A260B341C004E07CD /* Cells */,
+				1B436750261891C6002878B8 /* Views */,
+				1B78EB6D260B339A004E07CD /* Controllers */,
+				1B1AAA46260E182800E03B0B /* Helper */,
+				1B1AAA86260E223600E03B0B /* Extensions */,
+				1B78EB22260B3284004E07CD /* Info.plist */,
+				1B5E7B782626D1710006244D /* GoogleService-Info.plist */,
+			);
+			path = "simple-quran";
+			sourceTree = "<group>";
+		};
+		1B78EB2A260B3284004E07CD /* simple-quranTests */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB2B260B3284004E07CD /* simple_quranTests.swift */,
+				1B78EB2D260B3284004E07CD /* Info.plist */,
+			);
+			path = "simple-quranTests";
+			sourceTree = "<group>";
+		};
+		1B78EB35260B3284004E07CD /* simple-quranUITests */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB36260B3284004E07CD /* simple_quranUITests.swift */,
+				1B78EB38260B3284004E07CD /* Info.plist */,
+			);
+			path = "simple-quranUITests";
+			sourceTree = "<group>";
+		};
+		1B78EB5E260B3348004E07CD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB1D260B3284004E07CD /* Assets.xcassets */,
+				1B78EB69260B338E004E07CD /* Localizable.strings */,
+				1B8339372626A710007B5ADB /* Constants.swift */,
+				1B1AAAB5260E416500E03B0B /* Fonts.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1B78EB6D260B339A004E07CD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1B3DA58E260EDEE5003E4F96 /* Setting */,
+				1B1AAA8F260E29B300E03B0B /* Surah Detail */,
+				1B3DA576260EDCD5003E4F96 /* Surah List */,
+				1B5427DF261DC651003C6100 /* Home */,
+				1B3DA570260EDBF6003E4F96 /* Home Page Container */,
+				1B78EB6F260B33BA004E07CD /* Root */,
+				1B78EB6E260B33AB004E07CD /* Base */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		1B78EB6E260B33AB004E07CD /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB14260B327E004E07CD /* AppDelegate.swift */,
+				1B78EB16260B327E004E07CD /* SceneDelegate.swift */,
+				1B78EB1F260B3284004E07CD /* LaunchScreen.storyboard */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		1B78EB6F260B33BA004E07CD /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				1B1AAA54260E18C300E03B0B /* RootView.swift */,
+				1B78EB70260B33CB004E07CD /* RootViewController.swift */,
+				1B1AAA59260E192A00E03B0B /* RootViewModel.swift */,
+				1B1AAA81260E21F700E03B0B /* RootSection.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		1B78EB78260B3401004E07CD /* Apis */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB8D260B39D9004E07CD /* API.swift */,
+				1BF1DED2260B3E810060A371 /* API+Surah.swift */,
+				1B9A1240261DACBC00DA1023 /* API+Prayer.swift */,
+			);
+			path = Apis;
+			sourceTree = "<group>";
+		};
+		1B78EB79260B3406004E07CD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1B78EB88260B3990004E07CD /* ApiError.swift */,
+				1BF1DECD260B3C380060A371 /* ErrorResponse.swift */,
+				1B78EB7E260B362B004E07CD /* SurahList.swift */,
+				1B78EB83260B36F1004E07CD /* Surah.swift */,
+				1B3761A0260EF74A000ADF3D /* Edition.swift */,
+				1B542805261E00CF003C6100 /* PickerItemSelectorObj.swift */,
+				1B6256F0264058550073F03D /* PrayerTime.swift */,
+				1B8FC262263D0EC400DF12C8 /* Qiblah.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1B78EB7A260B341C004E07CD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1B542864261E216D003C6100 /* Table View */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		1B8FC267263D214300DF12C8 /* Label With Left Icon */ = {
+			isa = PBXGroup;
+			children = (
+				1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */,
+				1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */,
+			);
+			path = "Label With Left Icon";
+			sourceTree = "<group>";
+		};
+		1B8FC275263D29C500DF12C8 /* Labels With Right Icon Header */ = {
+			isa = PBXGroup;
+			children = (
+				1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */,
+				1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */,
+			);
+			path = "Labels With Right Icon Header";
+			sourceTree = "<group>";
+		};
+		1BD3393C2620481700CB412D /* Switch */ = {
+			isa = PBXGroup;
+			children = (
+				1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */,
+				1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */,
+			);
+			path = Switch;
+			sourceTree = "<group>";
+		};
+		57432DF57683D06809F12458 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1BA750B3260E65D100A27A2F /* AVFoundation.framework */,
+				EF3AEC5E06A8681F9A0BA6C7 /* Pods_simple_quran.framework */,
+				9DB518A380ED9989301B2A4D /* Pods_simple_quran_simple_quranUITests.framework */,
+				CA729E4699F25238EC556510 /* Pods_simple_quranTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1B78EB10260B327E004E07CD /* simple-quran */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quran" */;
+			buildPhases = (
+				BDFC1475EA13DCCB52E78C07 /* [CP] Check Pods Manifest.lock */,
+				1B78EB0D260B327E004E07CD /* Sources */,
+				1B78EB0E260B327E004E07CD /* Frameworks */,
+				1B78EB0F260B327E004E07CD /* Resources */,
+				1B5E7BB02626D5A90006244D /* Crashlytics */,
+				0C2F6561966A06088F4FCB15 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "simple-quran";
+			productName = "simple-quran";
+			productReference = 1B78EB11260B327E004E07CD /* Hidayah Debug.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1B78EB26260B3284004E07CD /* simple-quranTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B78EB3E260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranTests" */;
+			buildPhases = (
+				0E37AF1B5749983A4C1E7D81 /* [CP] Check Pods Manifest.lock */,
+				1B78EB23260B3284004E07CD /* Sources */,
+				1B78EB24260B3284004E07CD /* Frameworks */,
+				1B78EB25260B3284004E07CD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1B78EB29260B3284004E07CD /* PBXTargetDependency */,
+			);
+			name = "simple-quranTests";
+			productName = "simple-quranTests";
+			productReference = 1B78EB27260B3284004E07CD /* simple-quranTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1B78EB31260B3284004E07CD /* simple-quranUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B78EB41260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranUITests" */;
+			buildPhases = (
+				A2D50B3057BBFDFDFE6832EE /* [CP] Check Pods Manifest.lock */,
+				1B78EB2E260B3284004E07CD /* Sources */,
+				1B78EB2F260B3284004E07CD /* Frameworks */,
+				1B78EB30260B3284004E07CD /* Resources */,
+				066BB558D56CC2AFE48C83BB /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1B78EB34260B3284004E07CD /* PBXTargetDependency */,
+			);
+			name = "simple-quranUITests";
+			productName = "simple-quranUITests";
+			productReference = 1B78EB32260B3284004E07CD /* simple-quranUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1B78EB09260B327E004E07CD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					1B78EB10260B327E004E07CD = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					1B78EB26260B3284004E07CD = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 1B78EB10260B327E004E07CD;
+					};
+					1B78EB31260B3284004E07CD = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 1B78EB10260B327E004E07CD;
+					};
+				};
+			};
+			buildConfigurationList = 1B78EB0C260B327E004E07CD /* Build configuration list for PBXProject "simple-quran" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1B78EB08260B327E004E07CD;
+			productRefGroup = 1B78EB12260B327E004E07CD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1B78EB10260B327E004E07CD /* simple-quran */,
+				1B78EB26260B3284004E07CD /* simple-quranTests */,
+				1B78EB31260B3284004E07CD /* simple-quranUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1B78EB0F260B327E004E07CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B78EB21260B3284004E07CD /* LaunchScreen.storyboard in Resources */,
+				1B78EB67260B338E004E07CD /* Localizable.strings in Resources */,
+				1B5E7B792626D1710006244D /* GoogleService-Info.plist in Resources */,
+				1B1AAAB6260E416500E03B0B /* Fonts.bundle in Resources */,
+				1B78EB1E260B3284004E07CD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B78EB25260B3284004E07CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B78EB30260B3284004E07CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		066BB558D56CC2AFE48C83BB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0C2F6561966A06088F4FCB15 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0E37AF1B5749983A4C1E7D81 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-simple-quranTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1B5E7BB02626D5A90006244D /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		A2D50B3057BBFDFDFE6832EE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-simple-quran-simple-quranUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BDFC1475EA13DCCB52E78C07 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-simple-quran-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1B78EB0D260B327E004E07CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B5427F3261DC68C003C6100 /* HomeSection.swift in Sources */,
+				1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */,
+				1BF1DED3260B3E810060A371 /* API+Surah.swift in Sources */,
+				1B3761AA260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift in Sources */,
+				1B54283D261E069E003C6100 /* PickerDrawerViewModel.swift in Sources */,
+				1B78EB84260B36F1004E07CD /* Surah.swift in Sources */,
+				1B1AAA5A260E192A00E03B0B /* RootViewModel.swift in Sources */,
+				1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */,
+				1B9A1241261DACBC00DA1023 /* API+Prayer.swift in Sources */,
+				1B6256F1264058550073F03D /* PrayerTime.swift in Sources */,
+				1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */,
+				1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */,
+				1B1AAA82260E21F700E03B0B /* RootSection.swift in Sources */,
+				1B1AAAC5260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift in Sources */,
+				1B54280E261E054B003C6100 /* BaseAnimatorTransition.swift in Sources */,
+				1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */,
+				1B1AAA88260E227200E03B0B /* UITableView+Extension.swift in Sources */,
+				1B8FC263263D0EC400DF12C8 /* Qiblah.swift in Sources */,
+				1B1AAA91260E29DF00E03B0B /* SurahDetailView.swift in Sources */,
+				1B542842261E06A9003C6100 /* PickerDrawerSection.swift in Sources */,
+				1B542856261E0AFC003C6100 /* PopupPanelViewController.swift in Sources */,
+				1B54282A261E05E7003C6100 /* DrawerPanelViewController.swift in Sources */,
+				1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */,
+				1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */,
+				1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */,
+				1B3DA5A2260EDF45003E4F96 /* SettingSection.swift in Sources */,
+				1B3DA572260EDC37003E4F96 /* HomePageContainerViewController.swift in Sources */,
+				1B54281B261E0580003C6100 /* PresentPanelAnimationController.swift in Sources */,
+				1B542806261E00CF003C6100 /* PickerItemSelectorObj.swift in Sources */,
+				1B3DA580260EDD0F003E4F96 /* SurahListViewController.swift in Sources */,
+				1BA832392618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift in Sources */,
+				1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */,
+				1B542835261E065E003C6100 /* PickerDrawerViewController.swift in Sources */,
+				1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */,
+				1B8FC285263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift in Sources */,
+				1B542801261DFCE4003C6100 /* PickerTableViewCellViewModel.swift in Sources */,
+				1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */,
+				1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */,
+				1B6256EF2640582E0073F03D /* HomeView.swift in Sources */,
+				1B8339382626A710007B5ADB /* Constants.swift in Sources */,
+				1B5427F9261DFCA8003C6100 /* PickerTableViewCell.swift in Sources */,
+				1B5427E9261DC678003C6100 /* HomeViewController.swift in Sources */,
+				1B542825261E05C7003C6100 /* FloatingPanelViewController.swift in Sources */,
+				1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */,
+				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
+				1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */,
+				1B1AAA7D260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift in Sources */,
+				1B78EB17260B327E004E07CD /* SceneDelegate.swift in Sources */,
+				1B6256F32640587D0073F03D /* SurahListView.swift in Sources */,
+				1B78EB71260B33CB004E07CD /* RootViewController.swift in Sources */,
+				1B6256F5264058A20073F03D /* UIViewController+Extension.swift in Sources */,
+				1B1AAA48260E183A00E03B0B /* TableViewDataSource.swift in Sources */,
+				1B1AAAC0260E48D200E03B0B /* DetailTitleTableViewCell.swift in Sources */,
+				1B3761C5260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift in Sources */,
+				1B436752261891DD002878B8 /* ShimmerView.swift in Sources */,
+				1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */,
+				1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */,
+				1B1AAA55260E18C300E03B0B /* RootView.swift in Sources */,
+				1B78EB89260B3990004E07CD /* ApiError.swift in Sources */,
+				1B542816261E0568003C6100 /* DismissPanelAnimationController.swift in Sources */,
+				1B542820261E059E003C6100 /* SwipeInteractionController.swift in Sources */,
+				1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */,
+				1B78EB8E260B39D9004E07CD /* API.swift in Sources */,
+				1B5427EE261DC683003C6100 /* HomeViewModel.swift in Sources */,
+				1B1AAAA3260E2A1300E03B0B /* SurahDetailSection.swift in Sources */,
+				1B3DA598260EDF07003E4F96 /* SettingViewController.swift in Sources */,
+				1B42CF58261C97C80096F77F /* Storage.swift in Sources */,
+				1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */,
+				1BA832342618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift in Sources */,
+				1B3761BD260F7301000ADF3D /* DetailCardTableViewCell.swift in Sources */,
+				1B3DA5AA260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift in Sources */,
+				1BF1DECE260B3C380060A371 /* ErrorResponse.swift in Sources */,
+				1B3761A1260EF74A000ADF3D /* Edition.swift in Sources */,
+				1B1AAA99260E29F200E03B0B /* SurahDetailViewController.swift in Sources */,
+				1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */,
+				1B3DA5AF260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift in Sources */,
+				1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */,
+				1B8FC269263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift in Sources */,
+				1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B78EB23260B3284004E07CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B78EB2C260B3284004E07CD /* simple_quranTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B78EB2E260B3284004E07CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B78EB37260B3284004E07CD /* simple_quranUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1B78EB29260B3284004E07CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1B78EB10260B327E004E07CD /* simple-quran */;
+			targetProxy = 1B78EB28260B3284004E07CD /* PBXContainerItemProxy */;
+		};
+		1B78EB34260B3284004E07CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1B78EB10260B327E004E07CD /* simple-quran */;
+			targetProxy = 1B78EB33260B3284004E07CD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1B78EB1F260B3284004E07CD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B78EB20260B3284004E07CD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		1B78EB69260B338E004E07CD /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B78EB68260B338E004E07CD /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1B78EB39260B3284004E07CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1B78EB3A260B3284004E07CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1B78EB3C260B3284004E07CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01CE0003DD410F975019A5D0 /* Pods-simple-quran.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				INFOPLIST_FILE = "simple-quran/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
+				PRODUCT_NAME = "Hidayah Debug";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		1B78EB3D260B3284004E07CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A62FEB90E835C4A90CCE0D6 /* Pods-simple-quran.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				INFOPLIST_FILE = "simple-quran/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
+				PRODUCT_NAME = Hidayah;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		1B78EB3F260B3284004E07CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D1CADDF8CF75C5A899BBC0E /* Pods-simple-quranTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				INFOPLIST_FILE = "simple-quranTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/simple-quran.app/simple-quran";
+			};
+			name = Debug;
+		};
+		1B78EB40260B3284004E07CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F83B24CD6083E5A7887EFD6E /* Pods-simple-quranTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				INFOPLIST_FILE = "simple-quranTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/simple-quran.app/simple-quran";
+			};
+			name = Release;
+		};
+		1B78EB42260B3284004E07CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D54199C6E11E947797F31E8D /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "simple-quran";
+			};
+			name = Debug;
+		};
+		1B78EB43260B3284004E07CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F13054EA5E8076ADCBA59480 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "simple-quran";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1B78EB0C260B327E004E07CD /* Build configuration list for PBXProject "simple-quran" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B78EB39260B3284004E07CD /* Debug */,
+				1B78EB3A260B3284004E07CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quran" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B78EB3C260B3284004E07CD /* Debug */,
+				1B78EB3D260B3284004E07CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B78EB3E260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B78EB3F260B3284004E07CD /* Debug */,
+				1B78EB40260B3284004E07CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B78EB41260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B78EB42260B3284004E07CD /* Debug */,
+				1B78EB43260B3284004E07CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1B78EB09260B327E004E07CD /* Project object */;
+}
