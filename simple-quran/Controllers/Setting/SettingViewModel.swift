@@ -182,7 +182,7 @@ class SettingViewModel: SettingViewModelTypes {
         let vm = SectionTitleTableViewCellViewModel()
         
         vm.titleLabelAttributedText.accept(attributedText)
-        vm.containerTopSpacing.accept(16)
+        vm.containerTopSpacing.accept(32)
         vm.containerBottomSpacing.accept(0)
         
         return BehaviorRelay(value: vm)

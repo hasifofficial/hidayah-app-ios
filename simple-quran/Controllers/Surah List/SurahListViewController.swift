@@ -119,6 +119,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     }
     
     private func setupNavBar() {
+        navigationController?.navigationBar.tintColor = .lightGreen
         navigationItem.rightBarButtonItem = rootView.settingButtonItem
         
         if #available(iOS 11.0, *) {
