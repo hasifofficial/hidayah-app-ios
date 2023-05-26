@@ -30,7 +30,6 @@
 		1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */; };
 		1B3761BD260F7301000ADF3D /* DetailCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761BC260F7301000ADF3D /* DetailCardTableViewCell.swift */; };
 		1B3761C5260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761C4260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift */; };
-		1B3DA572260EDC37003E4F96 /* HomePageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA571260EDC37003E4F96 /* HomePageContainerViewController.swift */; };
 		1B3DA580260EDD0F003E4F96 /* SurahListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA57F260EDD0F003E4F96 /* SurahListViewController.swift */; };
 		1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */; };
 		1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA589260EDD2A003E4F96 /* SurahListSection.swift */; };
@@ -44,9 +43,6 @@
 		1B436752261891DD002878B8 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436751261891DD002878B8 /* ShimmerView.swift */; };
 		1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */; };
 		1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */; };
-		1B5427E9261DC678003C6100 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427E8261DC678003C6100 /* HomeViewController.swift */; };
-		1B5427EE261DC683003C6100 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427ED261DC683003C6100 /* HomeViewModel.swift */; };
-		1B5427F3261DC68C003C6100 /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427F2261DC68C003C6100 /* HomeSection.swift */; };
 		1B5427F9261DFCA8003C6100 /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5427F8261DFCA8003C6100 /* PickerTableViewCell.swift */; };
 		1B542801261DFCE4003C6100 /* PickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542800261DFCE4003C6100 /* PickerTableViewCellViewModel.swift */; };
 		1B542806261E00CF003C6100 /* PickerItemSelectorObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B542805261E00CF003C6100 /* PickerItemSelectorObj.swift */; };
@@ -63,7 +59,6 @@
 		1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */; };
 		1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285F261E0BD3003C6100 /* UIView+Extension.swift */; };
 		1B5E7B792626D1710006244D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B5E7B782626D1710006244D /* GoogleService-Info.plist */; };
-		1B6256EF2640582E0073F03D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256EE2640582E0073F03D /* HomeView.swift */; };
 		1B6256F1264058550073F03D /* PrayerTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F0264058550073F03D /* PrayerTime.swift */; };
 		1B6256F32640587D0073F03D /* SurahListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F22640587D0073F03D /* SurahListView.swift */; };
 		1B6256F5264058A20073F03D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F4264058A20073F03D /* UIViewController+Extension.swift */; };
@@ -142,7 +137,6 @@
 		1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		1B3761BC260F7301000ADF3D /* DetailCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTableViewCell.swift; sourceTree = "<group>"; };
 		1B3761C4260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTableViewCellViewModel.swift; sourceTree = "<group>"; };
-		1B3DA571260EDC37003E4F96 /* HomePageContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageContainerViewController.swift; sourceTree = "<group>"; };
 		1B3DA57F260EDD0F003E4F96 /* SurahListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListViewController.swift; sourceTree = "<group>"; };
 		1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListViewModel.swift; sourceTree = "<group>"; };
 		1B3DA589260EDD2A003E4F96 /* SurahListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListSection.swift; sourceTree = "<group>"; };
@@ -156,9 +150,6 @@
 		1B436751261891DD002878B8 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
-		1B5427E8261DC678003C6100 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		1B5427ED261DC683003C6100 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		1B5427F2261DC68C003C6100 /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
 		1B5427F8261DFCA8003C6100 /* PickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
 		1B542800261DFCE4003C6100 /* PickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1B542805261E00CF003C6100 /* PickerItemSelectorObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerItemSelectorObj.swift; sourceTree = "<group>"; };
@@ -176,7 +167,6 @@
 		1B54285F261E0BD3003C6100 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		1B5E7B782626D1710006244D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1B5E7BBA2626DD5B0006244D /* Hidayah Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hidayah Debug.entitlements"; sourceTree = "<group>"; };
-		1B6256EE2640582E0073F03D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1B6256F0264058550073F03D /* PrayerTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTime.swift; sourceTree = "<group>"; };
 		1B6256F22640587D0073F03D /* SurahListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListView.swift; sourceTree = "<group>"; };
 		1B6256F4264058A20073F03D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -315,14 +305,6 @@
 			path = "Detail Card";
 			sourceTree = "<group>";
 		};
-		1B3DA570260EDBF6003E4F96 /* Home Page Container */ = {
-			isa = PBXGroup;
-			children = (
-				1B3DA571260EDC37003E4F96 /* HomePageContainerViewController.swift */,
-			);
-			path = "Home Page Container";
-			sourceTree = "<group>";
-		};
 		1B3DA576260EDCD5003E4F96 /* Surah List */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,17 +397,6 @@
 				1B542831261E061F003C6100 /* Shimmer */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		1B5427DF261DC651003C6100 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				1B6256EE2640582E0073F03D /* HomeView.swift */,
-				1B5427E8261DC678003C6100 /* HomeViewController.swift */,
-				1B5427ED261DC683003C6100 /* HomeViewModel.swift */,
-				1B5427F2261DC68C003C6100 /* HomeSection.swift */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		1B5427F7261DFC94003C6100 /* Picker */ = {
@@ -588,8 +559,6 @@
 				1B3DA58E260EDEE5003E4F96 /* Setting */,
 				1B1AAA8F260E29B300E03B0B /* Surah Detail */,
 				1B3DA576260EDCD5003E4F96 /* Surah List */,
-				1B5427DF261DC651003C6100 /* Home */,
-				1B3DA570260EDBF6003E4F96 /* Home Page Container */,
 				1B78EB6F260B33BA004E07CD /* Root */,
 				1B78EB6E260B33AB004E07CD /* Base */,
 			);
@@ -949,7 +918,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B5427F3261DC68C003C6100 /* HomeSection.swift in Sources */,
 				1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */,
 				1BF1DED3260B3E810060A371 /* API+Surah.swift in Sources */,
 				1B3761AA260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift in Sources */,
@@ -975,7 +943,6 @@
 				1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */,
 				1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */,
 				1B3DA5A2260EDF45003E4F96 /* SettingSection.swift in Sources */,
-				1B3DA572260EDC37003E4F96 /* HomePageContainerViewController.swift in Sources */,
 				1B54281B261E0580003C6100 /* PresentPanelAnimationController.swift in Sources */,
 				1B542806261E00CF003C6100 /* PickerItemSelectorObj.swift in Sources */,
 				1B3DA580260EDD0F003E4F96 /* SurahListViewController.swift in Sources */,
@@ -987,10 +954,8 @@
 				1B542801261DFCE4003C6100 /* PickerTableViewCellViewModel.swift in Sources */,
 				1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */,
 				1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */,
-				1B6256EF2640582E0073F03D /* HomeView.swift in Sources */,
 				1B8339382626A710007B5ADB /* Constants.swift in Sources */,
 				1B5427F9261DFCA8003C6100 /* PickerTableViewCell.swift in Sources */,
-				1B5427E9261DC678003C6100 /* HomeViewController.swift in Sources */,
 				1B542825261E05C7003C6100 /* FloatingPanelViewController.swift in Sources */,
 				1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */,
 				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
@@ -1012,7 +977,6 @@
 				1B542820261E059E003C6100 /* SwipeInteractionController.swift in Sources */,
 				1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */,
 				1B78EB8E260B39D9004E07CD /* API.swift in Sources */,
-				1B5427EE261DC683003C6100 /* HomeViewModel.swift in Sources */,
 				1B1AAAA3260E2A1300E03B0B /* SurahDetailSection.swift in Sources */,
 				1B3DA598260EDF07003E4F96 /* SettingViewController.swift in Sources */,
 				1B42CF58261C97C80096F77F /* Storage.swift in Sources */,
