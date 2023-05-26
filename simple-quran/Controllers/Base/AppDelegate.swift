@@ -13,21 +13,12 @@ import FirebaseMessaging
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
-    var window: UIWindow?
     var deviceToken: Data?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         
         UIFont.loadFontsBundle(bundle: "Fonts", fontExtension: "ttf")
-
-        window = UIWindow()
-        let rootViewController = SurahListViewController<SurahListViewModel>()
-        let navController = UINavigationController(rootViewController: rootViewController)
-        navController.navigationBar.prefersLargeTitles = true
-
-        window?.rootViewController = navController
-        window?.makeKeyAndVisible()
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (_, _) in }
         UNUserNotificationCenter.current().delegate = self
@@ -114,12 +105,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: UISceneSession Lifecycle
 
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
 
     }
