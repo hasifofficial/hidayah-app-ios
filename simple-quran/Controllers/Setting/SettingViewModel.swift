@@ -106,8 +106,8 @@ class SettingViewModel: SettingViewModelTypes {
         let isSwitchOn = Storage.load(key: .allowKahfReminder) as? Bool ?? true
         let vm = SwitchTableViewCellViewModel()
         
-        vm.titleLabelText.accept(NSLocalizedString("setting_notification_alkahf_title", comment: ""))
-        vm.isSwitchOn.accept(isSwitchOn)
+        vm.titleLabelText.send(NSLocalizedString("setting_notification_alkahf_title", comment: ""))
+        vm.isSwitchOn.send(isSwitchOn)
         
         return CurrentValueSubject<SwitchTableViewCellViewModel, Never>(vm)
     }()

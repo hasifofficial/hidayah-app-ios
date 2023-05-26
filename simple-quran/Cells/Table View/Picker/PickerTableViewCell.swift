@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import RxSwift
+import Combine
 
-protocol PickerTableViewCellDelegate: class {
+protocol PickerTableViewCellDelegate: AnyObject {
     func pickerTableViewCell(cell: PickerTableViewCell<PickerTableViewCellViewModel>, didSelect item: PickerItemSelectorObj)
 }
 
@@ -23,7 +23,7 @@ class PickerTableViewCell<ViewModel>: UITableViewCell, UIPickerViewDelegate, UIP
     }()
     
     private var viewModel: ViewModel = ViewModel()
-    private var disposeBag = DisposeBag()
+    private var cancellable = Set<AnyCancellable>()
 
     weak var delegate: PickerTableViewCellDelegate?
     
@@ -51,18 +51,17 @@ class PickerTableViewCell<ViewModel>: UITableViewCell, UIPickerViewDelegate, UIP
         ])
     }
        
-    private func setupListener() {
-        disposeBag = DisposeBag()
-        
-        viewModel.selectedItem.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  let value = value,
-                  let rowIndex = strongSelf.viewModel.items.value.firstIndex(of: value) else { return }
-            
-            strongSelf.picker.selectRow(rowIndex, inComponent: 0, animated: false)
-            strongSelf.viewModel.selectedRow.accept(rowIndex)
-        })
-        .disposed(by: disposeBag)
+    private func setupListener() {        
+        viewModel.selectedItem
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      let value = value,
+                      let rowIndex = strongSelf.viewModel.items.value.firstIndex(of: value) else { return }
+                
+                strongSelf.picker.selectRow(rowIndex, inComponent: 0, animated: false)
+                strongSelf.viewModel.selectedRow.send(rowIndex)
+            })
+            .store(in: &cancellable)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -74,7 +73,7 @@ class PickerTableViewCell<ViewModel>: UITableViewCell, UIPickerViewDelegate, UIP
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewModel.selectedRow.accept(row)
+        viewModel.selectedRow.send(row)
         delegate?.pickerTableViewCell(cell: self as! PickerTableViewCell<PickerTableViewCellViewModel>, didSelect: viewModel.items.value[row])
         pickerView.reloadAllComponents()
     }

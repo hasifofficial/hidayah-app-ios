@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RxSwift
 
 class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableViewCell where ViewModel: ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModelTypes {
     
@@ -65,7 +64,6 @@ class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableV
         return newView
     }()
     
-    private var disposeBag: DisposeBag = DisposeBag()
     private var viewModel: ViewModel = ViewModel()
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -126,7 +124,7 @@ class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableV
     }
     
     private func setupListener() {
-        disposeBag = DisposeBag()        
+
     }
     
     func configureWith(value: Any) {

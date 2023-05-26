@@ -5,27 +5,27 @@
 //  Created by Mohammad Hasif Afiq on 4/9/21.
 //
 
-import RxSwift
-import RxCocoa
+import UIKit
+import Combine
 
 protocol SwitchTableViewCellViewModelTypes {
-    var titleLabelText: BehaviorRelay<String?> { get }
-    var titleLabelTextFont: BehaviorRelay<UIFont> { get }
-    var titleLabelTextColor: BehaviorRelay<UIColor> { get }
-    var titleLabelTextLine: BehaviorRelay<Int> { get }
+    var titleLabelText: CurrentValueSubject<String?, Never> { get }
+    var titleLabelTextFont: CurrentValueSubject<UIFont, Never> { get }
+    var titleLabelTextColor: CurrentValueSubject<UIColor, Never> { get }
+    var titleLabelTextLine: CurrentValueSubject<Int, Never> { get }
 
-    var isSwitchOn: BehaviorRelay<Bool> { get }
+    var isSwitchOn: CurrentValueSubject<Bool, Never> { get }
 
     init()
 }
 
 class SwitchTableViewCellViewModel: SwitchTableViewCellViewModelTypes {
-    let titleLabelText = BehaviorRelay<String?>(value: nil)
-    let titleLabelTextFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 14))
-    let titleLabelTextColor = BehaviorRelay<UIColor>(value: .white)
-    let titleLabelTextLine = BehaviorRelay<Int>(value: 0)
+    let titleLabelText = CurrentValueSubject<String?, Never>(nil)
+    let titleLabelTextFont = CurrentValueSubject<UIFont, Never>(.systemFont(ofSize: 14))
+    let titleLabelTextColor = CurrentValueSubject<UIColor, Never>(.white)
+    let titleLabelTextLine = CurrentValueSubject<Int, Never>(0)
     
-    let isSwitchOn = BehaviorRelay<Bool>(value: false)
+    let isSwitchOn = CurrentValueSubject<Bool, Never>(false)
 
     required init() {
         

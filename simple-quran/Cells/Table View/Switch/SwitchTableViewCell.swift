@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import RxSwift
+import Combine
 
-protocol SwitchTableViewCellDelegate: class {
+protocol SwitchTableViewCellDelegate: AnyObject {
     func switchTableViewCell(cell: SwitchTableViewCell, didToggle switchToggle: Bool)
 }
 
@@ -26,7 +26,7 @@ class SwitchTableViewCell: UITableViewCell {
         return newSwitch
     }()
     
-    private var disposeBag: DisposeBag = DisposeBag()
+    private var cancellable = Set<AnyCancellable>()
     private var viewModel: SwitchTableViewCellViewModelTypes = SwitchTableViewCellViewModel()
     
     weak var delegate: SwitchTableViewCellDelegate?
@@ -63,50 +63,44 @@ class SwitchTableViewCell: UITableViewCell {
     }
     
     private func setupListener() {
-        disposeBag = DisposeBag()
-        
-        switchToggle.rx.controlEvent(.valueChanged).withLatestFrom(switchToggle.rx.value).subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.delegate?.switchTableViewCell(cell: strongSelf, didToggle: value)
-        })
-        .disposed(by: disposeBag)
+        switchToggle.addTarget(self, action: #selector(switchToggleAction), for: .valueChanged)
+
+        viewModel.titleLabelText
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.titleLabel.text = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.titleLabelTextFont
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.titleLabel.font = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.titleLabelTextLine
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
                 
-        viewModel.titleLabelText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+                strongSelf.titleLabel.numberOfLines = value
+            })
+            .store(in: &cancellable)
 
-            strongSelf.titleLabel.text = value
-        })
-        .disposed(by: disposeBag)
-
-        viewModel.titleLabelTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-
-            strongSelf.titleLabel.font = value
-        })
-        .disposed(by: disposeBag)
-
-//        viewModel.titleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-//        guard let strongSelf = self,
-//              strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
-//
-//            strongSelf.titleLabel.textColor = value
-//        })
-//        .disposed(by: disposeBag)
-        
-        viewModel.titleLabelTextLine.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.titleLabel.numberOfLines = value
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.isSwitchOn.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.switchToggle.isOn = value
-        })
-        .disposed(by: disposeBag)
+        viewModel.isSwitchOn
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.switchToggle.isOn = value
+            })
+            .store(in: &cancellable)
+    }
+    
+    @objc private func switchToggleAction(switchValue: UISwitch) {
+        let value = switchValue.isOn
+        delegate?.switchTableViewCell(cell: self, didToggle: value)
     }
     
     func configureWith(value: Any) {

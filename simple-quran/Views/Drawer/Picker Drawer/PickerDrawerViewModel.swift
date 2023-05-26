@@ -43,7 +43,7 @@ class PickerDrawerViewModel: PickerDrawerViewModelTypes {
         titleVM.titleLabelTextAlignment.send(.center)
         
         let pickerVM = PickerTableViewCellViewModel()
-        pickerVM.items.accept(items)
+        pickerVM.items.send(items)
 
         if let firstItem = items.first {
             selectedItem.send(firstItem)

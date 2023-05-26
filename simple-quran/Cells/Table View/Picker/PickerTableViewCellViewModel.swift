@@ -5,31 +5,31 @@
 //  Created by Mohammad Hasif Afiq on 4/7/21.
 //
 
-import RxSwift
-import RxCocoa
+import UIKit
+import Combine
 
 protocol PickerTableViewCellViewModelTypes {
-    var pickerLabelFont: BehaviorRelay<UIFont> { get }
+    var pickerLabelFont: CurrentValueSubject<UIFont, Never> { get }
 
-    var numberOfComponent: BehaviorRelay<Int> { get }
-    var items: BehaviorRelay<[PickerItemSelectorObj]> { get }
-    var selectedItem: BehaviorRelay<PickerItemSelectorObj?> { get }
+    var numberOfComponent: CurrentValueSubject<Int, Never> { get }
+    var items: CurrentValueSubject<[PickerItemSelectorObj], Never> { get }
+    var selectedItem: CurrentValueSubject<PickerItemSelectorObj?, Never> { get }
     
-    var initialRow: BehaviorRelay<Int> { get }
-    var selectedRow: BehaviorRelay<Int> { get }
+    var initialRow: CurrentValueSubject<Int, Never> { get }
+    var selectedRow: CurrentValueSubject<Int, Never> { get }
     
     init()
 }
 
 class PickerTableViewCellViewModel: PickerTableViewCellViewModelTypes {
-    let pickerLabelFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 16, weight: .bold))
+    let pickerLabelFont = CurrentValueSubject<UIFont, Never>(.systemFont(ofSize: 16, weight: .bold))
 
-    let numberOfComponent = BehaviorRelay(value: 1)
-    let items = BehaviorRelay<[PickerItemSelectorObj]>(value: [PickerItemSelectorObj]())
-    let selectedItem = BehaviorRelay<PickerItemSelectorObj?>(value: nil)
+    let numberOfComponent = CurrentValueSubject<Int, Never>(1)
+    let items = CurrentValueSubject<[PickerItemSelectorObj], Never>([PickerItemSelectorObj]())
+    let selectedItem = CurrentValueSubject<PickerItemSelectorObj?, Never>(nil)
     
-    let initialRow = BehaviorRelay(value: 0)
-    let selectedRow = BehaviorRelay(value: 0)
+    let initialRow = CurrentValueSubject<Int, Never>(0)
+    let selectedRow = CurrentValueSubject<Int, Never>(0)
     
     required init() {
         
