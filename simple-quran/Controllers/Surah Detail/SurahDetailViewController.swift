@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import AVFoundation
 import RxSwift
 import Toast_Swift
@@ -13,14 +14,15 @@ import Toast_Swift
 class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahDetailViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private let surahService: SurahService
+    private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     private var ayahAudioPlayer: AVPlayer?
-
-    var drawer: DrawerPanelViewController?
+    
     var rootView: SurahDetailView {
         return view as! SurahDetailView
     }
-
+    
     override func loadView() {
         view = SurahDetailView(frame: UIScreen.main.bounds)
     }
@@ -28,7 +30,7 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +49,19 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         
         setupNavBar(prefersLargeTitles: true)
     }
-        
+    
+    init(
+        surahService: SurahService
+    ) {
+        self.surahService = surahService
+
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupView() {
         for section in SurahDetailSection.allCases {
             rootView.tableView.registerCellClass(section.cellType)
@@ -60,65 +74,62 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     private func setupListener() {
         disposeBag = DisposeBag()
         
-        NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: ayahAudioPlayer?.currentItem)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerDidFinishPlaying),
+            name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+            object: ayahAudioPlayer?.currentItem
+        )
         
-        rootView.tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        rootView.tableView.delegate = self
         
-        rootView.tableView.rx.willDisplayCell.subscribe(onNext: { [weak self] cell, _ in
-            guard let strongSelf = self else { return }
-            
-            if let cell = cell as? DetailCardTableViewCell {
-                cell.delegate = strongSelf
-            } else if let cell = cell as? ButtonHeaderTitleWithSubtitleTableViewCell {
-                cell.delegate = strongSelf
-            }
-        })
-        .disposed(by: disposeBag)
-                
         viewModel.sectionedItems
             .bind(to: rootView.tableView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
-
-        viewModel.title.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-
-            strongSelf.title = value
-        })
-        .disposed(by: disposeBag)
         
-        viewModel.cardPlaceholderCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+        viewModel.title
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
                 
-            strongSelf.viewModel.setSection(.cardPlaceholder(item: value))
-        })
-        .disposed(by: disposeBag)
-
-        viewModel.ayahPlaceholderCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.ayahPlaceholder(item: value))
-        })
-        .disposed(by: disposeBag)
+                strongSelf.title = value
+            })
+            .store(in: &cancellable)
         
-        viewModel.cardCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+        viewModel.cardPlaceholderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
                 
-            strongSelf.viewModel.setSection(.card(item: value))
-        })
-        .disposed(by: disposeBag)
+                strongSelf.viewModel.setSection(.cardPlaceholder(item: value))
+            })
+            .store(in: &cancellable)
         
-        viewModel.ayahCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+        viewModel.ayahPlaceholderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
                 
-            strongSelf.viewModel.setSection(.ayah(item: value))
-        })
-        .disposed(by: disposeBag)
+                strongSelf.viewModel.setSection(.ayahPlaceholder(item: value))
+            })
+            .store(in: &cancellable)
+        
+        viewModel.cardCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.viewModel.setSection(.card(item: value))
+            })
+            .store(in: &cancellable)
+        
+        viewModel.ayahCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.viewModel.setSection(.ayah(item: value))
+            })
+            .store(in: &cancellable)
     }
     
     private func setupNavBar(prefersLargeTitles: Bool = false) {
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
-        }
+        navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
     }
     
     private func setupPlaceholder() {
@@ -128,44 +139,70 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
             vm.append(ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel())
         }
         
-        viewModel.cardCell.accept(nil)
-        viewModel.ayahCell.accept(nil)
-        viewModel.cardPlaceholderCell.accept(DetailCardPlaceholderTableViewCellViewModel())
-        viewModel.ayahPlaceholderCell.accept(vm)
+        viewModel.cardCell.send(nil)
+        viewModel.ayahCell.send(nil)
+        viewModel.cardPlaceholderCell.send(DetailCardPlaceholderTableViewCellViewModel())
+        viewModel.ayahPlaceholderCell.send(vm)
     }
     
     private func loadSurahDetail() {
         setupPlaceholder()
         
         guard let selectedSurahNo = viewModel.selectedSurahNo.value else { return }
-                
+        
         let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
         let recitationId = selectedRecitationData?.identifier ?? "ar.alafasy"
         
         let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
         let translationId = selectedTranslationData?.identifier ?? "en.asad"
         
-        API.getSurahDetail(surahNo: selectedSurahNo, recitationId: recitationId, translationId: translationId) { [weak self] (result) in
+        surahService.getSurahDetail(
+            surahNo: selectedSurahNo,
+            recitationId: recitationId,
+            translationId: translationId
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] completion in
             guard let strongSelf = self else { return }
-                        
-            if let value = result.value {
-                strongSelf.viewModel.handleSurahDetailSuccess(value: value)
-            } else if let error = result.error as? ApiError {
-                strongSelf.view.makeToast(error.localizedDescription)
+            
+            switch completion {
+            case .finished:
+                break
+            case .failure(let error):
+                if let error = error as? RequestError {
+                    strongSelf.view.makeToast(error.message)
+                } else {
+                    strongSelf.view.makeToast(error.localizedDescription)
+                }
             }
+        } receiveValue: { [weak self] surah in
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel.handleSurahDetailSuccess(value: surah)
         }
+        .store(in: &cancellable)
     }
     
     private func loadEdition() {
-        API.getSurahEdition { [weak self] (result) in
-            guard let strongSelf = self else { return }
-            
-            if let value = result.value {
-                strongSelf.viewModel.handleEditionSuccess(value: value)
-            } else if let error = result.error as? ApiError {
-                strongSelf.view.makeToast(error.localizedDescription)
+        surahService.getSurahEdition()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let strongSelf = self else { return }
+                
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    if let error = error as? RequestError {
+                        strongSelf.view.makeToast(error.message)
+                    } else {
+                        strongSelf.view.makeToast(error.localizedDescription)
+                    }
+                }
+            } receiveValue: { [weak self] edition in
+                guard let strongSelf = self else { return }
+                strongSelf.viewModel.handleEditionSuccess(value: edition)
             }
-        }
+            .store(in: &cancellable)
     }
     
     @objc private func playerDidFinishPlaying() {
@@ -174,66 +211,126 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
                 ayahCell.rightHeaderButtonImage.accept(UIImage(named: "ico_play")?.withRenderingMode(.alwaysTemplate))
             }
         }
-    }    
+    }
+
+    private func navigateToReciterSelection(
+        items: [ItemSelector]
+    ) {
+        let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
+        let reciterName = selectedRecitationData?.englishName ?? "Alafasy"
+        let viewModel = SelectionViewModel(
+            title: NSLocalizedString(
+                "surah_recitation_drawer_title",
+                comment: ""
+            ),
+            selectedItem: ItemSelector(
+                title: reciterName,
+                value: "",
+                item: selectedRecitationData
+            ),
+            items: items
+        )
+        let vc = SelectionViewController(
+            viewModel: viewModel
+        )
+        vc.delegate = self
+        let profileNavigationController = UINavigationController(
+            rootViewController: vc
+        )
+        present(
+            profileNavigationController,
+            animated: true
+        )
+    }
+    
+    private func navigateToTranslationSelection(
+        items: [ItemSelector]
+    ) {
+        let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
+        let translationLanguage = selectedTranslationData?.language ?? ""
+        let translationName = selectedTranslationData?.name ?? ""
+        let language = Constants.getLanguageFromCode(code: translationLanguage)
+        let viewModel = SelectionViewModel(
+            title: NSLocalizedString(
+                "surah_translation_drawer_title",
+                comment: ""
+            ),
+            selectedItem: ItemSelector(
+                title: "\(language) - \(translationName)",
+                value: "",
+                item: selectedTranslationData
+            ),
+            items: items
+        )
+        let vc = SelectionViewController(
+            viewModel: viewModel
+        )
+        vc.delegate = self
+        let profileNavigationController = UINavigationController(
+            rootViewController: vc
+        )
+        present(
+            profileNavigationController,
+            animated: true
+        )
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? DetailCardTableViewCell {
+            cell.delegate = self
+        } else if let cell = cell as? ButtonHeaderTitleWithSubtitleTableViewCell {
+            cell.delegate = self
+        }
+    }
 }
 
 extension SurahDetailViewController: DetailCardTableViewCellDelegate {
-    func detailCardTableViewCell(didTapLeftButton cell: DetailCardTableViewCell, viewModel: DetailCardTableViewCellViewModelTypes) {
-        guard let drawerVM = self.viewModel.reciterDrawer.value else { return }
-        
-        drawerVM.doneButtonTapHandler.accept { [weak self] in
-            guard let strongSelf = self,
-                  let item = drawerVM.selectedItem.value,
-                  let recitation = item.item as? EditionResponse else { return }
-            
-            strongSelf.drawer?.close { [weak self] in
-                guard let strongSelf = self else { return }
-                
-                Storage.delete(.selectedRecitation)
-                
-                do {
-                    let data = try JSONEncoder().encode(recitation)
-                    Storage.save(.selectedRecitation, data)
-
-                    strongSelf.loadSurahDetail()
-                } catch {
-                    strongSelf.view.makeToast(error.localizedDescription)
-                }
-            }
-        }
-        
-        let reciterDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
-        drawer = DrawerPanelViewController(parentVC: self, contentVC: reciterDrawer)
-        drawer?.show()
+    func detailCardTableViewCell(
+        didTapLeftButton cell: DetailCardTableViewCell,
+        viewModel: DetailCardTableViewCellViewModelTypes
+    ) {
+        guard let newRecitationListItem = self.viewModel.newRecitationListItem.value else { return }
+        navigateToReciterSelection(items: newRecitationListItem)
     }
     
-    func detailCardTableViewCell(didTapRightButton cell: DetailCardTableViewCell, viewModel: DetailCardTableViewCellViewModelTypes) {
-        guard let drawerVM = self.viewModel.translateLanguageDrawer.value else { return }
-        
-        drawerVM.doneButtonTapHandler.accept { [weak self] in
-            guard let strongSelf = self,
-                  let item = drawerVM.selectedItem.value,
-                  let translation = item.item as? EditionResponse else { return }
-                        
-            strongSelf.drawer?.close { [weak self] in
-                guard let strongSelf = self else { return }
-                
-                Storage.delete(.selectedTranslation)
-                
-                do {
-                    let data = try JSONEncoder().encode(translation)
-                    Storage.save(.selectedTranslation, data)
-                    
-                    strongSelf.loadSurahDetail()
-                } catch {
-                    strongSelf.view.makeToast(error.localizedDescription)
-                }
+    func detailCardTableViewCell(
+        didTapRightButton cell: DetailCardTableViewCell,
+        viewModel: DetailCardTableViewCellViewModelTypes
+    ) {
+        guard let newTranslationListItem = self.viewModel.newTranslationListItem.value else { return }
+        navigateToTranslationSelection(items: newTranslationListItem)
+    }
+}
+
+extension SurahDetailViewController: SelectionViewControllerDelegate {
+    func selectionViewController(viewController: SelectionViewController, didSelect item: ItemSelector) {
+        if viewController.title == NSLocalizedString(
+            "surah_recitation_drawer_title",
+            comment: ""
+        ) {
+            guard let recitation = item.item as? EditionResponse else { return }
+            Storage.delete(.selectedRecitation)
+            do {
+                let data = try JSONEncoder().encode(recitation)
+                Storage.save(.selectedRecitation, data)
+                loadSurahDetail()
+            } catch {
+                view.makeToast(error.localizedDescription)
+            }
+        } else if viewController.title == NSLocalizedString(
+            "surah_translation_drawer_title",
+            comment: ""
+        ) {
+            guard let translation = item.item as? EditionResponse else { return }
+            Storage.delete(.selectedTranslation)
+            do {
+                let data = try JSONEncoder().encode(translation)
+                Storage.save(.selectedTranslation, data)
+                loadSurahDetail()
+            } catch {
+                view.makeToast(error.localizedDescription)
             }
         }
-        
-        let translateLanguageDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
-        drawer = DrawerPanelViewController(parentVC: self, contentVC: translateLanguageDrawer)
-        drawer?.show()
     }
 }
 

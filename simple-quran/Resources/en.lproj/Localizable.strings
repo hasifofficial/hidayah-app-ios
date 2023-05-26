@@ -6,10 +6,19 @@
   
 */
 
-"common_error_network_not_reachable" = "Network is not reachable";
+"common_error_network_not_reachable" = "Network is not reachable.";
 "common_error_connection_time_out" = "Connection timed out.";
-"common_error_reason" = "Something went wrong";
 "common_error_content" = "Something went wrong. Please try again later.";
+
+"request_error_decode" = "Data cannot be parsed. Please try again later.";
+"request_error_invalid_url" = "The URL is invalid, Make sure the URL is correct and try again later.";
+"request_error_no_response" = "No response from server. Please try again later.";
+"request_error_unauthorized" = "You don't have access to view this resource";
+"request_error_unexpected_status_code" = "Unexpected response from server. Please try again later.";
+"request_error_unknown" = "Something went wrong. Please try again later.";
+
+"push_notification_kahf_reminder_title" = "Al-Kahf Reminder";
+"push_notification_kahf_reminder_body" = "Jumu'ah Mubarakah. Have you read Al-Kahf today?";
 
 "surah_list_header_title" = "Quran";
 "surah_list_search_placeholder" = "Search surah";
@@ -20,8 +29,8 @@
 "surah_list_empty_list_subtitle" = "Something went wrong.\nPlease try again.";
 
 "surah_description" = "%@ means %@ and consists of %@ ayahs. Its compilation order is %@. It was revealed in %@.";
-"surah_recitation_drawer_title" = "Recitation";
-"surah_translation_drawer_title" = "Translation";
+"surah_recitation_drawer_title" = "Choose recitation";
+"surah_translation_drawer_title" = "Choose translation";
 
 "setting_header_title" = "Setting";
 "setting_quran_section_title" = "QURAN SETTING";

@@ -1,6 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Action/Action.framework
-${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework

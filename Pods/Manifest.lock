@@ -2,7 +2,6 @@ PODS:
   - Action (4.3.0):
     - RxCocoa (~> 6.0)
     - RxSwift (~> 6.0)
-  - Alamofire (4.9.1)
   - Differentiator (5.0.0)
   - Firebase/Analytics (7.7.0):
     - Firebase/Core
@@ -108,7 +107,6 @@ PODS:
 
 DEPENDENCIES:
   - Action
-  - Alamofire (~> 4.9.1)
   - Firebase/Analytics
   - Firebase/Crashlytics
   - Firebase/Messaging
@@ -121,7 +119,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Action
-    - Alamofire
     - Differentiator
     - Firebase
     - FirebaseAnalytics
@@ -153,7 +150,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Action: 9891cd1b0a9047557d7e58e8dfae743e19d08197
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   Firebase: cd2ab85eec8170dc260186159f21072ecb679ad5
   FirebaseAnalytics: f3f8f75de34fe04141a69bb1c4bd7e24a80178e1
@@ -175,6 +171,6 @@ SPEC CHECKSUMS:
   Shimmer: c5374be1c2b0c9e292fb05b339a513cf291cac86
   Toast-Swift: e42a638589a2f95036b4bb7626cfbdde7daf0393
 
-PODFILE CHECKSUM: 142a6783259cb41799711b1d7be9b24514f64506
+PODFILE CHECKSUM: 6e9dd1158901cf76b1766e9ab0b615b34b1fb841
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3

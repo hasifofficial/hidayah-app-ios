@@ -5,49 +5,49 @@
 //  Created by Mohammad Hasif Afiq on 3/27/21.
 //
 
-import RxSwift
-import RxCocoa
+import UIKit
+import Combine
 
 protocol DetailTitleTableViewCellViewModelTypes {
-    var rightTitleLabelText: BehaviorRelay<String?> { get }
-    var rightTitleLabelTextFont: BehaviorRelay<UIFont> { get }
-    var rightTitleLabelTextColor: BehaviorRelay<UIColor> { get }
-    var rightTitleLabelTextAlignment: BehaviorRelay<NSTextAlignment> { get }
-    var rightTitleLabelTextLine: BehaviorRelay<Int> { get }
+    var rightTitleLabelText: CurrentValueSubject<String?, Never> { get }
+    var rightTitleLabelTextFont: CurrentValueSubject<UIFont, Never> { get }
+    var rightTitleLabelTextColor: CurrentValueSubject<UIColor, Never> { get }
+    var rightTitleLabelTextAlignment: CurrentValueSubject<NSTextAlignment, Never> { get }
+    var rightTitleLabelTextLine: CurrentValueSubject<Int, Never> { get }
 
-    var leftTitleLabelText: BehaviorRelay<String?> { get }
-    var leftTitleLabelTextFont: BehaviorRelay<UIFont> { get }
-    var leftTitleLabelTextColor: BehaviorRelay<UIColor> { get }
-    var leftTitleLabelTextAlignment: BehaviorRelay<NSTextAlignment> { get }
-    var leftTitleLabelTextLine: BehaviorRelay<Int> { get }
+    var leftTitleLabelText: CurrentValueSubject<String?, Never> { get }
+    var leftTitleLabelTextFont: CurrentValueSubject<UIFont, Never> { get }
+    var leftTitleLabelTextColor: CurrentValueSubject<UIColor, Never> { get }
+    var leftTitleLabelTextAlignment: CurrentValueSubject<NSTextAlignment, Never> { get }
+    var leftTitleLabelTextLine: CurrentValueSubject<Int, Never> { get }
 
-    var leftSubtitleLabelText: BehaviorRelay<String?> { get }
-    var leftSubtitleLabelTextFont: BehaviorRelay<UIFont> { get }
-    var leftSubtitleLabelTextColor: BehaviorRelay<UIColor> { get }
-    var leftSubtitleLabelTextAlignment: BehaviorRelay<NSTextAlignment> { get }
-    var leftSubtitleLabelTextLine: BehaviorRelay<Int> { get }
+    var leftSubtitleLabelText: CurrentValueSubject<String?, Never> { get }
+    var leftSubtitleLabelTextFont: CurrentValueSubject<UIFont, Never> { get }
+    var leftSubtitleLabelTextColor: CurrentValueSubject<UIColor, Never> { get }
+    var leftSubtitleLabelTextAlignment: CurrentValueSubject<NSTextAlignment, Never> { get }
+    var leftSubtitleLabelTextLine: CurrentValueSubject<Int, Never> { get }
     
     init()
 }
 
 class DetailTitleTableViewCellViewModel: DetailTitleTableViewCellViewModelTypes {
-    let rightTitleLabelText = BehaviorRelay<String?>(value: nil)
-    let rightTitleLabelTextFont = BehaviorRelay<UIFont>(value: .kitabBold(size: 22))
-    let rightTitleLabelTextColor = BehaviorRelay<UIColor>(value: .lightGreen)
-    let rightTitleLabelTextAlignment = BehaviorRelay<NSTextAlignment>(value: .right)
-    let rightTitleLabelTextLine = BehaviorRelay<Int>(value: 0)
+    let rightTitleLabelText = CurrentValueSubject<String?, Never>(nil)
+    let rightTitleLabelTextFont = CurrentValueSubject<UIFont, Never>(.kitabBold(size: 22))
+    let rightTitleLabelTextColor = CurrentValueSubject<UIColor, Never>(.lightGreen)
+    let rightTitleLabelTextAlignment = CurrentValueSubject<NSTextAlignment, Never>(.right)
+    let rightTitleLabelTextLine = CurrentValueSubject<Int, Never>(0)
 
-    let leftTitleLabelText = BehaviorRelay<String?>(value: nil)
-    let leftTitleLabelTextFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 18, weight: .bold))
-    let leftTitleLabelTextColor = BehaviorRelay<UIColor>(value: .white)
-    let leftTitleLabelTextAlignment = BehaviorRelay<NSTextAlignment>(value: .left)
-    let leftTitleLabelTextLine = BehaviorRelay<Int>(value: 0)
+    let leftTitleLabelText = CurrentValueSubject<String?, Never>(nil)
+    let leftTitleLabelTextFont = CurrentValueSubject<UIFont, Never>(.systemFont(ofSize: 18, weight: .bold))
+    let leftTitleLabelTextColor = CurrentValueSubject<UIColor, Never>(.white)
+    let leftTitleLabelTextAlignment = CurrentValueSubject<NSTextAlignment, Never>(.left)
+    let leftTitleLabelTextLine = CurrentValueSubject<Int, Never>(0)
 
-    let leftSubtitleLabelText = BehaviorRelay<String?>(value: nil)
-    let leftSubtitleLabelTextFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 14))
-    let leftSubtitleLabelTextColor = BehaviorRelay<UIColor>(value: .textGray)
-    let leftSubtitleLabelTextAlignment = BehaviorRelay<NSTextAlignment>(value: .left)
-    let leftSubtitleLabelTextLine = BehaviorRelay<Int>(value: 0)
+    let leftSubtitleLabelText = CurrentValueSubject<String?, Never>(nil)
+    let leftSubtitleLabelTextFont = CurrentValueSubject<UIFont, Never>(.systemFont(ofSize: 14))
+    let leftSubtitleLabelTextColor = CurrentValueSubject<UIColor, Never>(.textGray)
+    let leftSubtitleLabelTextAlignment = CurrentValueSubject<NSTextAlignment, Never>(.left)
+    let leftSubtitleLabelTextLine = CurrentValueSubject<Int, Never>(0)
 
     required init() {
         

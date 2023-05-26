@@ -13,7 +13,6 @@ target 'simple-quran' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
-  pod 'Alamofire', '~> 4.9.1'
   pod 'Toast-Swift', '~> 4.0.0'
   pod 'Shimmer', :git => 'https://github.com/hasifofficial/Shimmer'
 
@@ -25,5 +24,14 @@ target 'simple-quran' do
   target 'simple-quranUITests' do
     # Pods for testing
   end
-
+  
+  post_install do |installer|
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
+          target.build_configurations.each do |config|
+              config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+           end
+      end
+    end
+  end
 end

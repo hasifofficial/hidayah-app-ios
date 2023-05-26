@@ -25,11 +25,7 @@ class DetailCardPlaceholderTableViewCell<ViewModel>: UITableViewCell where ViewM
 
     private lazy var innerContainerView: UIView = {
         let newView = UIView()
-        if #available(iOS 12.0, *) {
-            newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .backgroundLightGrayDarkMode : .white
-        } else {
-            newView.backgroundColor = .white
-        }
+        newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .backgroundLightGrayDarkMode : .white
         newView.translatesAutoresizingMaskIntoConstraints = false
         return newView
     }()

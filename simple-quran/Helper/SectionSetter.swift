@@ -38,7 +38,3 @@ protocol CollectionViewSectionSetter: AnyObject {
     associatedtype Section: SectionModelType & RelativeOrder
     var dataSource: RxCollectionViewSectionedReloadDataSource<Section> { get }
 }
-
-enum SectionMismatchError: Error {
-    case missingSelf
-}

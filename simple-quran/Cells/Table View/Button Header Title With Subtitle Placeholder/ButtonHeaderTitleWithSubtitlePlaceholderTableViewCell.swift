@@ -6,17 +6,12 @@
 //
 
 import UIKit
-import RxSwift
 
 class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableViewCell where ViewModel: ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModelTypes {
     
     private lazy var headerView: UIView = {
         let newView = UIView()
-        if #available(iOS 12.0, *) {
-            newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .backgroundLightGrayDarkMode : .backgroundLightGray
-        } else {
-            newView.backgroundColor = .backgroundLightGray
-        }
+        newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .backgroundLightGrayDarkMode : .backgroundLightGray
         newView.layer.cornerRadius = 10
         newView.translatesAutoresizingMaskIntoConstraints = false
         return newView
@@ -69,7 +64,6 @@ class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableV
         return newView
     }()
     
-    private var disposeBag: DisposeBag = DisposeBag()
     private var viewModel: ViewModel = ViewModel()
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -130,7 +124,7 @@ class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableV
     }
     
     private func setupListener() {
-        disposeBag = DisposeBag()        
+
     }
     
     func configureWith(value: Any) {

@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-protocol ButtonHeaderTitleWithSubtitleTableViewCellDelegate: class {
+protocol ButtonHeaderTitleWithSubtitleTableViewCellDelegate: AnyObject {
     func buttonHeaderTitleWithSubtitleTableViewCell(didTapLeftButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes)
     func buttonHeaderTitleWithSubtitleTableViewCell(didTapRightButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes)
 }
@@ -17,11 +17,7 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
     
     private lazy var headerView: UIView = {
         let newView = UIView()
-        if #available(iOS 12.0, *) {
-            newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? viewModel.headerViewBackgroundColorDarkMode.value : viewModel.headerViewBackgroundColor.value
-        } else {
-            newView.backgroundColor = viewModel.headerViewBackgroundColor.value
-        }
+        newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? viewModel.headerViewBackgroundColorDarkMode.value : viewModel.headerViewBackgroundColor.value
         newView.layer.cornerRadius = 10
         newView.translatesAutoresizingMaskIntoConstraints = false
         return newView

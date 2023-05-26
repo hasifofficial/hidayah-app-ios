@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-protocol DetailCardTableViewCellDelegate: class {
+protocol DetailCardTableViewCellDelegate: AnyObject {
     func detailCardTableViewCell(didTapLeftButton cell: DetailCardTableViewCell, viewModel: DetailCardTableViewCellViewModelTypes)
     func detailCardTableViewCell(didTapRightButton cell: DetailCardTableViewCell, viewModel: DetailCardTableViewCellViewModelTypes)
 }

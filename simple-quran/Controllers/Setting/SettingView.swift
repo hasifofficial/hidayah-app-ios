@@ -8,7 +8,18 @@
 import UIKit
 
 class SettingView: UIView {
+    lazy var closeButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(customView: closeButton)
+    }()
     
+    lazy var closeButton: UIButton = {
+        let newButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        newButton.setImage(UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        newButton.tintColor = .lightGreen
+        newButton.backgroundColor = .clear
+        return newButton
+    }()
+
     lazy var tableView: UITableView = {
         let newTableView = UITableView(frame: .zero, style: .plain)
         newTableView.separatorStyle = .none

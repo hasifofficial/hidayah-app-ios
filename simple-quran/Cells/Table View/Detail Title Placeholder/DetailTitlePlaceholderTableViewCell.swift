@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RxSwift
 
 class DetailTitlePlaceholderTableViewCell<ViewModel>: UITableViewCell where ViewModel: DetailTitlePlaceholderTableViewCellViewModelTypes {
 
@@ -37,7 +36,6 @@ class DetailTitlePlaceholderTableViewCell<ViewModel>: UITableViewCell where View
         return newView
     }()
     
-    private var disposeBag: DisposeBag = DisposeBag()
     private var viewModel: ViewModel = ViewModel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -73,7 +71,7 @@ class DetailTitlePlaceholderTableViewCell<ViewModel>: UITableViewCell where View
     }
     
     private func setupListener() {
-        disposeBag = DisposeBag()
+
     }
     
     func configureWith(value: Any) {
