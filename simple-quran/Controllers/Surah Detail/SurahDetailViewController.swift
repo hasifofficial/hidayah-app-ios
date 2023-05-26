@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import AVFoundation
 import RxSwift
 import Toast_Swift
@@ -13,6 +14,7 @@ import Toast_Swift
 class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahDetailViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     private var ayahAudioPlayer: AVPlayer?
 
@@ -62,57 +64,51 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         
         NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: ayahAudioPlayer?.currentItem)
         
-        rootView.tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
-        rootView.tableView.rx.willDisplayCell.subscribe(onNext: { [weak self] cell, _ in
-            guard let strongSelf = self else { return }
-            
-            if let cell = cell as? DetailCardTableViewCell {
-                cell.delegate = strongSelf
-            } else if let cell = cell as? ButtonHeaderTitleWithSubtitleTableViewCell {
-                cell.delegate = strongSelf
-            }
-        })
-        .disposed(by: disposeBag)
-                
+        rootView.tableView.delegate = self
+                        
         viewModel.sectionedItems
             .bind(to: rootView.tableView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
 
-        viewModel.title.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+        viewModel.title
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
 
-            strongSelf.title = value
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.cardPlaceholderCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.cardPlaceholder(item: value))
-        })
-        .disposed(by: disposeBag)
+                strongSelf.title = value
+            })
+            .store(in: &cancellable)
 
-        viewModel.ayahPlaceholderCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.ayahPlaceholder(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.cardCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.card(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.ayahCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.ayah(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.cardPlaceholderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.cardPlaceholder(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.ayahPlaceholderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.ayahPlaceholder(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.cardCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.card(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.ayahCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.ayah(item: value))
+            })
+            .store(in: &cancellable)
     }
     
     private func setupNavBar(prefersLargeTitles: Bool = false) {
@@ -126,10 +122,10 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
             vm.append(ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel())
         }
         
-        viewModel.cardCell.accept(nil)
-        viewModel.ayahCell.accept(nil)
-        viewModel.cardPlaceholderCell.accept(DetailCardPlaceholderTableViewCellViewModel())
-        viewModel.ayahPlaceholderCell.accept(vm)
+        viewModel.cardCell.send(nil)
+        viewModel.ayahCell.send(nil)
+        viewModel.cardPlaceholderCell.send(DetailCardPlaceholderTableViewCellViewModel())
+        viewModel.ayahPlaceholderCell.send(vm)
     }
     
     private func loadSurahDetail() {
@@ -172,14 +168,22 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
                 ayahCell.rightHeaderButtonImage.accept(UIImage(named: "ico_play")?.withRenderingMode(.alwaysTemplate))
             }
         }
-    }    
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? DetailCardTableViewCell {
+            cell.delegate = self
+        } else if let cell = cell as? ButtonHeaderTitleWithSubtitleTableViewCell {
+            cell.delegate = self
+        }
+    }
 }
 
 extension SurahDetailViewController: DetailCardTableViewCellDelegate {
     func detailCardTableViewCell(didTapLeftButton cell: DetailCardTableViewCell, viewModel: DetailCardTableViewCellViewModelTypes) {
         guard let drawerVM = self.viewModel.reciterDrawer.value else { return }
         
-        drawerVM.doneButtonTapHandler.accept { [weak self] in
+        drawerVM.doneButtonTapHandler.send { [weak self] in
             guard let strongSelf = self,
                   let item = drawerVM.selectedItem.value,
                   let recitation = item.item as? EditionResponse else { return }
@@ -208,7 +212,7 @@ extension SurahDetailViewController: DetailCardTableViewCellDelegate {
     func detailCardTableViewCell(didTapRightButton cell: DetailCardTableViewCell, viewModel: DetailCardTableViewCellViewModelTypes) {
         guard let drawerVM = self.viewModel.translateLanguageDrawer.value else { return }
         
-        drawerVM.doneButtonTapHandler.accept { [weak self] in
+        drawerVM.doneButtonTapHandler.send { [weak self] in
             guard let strongSelf = self,
                   let item = drawerVM.selectedItem.value,
                   let translation = item.item as? EditionResponse else { return }

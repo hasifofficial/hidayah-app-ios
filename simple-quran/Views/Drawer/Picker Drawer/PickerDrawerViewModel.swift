@@ -5,25 +5,26 @@
 //  Created by Mohammad Hasif Afiq on 4/7/21.
 //
 
+import Combine
 import Action
 import RxSwift
 import RxCocoa
 import RxDataSources
 
 protocol PickerDrawerViewModelTypes: SectionSetter, TableViewSectionSetter where Section == PickerDrawerSection {
-    var titleCell: BehaviorRelay<SectionTitleTableViewCellViewModel?> { get }
-    var pickerCell: BehaviorRelay<PickerTableViewCellViewModel?> { get }
-    var selectedItem: BehaviorRelay<PickerItemSelectorObj?> { get }
-    var doneButtonTapHandler: BehaviorRelay<(() -> Void)?> { get }
+    var titleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never> { get }
+    var pickerCell: CurrentValueSubject<PickerTableViewCellViewModel?, Never> { get }
+    var selectedItem: CurrentValueSubject<PickerItemSelectorObj?, Never> { get }
+    var doneButtonTapHandler: CurrentValueSubject<(() -> Void)?, Never> { get }
 
     init()
 }
 
 class PickerDrawerViewModel: PickerDrawerViewModelTypes {
-    let titleCell = BehaviorRelay<SectionTitleTableViewCellViewModel?>(value: nil)
-    let pickerCell = BehaviorRelay<PickerTableViewCellViewModel?>(value: nil)
-    let selectedItem = BehaviorRelay<PickerItemSelectorObj?>(value: nil)
-    let doneButtonTapHandler = BehaviorRelay<(() -> Void)?>(value: nil)
+    let titleCell = CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never>(nil)
+    let pickerCell = CurrentValueSubject<PickerTableViewCellViewModel?, Never>(nil)
+    let selectedItem = CurrentValueSubject<PickerItemSelectorObj?, Never>(nil)
+    let doneButtonTapHandler = CurrentValueSubject<(() -> Void)?, Never>(nil)
         
     var dataSource: RxTableViewSectionedReloadDataSource<Section> = Section.generateDataSource()
     var sectionCache = [Int: PickerDrawerSection]()
@@ -37,18 +38,18 @@ class PickerDrawerViewModel: PickerDrawerViewModelTypes {
         self.init()
         
         let titleVM = SectionTitleTableViewCellViewModel()
-        titleVM.titleLabelText.accept(title)
-        titleVM.titleLabelTextFont.accept(.systemFont(ofSize: 22, weight: .bold))
-        titleVM.titleLabelTextAlignment.accept(.center)
+        titleVM.titleLabelText.send(title)
+        titleVM.titleLabelTextFont.send(.systemFont(ofSize: 22, weight: .bold))
+        titleVM.titleLabelTextAlignment.send(.center)
         
         let pickerVM = PickerTableViewCellViewModel()
         pickerVM.items.accept(items)
 
         if let firstItem = items.first {
-            selectedItem.accept(firstItem)
+            selectedItem.send(firstItem)
         }
 
-        titleCell.accept(titleVM)
-        pickerCell.accept(pickerVM)
+        titleCell.send(titleVM)
+        pickerCell.send(pickerVM)
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import RxSwift
+import Combine
 
 class TitleWithSubtitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: TitleWithSubtitleTableViewCellViewModelTypes {
     
@@ -30,7 +30,7 @@ class TitleWithSubtitleTableViewCell<ViewModel>: UITableViewCell where ViewModel
         return newLabel
     }()
     
-    private var disposeBag: DisposeBag = DisposeBag()
+    private var cancellable = Set<AnyCancellable>()
     private var viewModel: ViewModel = ViewModel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -60,102 +60,103 @@ class TitleWithSubtitleTableViewCell<ViewModel>: UITableViewCell where ViewModel
         ])
     }
     
-    private func setupListener() {
-        disposeBag = DisposeBag()
+    private func setupListener() {                
+        viewModel.titleLabelText
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      strongSelf.viewModel.titleLabelAttributedText.value == nil,
+                      value != nil else { return }
+
+                strongSelf.titleLabel.text = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.titleLabelTextFont
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
+
+                strongSelf.titleLabel.font = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.titleLabelTextColor
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
+
+                strongSelf.titleLabel.textColor = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.titleLabelAttributedText
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      value != nil else { return }
                 
-        viewModel.titleLabelText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.titleLabelAttributedText.value == nil,
-                  value != nil else { return }
+                strongSelf.titleLabel.attributedText = value
+            })
+            .store(in: &cancellable)
 
-            strongSelf.titleLabel.text = value
-        })
-        .disposed(by: disposeBag)
-
-        viewModel.titleLabelTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
-
-            strongSelf.titleLabel.font = value
-        })
-        .disposed(by: disposeBag)
-
-        viewModel.titleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-        guard let strongSelf = self,
-              strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
-
-            strongSelf.titleLabel.textColor = value
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.titleLabelAttributedText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  value != nil else { return }
-            
-            strongSelf.titleLabel.attributedText = value
-        })
-        .disposed(by: disposeBag)
-                        
-        viewModel.titleLabelTextAlignment.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.titleLabel.textAlignment = value
-        })
-        .disposed(by: disposeBag)
-
-        viewModel.titleLabelTextLine.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.titleLabel.numberOfLines = value
-        })
-        .disposed(by: disposeBag)
+        viewModel.titleLabelTextAlignment
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
                 
-        viewModel.subtitleLabelText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.subtitleLabelAttributedText.value == nil,
-                  value != nil else { return }
+                strongSelf.titleLabel.textAlignment = value
+            })
+            .store(in: &cancellable)
 
-            strongSelf.subtitleLabel.text = value
-        })
-        .disposed(by: disposeBag)
+        viewModel.titleLabelTextLine
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.titleLabel.numberOfLines = value
+            })
+            .store(in: &cancellable)
 
-        viewModel.subtitleLabelTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.subtitleLabelAttributedText.value == nil else { return }
+        viewModel.subtitleLabelText
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      strongSelf.viewModel.subtitleLabelAttributedText.value == nil,
+                      value != nil else { return }
 
-            strongSelf.subtitleLabel.font = value
-        })
-        .disposed(by: disposeBag)
+                strongSelf.subtitleLabel.text = value
+            })
+            .store(in: &cancellable)
 
-//        viewModel.subtitleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-//        guard let strongSelf = self,
-//              strongSelf.viewModel.subtitleLabelAttributedText.value == nil else { return }
-//
-//            strongSelf.subtitleLabel.textColor = value
-//        })
-//        .disposed(by: disposeBag)
+        viewModel.subtitleLabelTextFont
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      strongSelf.viewModel.subtitleLabelAttributedText.value == nil else { return }
+
+                strongSelf.subtitleLabel.font = value
+            })
+            .store(in: &cancellable)
         
-        viewModel.subtitleLabelAttributedText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  value != nil else { return }
-            
-            strongSelf.subtitleLabel.attributedText = value
-        })
-        .disposed(by: disposeBag)
-                        
-        viewModel.subtitleLabelTextAlignment.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.subtitleLabel.textAlignment = value
-        })
-        .disposed(by: disposeBag)
+        viewModel.subtitleLabelAttributedText
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      value != nil else { return }
+                
+                strongSelf.subtitleLabel.attributedText = value
+            })
+            .store(in: &cancellable)
 
-        viewModel.subtitleLabelTextLine.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.subtitleLabel.numberOfLines = value
-        })
-        .disposed(by: disposeBag)
+        viewModel.subtitleLabelTextAlignment
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.subtitleLabel.textAlignment = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.subtitleLabelTextLine
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.subtitleLabel.numberOfLines = value
+            })
+            .store(in: &cancellable)
     }
     
     func configureWith(value: Any) {

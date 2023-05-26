@@ -5,19 +5,20 @@
 //  Created by Mohammad Hasif Afiq on 3/27/21.
 //
 
+import Combine
 import Action
 import RxSwift
 import RxCocoa
 import RxDataSources
 
 protocol SurahListViewModelTypes: SectionSetter, TableViewSectionSetter where Section == SurahListSection {
-    var title: BehaviorRelay<String> { get }
-    var surahPlaceholderCell: BehaviorRelay<[DetailTitlePlaceholderTableViewCellViewModel]?> { get }
-    var surahCell: BehaviorRelay<[DetailTitleTableViewCellViewModel]?> { get }
-    var surahEmptyCell: BehaviorRelay<SectionTitleTableViewCellViewModel?> { get }
-    var surahList: BehaviorRelay<[SurahListResponse]?> { get }
-    var filteredSurahList: BehaviorRelay<[SurahListResponse]?> { get }
-    var tapAction: BehaviorRelay<Action<Section.Item, Never>> { get }
+    var title: CurrentValueSubject<String, Never> { get }
+    var surahPlaceholderCell: CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never> { get }
+    var surahCell: CurrentValueSubject<[DetailTitleTableViewCellViewModel]?, Never> { get }
+    var surahEmptyCell: CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never> { get }
+    var surahList: CurrentValueSubject<[SurahListResponse]?, Never> { get }
+    var filteredSurahList: CurrentValueSubject<[SurahListResponse]?, Never> { get }
+    var tapAction: CurrentValueSubject<Action<Section.Item, Never>, Never> { get }
     
     func handleSuccess(value: SurahList)
     func filterSurah(keyword: String?)
@@ -26,22 +27,22 @@ protocol SurahListViewModelTypes: SectionSetter, TableViewSectionSetter where Se
 }
 
 class SurahListViewModel: SurahListViewModelTypes {
-    let surahPlaceholderCell: BehaviorRelay<[DetailTitlePlaceholderTableViewCellViewModel]?> = {
+    let surahPlaceholderCell: CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never> = {
         var vm = [DetailTitlePlaceholderTableViewCellViewModel]()
         
         for _ in 0..<10 {
             vm.append(DetailTitlePlaceholderTableViewCellViewModel())
         }
         
-        return BehaviorRelay(value: vm)
+        return CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never>(vm)
     }()
 
-    let title = BehaviorRelay<String>(value: NSLocalizedString("surah_list_header_title", comment: ""))
-    let surahCell = BehaviorRelay<[DetailTitleTableViewCellViewModel]?>(value: nil)
-    let surahEmptyCell = BehaviorRelay<SectionTitleTableViewCellViewModel?>(value: nil)
-    let surahList = BehaviorRelay<[SurahListResponse]?>(value: nil)
-    let filteredSurahList = BehaviorRelay<[SurahListResponse]?>(value: nil)
-    let tapAction = BehaviorRelay<Action<Section.Item, Swift.Never>>(value: Action { _ in
+    let title = CurrentValueSubject<String, Never>(NSLocalizedString("surah_list_header_title", comment: ""))
+    let surahCell = CurrentValueSubject<[DetailTitleTableViewCellViewModel]?, Never>(nil)
+    let surahEmptyCell = CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never>(nil)
+    let surahList = CurrentValueSubject<[SurahListResponse]?, Never>(nil)
+    let filteredSurahList = CurrentValueSubject<[SurahListResponse]?, Never>(nil)
+    let tapAction = CurrentValueSubject<Action<Section.Item, Swift.Never>, Never>(Action { _ in
         return Observable.empty()
     })
 
@@ -52,7 +53,7 @@ class SurahListViewModel: SurahListViewModelTypes {
     func handleSuccess(value: SurahList) {
         guard let surahs = value.data else { return }
         
-        surahList.accept(surahs)
+        surahList.send(surahs)
         
         filterSurah(keyword: nil)
     }
@@ -61,9 +62,9 @@ class SurahListViewModel: SurahListViewModelTypes {
         guard let surahList = surahList.value else { return }
         
         if let keyword = keyword?.lowercased(), !keyword.isEmpty {
-            filteredSurahList.accept(surahList.filter { $0.englishName?.lowercased().contains(keyword) ?? false })
+            filteredSurahList.send(surahList.filter { $0.englishName?.lowercased().contains(keyword) ?? false })
         } else {
-            filteredSurahList.accept(surahList)
+            filteredSurahList.send(surahList)
         }
         
         guard let filteredSurahs = filteredSurahList.value else { return }
@@ -78,17 +79,17 @@ class SurahListViewModel: SurahListViewModelTypes {
                       let noOfAyahs = surah.numberOfAyahs else { return }
                 
                 let tempSurahCell = DetailTitleTableViewCellViewModel()
-                tempSurahCell.rightTitleLabelText.accept(name)
-                tempSurahCell.leftTitleLabelText.accept(englishName)
-                tempSurahCell.leftSubtitleLabelText.accept(
+                tempSurahCell.rightTitleLabelText.send(name)
+                tempSurahCell.leftTitleLabelText.send(englishName)
+                tempSurahCell.leftSubtitleLabelText.send(
                     String(format: NSLocalizedString("surah_list_subtitle", comment: ""), origin.lowercased() == "meccan" ? "Makiyyah" : "Madaniyah", String(noOfAyahs))
                 )
 
                 tempSurahCells.append(tempSurahCell)
             }
             
-            surahEmptyCell.accept(nil)
-            surahCell.accept(tempSurahCells)
+            surahEmptyCell.send(nil)
+            surahCell.send(tempSurahCells)
         } else {
             let attributedText = NSMutableAttributedString(
                 string: NSLocalizedString("surah_list_search_empty_title", comment: ""),
@@ -100,15 +101,15 @@ class SurahListViewModel: SurahListViewModelTypes {
             ))
             
             let tempEmptyStateCells = SectionTitleTableViewCellViewModel()
-            tempEmptyStateCells.titleLabelAttributedText.accept(attributedText)
-            tempEmptyStateCells.titleLabelTextAlignment.accept(.center)
-            tempEmptyStateCells.containerTopSpacing.accept(100)
+            tempEmptyStateCells.titleLabelAttributedText.send(attributedText)
+            tempEmptyStateCells.titleLabelTextAlignment.send(.center)
+            tempEmptyStateCells.containerTopSpacing.send(100)
             
-            surahEmptyCell.accept(tempEmptyStateCells)
-            surahCell.accept(nil)
+            surahEmptyCell.send(tempEmptyStateCells)
+            surahCell.send(nil)
         }
         
-        surahPlaceholderCell.accept(nil)
+        surahPlaceholderCell.send(nil)
     }
         
     required init() {

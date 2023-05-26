@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import Combine
 import RxSwift
 
-protocol PickerDrawerViewControllerDelegate: class {
+protocol PickerDrawerViewControllerDelegate: AnyObject {
     func pickerDrawerViewController(vc: PickerDrawerViewController<PickerDrawerViewModel>, didSelect item: PickerItemSelectorObj)
 }
 
@@ -35,6 +36,7 @@ class PickerDrawerViewController<ViewModel>: UIViewController, UITableViewDelega
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private var contentSizeObserver: NSKeyValueObservation?
+    private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
 
     weak var delegate: PickerDrawerViewControllerDelegate?
@@ -101,45 +103,43 @@ class PickerDrawerViewController<ViewModel>: UIViewController, UITableViewDelega
     private func setupListener() {
         disposeBag = DisposeBag()
         
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
-        tableView.rx.willDisplayCell.subscribe(onNext: { [weak self] cell, _ in
-            guard let strongSelf = self else { return }
-                        
-            if let cell = cell as? PickerTableViewCell<PickerTableViewCellViewModel> {
-                cell.delegate = strongSelf
-            }
-        })
-        .disposed(by: disposeBag)
-        
-        doneButton.rx.tap.bind { [weak self] in
-            guard let strongSelf = self,
-                  let doneButtonTapHandler = strongSelf.viewModel.doneButtonTapHandler.value else { return }
-            
-            doneButtonTapHandler()
-        }
-        .disposed(by: disposeBag)
-
+        tableView.delegate = self
+        doneButton.addTarget(self, action: #selector(doneButtonAction), for: .touchUpInside)
+                
         viewModel.sectionedItems
             .bind(to: tableView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
         
-        viewModel.titleCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.viewModel.setSection(.title(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.titleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
                 
-        viewModel.pickerCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.viewModel.setSection(.picker(item: value))
-        })
-        .disposed(by: disposeBag)
+                strongSelf.viewModel.setSection(.title(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.pickerCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.viewModel.setSection(.picker(item: value))
+            })
+            .store(in: &cancellable)
+    }
+    
+    @objc private func doneButtonAction() {
+        guard let doneButtonTapHandler = viewModel.doneButtonTapHandler.value else { return }
+        
+        doneButtonTapHandler()
     }
         
     func pickerTableViewCell(cell: PickerTableViewCell<PickerTableViewCellViewModel>, didSelect item: PickerItemSelectorObj) {
-        viewModel.selectedItem.accept(item)
+        viewModel.selectedItem.send(item)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? PickerTableViewCell<PickerTableViewCellViewModel> {
+            cell.delegate = self
+        }
     }
 }

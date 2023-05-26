@@ -6,13 +6,11 @@
 //
 
 import UIKit
-import RxSwift
 import Toast_Swift
 
 class RootViewController<ViewModel>: UIViewController where ViewModel: RootViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
-    private var disposeBag = DisposeBag()
 
     var rootView: RootView {
         return view as! RootView
@@ -34,7 +32,6 @@ class RootViewController<ViewModel>: UIViewController where ViewModel: RootViewM
     }
     
     private func setupListener() {
-        disposeBag = DisposeBag()
 
     }
 }

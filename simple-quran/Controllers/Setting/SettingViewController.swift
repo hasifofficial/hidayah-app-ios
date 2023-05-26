@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import MessageUI
 import AVFoundation
 import RxSwift
@@ -14,6 +15,7 @@ import Toast_Swift
 class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, MFMailComposeViewControllerDelegate where ViewModel: SettingViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
 
     var drawer: DrawerPanelViewController?
@@ -43,213 +45,115 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
     private func setupListener() {
         disposeBag = DisposeBag()
 
-        rootView.tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        rootView.tableView.delegate = self
         
-        rootView.tableView.rx.willDisplayCell.subscribe(onNext: { [weak self] cell, _ in
-            guard let strongSelf = self else { return }
-            
-            if let cell = cell as? SwitchTableViewCell {
-                cell.delegate = strongSelf
-            }
-        })
-        .disposed(by: disposeBag)
-        
-        rootView.tableView.rx.itemSelected.map { [weak self] indexPath in
-            guard let strongSelf = self else { throw SettingError.missingSelf }
-            
-            switch indexPath.section {
-            case SettingSection.recitation(item: strongSelf.viewModel.recitationCell.value).sectionOrder:
-                guard let drawerVM = strongSelf.viewModel.reciterDrawer.value else { throw SettingError.emptyDrawer }
-                
-                drawerVM.doneButtonTapHandler.accept { [weak self] in
-                    guard let strongSelf = self,
-                          let item = drawerVM.selectedItem.value,
-                          let recitation = item.item as? EditionResponse,
-                          let qariName = recitation.englishName else { return }
-                    
-                    strongSelf.drawer?.close { [weak self] in
-                        guard let strongSelf = self else { return }
-                        
-                        Storage.delete(.selectedRecitation)
-                        
-                        do {
-                            let data = try JSONEncoder().encode(recitation)
-                            Storage.save(.selectedRecitation, data)
-
-                            strongSelf.viewModel.recitationCell.value.rightButtonText.accept(qariName)
-                        } catch {
-                            strongSelf.view.makeToast(error.localizedDescription)
-                        }
-                    }
-                }
-                
-                let reciterDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
-                strongSelf.drawer = DrawerPanelViewController(parentVC: strongSelf, contentVC: reciterDrawer)
-                strongSelf.drawer?.show()
-            case SettingSection.translationLanguage(item: strongSelf.viewModel.translationLanguageCell.value).sectionOrder:
-                guard let drawerVM = strongSelf.viewModel.translateLanguageDrawer.value else { throw SettingError.emptyDrawer }
-                
-                drawerVM.doneButtonTapHandler.accept { [weak self] in
-                    guard let strongSelf = self,
-                          let item = drawerVM.selectedItem.value,
-                          let translation = item.item as? EditionResponse,
-                          let translationLanguage = translation.language?.uppercased() else { return }
-                    
-                    strongSelf.drawer?.close { [weak self] in
-                        guard let strongSelf = self else { return }
-                        
-                        Storage.delete(.selectedTranslation)
-                        
-                        do {
-                            let data = try JSONEncoder().encode(translation)
-                            Storage.save(.selectedTranslation, data)
-
-                            strongSelf.viewModel.translationLanguageCell.value.rightButtonText.accept(Constants.getLanguageFromCode(code: translationLanguage))
-                        } catch {
-                            strongSelf.view.makeToast(error.localizedDescription)
-                        }
-                    }
-                }
-                
-                let translateLanguageDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
-                strongSelf.drawer = DrawerPanelViewController(parentVC: strongSelf, contentVC: translateLanguageDrawer)
-                strongSelf.drawer?.show()
-            case SettingSection.about(item: strongSelf.viewModel.aboutCell.value).sectionOrder:
-                guard let url = URL(string: Constants.websiteUrl) else { throw SettingError.emptyUrl }
-                
-                strongSelf.presentWebView(url) { [weak self] (vc) in
-                    guard let strongSelf = self else { return }
-                    
-                    strongSelf.present(vc, animated: true, completion: nil)
-                }
-            case SettingSection.privacy(item: strongSelf.viewModel.privacyCell.value).sectionOrder:
-                guard let url = URL(string: Constants.privacyUrl) else { throw SettingError.emptyUrl }
-                
-                strongSelf.presentWebView(url) { [weak self] (vc) in
-                    guard let strongSelf = self else { return }
-                    
-                    strongSelf.present(vc, animated: true, completion: nil)
-                }
-            case SettingSection.termCondition(item: strongSelf.viewModel.termConditionCell.value).sectionOrder:
-                guard let url = URL(string: Constants.termConditionUrl) else { throw SettingError.emptyUrl }
-                
-                strongSelf.presentWebView(url) { [weak self] (vc) in
-                    guard let strongSelf = self else { return }
-                    
-                    strongSelf.present(vc, animated: true, completion: nil)
-                }
-            case SettingSection.feedback(item: strongSelf.viewModel.feedbackCell.value).sectionOrder:
-                if MFMailComposeViewController.canSendMail() {
-                    let mailVC = MFMailComposeViewController()
-                    
-                    mailVC.mailComposeDelegate = strongSelf
-                    mailVC.setToRecipients([Constants.feedbackEmail])
-                    
-                    strongSelf.present(mailVC, animated: true)
-                }
-            default:
-                break
-            }
-            
-            return strongSelf.viewModel.dataSource[indexPath]
-        }
-        .bind(to: viewModel.tapAction.value.inputs)
-        .disposed(by: disposeBag)
-
         viewModel.sectionedItems
             .bind(to: rootView.tableView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
         
-        viewModel.title.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.title = value
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.quranSettingTitleCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.quranSettingTitle(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.title
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.title = value
+            })
+            .store(in: &cancellable)
 
-        viewModel.recitationCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.recitation(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.quranSettingTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.quranSettingTitle(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.translationLanguageCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.translationLanguage(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.recitationCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.recitation(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.notificationSettingTitleCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.notificationSettingTitle(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.kahfRemnderCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.kahfReminder(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.supportTitleCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.supportTitle(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.supportTitleCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.supportTitle(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.translationLanguageCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.translationLanguage(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.aboutCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.about(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.notificationSettingTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.notificationSettingTitle(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.privacyCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.privacy(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.termConditionCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.termCondition(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.kahfRemnderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.kahfReminder(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.feedbackCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.feedback(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.supportTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.supportTitle(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.versionCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.version(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.supportTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.supportTitle(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.aboutCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.about(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.privacyCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.privacy(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.termConditionCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.termCondition(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.feedbackCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.feedback(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.versionCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.version(item: value))
+            })
+            .store(in: &cancellable)
     }
     
     private func loadEdition() {
@@ -267,16 +171,112 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? SwitchTableViewCell {
+            cell.delegate = self
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case SettingSection.recitation(item: viewModel.recitationCell.value).sectionOrder:
+            guard let drawerVM = viewModel.reciterDrawer.value else { return }
+            
+            drawerVM.doneButtonTapHandler.send { [weak self] in
+                guard let strongSelf = self,
+                      let item = drawerVM.selectedItem.value,
+                      let recitation = item.item as? EditionResponse,
+                      let qariName = recitation.englishName else { return }
+                
+                strongSelf.drawer?.close { [weak self] in
+                    guard let strongSelf = self else { return }
+                    
+                    Storage.delete(.selectedRecitation)
+                    
+                    do {
+                        let data = try JSONEncoder().encode(recitation)
+                        Storage.save(.selectedRecitation, data)
+
+                        strongSelf.viewModel.recitationCell.value.rightButtonText.send(qariName)
+                    } catch {
+                        strongSelf.view.makeToast(error.localizedDescription)
+                    }
+                }
+            }
+            
+            let reciterDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
+            drawer = DrawerPanelViewController(parentVC: self, contentVC: reciterDrawer)
+            drawer?.show()
+        case SettingSection.translationLanguage(item: viewModel.translationLanguageCell.value).sectionOrder:
+            guard let drawerVM = viewModel.translateLanguageDrawer.value else { return }
+            
+            drawerVM.doneButtonTapHandler.send { [weak self] in
+                guard let strongSelf = self,
+                      let item = drawerVM.selectedItem.value,
+                      let translation = item.item as? EditionResponse,
+                      let translationLanguage = translation.language?.uppercased() else { return }
+                
+                strongSelf.drawer?.close { [weak self] in
+                    guard let strongSelf = self else { return }
+                    
+                    Storage.delete(.selectedTranslation)
+                    
+                    do {
+                        let data = try JSONEncoder().encode(translation)
+                        Storage.save(.selectedTranslation, data)
+
+                        strongSelf.viewModel.translationLanguageCell.value.rightButtonText.send(Constants.getLanguageFromCode(code: translationLanguage))
+                    } catch {
+                        strongSelf.view.makeToast(error.localizedDescription)
+                    }
+                }
+            }
+            
+            let translateLanguageDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
+            drawer = DrawerPanelViewController(parentVC: self, contentVC: translateLanguageDrawer)
+            drawer?.show()
+        case SettingSection.about(item: viewModel.aboutCell.value).sectionOrder:
+            guard let url = URL(string: Constants.websiteUrl) else { return }
+            
+            presentWebView(url) { [weak self] (vc) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.present(vc, animated: true, completion: nil)
+            }
+        case SettingSection.privacy(item: viewModel.privacyCell.value).sectionOrder:
+            guard let url = URL(string: Constants.privacyUrl) else { return }
+            
+            presentWebView(url) { [weak self] (vc) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.present(vc, animated: true, completion: nil)
+            }
+        case SettingSection.termCondition(item: viewModel.termConditionCell.value).sectionOrder:
+            guard let url = URL(string: Constants.termConditionUrl) else { return }
+            
+            presentWebView(url) { [weak self] (vc) in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.present(vc, animated: true, completion: nil)
+            }
+        case SettingSection.feedback(item: viewModel.feedbackCell.value).sectionOrder:
+            if MFMailComposeViewController.canSendMail() {
+                let mailVC = MFMailComposeViewController()
+                
+                mailVC.mailComposeDelegate = self
+                mailVC.setToRecipients([Constants.feedbackEmail])
+                
+                present(mailVC, animated: true)
+            }
+        default:
+            break
+        }
+    }
 }
 
 extension SettingViewController: SwitchTableViewCellDelegate {
     func switchTableViewCell(cell: SwitchTableViewCell, didToggle switchToggle: Bool) {
         Storage.save(.allowKahfReminder, switchToggle)
     }
-}
-
-enum SettingError: Error {
-    case missingSelf
-    case emptyDrawer
-    case emptyUrl
 }

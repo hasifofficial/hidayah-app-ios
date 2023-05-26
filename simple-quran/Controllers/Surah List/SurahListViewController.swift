@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import Combine
 import RxSwift
 import Toast_Swift
 
 class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SurahListViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     
     var rootView: SurahListView {
@@ -41,81 +43,46 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     private func setupListener() {
         disposeBag = DisposeBag()
         
+        rootView.tableView.delegate = self
         rootView.searchController.searchResultsUpdater = self
+        rootView.settingButton.addTarget(self, action: #selector(settingButtonAction), for: .touchUpInside)
+        rootView.refreshControl.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
-        rootView.tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
-        rootView.tableView.rx.itemSelected.map { [weak self] indexPath in
-            guard let strongSelf = self else { throw SurahListError.missingSelf }
-            
-            switch indexPath.section {
-            case SurahListSection.surah(item: strongSelf.viewModel.surahCell.value).sectionOrder:
-                
-                guard let surahs = strongSelf.viewModel.filteredSurahList.value else { throw SurahListError.emptySurahList }
-                guard indexPath.row < surahs.count else { throw SurahListError.invalidIndex }
-                
-                let selectedSurah = surahs[indexPath.row]
-                                
-                let vc = SurahDetailViewController<SurahDetailViewModel>()
-                vc.viewModel.title.accept(selectedSurah.englishName)
-                vc.viewModel.selectedSurahNo.accept(selectedSurah.number)
-                
-                strongSelf.navigationController?.pushViewController(vc, animated: true)
-            default:
-                break
-            }
-            
-            return strongSelf.viewModel.dataSource[indexPath]
-        }
-        .bind(to: viewModel.tapAction.value.inputs)
-        .disposed(by: disposeBag)
-        
-        rootView.refreshControl.rx.controlEvent(.valueChanged).subscribe(onNext: { [weak self] in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.loadSurah()
-        })
-        .disposed(by: disposeBag)
-        
-        rootView.settingButton.rx.tap.bind { [weak self] _ in
-            guard let strongSelf = self else { return }
-            
-            let vc = SettingViewController<SettingViewModel>()
-            strongSelf.navigationController?.pushViewController(vc, animated: true)
-        }
-        .disposed(by: disposeBag)
-        
         viewModel.sectionedItems
             .bind(to: rootView.tableView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
         
-        viewModel.title.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+        viewModel.title
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
 
-            strongSelf.title = value
-        })
-        .disposed(by: disposeBag)
+                strongSelf.title = value
+            })
+            .store(in: &cancellable)
         
-        viewModel.surahPlaceholderCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.surahPlaceholder(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.surahPlaceholderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.surahPlaceholder(item: value))
+            })
+            .store(in: &cancellable)
 
-        viewModel.surahCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.surah(item: value))
-        })
-        .disposed(by: disposeBag)
-        
-        viewModel.surahEmptyCell.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
-                
-            strongSelf.viewModel.setSection(.surahEmpty(item: value))
-        })
-        .disposed(by: disposeBag)
+        viewModel.surahCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.surah(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.surahEmptyCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.surahEmpty(item: value))
+            })
+            .store(in: &cancellable)
     }
     
     private func setupNavBar() {
@@ -131,8 +98,8 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
             vm.append(DetailTitlePlaceholderTableViewCellViewModel())
         }
         
-        viewModel.surahPlaceholderCell.accept(vm)
-        viewModel.surahCell.accept(nil)
+        viewModel.surahPlaceholderCell.send(vm)
+        viewModel.surahCell.send(nil)
     }
     
     private func setupEmptyState() {
@@ -146,13 +113,13 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         ))
         
         let tempEmptyStateCells = SectionTitleTableViewCellViewModel()
-        tempEmptyStateCells.titleLabelAttributedText.accept(attributedText)
-        tempEmptyStateCells.titleLabelTextAlignment.accept(.center)
-        tempEmptyStateCells.containerTopSpacing.accept(100)
+        tempEmptyStateCells.titleLabelAttributedText.send(attributedText)
+        tempEmptyStateCells.titleLabelTextAlignment.send(.center)
+        tempEmptyStateCells.containerTopSpacing.send(100)
         
-        viewModel.surahEmptyCell.accept(tempEmptyStateCells)
-        viewModel.surahCell.accept(nil)
-        viewModel.surahPlaceholderCell.accept(nil)
+        viewModel.surahEmptyCell.send(tempEmptyStateCells)
+        viewModel.surahCell.send(nil)
+        viewModel.surahPlaceholderCell.send(nil)
     }
     
     private func loadSurah() {
@@ -172,6 +139,15 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         }
     }
     
+    @objc private func settingButtonAction() {
+        let vc = SettingViewController<SettingViewModel>()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func refreshControlAction() {
+        loadSurah()
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         
@@ -180,6 +156,25 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
             guard let strongSelf = self else { return }
             
             strongSelf.viewModel.filterSurah(keyword: text)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case SurahListSection.surah(item: viewModel.surahCell.value).sectionOrder:
+            
+            guard let surahs = viewModel.filteredSurahList.value else { return }
+            guard indexPath.row < surahs.count else { return }
+            
+            let selectedSurah = surahs[indexPath.row]
+                            
+            let vc = SurahDetailViewController<SurahDetailViewModel>()
+            vc.viewModel.title.send(selectedSurah.englishName)
+            vc.viewModel.selectedSurahNo.send(selectedSurah.number)
+            
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
         }
     }
 }
