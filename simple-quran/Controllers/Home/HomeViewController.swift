@@ -46,12 +46,8 @@ class HomeViewController<ViewModel>: UIViewController, UITableViewDelegate where
             rootView.tableView.registerCellClass(section.cellType)
         }
         
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
-        }
-
+        view.backgroundColor = .systemBackground
+        
         setupNavBar()
         loadTodayPrayerTime()
     }

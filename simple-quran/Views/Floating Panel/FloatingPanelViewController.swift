@@ -56,11 +56,7 @@ class FloatingPanelViewController: UIViewController, UIViewControllerTransitioni
         panelContainer = UIView()
         panelContainer.translatesAutoresizingMaskIntoConstraints = false
         panelContainer.clipsToBounds = true
-        if #available(iOS 13.0, *) {
-            panelContainer.backgroundColor = .systemBackground
-        } else {
-            panelContainer.backgroundColor = .white
-        }
+        panelContainer.backgroundColor = .systemBackground
         view.addSubview(panelContainer)
         
         panelView = UIView()
