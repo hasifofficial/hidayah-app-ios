@@ -15,12 +15,8 @@ class PopupPanelViewController: FloatingPanelViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        if #available(iOS 11.0, *) {
-            panelContainer.layer.cornerRadius = 20
-            panelContainer.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner]
-        } else {
-            panelContainer.roundCorners([.allCorners], radius: 20)
-        }
+        panelContainer.layer.cornerRadius = 20
+        panelContainer.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner]
     }
     
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
@@ -32,19 +28,14 @@ class PopupPanelViewController: FloatingPanelViewController {
     
     override func setupConstraint() {
         guard let contentVC = contentVC else { return }
+
         var panelViewHeight = contentVC.view.bounds.height
         let bottomSafeArea: CGFloat
         let viewCenterYAnchor: NSLayoutYAxisAnchor
+        let window = UIApplication.mainWindow
+        bottomSafeArea = window?.safeAreaInsets.bottom ?? 0
+        viewCenterYAnchor = view.safeAreaLayoutGuide.centerYAnchor
 
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.mainWindow
-            bottomSafeArea = window?.safeAreaInsets.bottom ?? 0
-            viewCenterYAnchor = view.safeAreaLayoutGuide.centerYAnchor
-        } else {
-            bottomSafeArea = bottomLayoutGuide.length
-            viewCenterYAnchor = view.centerYAnchor
-        }
-        
         let maxPanelHeight = UIScreen.main.bounds.height - 20 - bottomSafeArea*2
         if panelViewHeight > maxPanelHeight {
             panelViewHeight = maxPanelHeight

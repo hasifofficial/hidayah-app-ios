@@ -116,9 +116,7 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     }
     
     private func setupNavBar(prefersLargeTitles: Bool = false) {
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
-        }
+        navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
     }
     
     private func setupPlaceholder() {

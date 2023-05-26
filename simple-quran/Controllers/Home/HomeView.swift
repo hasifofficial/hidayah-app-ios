@@ -51,9 +51,7 @@ class HomeView: UIView {
         newRefreshControl.translatesAutoresizingMaskIntoConstraints = false
         return newRefreshControl
     }()
-    
-    private var headerContainerViewTopConstraint: NSLayoutConstraint!
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -76,15 +74,9 @@ class HomeView: UIView {
         addSubview(tableView)
         
         headerContainerView.setContentHuggingPriority(.defaultLow, for: .vertical)
-        
-        if #available(iOS 11.0, *) {
-            headerContainerViewTopConstraint = headerContainerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
-        } else {
-            headerContainerViewTopConstraint = headerContainerView.topAnchor.constraint(equalTo: topAnchor)
-        }
-        
+                
         NSLayoutConstraint.activate([
-            headerContainerViewTopConstraint,
+            headerContainerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             headerContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             headerContainerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             

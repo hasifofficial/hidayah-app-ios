@@ -25,11 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let rootViewController = SurahListViewController<SurahListViewModel>()
 //        let rootViewController = HomeViewController<HomeViewModel>()
         let navController = UINavigationController(rootViewController: rootViewController)
-        
-        if #available(iOS 11.0, *) {
-            navController.navigationBar.prefersLargeTitles = true
-        }
-        
+        navController.navigationBar.prefersLargeTitles = true
+
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
         

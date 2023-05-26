@@ -95,10 +95,6 @@ class HomeViewController<ViewModel>: UIViewController, UITableViewDelegate where
     }
     
     private func setupNavBar(prefersLargeTitles: Bool = true) {
-//        if #available(iOS 11.0, *) {
-//            navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
-//        }
-        
         navigationController?.isNavigationBarHidden = prefersLargeTitles
     }
     

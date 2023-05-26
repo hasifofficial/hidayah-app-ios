@@ -17,12 +17,8 @@ class DrawerPanelViewController: FloatingPanelViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        if #available(iOS 11.0, *) {
-            panelContainer.layer.cornerRadius = 20
-            panelContainer.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        } else {
-            panelContainer.roundCorners([.topLeft, .topRight], radius: 20)
-        }
+        panelContainer.layer.cornerRadius = 20
+        panelContainer.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
     }
     
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
@@ -40,18 +36,13 @@ class DrawerPanelViewController: FloatingPanelViewController {
         bottomPanelContainerConstraint = panelContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         
         guard let contentVC = contentVC else { return }
+
         var panelViewHeight = contentVC.view.bounds.height
         let bottomSafeArea: CGFloat
-        
         let padding: CGFloat = 40
-        
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.mainWindow
-            bottomSafeArea = window?.safeAreaInsets.bottom ?? 0
-        } else {
-            bottomSafeArea = bottomLayoutGuide.length
-        }
-        
+        let window = UIApplication.mainWindow
+        bottomSafeArea = window?.safeAreaInsets.bottom ?? 0
+
         let maxPanelHeight = UIScreen.main.bounds.height - 20 - bottomSafeArea * 2
         if panelViewHeight > maxPanelHeight {
             panelViewHeight = maxPanelHeight

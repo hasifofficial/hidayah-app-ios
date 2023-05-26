@@ -39,13 +39,8 @@ class HomePageContainerViewController: UITabBarController, UITabBarControllerDel
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
-        
-        if #available(iOS 11.0, *) {
-            navController.navigationBar.prefersLargeTitles = true
-        }
-        
+        navController.navigationBar.prefersLargeTitles = true
         rootViewController.navigationItem.title = title
-        
         return navController
     }
 }
