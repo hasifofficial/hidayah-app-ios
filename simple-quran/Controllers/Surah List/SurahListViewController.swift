@@ -195,9 +195,3 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         }
     }
 }
-
-enum SurahListError: Error {
-    case missingSelf
-    case emptySurahList
-    case invalidIndex
-}
