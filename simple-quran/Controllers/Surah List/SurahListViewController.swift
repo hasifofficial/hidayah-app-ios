@@ -13,7 +13,7 @@ import Toast_Swift
 class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SurahListViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
-    private let service = SurahService()
+    private let service: SurahService
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     
@@ -30,6 +30,15 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         
         setupView()
         setupListener()
+    }
+    
+    init(service: SurahService) {
+        self.service = service
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupView() {
@@ -148,7 +157,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     }
     
     @objc private func settingButtonAction() {
-        let vc = SettingViewController<SettingViewModel>()
+        let vc = SettingViewController<SettingViewModel>(service: service)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -176,7 +185,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
             
             let selectedSurah = surahs[indexPath.row]
                             
-            let vc = SurahDetailViewController<SurahDetailViewModel>()
+            let vc = SurahDetailViewController<SurahDetailViewModel>(service: service)
             vc.viewModel.title.send(selectedSurah.englishName)
             vc.viewModel.selectedSurahNo.send(selectedSurah.number)
             

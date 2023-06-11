@@ -15,7 +15,7 @@ import Toast_Swift
 class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, MFMailComposeViewControllerDelegate where ViewModel: SettingViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
-    private let service = SurahService()
+    private let service: SurahService
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
 
@@ -33,6 +33,15 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
         
         setupView()
         setupListener()
+    }
+    
+    init(service: SurahService) {
+        self.service = service
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
         
     private func setupView() {

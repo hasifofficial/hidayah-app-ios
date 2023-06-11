@@ -15,7 +15,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let rootViewController = SurahListViewController<SurahListViewModel>()
+        let surahService = SurahService()
+        let rootViewController = SurahListViewController<SurahListViewModel>(service: surahService)
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.navigationBar.prefersLargeTitles = true
         window.rootViewController = navController

@@ -14,7 +14,7 @@ import Toast_Swift
 class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahDetailViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
-    private let service = SurahService()
+    private let service: SurahService
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     private var ayahAudioPlayer: AVPlayer?
@@ -49,6 +49,15 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         super.viewWillDisappear(animated)
         
         setupNavBar(prefersLargeTitles: true)
+    }
+    
+    init(service: SurahService) {
+        self.service = service
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
         
     private func setupView() {
