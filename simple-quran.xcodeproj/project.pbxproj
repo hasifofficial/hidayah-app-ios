@@ -73,23 +73,26 @@
 		1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB7E260B362B004E07CD /* SurahList.swift */; };
 		1B78EB84260B36F1004E07CD /* Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB83260B36F1004E07CD /* Surah.swift */; };
 		1B78EB89260B3990004E07CD /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB88260B3990004E07CD /* ApiError.swift */; };
-		1B78EB8E260B39D9004E07CD /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB8D260B39D9004E07CD /* API.swift */; };
 		1B8339382626A710007B5ADB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8339372626A710007B5ADB /* Constants.swift */; };
 		1B8FC263263D0EC400DF12C8 /* Qiblah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC262263D0EC400DF12C8 /* Qiblah.swift */; };
 		1B8FC269263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */; };
 		1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */; };
 		1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */; };
 		1B8FC285263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */; };
-		1B9A1241261DACBC00DA1023 /* API+Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9A1240261DACBC00DA1023 /* API+Prayer.swift */; };
 		1BA750B4260E65D100A27A2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA750B3260E65D100A27A2F /* AVFoundation.framework */; };
 		1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */; };
 		1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */; };
 		1BA832342618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832332618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift */; };
 		1BA832392618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832382618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift */; };
+		1BB347902A360C9E000903CE /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB3478F2A360C9E000903CE /* RequestError.swift */; };
+		1BB347922A360CB1000903CE /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347912A360CB1000903CE /* RequestMethod.swift */; };
+		1BB347942A360CC7000903CE /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347932A360CC7000903CE /* Endpoint.swift */; };
+		1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347952A360D27000903CE /* SurahEndpoints.swift */; };
+		1BB347982A360EB2000903CE /* SurahService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347972A360EB2000903CE /* SurahService.swift */; };
+		1BB3479C2A361687000903CE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB3479B2A361687000903CE /* API.swift */; };
 		1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */; };
 		1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */; };
 		1BF1DECE260B3C380060A371 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF1DECD260B3C380060A371 /* ErrorResponse.swift */; };
-		1BF1DED3260B3E810060A371 /* API+Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF1DED2260B3E810060A371 /* API+Surah.swift */; };
 		C4AF465AA7E6203764A274ED /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB518A380ED9989301B2A4D /* Pods_simple_quran_simple_quranUITests.framework */; };
 		D909FE6794AD7429C88A01EE /* Pods_simple_quranTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA729E4699F25238EC556510 /* Pods_simple_quranTests.framework */; };
 /* End PBXBuildFile section */
@@ -187,23 +190,26 @@
 		1B78EB7E260B362B004E07CD /* SurahList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahList.swift; sourceTree = "<group>"; };
 		1B78EB83260B36F1004E07CD /* Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surah.swift; sourceTree = "<group>"; };
 		1B78EB88260B3990004E07CD /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
-		1B78EB8D260B39D9004E07CD /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1B8339372626A710007B5ADB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1B8FC262263D0EC400DF12C8 /* Qiblah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qiblah.swift; sourceTree = "<group>"; };
 		1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCell.swift; sourceTree = "<group>"; };
 		1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCellViewModel.swift; sourceTree = "<group>"; };
-		1B9A1240261DACBC00DA1023 /* API+Prayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Prayer.swift"; sourceTree = "<group>"; };
 		1BA750B3260E65D100A27A2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1BA832332618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		1BA832382618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1BB3478F2A360C9E000903CE /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		1BB347912A360CB1000903CE /* RequestMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
+		1BB347932A360CC7000903CE /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		1BB347952A360D27000903CE /* SurahEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahEndpoints.swift; sourceTree = "<group>"; };
+		1BB347972A360EB2000903CE /* SurahService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahService.swift; sourceTree = "<group>"; };
+		1BB3479B2A361687000903CE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1BF1DECD260B3C380060A371 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
-		1BF1DED2260B3E810060A371 /* API+Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Surah.swift"; sourceTree = "<group>"; };
 		9DB518A380ED9989301B2A4D /* Pods_simple_quran_simple_quranUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quran_simple_quranUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA729E4699F25238EC556510 /* Pods_simple_quranTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quranTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54199C6E11E947797F31E8D /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -508,9 +514,9 @@
 		1B78EB13260B327E004E07CD /* simple-quran */ = {
 			isa = PBXGroup;
 			children = (
+				1BEE94442A360B9D00F07D90 /* Network */,
 				1B5E7BBA2626DD5B0006244D /* Hidayah Debug.entitlements */,
 				1B78EB5E260B3348004E07CD /* Resources */,
-				1B78EB78260B3401004E07CD /* Apis */,
 				1B78EB79260B3406004E07CD /* Models */,
 				1B42CF56261C97AD0096F77F /* Storage */,
 				1B78EB7A260B341C004E07CD /* Cells */,
@@ -586,16 +592,6 @@
 			path = Root;
 			sourceTree = "<group>";
 		};
-		1B78EB78260B3401004E07CD /* Apis */ = {
-			isa = PBXGroup;
-			children = (
-				1B78EB8D260B39D9004E07CD /* API.swift */,
-				1BF1DED2260B3E810060A371 /* API+Surah.swift */,
-				1B9A1240261DACBC00DA1023 /* API+Prayer.swift */,
-			);
-			path = Apis;
-			sourceTree = "<group>";
-		};
 		1B78EB79260B3406004E07CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -637,6 +633,17 @@
 			path = "Labels With Right Icon Header";
 			sourceTree = "<group>";
 		};
+		1BB3478E2A360C82000903CE /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				1BB3478F2A360C9E000903CE /* RequestError.swift */,
+				1BB347912A360CB1000903CE /* RequestMethod.swift */,
+				1BB347932A360CC7000903CE /* Endpoint.swift */,
+				1BB3479B2A361687000903CE /* API.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		1BD3393C2620481700CB412D /* Switch */ = {
 			isa = PBXGroup;
 			children = (
@@ -644,6 +651,32 @@
 				1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */,
 			);
 			path = Switch;
+			sourceTree = "<group>";
+		};
+		1BEE94442A360B9D00F07D90 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				1BB3478E2A360C82000903CE /* Base */,
+				1BEE94462A360BB700F07D90 /* Endpoints */,
+				1BEE94452A360BAB00F07D90 /* Services */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		1BEE94452A360BAB00F07D90 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1BB347972A360EB2000903CE /* SurahService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1BEE94462A360BB700F07D90 /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				1BB347952A360D27000903CE /* SurahEndpoints.swift */,
+			);
+			path = Endpoints;
 			sourceTree = "<group>";
 		};
 		57432DF57683D06809F12458 /* Frameworks */ = {
@@ -919,18 +952,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */,
-				1BF1DED3260B3E810060A371 /* API+Surah.swift in Sources */,
 				1B3761AA260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift in Sources */,
 				1B54283D261E069E003C6100 /* PickerDrawerViewModel.swift in Sources */,
 				1B78EB84260B36F1004E07CD /* Surah.swift in Sources */,
 				1B1AAA5A260E192A00E03B0B /* RootViewModel.swift in Sources */,
 				1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */,
-				1B9A1241261DACBC00DA1023 /* API+Prayer.swift in Sources */,
 				1B6256F1264058550073F03D /* PrayerTime.swift in Sources */,
 				1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */,
 				1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */,
+				1BB347902A360C9E000903CE /* RequestError.swift in Sources */,
 				1B1AAA82260E21F700E03B0B /* RootSection.swift in Sources */,
 				1B1AAAC5260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift in Sources */,
+				1BB3479C2A361687000903CE /* API.swift in Sources */,
 				1B54280E261E054B003C6100 /* BaseAnimatorTransition.swift in Sources */,
 				1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */,
 				1B1AAA88260E227200E03B0B /* UITableView+Extension.swift in Sources */,
@@ -951,6 +984,7 @@
 				1B542835261E065E003C6100 /* PickerDrawerViewController.swift in Sources */,
 				1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */,
 				1B8FC285263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift in Sources */,
+				1BB347982A360EB2000903CE /* SurahService.swift in Sources */,
 				1B542801261DFCE4003C6100 /* PickerTableViewCellViewModel.swift in Sources */,
 				1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */,
 				1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */,
@@ -959,6 +993,8 @@
 				1B542825261E05C7003C6100 /* FloatingPanelViewController.swift in Sources */,
 				1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */,
 				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
+				1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */,
+				1BB347942A360CC7000903CE /* Endpoint.swift in Sources */,
 				1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */,
 				1B1AAA7D260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift in Sources */,
 				1B78EB17260B327E004E07CD /* SceneDelegate.swift in Sources */,
@@ -969,6 +1005,7 @@
 				1B1AAAC0260E48D200E03B0B /* DetailTitleTableViewCell.swift in Sources */,
 				1B3761C5260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift in Sources */,
 				1B436752261891DD002878B8 /* ShimmerView.swift in Sources */,
+				1BB347922A360CB1000903CE /* RequestMethod.swift in Sources */,
 				1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */,
 				1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */,
 				1B1AAA55260E18C300E03B0B /* RootView.swift in Sources */,
@@ -976,7 +1013,6 @@
 				1B542816261E0568003C6100 /* DismissPanelAnimationController.swift in Sources */,
 				1B542820261E059E003C6100 /* SwipeInteractionController.swift in Sources */,
 				1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */,
-				1B78EB8E260B39D9004E07CD /* API.swift in Sources */,
 				1B1AAAA3260E2A1300E03B0B /* SurahDetailSection.swift in Sources */,
 				1B3DA598260EDF07003E4F96 /* SettingViewController.swift in Sources */,
 				1B42CF58261C97C80096F77F /* Storage.swift in Sources */,

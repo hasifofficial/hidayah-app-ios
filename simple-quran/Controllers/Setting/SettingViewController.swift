@@ -15,6 +15,7 @@ import Toast_Swift
 class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, MFMailComposeViewControllerDelegate where ViewModel: SettingViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private let service = SurahService()
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
 
@@ -156,16 +157,23 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
             .store(in: &cancellable)
     }
     
-    private func loadEdition() {
-        API.getSurahEdition { [weak self] (result) in
-            guard let strongSelf = self else { return }
-            
-            if let value = result.value {
-                strongSelf.viewModel.handleEditionSuccess(value: value)
-            } else if let error = result.error as? ApiError {
-                strongSelf.view.makeToast(error.localizedDescription)
+    private func loadEdition() {        
+        service.getSurahEdition()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let strongSelf = self else { return }
+
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    strongSelf.view.makeToast(error.localizedDescription)
+                }
+            } receiveValue: { [weak self] edition in
+                guard let strongSelf = self else { return }
+                strongSelf.viewModel.handleEditionSuccess(value: edition)
             }
-        }
+            .store(in: &cancellable)
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

@@ -13,6 +13,7 @@ import Toast_Swift
 class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SurahListViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private let service = SurahService()
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     
@@ -124,19 +125,26 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     
     private func loadSurah() {
         setupPlaceholder()
-        
-        API.getSurahList { [weak self] (result) in
-            guard let strongSelf = self else { return }
-                        
-            strongSelf.rootView.refreshControl.endRefreshing()
-            
-            if let value = result.value {
-                strongSelf.viewModel.handleSuccess(value: value)
-            } else if let error = result.error as? ApiError {
-                strongSelf.setupEmptyState()
-                strongSelf.view.makeToast(error.localizedDescription)
+
+        service.getSurahList()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let strongSelf = self else { return }
+
+                strongSelf.rootView.refreshControl.endRefreshing()
+
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    strongSelf.setupEmptyState()
+                    strongSelf.view.makeToast(error.localizedDescription)
+                }
+            } receiveValue: { [weak self] list in
+                guard let strongSelf = self else { return }
+                strongSelf.viewModel.handleSuccess(value: list)
             }
-        }
+            .store(in: &cancellable)
     }
     
     @objc private func settingButtonAction() {

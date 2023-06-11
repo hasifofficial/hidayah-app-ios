@@ -14,6 +14,7 @@ import Toast_Swift
 class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahDetailViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
+    private let service = SurahService()
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     private var ayahAudioPlayer: AVPlayer?
@@ -62,7 +63,12 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     private func setupListener() {
         disposeBag = DisposeBag()
         
-        NotificationCenter.default.addObserver(self, selector:#selector(playerDidFinishPlaying),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: ayahAudioPlayer?.currentItem)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerDidFinishPlaying),
+            name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+            object: ayahAudioPlayer?.currentItem
+        )
         
         rootView.tableView.delegate = self
                         
@@ -139,27 +145,45 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
         let translationId = selectedTranslationData?.identifier ?? "en.asad"
         
-        API.getSurahDetail(surahNo: selectedSurahNo, recitationId: recitationId, translationId: translationId) { [weak self] (result) in
+        service.getSurahDetail(
+            surahNo: selectedSurahNo,
+            recitationId: recitationId,
+            translationId: translationId
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] completion in
             guard let strongSelf = self else { return }
-                        
-            if let value = result.value {
-                strongSelf.viewModel.handleSurahDetailSuccess(value: value)
-            } else if let error = result.error as? ApiError {
+
+            switch completion {
+            case .finished:
+                break
+            case .failure(let error):
                 strongSelf.view.makeToast(error.localizedDescription)
             }
+        } receiveValue: { [weak self] surah in
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel.handleSurahDetailSuccess(value: surah)
         }
+        .store(in: &cancellable)
     }
     
     private func loadEdition() {
-        API.getSurahEdition { [weak self] (result) in
-            guard let strongSelf = self else { return }
-            
-            if let value = result.value {
-                strongSelf.viewModel.handleEditionSuccess(value: value)
-            } else if let error = result.error as? ApiError {
-                strongSelf.view.makeToast(error.localizedDescription)
+        service.getSurahEdition()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let strongSelf = self else { return }
+
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    strongSelf.view.makeToast(error.localizedDescription)
+                }
+            } receiveValue: { [weak self] edition in
+                guard let strongSelf = self else { return }
+                strongSelf.viewModel.handleEditionSuccess(value: edition)
             }
-        }
+            .store(in: &cancellable)
     }
     
     @objc private func playerDidFinishPlaying() {
