@@ -13,7 +13,6 @@ target 'simple-quran' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
-  pod 'Alamofire', '~> 4.9.1'
   pod 'Toast-Swift', '~> 4.0.0'
   pod 'Shimmer', :git => 'https://github.com/hasifofficial/Shimmer'
 
