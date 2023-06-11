@@ -59,7 +59,6 @@
 		1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */; };
 		1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285F261E0BD3003C6100 /* UIView+Extension.swift */; };
 		1B5E7B792626D1710006244D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B5E7B782626D1710006244D /* GoogleService-Info.plist */; };
-		1B6256F1264058550073F03D /* PrayerTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F0264058550073F03D /* PrayerTime.swift */; };
 		1B6256F32640587D0073F03D /* SurahListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F22640587D0073F03D /* SurahListView.swift */; };
 		1B6256F5264058A20073F03D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F4264058A20073F03D /* UIViewController+Extension.swift */; };
 		1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB14260B327E004E07CD /* AppDelegate.swift */; };
@@ -72,9 +71,7 @@
 		1B78EB71260B33CB004E07CD /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB70260B33CB004E07CD /* RootViewController.swift */; };
 		1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB7E260B362B004E07CD /* SurahList.swift */; };
 		1B78EB84260B36F1004E07CD /* Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB83260B36F1004E07CD /* Surah.swift */; };
-		1B78EB89260B3990004E07CD /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB88260B3990004E07CD /* ApiError.swift */; };
 		1B8339382626A710007B5ADB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8339372626A710007B5ADB /* Constants.swift */; };
-		1B8FC263263D0EC400DF12C8 /* Qiblah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC262263D0EC400DF12C8 /* Qiblah.swift */; };
 		1B8FC269263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */; };
 		1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */; };
 		1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */; };
@@ -170,7 +167,6 @@
 		1B54285F261E0BD3003C6100 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		1B5E7B782626D1710006244D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1B5E7BBA2626DD5B0006244D /* Hidayah Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hidayah Debug.entitlements"; sourceTree = "<group>"; };
-		1B6256F0264058550073F03D /* PrayerTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTime.swift; sourceTree = "<group>"; };
 		1B6256F22640587D0073F03D /* SurahListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListView.swift; sourceTree = "<group>"; };
 		1B6256F4264058A20073F03D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		1B78EB11260B327E004E07CD /* Hidayah Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hidayah Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,9 +185,7 @@
 		1B78EB70260B33CB004E07CD /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		1B78EB7E260B362B004E07CD /* SurahList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahList.swift; sourceTree = "<group>"; };
 		1B78EB83260B36F1004E07CD /* Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surah.swift; sourceTree = "<group>"; };
-		1B78EB88260B3990004E07CD /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		1B8339372626A710007B5ADB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		1B8FC262263D0EC400DF12C8 /* Qiblah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qiblah.swift; sourceTree = "<group>"; };
 		1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCell.swift; sourceTree = "<group>"; };
 		1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -595,14 +589,11 @@
 		1B78EB79260B3406004E07CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1B78EB88260B3990004E07CD /* ApiError.swift */,
 				1BF1DECD260B3C380060A371 /* ErrorResponse.swift */,
 				1B78EB7E260B362B004E07CD /* SurahList.swift */,
 				1B78EB83260B36F1004E07CD /* Surah.swift */,
 				1B3761A0260EF74A000ADF3D /* Edition.swift */,
 				1B542805261E00CF003C6100 /* PickerItemSelectorObj.swift */,
-				1B6256F0264058550073F03D /* PrayerTime.swift */,
-				1B8FC262263D0EC400DF12C8 /* Qiblah.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -957,7 +948,6 @@
 				1B78EB84260B36F1004E07CD /* Surah.swift in Sources */,
 				1B1AAA5A260E192A00E03B0B /* RootViewModel.swift in Sources */,
 				1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */,
-				1B6256F1264058550073F03D /* PrayerTime.swift in Sources */,
 				1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */,
 				1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */,
 				1BB347902A360C9E000903CE /* RequestError.swift in Sources */,
@@ -967,7 +957,6 @@
 				1B54280E261E054B003C6100 /* BaseAnimatorTransition.swift in Sources */,
 				1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */,
 				1B1AAA88260E227200E03B0B /* UITableView+Extension.swift in Sources */,
-				1B8FC263263D0EC400DF12C8 /* Qiblah.swift in Sources */,
 				1B1AAA91260E29DF00E03B0B /* SurahDetailView.swift in Sources */,
 				1B542842261E06A9003C6100 /* PickerDrawerSection.swift in Sources */,
 				1B542856261E0AFC003C6100 /* PopupPanelViewController.swift in Sources */,
@@ -1009,7 +998,6 @@
 				1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */,
 				1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */,
 				1B1AAA55260E18C300E03B0B /* RootView.swift in Sources */,
-				1B78EB89260B3990004E07CD /* ApiError.swift in Sources */,
 				1B542816261E0568003C6100 /* DismissPanelAnimationController.swift in Sources */,
 				1B542820261E059E003C6100 /* SwipeInteractionController.swift in Sources */,
 				1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */,
