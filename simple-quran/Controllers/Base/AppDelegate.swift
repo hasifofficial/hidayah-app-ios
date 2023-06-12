@@ -64,7 +64,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         if response.notification.request.identifier == "Al-Kahf Notification" {
+            #if DEBUG
             print("Handling Al-Kahf Notification notifications")
+            #endif
         }
         
         completionHandler()
@@ -76,8 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         if allowKahfReminder {
             let content = UNMutableNotificationContent()
-            content.title = "Al-Kahf Reminder"
-            content.body = "Jumu'ah Mubarakah. Have you read Al-Kahf today?"
+            content.title = NSLocalizedString("push_notification_kahf_reminder_title", comment: "")
+            content.body = NSLocalizedString("push_notification_kahf_reminder_body", comment: "")
             content.sound = UNNotificationSound.default
             
             var dateComponents = DateComponents()
@@ -89,18 +91,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
             
-            UNUserNotificationCenter.current().add(request) { (error) in
-                if let error = error {
-                    print("Error \(error.localizedDescription)")
-                }
-            }
+            UNUserNotificationCenter.current().add(request)
         } else {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
         }
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        #if DEBUG
         print("FCM TOKEN 1: \(fcmToken ?? "")")
+        #endif
     }
     
     // MARK: UISceneSession Lifecycle

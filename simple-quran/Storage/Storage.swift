@@ -23,7 +23,6 @@ class Storage {
             do {
                 return try JSONDecoder().decode(T.self, from: data) as T
             } catch {
-                print(error.localizedDescription)
                 return nil
             }
         }

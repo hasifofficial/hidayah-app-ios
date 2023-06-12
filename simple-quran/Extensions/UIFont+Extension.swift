@@ -40,7 +40,9 @@ extension UIFont {
                 registerFont(path: item)
             }
         } else {
+            #if DEBUG
             print("Couldn't find bundle name in project")
+            #endif
         }
     }
 
@@ -50,10 +52,14 @@ extension UIFont {
             var errorRef: Unmanaged<CFError>?
             
             if CTFontManagerRegisterGraphicsFont(fontRef!, &errorRef) == false {
+                #if DEBUG
                 print("Failed to register font - Register graphics font failed. This font may have already been registered in the main bundle.")
+                #endif
             }
         } else {
+            #if DEBUG
             print("Failed to register font - Bundle identifier invalid.")
+            #endif
         }
     }
 }
