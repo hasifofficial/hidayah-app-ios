@@ -147,7 +147,12 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
                     break
                 case .failure(let error):
                     strongSelf.setupEmptyState()
-                    strongSelf.view.makeToast(error.localizedDescription)
+                    
+                    if let error = error as? RequestError {
+                        strongSelf.view.makeToast(error.message)
+                    } else {
+                        strongSelf.view.makeToast(error.localizedDescription)
+                    }
                 }
             } receiveValue: { [weak self] list in
                 guard let strongSelf = self else { return }

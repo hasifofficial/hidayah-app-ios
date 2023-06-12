@@ -176,7 +176,11 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
                 case .finished:
                     break
                 case .failure(let error):
-                    strongSelf.view.makeToast(error.localizedDescription)
+                    if let error = error as? RequestError {
+                        strongSelf.view.makeToast(error.message)
+                    } else {
+                        strongSelf.view.makeToast(error.localizedDescription)
+                    }
                 }
             } receiveValue: { [weak self] edition in
                 guard let strongSelf = self else { return }
