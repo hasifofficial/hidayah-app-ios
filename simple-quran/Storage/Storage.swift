@@ -9,6 +9,7 @@ import Foundation
 
 class Storage {
     enum StorageKey: String, CaseIterable {
+        case bookmarkRecitations
         case selectedRecitation
         case selectedTranslation
         case allowKahfReminder
@@ -36,11 +37,5 @@ class Storage {
     
     static func delete(_ key: StorageKey) {
         UserDefaults.standard.removeObject(forKey: key.rawValue)
-    }
-    
-    static func clear() {
-        Storage.delete(.selectedRecitation)
-        Storage.delete(.selectedTranslation)
-        Storage.delete(.allowKahfReminder)
     }
 }

@@ -35,14 +35,10 @@ class AppController: NSObject {
 
     func start(with window: UIWindow) {
         self.window = window
-        let rootViewController = SurahListViewController<SurahListViewModel>(
+        let rootViewController = RootViewController(
             surahService: surahService
         )
-        let navController = UINavigationController(
-            rootViewController: rootViewController
-        )
-        navController.navigationBar.prefersLargeTitles = true
-        window.rootViewController = navController
+        window.rootViewController = rootViewController
     }
     
     func application(

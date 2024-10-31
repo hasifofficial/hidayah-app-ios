@@ -75,6 +75,12 @@
 		1BB347942A360CC7000903CE /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347932A360CC7000903CE /* Endpoint.swift */; };
 		1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347952A360D27000903CE /* SurahEndpoints.swift */; };
 		1BB347982A360EB2000903CE /* SurahService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347972A360EB2000903CE /* SurahService.swift */; };
+		1BC162ED2CD3A6830051C974 /* SurahBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162EC2CD3A6830051C974 /* SurahBookmark.swift */; };
+		1BC162F12CD3B6910051C974 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F02CD3B6910051C974 /* RootViewController.swift */; };
+		1BC162F42CD3B6F40051C974 /* BookmarkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F32CD3B6F40051C974 /* BookmarkListView.swift */; };
+		1BC162F62CD3B6FA0051C974 /* BookmarkListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F52CD3B6FA0051C974 /* BookmarkListViewController.swift */; };
+		1BC162F82CD3B6FF0051C974 /* BookmarkListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */; };
+		1BC162FA2CD3B7060051C974 /* BookmarkListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */; };
 		1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */; };
 		1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */; };
 		2BFC8683CC65ECE9F457293B /* Pods_simple_quranTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FA7EC7E88670FB17135927 /* Pods_simple_quranTests.framework */; };
@@ -175,6 +181,12 @@
 		1BB347932A360CC7000903CE /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		1BB347952A360D27000903CE /* SurahEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahEndpoints.swift; sourceTree = "<group>"; };
 		1BB347972A360EB2000903CE /* SurahService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahService.swift; sourceTree = "<group>"; };
+		1BC162EC2CD3A6830051C974 /* SurahBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahBookmark.swift; sourceTree = "<group>"; };
+		1BC162F02CD3B6910051C974 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		1BC162F32CD3B6F40051C974 /* BookmarkListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListView.swift; sourceTree = "<group>"; };
+		1BC162F52CD3B6FA0051C974 /* BookmarkListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListViewController.swift; sourceTree = "<group>"; };
+		1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListViewModel.swift; sourceTree = "<group>"; };
+		1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListSection.swift; sourceTree = "<group>"; };
 		1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		2A92EA7EF1100C202B9D054C /* Pods-simple-quran.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran.release.xcconfig"; path = "Target Support Files/Pods-simple-quran/Pods-simple-quran.release.xcconfig"; sourceTree = "<group>"; };
@@ -505,7 +517,9 @@
 				1B33825B2CD289FA00CD9670 /* Selection */,
 				1B3DA58E260EDEE5003E4F96 /* Setting */,
 				1B1AAA8F260E29B300E03B0B /* Surah Detail */,
+				1BC162F22CD3B6B70051C974 /* Bookmark List */,
 				1B3DA576260EDCD5003E4F96 /* Surah List */,
+				1BC162EF2CD3B67F0051C974 /* Root */,
 				1B78EB6E260B33AB004E07CD /* Base */,
 			);
 			path = Controllers;
@@ -526,6 +540,7 @@
 			children = (
 				1B3382692CD2A1F600CD9670 /* Response */,
 				1B3382622CD28B0300CD9670 /* ItemSelector.swift */,
+				1BC162EC2CD3A6830051C974 /* SurahBookmark.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -564,6 +579,25 @@
 				1BB347932A360CC7000903CE /* Endpoint.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		1BC162EF2CD3B67F0051C974 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				1BC162F02CD3B6910051C974 /* RootViewController.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		1BC162F22CD3B6B70051C974 /* Bookmark List */ = {
+			isa = PBXGroup;
+			children = (
+				1BC162F32CD3B6F40051C974 /* BookmarkListView.swift */,
+				1BC162F52CD3B6FA0051C974 /* BookmarkListViewController.swift */,
+				1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */,
+				1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */,
+			);
+			path = "Bookmark List";
 			sourceTree = "<group>";
 		};
 		1BD3393C2620481700CB412D /* Switch */ = {
@@ -874,6 +908,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BC162F62CD3B6FA0051C974 /* BookmarkListViewController.swift in Sources */,
 				1B3382662CD28B3F00CD9670 /* NewSectionTitleTableViewCell.swift in Sources */,
 				1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */,
 				1B3761AA260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift in Sources */,
@@ -887,6 +922,7 @@
 				1B1AAAC5260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift in Sources */,
 				1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */,
 				1B1AAA88260E227200E03B0B /* UITableView+Extension.swift in Sources */,
+				1BC162F82CD3B6FF0051C974 /* BookmarkListViewModel.swift in Sources */,
 				1B33825F2CD28A0D00CD9670 /* SelectionViewController.swift in Sources */,
 				1B1AAA91260E29DF00E03B0B /* SurahDetailView.swift in Sources */,
 				1B3382632CD28B0300CD9670 /* ItemSelector.swift in Sources */,
@@ -895,7 +931,9 @@
 				1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */,
 				1B3DA5A2260EDF45003E4F96 /* SettingSection.swift in Sources */,
 				1B3DA580260EDD0F003E4F96 /* SurahListViewController.swift in Sources */,
+				1BC162F42CD3B6F40051C974 /* BookmarkListView.swift in Sources */,
 				1BA832392618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift in Sources */,
+				1BC162F12CD3B6910051C974 /* RootViewController.swift in Sources */,
 				1B33825D2CD28A0600CD9670 /* SelectionView.swift in Sources */,
 				1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */,
 				1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */,
@@ -912,6 +950,8 @@
 				1B1AAA7D260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift in Sources */,
 				1B6256F32640587D0073F03D /* SurahListView.swift in Sources */,
 				1B6256F5264058A20073F03D /* UIViewController+Extension.swift in Sources */,
+				1BC162ED2CD3A6830051C974 /* SurahBookmark.swift in Sources */,
+				1BC162FA2CD3B7060051C974 /* BookmarkListSection.swift in Sources */,
 				1B1AAA48260E183A00E03B0B /* TableViewDataSource.swift in Sources */,
 				1B1AAAC0260E48D200E03B0B /* DetailTitleTableViewCell.swift in Sources */,
 				1B3761C5260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift in Sources */,

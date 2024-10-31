@@ -28,6 +28,14 @@
 "surah_list_empty_list_title" = "Oops!\n";
 "surah_list_empty_list_subtitle" = "Something went wrong.\nPlease try again.";
 
+"bookmark_list_header_title" = "Bookmarks";
+"bookmark_list_search_placeholder" = "Search bookmarks";
+"bookmark_list_subtitle" = "Verse %@";
+"bookmark_list_search_empty_title" = "No Search Results\n";
+"bookmark_list_search_empty_subtitle" = "Please try type another keyword.";
+"bookmark_list_empty_list_title" = "You have no bookmarks\n";
+"bookmark_list_empty_list_subtitle" = "Tap on bookmark icon when reading to add bookmark";
+
 "surah_description" = "%@ means %@ and consists of %@ verses. Its compilation order is %@. It was revealed in %@.";
 "surah_recitation_drawer_title" = "Choose recitation";
 "surah_translation_drawer_title" = "Choose translation";

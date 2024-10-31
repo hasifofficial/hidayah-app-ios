@@ -17,6 +17,9 @@ protocol ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes {
     
     var rightHeaderButtonImage: BehaviorRelay<UIImage?> { get }
     var rightHeaderButtonImageTintColor: BehaviorRelay<UIColor> { get }
+    
+    var centerHeaderButtonImage: BehaviorRelay<UIImage?> { get }
+    var centerHeaderButtonImageTintColor: BehaviorRelay<UIColor> { get }
 
     var leftHeaderButtonImage: BehaviorRelay<UIImage?> { get }
     var leftHeaderButtonImageTintColor: BehaviorRelay<UIColor> { get }
@@ -52,10 +55,13 @@ class ButtonHeaderTitleWithSubtitleTableViewCellViewModel: ButtonHeaderTitleWith
     let circleNumberTextAlignment = BehaviorRelay<NSTextAlignment>(value: .center)
     let circleViewBackgroundColor = BehaviorRelay<UIColor>(value: .lightGreen)
     
-    let rightHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate))
+    let rightHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysTemplate))
     let rightHeaderButtonImageTintColor = BehaviorRelay<UIColor>(value: .lightGreen)
-    
-    let leftHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(named: "ico_share")?.withRenderingMode(.alwaysTemplate))
+
+    let centerHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "play")?.withRenderingMode(.alwaysTemplate))
+    let centerHeaderButtonImageTintColor = BehaviorRelay<UIColor>(value: .lightGreen)
+
+    let leftHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "square.and.arrow.up")?.withRenderingMode(.alwaysTemplate))
     let leftHeaderButtonImageTintColor = BehaviorRelay<UIColor>(value: .lightGreen)
     
     let headerViewBackgroundColor = BehaviorRelay<UIColor>(value: .backgroundLightGray)

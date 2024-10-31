@@ -1,8 +1,8 @@
 //
-//  SurahListViewController.swift
+//  BookmarkListViewController.swift
 //  simple-quran
 //
-//  Created by Mohammad Hasif Afiq on 3/27/21.
+//  Created by Mohammad Hasif Afiq on 10/31/24.
 //
 
 import UIKit
@@ -10,20 +10,19 @@ import Combine
 import RxSwift
 import Toast_Swift
 
-class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SurahListViewModelTypes {
+class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: BookmarkListViewModelTypes {
     
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
-    private var hasBookmarkedSurah: Bool = false
-
-    var rootView: SurahListView {
-        return view as! SurahListView
+    
+    var rootView: BookmarkListView {
+        return view as! BookmarkListView
     }
 
     override func loadView() {
-        view = SurahListView(frame: UIScreen.main.bounds)
+        view = BookmarkListView(frame: UIScreen.main.bounds)
     }
 
     override func viewDidLoad() {
@@ -31,12 +30,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         
         setupView()
         setupListener()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        setupTabBar()
     }
     
     init(
@@ -52,7 +45,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     }
     
     private func setupView() {
-        for section in SurahListSection.allCases {
+        for section in BookmarkListSection.allCases {
             rootView.tableView.registerCellClass(section.cellType)
         }
 
@@ -64,7 +57,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         disposeBag = DisposeBag()
         
         rootView.tableView.delegate = self
-        rootView.searchController.searchResultsUpdater = self
         rootView.settingButton.addTarget(self, action: #selector(settingButtonAction), for: .touchUpInside)
         rootView.refreshControl.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
@@ -108,19 +100,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     private func setupNavBar() {
         navigationController?.navigationBar.tintColor = .lightGreen
         navigationItem.rightBarButtonItem = rootView.settingButtonItem
-        navigationItem.searchController = rootView.searchController
-    }
-    
-    private func setupTabBar() {
-        guard let tabBar = tabBarController?.tabBar else { return }
-
-        if let recentBookmarks: [SurahBookmark] = Storage.loadObject(key: .bookmarkRecitations) {
-            hasBookmarkedSurah = true
-            tabBar.isHidden = false
-        } else {
-            hasBookmarkedSurah = false
-            tabBar.isHidden = true
-        }
     }
         
     private func setupPlaceholder() {
@@ -136,11 +115,11 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     
     private func setupEmptyState() {
         let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString("surah_list_empty_list_title", comment: ""),
+            string: NSLocalizedString("bookmark_list_empty_list_title", comment: ""),
             attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)]
         )
         attributedText.append(NSAttributedString(
-            string: NSLocalizedString("surah_list_empty_list_subtitle", comment: ""),
+            string: NSLocalizedString("bookmark_list_empty_list_subtitle", comment: ""),
             attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
         ))
         
@@ -197,29 +176,19 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         loadSurah()
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [weak self] in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.viewModel.filterSurah(keyword: text)
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case SurahListSection.surah(item: viewModel.surahCell.value).sectionOrder:
             
-            guard let surahs = viewModel.filteredSurahList.value else { return }
-            guard indexPath.row < surahs.count else { return }
+            guard let surahList = viewModel.surahList.value,
+                  let bookmarkedSurahs = viewModel.filteredSurahList.value,
+                  indexPath.row < bookmarkedSurahs.count else { return }
             
-            let selectedSurah = surahs[indexPath.row]
+            let selectedSurah = bookmarkedSurahs[indexPath.row]
                             
             let vc = SurahDetailViewController<SurahDetailViewModel>(surahService: surahService)
-            vc.viewModel.title.send(selectedSurah.englishName)
-            vc.viewModel.selectedSurahNo.send(selectedSurah.number)
+            vc.viewModel.title.send(surahList.first(where: { $0.number == selectedSurah.surahNumber })?.englishName)
+            vc.viewModel.selectedSurahNo.send(selectedSurah.surahNumber)
             
             navigationController?.pushViewController(vc, animated: true)
         default:
@@ -228,9 +197,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let tabBar = tabBarController?.tabBar,
-              hasBookmarkedSurah else { return }
-
+        guard let tabBar = tabBarController?.tabBar else { return }
         let translation = scrollView.panGestureRecognizer.translation(in: scrollView).y
         tabBar.isHidden = translation < 0
     }

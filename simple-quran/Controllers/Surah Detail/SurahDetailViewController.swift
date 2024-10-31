@@ -208,7 +208,7 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     @objc private func playerDidFinishPlaying() {
         if let ayahCells = viewModel.ayahCell.value {
             for ayahCell in ayahCells {
-                ayahCell.rightHeaderButtonImage.accept(UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate))
+                ayahCell.centerHeaderButtonImage.accept(UIImage(systemName: "play")?.withRenderingMode(.alwaysTemplate))
             }
         }
     }
@@ -335,17 +335,30 @@ extension SurahDetailViewController: SelectionViewControllerDelegate {
 }
 
 extension SurahDetailViewController: ButtonHeaderTitleWithSubtitleTableViewCellDelegate {
-    func buttonHeaderTitleWithSubtitleTableViewCell(didTapLeftButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes) {        
+    func buttonHeaderTitleWithSubtitleTableViewCell(
+        didTapLeftButton cell: ButtonHeaderTitleWithSubtitleTableViewCell,
+        viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes
+    ) {
         guard let ayahResponse = viewModel.data.value as? Ayah,
               let arabicVerse = ayahResponse.text else { return }
         
         let tempArabicVerse = ayahResponse.numberInSurah == 1 ? (arabicVerse as NSString).replacingOccurrences(of: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ", with: "") : arabicVerse
                 
-        let activityController = UIActivityViewController(activityItems: [tempArabicVerse], applicationActivities: nil)
-        present(activityController, animated: true, completion: nil)
+        let activityController = UIActivityViewController(
+            activityItems: [tempArabicVerse],
+            applicationActivities: nil
+        )
+        present(
+            activityController,
+            animated: true,
+            completion: nil
+        )
     }
     
-    func buttonHeaderTitleWithSubtitleTableViewCell(didTapRightButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes) {
+    func buttonHeaderTitleWithSubtitleTableViewCell(
+        didTapCenterButton cell: ButtonHeaderTitleWithSubtitleTableViewCell,
+        viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes
+    ) {
         guard let ayahResponse = viewModel.data.value as? Ayah,
               let ayahAudioUrlString = ayahResponse.audio,
               let ayahAudioUrl = URL(string: ayahAudioUrlString) else { return }
@@ -353,16 +366,74 @@ extension SurahDetailViewController: ButtonHeaderTitleWithSubtitleTableViewCellD
         if ayahAudioPlayer?.timeControlStatus == .playing {
             if let ayahCells = self.viewModel.ayahCell.value {
                 for ayahCell in ayahCells {
-                    ayahCell.rightHeaderButtonImage.accept(UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate))
+                    ayahCell.centerHeaderButtonImage.accept(
+                        UIImage(systemName: "play")?.withRenderingMode(.alwaysTemplate)
+                    )
                 }
             }
             
             ayahAudioPlayer?.pause()
         } else {
-            viewModel.rightHeaderButtonImage.accept(UIImage(systemName: "pause.fill")?.withRenderingMode(.alwaysTemplate))
+            viewModel.centerHeaderButtonImage.accept(
+                UIImage(systemName: "pause.fill")?.withRenderingMode(.alwaysTemplate)
+            )
             let playerItem = AVPlayerItem(url: ayahAudioUrl)
             ayahAudioPlayer = AVPlayer(playerItem: playerItem)
             ayahAudioPlayer?.play()
+        }
+    }
+    
+    func buttonHeaderTitleWithSubtitleTableViewCell(
+        didTapRightButton cell: ButtonHeaderTitleWithSubtitleTableViewCell,
+        viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes
+    ) {
+        guard let selectedSurah = self.viewModel.selectedSurahNo.value,
+              let ayahResponse = viewModel.data.value as? Ayah,
+              let numberInSurah = ayahResponse.numberInSurah else { return }
+        
+        let newBookmark = SurahBookmark(
+            surahNumber: selectedSurah,
+            numberInSurah: numberInSurah
+        )
+
+        if viewModel.rightHeaderButtonImage.value == UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysTemplate) {
+            var tempRecentBookmark = [SurahBookmark]()
+            tempRecentBookmark.append(newBookmark)
+
+            if let recentBookmarks: [SurahBookmark] = Storage.loadObject(key: .bookmarkRecitations) {
+                tempRecentBookmark.append(contentsOf: recentBookmarks)
+            }
+
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(tempRecentBookmark) {
+                Storage.save(.bookmarkRecitations, encoded)
+            }
+            print(tempRecentBookmark)
+            
+            viewModel.rightHeaderButtonImage.accept(
+                UIImage(systemName: "bookmark.fill")?.withRenderingMode(.alwaysTemplate)
+            )
+        } else {
+            if let recentBookmarks: [SurahBookmark] = Storage.loadObject(key: .bookmarkRecitations) {
+                var tempRecentBookmark = [SurahBookmark]()
+                tempRecentBookmark = recentBookmarks
+                
+                tempRecentBookmark.removeAll(where: { $0 == newBookmark })
+                
+                if tempRecentBookmark.count > 0 {
+                    let encoder = JSONEncoder()
+                    if let encoded = try? encoder.encode(tempRecentBookmark) {
+                        Storage.save(.bookmarkRecitations, encoded)
+                    }
+                    print(tempRecentBookmark)
+                } else {
+                    Storage.delete(.bookmarkRecitations)
+                }
+            }
+
+            viewModel.rightHeaderButtonImage.accept(
+                UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysTemplate)
+            )
         }
     }
 }

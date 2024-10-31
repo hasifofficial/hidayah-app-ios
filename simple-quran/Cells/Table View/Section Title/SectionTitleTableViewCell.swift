@@ -206,6 +206,13 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
                 guard let strongSelf = self else { return }
 
                 strongSelf.leftButton.isHidden = value
+                if value {
+                    strongSelf.leftContentStackView.removeArrangedSubview(strongSelf.leftButton)
+                } else {
+                    strongSelf.leftContentStackView.removeArrangedSubview(strongSelf.titleLabel)
+                    strongSelf.leftContentStackView.addArrangedSubview(strongSelf.leftButton)
+                    strongSelf.leftContentStackView.addArrangedSubview(strongSelf.titleLabel)
+                }
             })
             .store(in: &cancellable)
 

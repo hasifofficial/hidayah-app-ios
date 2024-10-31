@@ -114,7 +114,18 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
             } else {
                 tempAyahCell.titleLabelText.accept(arabicVerse)
             }
-            
+
+            if let recentBookmarks: [SurahBookmark] = Storage.loadObject(key: .bookmarkRecitations),
+               recentBookmarks.contains(where: { $0.surahNumber == selectedSurahNo.value && $0.numberInSurah == index + 1 }) {
+                tempAyahCell.rightHeaderButtonImage.accept(
+                    UIImage(systemName: "bookmark.fill")?.withRenderingMode(.alwaysTemplate)
+                )
+            } else {
+                tempAyahCell.rightHeaderButtonImage.accept(
+                    UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysTemplate)
+                )
+            }
+
             tempAyahCell.circleNumberText.accept("\(arabicVerseNo)")
             tempAyahCell.titleLabelTextFont.accept(.kitabRegular(size: 22))
             tempAyahCell.titleLabelTextAlignment.accept(.right)

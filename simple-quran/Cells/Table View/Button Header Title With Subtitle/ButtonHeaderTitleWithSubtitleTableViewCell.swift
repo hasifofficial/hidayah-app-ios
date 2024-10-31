@@ -10,6 +10,7 @@ import RxSwift
 
 protocol ButtonHeaderTitleWithSubtitleTableViewCellDelegate: AnyObject {
     func buttonHeaderTitleWithSubtitleTableViewCell(didTapLeftButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes)
+    func buttonHeaderTitleWithSubtitleTableViewCell(didTapCenterButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes)
     func buttonHeaderTitleWithSubtitleTableViewCell(didTapRightButton cell: ButtonHeaderTitleWithSubtitleTableViewCell, viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes)
 }
 
@@ -42,6 +43,12 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
         return newButton
     }()
         
+    private lazy var centerHeaderButton: UIButton = {
+        let newButton = UIButton()
+        newButton.translatesAutoresizingMaskIntoConstraints = false
+        return newButton
+    }()
+    
     private lazy var rightHeaderButton: UIButton = {
         let newButton = UIButton()
         newButton.translatesAutoresizingMaskIntoConstraints = false
@@ -91,6 +98,7 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
         
         headerView.addSubview(circleView)
         headerView.addSubview(leftHeaderButton)
+        headerView.addSubview(centerHeaderButton)
         headerView.addSubview(rightHeaderButton)
 
         containerStackView.addArrangedSubview(titleLabel)
@@ -115,9 +123,14 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
             rightHeaderButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
             rightHeaderButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
+            centerHeaderButton.heightAnchor.constraint(equalToConstant: 30),
+            centerHeaderButton.widthAnchor.constraint(equalToConstant: 30),
+            centerHeaderButton.trailingAnchor.constraint(equalTo: rightHeaderButton.leadingAnchor, constant: -16),
+            centerHeaderButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+
             leftHeaderButton.heightAnchor.constraint(equalToConstant: 30),
             leftHeaderButton.widthAnchor.constraint(equalToConstant: 30),
-            leftHeaderButton.trailingAnchor.constraint(equalTo: rightHeaderButton.leadingAnchor, constant: -16),
+            leftHeaderButton.trailingAnchor.constraint(equalTo: centerHeaderButton.leadingAnchor, constant: -16),
             leftHeaderButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
 
             headerView.heightAnchor.constraint(equalToConstant: 46),
@@ -139,6 +152,13 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
             guard let strongSelf = self else { return }
             
             strongSelf.delegate?.buttonHeaderTitleWithSubtitleTableViewCell(didTapLeftButton: strongSelf, viewModel: strongSelf.viewModel)
+        }
+        .disposed(by: disposeBag)
+        
+        centerHeaderButton.rx.tap.bind { [weak self] (value) in
+            guard let strongSelf = self else { return }
+            
+            strongSelf.delegate?.buttonHeaderTitleWithSubtitleTableViewCell(didTapCenterButton: strongSelf, viewModel: strongSelf.viewModel)
         }
         .disposed(by: disposeBag)
         
@@ -195,6 +215,20 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
             guard let strongSelf = self else { return }
 
             strongSelf.rightHeaderButton.tintColor = value
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.centerHeaderButtonImage.subscribe(onNext: { [weak self] (value) in
+            guard let strongSelf = self else { return }
+
+            strongSelf.centerHeaderButton.setImage(value, for: .normal)
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.centerHeaderButtonImageTintColor.subscribe(onNext: { [weak self] (value) in
+            guard let strongSelf = self else { return }
+
+            strongSelf.centerHeaderButton.tintColor = value
         })
         .disposed(by: disposeBag)
         
