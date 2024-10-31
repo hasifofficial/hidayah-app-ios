@@ -18,12 +18,12 @@ protocol SettingViewModelTypes: SectionSetter, TableViewSectionSetter where Sect
     var translationLanguageCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var notificationSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var kahfRemnderCell: CurrentValueSubject<SwitchTableViewCellViewModel, Never> { get }
-    var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
+    var aboutTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var aboutCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var privacyCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var termConditionCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
+    var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var feedbackCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var versionCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var recitationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
     var newRecitationList: CurrentValueSubject<[ItemSelector]?, Never> { get }
     var translationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
@@ -39,7 +39,7 @@ class SettingViewModel: SettingViewModelTypes {
     var quranSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let attributedText = NSMutableAttributedString(
             string: NSLocalizedString("setting_quran_section_title", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+            attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .foregroundColor: UIColor.title]
         )
         
         let vm = SectionTitleTableViewCellViewModel()
@@ -57,8 +57,11 @@ class SettingViewModel: SettingViewModelTypes {
         let vm = SectionTitleTableViewCellViewModel()
         
         vm.titleLabelText.send(NSLocalizedString("setting_quran_recitation_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "speaker.wave.2.bubble")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
         vm.rightButtonText.send(reciterName)
         vm.rightButtonTextColor.send(.textGray)
+        vm.shouldHideLeftButton.send(false)
         vm.shouldHideRightButton.send(false)
         vm.accessoryType.send(.disclosureIndicator)
         vm.containerTopSpacing.send(8)
@@ -77,8 +80,11 @@ class SettingViewModel: SettingViewModelTypes {
         let vm = SectionTitleTableViewCellViewModel()
         
         vm.titleLabelText.send(NSLocalizedString("setting_quran_translation_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "globe")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
         vm.rightButtonText.send(language)
         vm.rightButtonTextColor.send(.textGray)
+        vm.shouldHideLeftButton.send(false)
         vm.shouldHideRightButton.send(false)
         vm.accessoryType.send(.disclosureIndicator)
         vm.containerTopSpacing.send(8)
@@ -90,7 +96,7 @@ class SettingViewModel: SettingViewModelTypes {
     var notificationSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let attributedText = NSMutableAttributedString(
             string: NSLocalizedString("setting_notification_section_title", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+            attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .foregroundColor: UIColor.title]
         )
         
         let vm = SectionTitleTableViewCellViewModel()
@@ -112,10 +118,10 @@ class SettingViewModel: SettingViewModelTypes {
         return CurrentValueSubject<SwitchTableViewCellViewModel, Never>(vm)
     }()
     
-    var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
+    var aboutTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString("setting_support_section_title", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+            string: NSLocalizedString("setting_about_section_title", comment: ""),
+            attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .foregroundColor: UIColor.title]
         )
         
         let vm = SectionTitleTableViewCellViewModel()
@@ -130,7 +136,10 @@ class SettingViewModel: SettingViewModelTypes {
     var aboutCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let vm = SectionTitleTableViewCellViewModel()
         
-        vm.titleLabelText.send(NSLocalizedString("setting_support_about_title", comment: ""))
+        vm.titleLabelText.send(NSLocalizedString("setting_about_us_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "info.circle")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
+        vm.shouldHideLeftButton.send(false)
         vm.accessoryType.send(.disclosureIndicator)
         vm.containerTopSpacing.send(8)
         vm.containerBottomSpacing.send(0)
@@ -141,7 +150,10 @@ class SettingViewModel: SettingViewModelTypes {
     var privacyCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let vm = SectionTitleTableViewCellViewModel()
         
-        vm.titleLabelText.send(NSLocalizedString("setting_support_privacy_title", comment: ""))
+        vm.titleLabelText.send(NSLocalizedString("setting_about_privacy_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "book.pages")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
+        vm.shouldHideLeftButton.send(false)
         vm.accessoryType.send(.disclosureIndicator)
         vm.containerTopSpacing.send(8)
         vm.containerBottomSpacing.send(0)
@@ -152,43 +164,46 @@ class SettingViewModel: SettingViewModelTypes {
     var termConditionCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let vm = SectionTitleTableViewCellViewModel()
         
-        vm.titleLabelText.send(NSLocalizedString("setting_support_term_title", comment: ""))
+        vm.titleLabelText.send(NSLocalizedString("setting_about_term_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "book.pages")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
+        vm.shouldHideLeftButton.send(false)
         vm.accessoryType.send(.disclosureIndicator)
         vm.containerTopSpacing.send(8)
         vm.containerBottomSpacing.send(0)
         
         return CurrentValueSubject(vm)
     }()
-    
+
+    var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
+        let attributedText = NSMutableAttributedString(
+            string: NSLocalizedString("setting_support_section_title", comment: ""),
+            attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .foregroundColor: UIColor.title]
+        )
+        
+        let vm = SectionTitleTableViewCellViewModel()
+        
+        vm.titleLabelAttributedText.send(attributedText)
+        vm.containerTopSpacing.send(24)
+        vm.containerBottomSpacing.send(0)
+
+        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
+    }()
+
     var feedbackCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
         let vm = SectionTitleTableViewCellViewModel()
         
         vm.titleLabelText.send(NSLocalizedString("setting_support_feedback_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "text.bubble")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
+        vm.shouldHideLeftButton.send(false)
         vm.accessoryType.send(.disclosureIndicator)
         vm.containerTopSpacing.send(8)
         vm.containerBottomSpacing.send(0)
         
         return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
     }()
-    
-    var versionCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
-        let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1"
 
-        let attributedText = NSMutableAttributedString(
-            string: String(format: NSLocalizedString("setting_app_verison", comment: ""), appVersion, buildNumber),
-            attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
-        )
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelAttributedText.send(attributedText)
-        vm.containerTopSpacing.send(32)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-    
     let title = CurrentValueSubject<String, Never>(NSLocalizedString("setting_header_title", comment: ""))
     let recitationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
     let newRecitationList = CurrentValueSubject<[ItemSelector]?, Never>(nil)

@@ -125,19 +125,12 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
             })
             .store(in: &cancellable)
 
-        viewModel.supportTitleCell
-            .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
-                    
-                strongSelf.viewModel.setSection(.supportTitle(item: value))
-            })
-            .store(in: &cancellable)
 
-        viewModel.supportTitleCell
+        viewModel.aboutTitleCell
             .sink(receiveValue: { [weak self] (value) in
                 guard let strongSelf = self else { return }
                     
-                strongSelf.viewModel.setSection(.supportTitle(item: value))
+                strongSelf.viewModel.setSection(.aboutTitle(item: value))
             })
             .store(in: &cancellable)
 
@@ -165,19 +158,19 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
             })
             .store(in: &cancellable)
 
+        viewModel.supportTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+                    
+                strongSelf.viewModel.setSection(.supportTitle(item: value))
+            })
+            .store(in: &cancellable)
+
         viewModel.feedbackCell
             .sink(receiveValue: { [weak self] (value) in
                 guard let strongSelf = self else { return }
                     
                 strongSelf.viewModel.setSection(.feedback(item: value))
-            })
-            .store(in: &cancellable)
-
-        viewModel.versionCell
-            .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
-                    
-                strongSelf.viewModel.setSection(.version(item: value))
             })
             .store(in: &cancellable)
     }
@@ -289,66 +282,12 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
         switch indexPath.section {
         case SettingSection.recitation(item: viewModel.recitationCell.value).sectionOrder:
             guard let newRecitationListItem = self.viewModel.newRecitationList.value else { return }
-            navigateToReciterSelection(items: newRecitationListItem)
 
-//            guard let drawerVM = viewModel.reciterDrawer.value else { return }
-//            
-//            drawerVM.doneButtonTapHandler.send { [weak self] in
-//                guard let strongSelf = self,
-//                      let item = drawerVM.selectedItem.value,
-//                      let recitation = item.item as? EditionResponse,
-//                      let qariName = recitation.englishName else { return }
-//                
-//                strongSelf.drawer?.close { [weak self] in
-//                    guard let strongSelf = self else { return }
-//                    
-//                    Storage.delete(.selectedRecitation)
-//                    
-//                    do {
-//                        let data = try JSONEncoder().encode(recitation)
-//                        Storage.save(.selectedRecitation, data)
-//
-//                        strongSelf.viewModel.recitationCell.value.rightButtonText.send(qariName)
-//                    } catch {
-//                        strongSelf.view.makeToast(error.localizedDescription)
-//                    }
-//                }
-//            }
-//            
-//            let reciterDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
-//            drawer = DrawerPanelViewController(parentVC: self, contentVC: reciterDrawer)
-//            drawer?.show()
+            navigateToReciterSelection(items: newRecitationListItem)
         case SettingSection.translationLanguage(item: viewModel.translationLanguageCell.value).sectionOrder:
             guard let newTranslationListItem = self.viewModel.newTranslationList.value else { return }
-            navigateToTranslationSelection(items: newTranslationListItem)
 
-//            guard let drawerVM = viewModel.translateLanguageDrawer.value else { return }
-//            
-//            drawerVM.doneButtonTapHandler.send { [weak self] in
-//                guard let strongSelf = self,
-//                      let item = drawerVM.selectedItem.value,
-//                      let translation = item.item as? EditionResponse,
-//                      let translationLanguage = translation.language?.uppercased() else { return }
-//                
-//                strongSelf.drawer?.close { [weak self] in
-//                    guard let strongSelf = self else { return }
-//                    
-//                    Storage.delete(.selectedTranslation)
-//                    
-//                    do {
-//                        let data = try JSONEncoder().encode(translation)
-//                        Storage.save(.selectedTranslation, data)
-//
-//                        strongSelf.viewModel.translationLanguageCell.value.rightButtonText.send(Constants.getLanguageFromCode(code: translationLanguage))
-//                    } catch {
-//                        strongSelf.view.makeToast(error.localizedDescription)
-//                    }
-//                }
-//            }
-//            
-//            let translateLanguageDrawer = PickerDrawerViewController<PickerDrawerViewModel>(viewModel: drawerVM)
-//            drawer = DrawerPanelViewController(parentVC: self, contentVC: translateLanguageDrawer)
-//            drawer?.show()
+            navigateToTranslationSelection(items: newTranslationListItem)
         case SettingSection.about(item: viewModel.aboutCell.value).sectionOrder:
             guard let url = URL(string: Constants.websiteUrl) else { return }
             

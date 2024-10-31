@@ -52,7 +52,7 @@ class ButtonHeaderTitleWithSubtitleTableViewCellViewModel: ButtonHeaderTitleWith
     let circleNumberTextAlignment = BehaviorRelay<NSTextAlignment>(value: .center)
     let circleViewBackgroundColor = BehaviorRelay<UIColor>(value: .lightGreen)
     
-    let rightHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(named: "ico_play")?.withRenderingMode(.alwaysTemplate))
+    let rightHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate))
     let rightHeaderButtonImageTintColor = BehaviorRelay<UIColor>(value: .lightGreen)
     
     let leftHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(named: "ico_share")?.withRenderingMode(.alwaysTemplate))

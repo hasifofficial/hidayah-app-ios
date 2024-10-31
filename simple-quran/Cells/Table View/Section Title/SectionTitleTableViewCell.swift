@@ -10,6 +10,14 @@ import Combine
 
 class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: SectionTitleTableViewCellViewModelTypes {
     
+    private lazy var leftContentStackView: UIStackView = {
+        let newStackView = UIStackView()
+        newStackView.spacing = 8.0
+        newStackView.axis = .horizontal
+        newStackView.translatesAutoresizingMaskIntoConstraints = false
+        return newStackView
+    }()
+
     private lazy var containerStackView: UIStackView = {
         let newStackView = UIStackView()
         newStackView.spacing = 16.0
@@ -25,6 +33,12 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
         return newLabel
     }()
     
+    private lazy var leftButton: UIButton = {
+        let newButton = UIButton()
+        newButton.translatesAutoresizingMaskIntoConstraints = false
+        return newButton
+    }()
+
     private lazy var rightTextButton: UIButton = {
         let newButton = UIButton()
         newButton.titleLabel?.textAlignment = .right
@@ -32,6 +46,8 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
         return newButton
     }()
     
+    private var leftButtonWidthConstraint: NSLayoutConstraint!
+    private var leftButtonHeightConstraint: NSLayoutConstraint!
     private var containerViewTopConstraint: NSLayoutConstraint!
     private var containerViewBottomConstraint: NSLayoutConstraint!
     private var containerViewLeadingConstraint: NSLayoutConstraint!
@@ -54,7 +70,13 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
     private func setupView() {
         selectionStyle = .none
         
-        containerStackView.addArrangedSubview(titleLabel)
+        leftButtonWidthConstraint = leftButton.widthAnchor.constraint(equalToConstant: 32)
+        leftButtonHeightConstraint = leftButton.heightAnchor.constraint(equalToConstant: 32)
+
+        leftContentStackView.addArrangedSubview(leftButton)
+        leftContentStackView.addArrangedSubview(titleLabel)
+
+        containerStackView.addArrangedSubview(leftContentStackView)
         containerStackView.addArrangedSubview(rightTextButton)
         
         contentView.addSubview(containerStackView)
@@ -65,6 +87,8 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
         containerViewTrailingConstraint = containerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
                 
         NSLayoutConstraint.activate([
+            leftButtonWidthConstraint,
+            leftButtonHeightConstraint,
             containerViewTopConstraint,
             containerViewBottomConstraint,
             containerViewLeadingConstraint,
@@ -118,6 +142,40 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
                 strongSelf.titleLabel.numberOfLines = value
             })
             .store(in: &cancellable)
+        
+        viewModel.leftButtonIcon
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.leftButton.setImage(value, for: .normal)
+            })
+            .store(in: &cancellable)
+
+        viewModel.leftButtonIconTintColor
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.leftButton.tintColor = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.leftButtonWidth
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.leftButtonWidthConstraint.constant = value
+            })
+            .store(in: &cancellable)
+        
+        viewModel.leftButtonHeight
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      let value = value else { return }
+
+                strongSelf.leftButtonHeightConstraint.constant = value
+                strongSelf.leftButtonHeightConstraint.isActive = true
+            })
+            .store(in: &cancellable)
 
         viewModel.rightButtonText
             .sink(receiveValue: { [weak self] (value) in
@@ -140,6 +198,14 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
                 guard let strongSelf = self else { return }
                 
                 strongSelf.rightTextButton.titleLabel?.font = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.shouldHideLeftButton
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.leftButton.isHidden = value
             })
             .store(in: &cancellable)
 

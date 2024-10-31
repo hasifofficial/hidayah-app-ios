@@ -8,7 +8,7 @@
 import Foundation
 
 struct Constants {
-    static let feedbackEmail = "hasif@hasifofficial.com"
+    static let feedbackEmail = "mohammadhasifafiq@gmail.com"
     static let websiteUrl = "https://www.hasifofficial.com"
     static let privacyUrl = "https://www.hasifofficial.com/hidayah/privacy_policy.html"
     static let termConditionUrl = "https://www.hasifofficial.com/hidayah/term_condition.html"

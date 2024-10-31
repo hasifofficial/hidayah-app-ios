@@ -27,6 +27,18 @@ class SettingView: UIView {
         newTableView.translatesAutoresizingMaskIntoConstraints = false
         return newTableView
     }()
+    
+    lazy var versionLabel: UILabel = {
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        let newLabel = UILabel()
+        newLabel.text = String(format: NSLocalizedString("setting_app_verison", comment: ""), appVersion, buildNumber)
+        newLabel.font = .systemFont(ofSize: 14)
+        newLabel.textColor = .textGray
+        newLabel.textAlignment = .center
+        newLabel.translatesAutoresizingMaskIntoConstraints = false
+        return newLabel
+    }()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,13 +51,20 @@ class SettingView: UIView {
     }
     
     private func setupSubviews() {
+        backgroundColor = .systemBackground
+
         addSubview(tableView)
+        addSubview(versionLabel)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: versionLabel.topAnchor, constant: -24),
+
+            versionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            versionLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            versionLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }

@@ -13,12 +13,12 @@ enum SettingSection: SectionModelType {
     case translationLanguage(item: SectionTitleTableViewCellViewModel?)
     case notificationSettingTitle(item: SectionTitleTableViewCellViewModel?)
     case kahfReminder(item: SwitchTableViewCellViewModel?)
-    case supportTitle(item: SectionTitleTableViewCellViewModel?)
+    case aboutTitle(item: SectionTitleTableViewCellViewModel?)
     case about(item: SectionTitleTableViewCellViewModel?)
     case privacy(item: SectionTitleTableViewCellViewModel?)
     case termCondition(item: SectionTitleTableViewCellViewModel?)
+    case supportTitle(item: SectionTitleTableViewCellViewModel?)
     case feedback(item: SectionTitleTableViewCellViewModel?)
-    case version(item: SectionTitleTableViewCellViewModel?)
 
     var items: [AnyObject] {
         switch self {
@@ -32,7 +32,7 @@ enum SettingSection: SectionModelType {
             return item != nil ? [item!] : []
         case .kahfReminder(let item):
             return item != nil ? [item!] : []
-        case .supportTitle(let item):
+        case .aboutTitle(let item):
             return item != nil ? [item!] : []
         case .about(let item):
             return item != nil ? [item!] : []
@@ -40,9 +40,9 @@ enum SettingSection: SectionModelType {
             return item != nil ? [item!] : []
         case .termCondition(let item):
             return item != nil ? [item!] : []
-        case .feedback(let item):
+        case .supportTitle(let item):
             return item != nil ? [item!] : []
-        case .version(let item):
+        case .feedback(let item):
             return item != nil ? [item!] : []
         }
     }
@@ -59,18 +59,18 @@ enum SettingSection: SectionModelType {
             self = .notificationSettingTitle(item: items.first as? SectionTitleTableViewCellViewModel)
         case .kahfReminder:
             self = .kahfReminder(item: items.first as? SwitchTableViewCellViewModel)
-        case .supportTitle:
-            self = .supportTitle(item: items.first as? SectionTitleTableViewCellViewModel)
+        case .aboutTitle:
+            self = .aboutTitle(item: items.first as? SectionTitleTableViewCellViewModel)
         case .about:
             self = .about(item: items.first as? SectionTitleTableViewCellViewModel)
         case .privacy:
             self = .privacy(item: items.first as? SectionTitleTableViewCellViewModel)
         case .termCondition:
             self = .termCondition(item: items.first as? SectionTitleTableViewCellViewModel)
+        case .supportTitle:
+            self = .supportTitle(item: items.first as? SectionTitleTableViewCellViewModel)
         case .feedback:
             self = .feedback(item: items.first as? SectionTitleTableViewCellViewModel)
-        case .version:
-            self = .version(item: items.first as? SectionTitleTableViewCellViewModel)
         }
     }
 }
@@ -85,12 +85,12 @@ extension SettingSection: TableViewDataSource {
             .translationLanguage(item: SectionTitleTableViewCellViewModel()),
             .notificationSettingTitle(item: SectionTitleTableViewCellViewModel()),
             .kahfReminder(item: SwitchTableViewCellViewModel()),
-            .supportTitle(item: SectionTitleTableViewCellViewModel()),
+            .aboutTitle(item: SectionTitleTableViewCellViewModel()),
             .about(item: SectionTitleTableViewCellViewModel()),
             .privacy(item: SectionTitleTableViewCellViewModel()),
             .termCondition(item: SectionTitleTableViewCellViewModel()),
+            .supportTitle(item: SectionTitleTableViewCellViewModel()),
             .feedback(item: SectionTitleTableViewCellViewModel()),
-            .version(item: SectionTitleTableViewCellViewModel()),
         ]
     }
     
@@ -114,7 +114,7 @@ extension SettingSection: TableViewDataSource {
     
     var cellType: UITableViewCell.Type {
         switch self {
-        case .quranSettingTitle, .recitation, .translationLanguage, .notificationSettingTitle, .supportTitle, .about, .privacy, .termCondition, .feedback, .version:
+        case .quranSettingTitle, .recitation, .translationLanguage, .notificationSettingTitle, .aboutTitle, .about, .privacy, .termCondition, .supportTitle, .feedback:
             return SectionTitleTableViewCell<SectionTitleTableViewCellViewModel>.self
         case .kahfReminder:
             return SwitchTableViewCell.self
@@ -135,7 +135,7 @@ extension SettingSection: RelativeOrder {
             return 3
         case .kahfReminder:
             return 4
-        case .supportTitle:
+        case .aboutTitle:
             return 5
         case .about:
             return 6
@@ -143,9 +143,9 @@ extension SettingSection: RelativeOrder {
             return 7
         case .termCondition:
             return 8
-        case .feedback:
+        case .supportTitle:
             return 9
-        case .version:
+        case .feedback:
             return 10
         }
     }

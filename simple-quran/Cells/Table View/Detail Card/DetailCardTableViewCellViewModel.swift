@@ -67,12 +67,12 @@ class DetailCardTableViewCellViewModel: DetailCardTableViewCellViewModelTypes {
         
     let leftButtonText = BehaviorRelay<String>(value: "Mishari Alafasy")
     let leftButtonTextFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 14))
-    let leftButtonIconImage = BehaviorRelay<UIImage?>(value: UIImage(named: "ico_soundhigh")?.withRenderingMode(.alwaysTemplate))
+    let leftButtonIconImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "speaker.wave.2.bubble")?.withRenderingMode(.alwaysTemplate))
     let leftButtonTintColor = BehaviorRelay<UIColor>(value: .white)
 
     let rightButtonText = BehaviorRelay<String>(value: "Malay")
     let rightButtonTextFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 14))
-    let rightButtonIconImage = BehaviorRelay<UIImage?>(value: UIImage(named: "ico_youtube")?.withRenderingMode(.alwaysTemplate))
+    let rightButtonIconImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "globe")?.withRenderingMode(.alwaysTemplate))
     let rightButtonTintColor = BehaviorRelay<UIColor>(value: .white)
     
     required init() {

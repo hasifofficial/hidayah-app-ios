@@ -208,7 +208,7 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     @objc private func playerDidFinishPlaying() {
         if let ayahCells = viewModel.ayahCell.value {
             for ayahCell in ayahCells {
-                ayahCell.rightHeaderButtonImage.accept(UIImage(named: "ico_play")?.withRenderingMode(.alwaysTemplate))
+                ayahCell.rightHeaderButtonImage.accept(UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate))
             }
         }
     }
@@ -353,13 +353,13 @@ extension SurahDetailViewController: ButtonHeaderTitleWithSubtitleTableViewCellD
         if ayahAudioPlayer?.timeControlStatus == .playing {
             if let ayahCells = self.viewModel.ayahCell.value {
                 for ayahCell in ayahCells {
-                    ayahCell.rightHeaderButtonImage.accept(UIImage(named: "ico_play")?.withRenderingMode(.alwaysTemplate))
+                    ayahCell.rightHeaderButtonImage.accept(UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate))
                 }
             }
             
             ayahAudioPlayer?.pause()
         } else {
-            viewModel.rightHeaderButtonImage.accept(UIImage(named: "ico_pause")?.withRenderingMode(.alwaysTemplate))
+            viewModel.rightHeaderButtonImage.accept(UIImage(systemName: "pause.fill")?.withRenderingMode(.alwaysTemplate))
             let playerItem = AVPlayerItem(url: ayahAudioUrl)
             ayahAudioPlayer = AVPlayer(playerItem: playerItem)
             ayahAudioPlayer?.play()

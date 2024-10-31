@@ -28,6 +28,17 @@ extension UIColor {
         return hexStringToUIColor("#AAAAAA").withAlphaComponent(0.2)
     }
     
+    static var title: UIColor {
+        return UIColor { traitCollection in
+            switch traitCollection.userInterfaceStyle {
+            case .dark:
+                return .white
+            default:
+                return .black
+            }
+        }
+    }
+    
     static func hexStringToUIColor(_ hex: String) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 

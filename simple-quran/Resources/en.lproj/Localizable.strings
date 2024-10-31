@@ -22,25 +22,27 @@
 
 "surah_list_header_title" = "Quran";
 "surah_list_search_placeholder" = "Search surah";
-"surah_list_subtitle" = "%@ • %@ Ayahs";
+"surah_list_subtitle" = "%@ • %@ verses";
 "surah_list_search_empty_title" = "No Search Results\n";
 "surah_list_search_empty_subtitle" = "Please try type another keyword.";
 "surah_list_empty_list_title" = "Oops!\n";
 "surah_list_empty_list_subtitle" = "Something went wrong.\nPlease try again.";
 
-"surah_description" = "%@ means %@ and consists of %@ ayahs. Its compilation order is %@. It was revealed in %@.";
+"surah_description" = "%@ means %@ and consists of %@ verses. Its compilation order is %@. It was revealed in %@.";
 "surah_recitation_drawer_title" = "Choose recitation";
 "surah_translation_drawer_title" = "Choose translation";
 
 "setting_header_title" = "Setting";
-"setting_quran_section_title" = "QURAN SETTING";
+"setting_quran_section_title" = "Quran";
 "setting_quran_recitation_title" = "Recitation";
 "setting_quran_translation_title" = "Translation";
-"setting_notification_section_title" = "NOTIFICATION SETTING";
+"setting_notification_section_title" = "Notification";
 "setting_notification_alkahf_title" = "Al-Kahf Reminder";
-"setting_support_section_title" = "SUPPORT";
-"setting_support_about_title" = "About Us";
-"setting_support_privacy_title" = "Privacy Policy";
-"setting_support_term_title" = "Terms & Condition";
+"setting_notification_section_title" = "Notification";
+"setting_about_section_title" = "About";
+"setting_about_us_title" = "About Us";
+"setting_about_privacy_title" = "Privacy Policy";
+"setting_about_term_title" = "Terms & Condition";
+"setting_support_section_title" = "Support";
 "setting_support_feedback_title" = "Feedback";
-"setting_app_verison" = "%@ Build %@";
+"setting_app_verison" = "Version %@ (%@)";

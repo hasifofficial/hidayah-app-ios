@@ -23,11 +23,11 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
         return newView
     }()
     
-    private lazy var circleView: UIView = {
-        let newView = UIView()
-        newView.layer.cornerRadius = 15
-        newView.translatesAutoresizingMaskIntoConstraints = false
-        return newView
+    private lazy var circleView: UIImageView = {
+        let newImageView = UIImageView()
+        newImageView.image = UIImage(systemName: "seal.fill")?.withRenderingMode(.alwaysTemplate)
+        newImageView.translatesAutoresizingMaskIntoConstraints = false
+        return newImageView
     }()
 
     private lazy var numberLabel: UILabel = {
@@ -180,7 +180,7 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
         viewModel.circleViewBackgroundColor.subscribe(onNext: { [weak self] (value) in
             guard let strongSelf = self else { return }
 
-            strongSelf.circleView.backgroundColor = value
+            strongSelf.circleView.tintColor = value
         })
         .disposed(by: disposeBag)
         
@@ -211,14 +211,7 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
             strongSelf.leftHeaderButton.tintColor = value
         })
         .disposed(by: disposeBag)
-        
-//        viewModel.headerViewBackgroundColor.subscribe(onNext: { [weak self] (value) in
-//            guard let strongSelf = self else { return }
-//
-//            strongSelf.headerView.backgroundColor = value
-//        })
-//        .disposed(by: disposeBag)
-        
+
         viewModel.titleLabelText.subscribe(onNext: { [weak self] (value) in
             guard let strongSelf = self,
                   strongSelf.viewModel.titleLabelAttributedText.value == nil,
@@ -235,14 +228,6 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
             strongSelf.titleLabel.font = value
         })
         .disposed(by: disposeBag)
-
-//        viewModel.titleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-//        guard let strongSelf = self,
-//              strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
-//
-//            strongSelf.titleLabel.textColor = value
-//        })
-//        .disposed(by: disposeBag)
         
         viewModel.titleLabelAttributedText.subscribe(onNext: { [weak self] (value) in
             guard let strongSelf = self,
@@ -282,14 +267,6 @@ class ButtonHeaderTitleWithSubtitleTableViewCell: UITableViewCell {
             strongSelf.subtitleLabel.font = value
         })
         .disposed(by: disposeBag)
-
-//        viewModel.subtitleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-//        guard let strongSelf = self,
-//              strongSelf.viewModel.subtitleLabelAttributedText.value == nil else { return }
-//
-//            strongSelf.subtitleLabel.textColor = value
-//        })
-//        .disposed(by: disposeBag)
         
         viewModel.subtitleLabelAttributedText.subscribe(onNext: { [weak self] (value) in
             guard let strongSelf = self,

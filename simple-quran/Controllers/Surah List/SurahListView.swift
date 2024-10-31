@@ -14,8 +14,8 @@ class SurahListView: UIView {
     }()
     
     lazy var settingButton: UIButton = {
-        let newButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        newButton.setImage(UIImage(named: "ico_setting")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        let newButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        newButton.setImage(UIImage(systemName: "ellipsis")?.withRenderingMode(.alwaysTemplate), for: .normal)
         newButton.tintColor = .gray
         newButton.backgroundColor = .clear
         return newButton

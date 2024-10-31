@@ -16,11 +16,17 @@ protocol SectionTitleTableViewCellViewModelTypes {
     var titleLabelTextAlignment: CurrentValueSubject<NSTextAlignment, Never> { get }
     var titleLabelTextLine: CurrentValueSubject<Int, Never> { get }
     
+    var leftButtonIcon: CurrentValueSubject<UIImage?, Never> { get }
+    var leftButtonIconTintColor: CurrentValueSubject<UIColor, Never> { get }
+    var leftButtonWidth: CurrentValueSubject<CGFloat, Never> { get }
+    var leftButtonHeight: CurrentValueSubject<CGFloat?, Never> { get }
+
     var rightButtonText: CurrentValueSubject<String, Never> { get }
     var rightButtonTextColor: CurrentValueSubject<UIColor, Never> { get }
     var rightButtonTextFont: CurrentValueSubject<UIFont, Never> { get }
     var rightButtonTapHandler: CurrentValueSubject<(() -> Void)?, Never> { get }
     
+    var shouldHideLeftButton: CurrentValueSubject<Bool, Never> { get }
     var shouldHideRightButton: CurrentValueSubject<Bool, Never> { get }
 
     var accessoryType: CurrentValueSubject<UITableViewCell.AccessoryType, Never> { get }
@@ -41,11 +47,17 @@ class SectionTitleTableViewCellViewModel: SectionTitleTableViewCellViewModelType
     let titleLabelTextAlignment = CurrentValueSubject<NSTextAlignment, Never>(.natural)
     let titleLabelTextLine = CurrentValueSubject<Int, Never>(0)
     
+    let leftButtonIcon = CurrentValueSubject<UIImage?, Never>(nil)
+    let leftButtonIconTintColor = CurrentValueSubject<UIColor, Never>(.darkGray)
+    let leftButtonWidth = CurrentValueSubject<CGFloat, Never>(32)
+    let leftButtonHeight = CurrentValueSubject<CGFloat?, Never>(nil)
+
     let rightButtonText = CurrentValueSubject<String, Never>("See All")
     let rightButtonTextColor = CurrentValueSubject<UIColor, Never>(.systemBlue)
     let rightButtonTextFont = CurrentValueSubject<UIFont, Never>(.systemFont(ofSize: 14))
     let rightButtonTapHandler = CurrentValueSubject<(() -> Void)?, Never>(nil)
     
+    let shouldHideLeftButton = CurrentValueSubject<Bool, Never>(true)
     let shouldHideRightButton = CurrentValueSubject<Bool, Never>(true)
 
     let accessoryType = CurrentValueSubject<UITableViewCell.AccessoryType, Never>(.none)
