@@ -141,8 +141,6 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     }
     
     private func loadSurah() {
-        setupPlaceholder()
-
         surahService.getSurahList()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
