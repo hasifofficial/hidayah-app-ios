@@ -41,8 +41,6 @@
 		1B3DA598260EDF07003E4F96 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA597260EDF07003E4F96 /* SettingViewController.swift */; };
 		1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */; };
 		1B3DA5A2260EDF45003E4F96 /* SettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA5A1260EDF45003E4F96 /* SettingSection.swift */; };
-		1B3DA5AA260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA5A9260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift */; };
-		1B3DA5AF260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA5AE260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift */; };
 		1B42CF58261C97C80096F77F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B42CF57261C97C80096F77F /* Storage.swift */; };
 		1B436752261891DD002878B8 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436751261891DD002878B8 /* ShimmerView.swift */; };
 		1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */; };
@@ -61,10 +59,6 @@
 		1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB7E260B362B004E07CD /* SurahList.swift */; };
 		1B78EB84260B36F1004E07CD /* Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB83260B36F1004E07CD /* Surah.swift */; };
 		1B8339382626A710007B5ADB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8339372626A710007B5ADB /* Constants.swift */; };
-		1B8FC269263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */; };
-		1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */; };
-		1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */; };
-		1B8FC285263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */; };
 		1BA750B4260E65D100A27A2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA750B3260E65D100A27A2F /* AVFoundation.framework */; };
 		1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */; };
 		1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */; };
@@ -140,8 +134,6 @@
 		1B3DA597260EDF07003E4F96 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		1B3DA5A1260EDF45003E4F96 /* SettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSection.swift; sourceTree = "<group>"; };
-		1B3DA5A9260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithSubtitleTableViewCell.swift; sourceTree = "<group>"; };
-		1B3DA5AE260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithSubtitleTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1B42CF57261C97C80096F77F /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		1B436751261891DD002878B8 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCell.swift; sourceTree = "<group>"; };
@@ -167,10 +159,6 @@
 		1B78EB7E260B362B004E07CD /* SurahList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahList.swift; sourceTree = "<group>"; };
 		1B78EB83260B36F1004E07CD /* Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surah.swift; sourceTree = "<group>"; };
 		1B8339372626A710007B5ADB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCell.swift; sourceTree = "<group>"; };
-		1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithLeftIconTableViewCellViewModel.swift; sourceTree = "<group>"; };
-		1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCell.swift; sourceTree = "<group>"; };
-		1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsWithRightIconHeaderTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1BA750B3260E65D100A27A2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -362,15 +350,6 @@
 			path = "Detail Title";
 			sourceTree = "<group>";
 		};
-		1B3DA5A8260EE5BD003E4F96 /* Title With Subtitle */ = {
-			isa = PBXGroup;
-			children = (
-				1B3DA5A9260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift */,
-				1B3DA5AE260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift */,
-			);
-			path = "Title With Subtitle";
-			sourceTree = "<group>";
-		};
 		1B42CF56261C97AD0096F77F /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,8 +405,6 @@
 			isa = PBXGroup;
 			children = (
 				1B3382642CD28B2000CD9670 /* New Section Title */,
-				1B8FC275263D29C500DF12C8 /* Labels With Right Icon Header */,
-				1B8FC267263D214300DF12C8 /* Label With Left Icon */,
 				1BD3393C2620481700CB412D /* Switch */,
 				1B3761BB260F72DA000ADF3D /* Detail Card */,
 				1B42CF62261CB5290096F77F /* Detail Card Placeholder */,
@@ -436,7 +413,6 @@
 				1B3DA5A6260EE495003E4F96 /* Section Title */,
 				1B3DA5A7260EE4B2003E4F96 /* Detail Title */,
 				1B42CF64261CB5800096F77F /* Detail Title Placeholder */,
-				1B3DA5A8260EE5BD003E4F96 /* Title With Subtitle */,
 			);
 			path = "Table View";
 			sourceTree = "<group>";
@@ -551,24 +527,6 @@
 				1B542864261E216D003C6100 /* Table View */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		1B8FC267263D214300DF12C8 /* Label With Left Icon */ = {
-			isa = PBXGroup;
-			children = (
-				1B8FC268263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift */,
-				1B8FC270263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift */,
-			);
-			path = "Label With Left Icon";
-			sourceTree = "<group>";
-		};
-		1B8FC275263D29C500DF12C8 /* Labels With Right Icon Header */ = {
-			isa = PBXGroup;
-			children = (
-				1B8FC276263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift */,
-				1B8FC284263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift */,
-			);
-			path = "Labels With Right Icon Header";
 			sourceTree = "<group>";
 		};
 		1BB3478E2A360C82000903CE /* Base */ = {
@@ -917,7 +875,6 @@
 				1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */,
 				1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */,
 				1B3382612CD28A1200CD9670 /* SelectionViewModel.swift in Sources */,
-				1B8FC277263D2A1900DF12C8 /* LabelsWithRightIconHeaderTableViewCell.swift in Sources */,
 				1BB347902A360C9E000903CE /* RequestError.swift in Sources */,
 				1B1AAAC5260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift in Sources */,
 				1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */,
@@ -937,10 +894,8 @@
 				1B33825D2CD28A0600CD9670 /* SelectionView.swift in Sources */,
 				1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */,
 				1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */,
-				1B8FC285263D2A3E00DF12C8 /* LabelsWithRightIconHeaderTableViewCellViewModel.swift in Sources */,
 				1BB347982A360EB2000903CE /* SurahService.swift in Sources */,
 				1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */,
-				1B8FC271263D217900DF12C8 /* LabelWithLeftIconTableViewCellViewModel.swift in Sources */,
 				1B8339382626A710007B5ADB /* Constants.swift in Sources */,
 				1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */,
 				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
@@ -967,14 +922,11 @@
 				1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */,
 				1BA832342618D64000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell.swift in Sources */,
 				1B3761BD260F7301000ADF3D /* DetailCardTableViewCell.swift in Sources */,
-				1B3DA5AA260EE608003E4F96 /* TitleWithSubtitleTableViewCell.swift in Sources */,
 				1B3761A1260EF74A000ADF3D /* Edition.swift in Sources */,
 				1B1AAA99260E29F200E03B0B /* SurahDetailViewController.swift in Sources */,
 				1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */,
-				1B3DA5AF260EE615003E4F96 /* TitleWithSubtitleTableViewCellViewModel.swift in Sources */,
 				1B3382582CD25BA100CD9670 /* AppController.swift in Sources */,
 				1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */,
-				1B8FC269263D216D00DF12C8 /* LabelWithLeftIconTableViewCell.swift in Sources */,
 				1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

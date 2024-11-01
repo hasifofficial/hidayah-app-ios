@@ -25,6 +25,7 @@ protocol SurahDetailViewModelTypes: SectionSetter, TableViewSectionSetter where 
     var translationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
     var newTranslationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
     var selectedTranslationListItem: CurrentValueSubject<ItemSelector?, Never> { get }
+    var notifyLoadSurahDetailSuccess: PassthroughSubject<Void, Never> { get }
     var tapAction: CurrentValueSubject<Action<Section.Item, Never>, Never> { get }
     
     func handleSurahDetailSuccess(value: Surah)
@@ -60,6 +61,7 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
     let translationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
     let newTranslationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
     let selectedTranslationListItem = CurrentValueSubject<ItemSelector?, Never>(nil)
+    let notifyLoadSurahDetailSuccess = PassthroughSubject<Void, Never>()
     let tapAction = CurrentValueSubject<Action<Section.Item, Swift.Never>, Never>(Action { _ in
         return Observable.empty()
     })
@@ -141,6 +143,7 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
         cardCell.send(tempCardCell)
         ayahCell.send(tempAyahCells)
         ayahList.send(ayahs)
+        notifyLoadSurahDetailSuccess.send(())
     }
     
     func handleEditionSuccess(value: Edition) {

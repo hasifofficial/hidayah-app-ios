@@ -95,7 +95,6 @@ class SelectionViewController: UIViewController {
     }
 
     private func setupNavBar() {
-//        configureNavigationBar()
         navigationItem.leftBarButtonItem = rootView.closeButtonItem
     }
 

@@ -113,6 +113,7 @@ class SettingViewModel: SettingViewModelTypes {
         let vm = SwitchTableViewCellViewModel()
         
         vm.titleLabelText.send(NSLocalizedString("setting_notification_alkahf_title", comment: ""))
+        vm.leftButtonIcon.send(UIImage(systemName: "bell")?.withRenderingMode(.alwaysTemplate))
         vm.isSwitchOn.send(isSwitchOn)
         
         return CurrentValueSubject<SwitchTableViewCellViewModel, Never>(vm)

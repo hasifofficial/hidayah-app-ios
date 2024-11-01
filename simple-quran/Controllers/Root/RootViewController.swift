@@ -44,7 +44,7 @@ class RootViewController: UITabBarController {
                 comment: ""
             ),
             image: UIImage(systemName: "book"),
-            tag: 0
+            selectedImage: UIImage(systemName: "book.fill")
         )
 
         let bookmarkListViewController = BookmarkListViewController<BookmarkListViewModel>(
@@ -60,7 +60,7 @@ class RootViewController: UITabBarController {
                 comment: ""
             ),
             image: UIImage(systemName: "bookmark"),
-            tag: 1
+            selectedImage: UIImage(systemName: "bookmark.fill")
         )
 
         viewControllers = [

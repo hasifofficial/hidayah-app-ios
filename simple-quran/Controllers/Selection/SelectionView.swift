@@ -15,7 +15,7 @@ class SelectionView: UIView {
     lazy var closeButton: UIButton = {
         let newButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         newButton.setImage(UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        newButton.tintColor = .lightGreen
+        newButton.tintColor = .gray
         newButton.backgroundColor = .clear
         return newButton
     }()

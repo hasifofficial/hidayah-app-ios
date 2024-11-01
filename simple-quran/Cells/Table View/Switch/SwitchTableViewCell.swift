@@ -13,7 +13,13 @@ protocol SwitchTableViewCellDelegate: AnyObject {
 }
 
 class SwitchTableViewCell: UITableViewCell {
-        
+
+    private lazy var leftButton: UIButton = {
+        let newButton = UIButton()
+        newButton.translatesAutoresizingMaskIntoConstraints = false
+        return newButton
+    }()
+
     private lazy var titleLabel: UILabel = {
         let newLabel = UILabel()
         newLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -45,14 +51,20 @@ class SwitchTableViewCell: UITableViewCell {
     private func setupView() {
         selectionStyle = .none
                 
+        contentView.addSubview(leftButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(switchToggle)
 
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
         NSLayoutConstraint.activate([
+            leftButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            leftButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            leftButton.heightAnchor.constraint(equalToConstant: 32),
+            leftButton.widthAnchor.constraint(equalToConstant: 32),
+
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: 8),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: switchToggle.leadingAnchor, constant: 16),
             
@@ -86,6 +98,22 @@ class SwitchTableViewCell: UITableViewCell {
                 guard let strongSelf = self else { return }
                 
                 strongSelf.titleLabel.numberOfLines = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.leftButtonIcon
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.leftButton.setImage(value, for: .normal)
+            })
+            .store(in: &cancellable)
+
+        viewModel.leftButtonIconTintColor
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self else { return }
+
+                strongSelf.leftButton.tintColor = value
             })
             .store(in: &cancellable)
 

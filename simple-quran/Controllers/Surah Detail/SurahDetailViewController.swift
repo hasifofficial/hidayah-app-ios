@@ -18,7 +18,9 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     private var ayahAudioPlayer: AVPlayer?
-    
+    private var bookmarkedAyah: Int?
+    private var scrollToSpecificAyah: Bool
+
     var rootView: SurahDetailView {
         return view as! SurahDetailView
     }
@@ -51,9 +53,13 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     }
     
     init(
-        surahService: SurahService
+        surahService: SurahService,
+        bookmarkedAyah: Int? = nil,
+        scrollToSpecificAyah: Bool = false
     ) {
         self.surahService = surahService
+        self.bookmarkedAyah = bookmarkedAyah
+        self.scrollToSpecificAyah = scrollToSpecificAyah
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -124,6 +130,16 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
                 guard let strongSelf = self else { return }
                 
                 strongSelf.viewModel.setSection(.ayah(item: value))
+            })
+            .store(in: &cancellable)
+        
+        viewModel.notifyLoadSurahDetailSuccess
+            .sink(receiveValue: { [weak self] (value) in
+                guard let strongSelf = self,
+                      let bookmarkedAyah = strongSelf.bookmarkedAyah,
+                      strongSelf.scrollToSpecificAyah else { return }
+                
+                strongSelf.scrollToBookmarkedAyah(ayah: bookmarkedAyah)
             })
             .store(in: &cancellable)
     }
@@ -273,6 +289,11 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
             profileNavigationController,
             animated: true
         )
+    }
+    
+    private func scrollToBookmarkedAyah(ayah: Int) {
+        let indexPath = IndexPath(row: ayah - 1, section: 3)
+        rootView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

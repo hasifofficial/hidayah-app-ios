@@ -16,7 +16,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     private let surahService: SurahService
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
-    private var hasBookmarkedSurah: Bool = false
 
     var rootView: SurahListView {
         return view as! SurahListView
@@ -32,13 +31,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         setupView()
         setupListener()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        setupTabBar()
-    }
-    
+
     init(
         surahService: SurahService
     ) {
@@ -110,19 +103,7 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         navigationItem.rightBarButtonItem = rootView.settingButtonItem
         navigationItem.searchController = rootView.searchController
     }
-    
-    private func setupTabBar() {
-        guard let tabBar = tabBarController?.tabBar else { return }
 
-        if let recentBookmarks: [SurahBookmark] = Storage.loadObject(key: .bookmarkRecitations) {
-            hasBookmarkedSurah = true
-            tabBar.isHidden = false
-        } else {
-            hasBookmarkedSurah = false
-            tabBar.isHidden = true
-        }
-    }
-        
     private func setupPlaceholder() {
         var vm = [DetailTitlePlaceholderTableViewCellViewModel]()
         
@@ -225,13 +206,5 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         default:
             break
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let tabBar = tabBarController?.tabBar,
-              hasBookmarkedSurah else { return }
-
-        let translation = scrollView.panGestureRecognizer.translation(in: scrollView).y
-        tabBar.isHidden = translation < 0
     }
 }
