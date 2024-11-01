@@ -114,6 +114,7 @@ class SettingViewModel: SettingViewModelTypes {
         
         vm.titleLabelText.send(NSLocalizedString("setting_notification_alkahf_title", comment: ""))
         vm.leftButtonIcon.send(UIImage(systemName: "bell")?.withRenderingMode(.alwaysTemplate))
+        vm.leftButtonIconTintColor.send(.title)
         vm.isSwitchOn.send(isSwitchOn)
         
         return CurrentValueSubject<SwitchTableViewCellViewModel, Never>(vm)
