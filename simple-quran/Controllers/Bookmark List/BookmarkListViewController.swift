@@ -43,7 +43,10 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     ) {
         self.surahService = surahService
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -72,33 +75,33 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
         
         viewModel.title
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.title = value
+                self.title = value
             })
             .store(in: &cancellable)
         
         viewModel.surahPlaceholderCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.surahPlaceholder(item: value))
+                self.viewModel.setSection(.surahPlaceholder(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.surahCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.surah(item: value))
+                self.viewModel.setSection(.surah(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.surahEmptyCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.surahEmpty(item: value))
+                self.viewModel.setSection(.surahEmpty(item: value))
             })
             .store(in: &cancellable)
     }
@@ -144,25 +147,25 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
         surahService.getSurahList()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.rootView.refreshControl.endRefreshing()
+                self.rootView.refreshControl.endRefreshing()
 
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
-                    strongSelf.setupEmptyState()
+                    self.setupEmptyState()
                     
                     if let error = error as? RequestError {
-                        strongSelf.view.makeToast(error.message)
+                        self.view.makeToast(error.message)
                     } else {
-                        strongSelf.view.makeToast(error.localizedDescription)
+                        self.view.makeToast(error.localizedDescription)
                     }
                 }
             } receiveValue: { [weak self] list in
-                guard let strongSelf = self else { return }
-                strongSelf.viewModel.handleSuccess(value: list)
+                guard let self else { return }
+                self.viewModel.handleSuccess(value: list)
             }
             .store(in: &cancellable)
     }
@@ -186,9 +189,9 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
         
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [weak self] in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.viewModel.filterSurah(keyword: text)
+            self.viewModel.filterSurah(keyword: text)
         }
     }
     

@@ -38,8 +38,14 @@ class DetailTitlePlaceholderTableViewCell<ViewModel>: UITableViewCell where View
     
     private var viewModel: ViewModel = ViewModel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         
         setupView()
         setupListener()

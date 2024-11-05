@@ -47,8 +47,14 @@ class DetailTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Deta
     private var cancellable = Set<AnyCancellable>()
     private var viewModel: ViewModel = ViewModel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         
         setupView()
         setupListener()
@@ -83,113 +89,113 @@ class DetailTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Deta
     private func setupListener() {
         viewModel.rightTitleLabelText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTitleLabel.text = value
+                self.rightTitleLabel.text = value
             })
             .store(in: &cancellable)
 
         viewModel.rightTitleLabelTextFont
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.rightTitleLabel.font = value
+                self.rightTitleLabel.font = value
             })
             .store(in: &cancellable)
 
         viewModel.rightTitleLabelTextColor
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.rightTitleLabel.textColor = value
+                self.rightTitleLabel.textColor = value
             })
             .store(in: &cancellable)
 
         viewModel.rightTitleLabelTextAlignment
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTitleLabel.textAlignment = value
+                self.rightTitleLabel.textAlignment = value
             })
             .store(in: &cancellable)
 
         viewModel.rightTitleLabelTextLine
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTitleLabel.numberOfLines = value
+                self.rightTitleLabel.numberOfLines = value
             })
             .store(in: &cancellable)
 
         viewModel.leftTitleLabelText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.leftTitleLabel.text = value
+                self.leftTitleLabel.text = value
             })
             .store(in: &cancellable)
 
         viewModel.leftTitleLabelTextFont
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftTitleLabel.font = value
+                self.leftTitleLabel.font = value
             })
             .store(in: &cancellable)
 
         viewModel.leftTitleLabelTextAlignment
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.leftTitleLabel.textAlignment = value
+                self.leftTitleLabel.textAlignment = value
             })
             .store(in: &cancellable)
 
         viewModel.leftTitleLabelTextLine
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.leftTitleLabel.numberOfLines = value
+                self.leftTitleLabel.numberOfLines = value
             })
             .store(in: &cancellable)
 
         viewModel.leftSubtitleLabelText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.leftSubtitleLabel.text = value
+                self.leftSubtitleLabel.text = value
             })
             .store(in: &cancellable)
 
         viewModel.leftSubtitleLabelTextFont
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftSubtitleLabel.font = value
+                self.leftSubtitleLabel.font = value
             })
             .store(in: &cancellable)
 
         viewModel.leftSubtitleLabelTextColor
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftSubtitleLabel.textColor = value
+                self.leftSubtitleLabel.textColor = value
             })
             .store(in: &cancellable)
 
         viewModel.leftSubtitleLabelTextAlignment
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.leftSubtitleLabel.textAlignment = value
+                self.leftSubtitleLabel.textAlignment = value
             })
             .store(in: &cancellable)
 
         viewModel.leftSubtitleLabelTextLine
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.leftSubtitleLabel.numberOfLines = value
+                self.leftSubtitleLabel.numberOfLines = value
             })
             .store(in: &cancellable)
     }

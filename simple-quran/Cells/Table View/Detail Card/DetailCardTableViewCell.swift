@@ -105,8 +105,14 @@ class DetailCardTableViewCell: UITableViewCell {
     
     weak var delegate: DetailCardTableViewCellDelegate?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         
         setupView()
         setupListener()
@@ -181,213 +187,213 @@ class DetailCardTableViewCell: UITableViewCell {
         disposeBag = DisposeBag()
         
         leftButton.rx.tap.bind { [weak self] in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
                 
-            strongSelf.delegate?.detailCardTableViewCell(didTapLeftButton: strongSelf, viewModel: strongSelf.viewModel)
+            self.delegate?.detailCardTableViewCell(didTapLeftButton: self, viewModel: self.viewModel)
         }
         .disposed(by: disposeBag)
         
         rightButton.rx.tap.bind { [weak self] in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
                 
-            strongSelf.delegate?.detailCardTableViewCell(didTapRightButton: strongSelf, viewModel: strongSelf.viewModel)
+            self.delegate?.detailCardTableViewCell(didTapRightButton: self, viewModel: self.viewModel)
         }
         .disposed(by: disposeBag)
         
         viewModel.titleLabelText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.titleLabelAttributedText.value == nil,
+            guard let self,
+                  self.viewModel.titleLabelAttributedText.value == nil,
                   value != nil else { return }
 
-            strongSelf.titleLabel.text = value
+            self.titleLabel.text = value
         })
         .disposed(by: disposeBag)
 
         viewModel.titleLabelTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
+            guard let self,
+                  self.viewModel.titleLabelAttributedText.value == nil else { return }
 
-            strongSelf.titleLabel.font = value
+            self.titleLabel.font = value
         })
         .disposed(by: disposeBag)
 
         viewModel.titleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-        guard let strongSelf = self,
-              strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
+        guard let self,
+              self.viewModel.titleLabelAttributedText.value == nil else { return }
 
-            strongSelf.titleLabel.textColor = value
+            self.titleLabel.textColor = value
         })
         .disposed(by: disposeBag)
         
         viewModel.titleLabelAttributedText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
+            guard let self,
                   value != nil else { return }
             
-            strongSelf.titleLabel.attributedText = value
+            self.titleLabel.attributedText = value
         })
         .disposed(by: disposeBag)
                         
         viewModel.titleLabelTextAlignment.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.titleLabel.textAlignment = value
+            self.titleLabel.textAlignment = value
         })
         .disposed(by: disposeBag)
 
         viewModel.titleLabelTextLine.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.titleLabel.numberOfLines = value
+            self.titleLabel.numberOfLines = value
         })
         .disposed(by: disposeBag)
                 
         viewModel.subtitleLabelText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.subtitleLabelAttributedText.value == nil,
+            guard let self,
+                  self.viewModel.subtitleLabelAttributedText.value == nil,
                   value != nil else { return }
 
-            strongSelf.subtitleLabel.text = value
+            self.subtitleLabel.text = value
         })
         .disposed(by: disposeBag)
 
         viewModel.subtitleLabelTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.subtitleLabelAttributedText.value == nil else { return }
+            guard let self,
+                  self.viewModel.subtitleLabelAttributedText.value == nil else { return }
 
-            strongSelf.subtitleLabel.font = value
+            self.subtitleLabel.font = value
         })
         .disposed(by: disposeBag)
 
         viewModel.subtitleLabelTextColor.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.subtitleLabelAttributedText.value == nil else { return }
+            guard let self,
+                  self.viewModel.subtitleLabelAttributedText.value == nil else { return }
 
-            strongSelf.subtitleLabel.textColor = value
+            self.subtitleLabel.textColor = value
         })
         .disposed(by: disposeBag)
         
         viewModel.subtitleLabelAttributedText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
+            guard let self,
                   value != nil else { return }
             
-            strongSelf.subtitleLabel.attributedText = value
+            self.subtitleLabel.attributedText = value
         })
         .disposed(by: disposeBag)
                         
         viewModel.subtitleLabelTextAlignment.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.subtitleLabel.textAlignment = value
+            self.subtitleLabel.textAlignment = value
         })
         .disposed(by: disposeBag)
 
         viewModel.subtitleLabelTextLine.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.subtitleLabel.numberOfLines = value
+            self.subtitleLabel.numberOfLines = value
         })
         .disposed(by: disposeBag)
         
         viewModel.detailLabelText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.detailLabelAttributedText.value == nil,
+            guard let self,
+                  self.viewModel.detailLabelAttributedText.value == nil,
                   value != nil else { return }
 
-            strongSelf.detailLabel.text = value
+            self.detailLabel.text = value
         })
         .disposed(by: disposeBag)
 
         viewModel.detailLabelTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.detailLabelAttributedText.value == nil else { return }
+            guard let self,
+                  self.viewModel.detailLabelAttributedText.value == nil else { return }
 
-            strongSelf.detailLabel.font = value
+            self.detailLabel.font = value
         })
         .disposed(by: disposeBag)
 
         viewModel.detailLabelTextColor.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
-                  strongSelf.viewModel.detailLabelAttributedText.value == nil else { return }
+            guard let self,
+                  self.viewModel.detailLabelAttributedText.value == nil else { return }
 
-            strongSelf.detailLabel.textColor = value
+            self.detailLabel.textColor = value
         })
         .disposed(by: disposeBag)
         
         viewModel.detailLabelAttributedText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self,
+            guard let self,
                   value != nil else { return }
             
-            strongSelf.detailLabel.attributedText = value
+            self.detailLabel.attributedText = value
         })
         .disposed(by: disposeBag)
                         
         viewModel.detailLabelTextAlignment.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.detailLabel.textAlignment = value
+            self.detailLabel.textAlignment = value
         })
         .disposed(by: disposeBag)
 
         viewModel.detailLabelTextLine.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.detailLabel.numberOfLines = value
+            self.detailLabel.numberOfLines = value
         })
         .disposed(by: disposeBag)
         
         viewModel.leftButtonText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.leftButton.setTitle(value, for: .normal)
+            self.leftButton.setTitle(value, for: .normal)
         })
         .disposed(by: disposeBag)
         
         viewModel.leftButtonTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.leftButton.titleLabel?.font = value
+            self.leftButton.titleLabel?.font = value
         })
         .disposed(by: disposeBag)
         
         viewModel.leftButtonIconImage.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.leftButton.setImage(value, for: .normal)
+            self.leftButton.setImage(value, for: .normal)
         })
         .disposed(by: disposeBag)
         
         viewModel.leftButtonTintColor.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.leftButton.tintColor = value
+            self.leftButton.tintColor = value
         })
         .disposed(by: disposeBag)
 
         viewModel.rightButtonText.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.rightButton.setTitle(value, for: .normal)
+            self.rightButton.setTitle(value, for: .normal)
         })
         .disposed(by: disposeBag)
         
         viewModel.rightButtonTextFont.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.rightButton.titleLabel?.font = value
+            self.rightButton.titleLabel?.font = value
         })
         .disposed(by: disposeBag)
         
         viewModel.rightButtonIconImage.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.rightButton.setImage(value, for: .normal)
+            self.rightButton.setImage(value, for: .normal)
         })
         .disposed(by: disposeBag)
         
         viewModel.rightButtonTintColor.subscribe(onNext: { [weak self] (value) in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
-            strongSelf.rightButton.tintColor = value
+            self.rightButton.tintColor = value
         })
         .disposed(by: disposeBag)
     }

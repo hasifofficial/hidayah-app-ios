@@ -24,7 +24,10 @@ class SelectionViewController: UIViewController {
     ) {
         self.viewModel = viewModel
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -57,8 +60,6 @@ class SelectionViewController: UIViewController {
     private func setupView() {
         disableSwipeToDismiss()
 
-        title = viewModel.title
-
         rootView.tableView.delegate = self
         rootView.tableView.dataSource = self
         rootView.tableView.register(
@@ -73,6 +74,15 @@ class SelectionViewController: UIViewController {
             action: #selector(didTapCloseButton),
             for: .touchUpInside
         )
+
+        viewModel.titleSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] title in
+                guard let self else { return }
+                
+                self.title = title
+            }
+            .store(in: &cancellable)
 
         viewModel.itemsSubject
             .receive(on: DispatchQueue.main)

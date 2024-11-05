@@ -45,7 +45,10 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
     ) {
         self.surahService = surahService
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -79,98 +82,98 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
         
         viewModel.title
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.title = value
+                self.title = value
             })
             .store(in: &cancellable)
 
         viewModel.quranSettingTitleCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.quranSettingTitle(item: value))
+                self.viewModel.setSection(.quranSettingTitle(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.recitationCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.recitation(item: value))
+                self.viewModel.setSection(.recitation(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.translationLanguageCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.translationLanguage(item: value))
+                self.viewModel.setSection(.translationLanguage(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.notificationSettingTitleCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.notificationSettingTitle(item: value))
+                self.viewModel.setSection(.notificationSettingTitle(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.kahfRemnderCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.kahfReminder(item: value))
+                self.viewModel.setSection(.kahfReminder(item: value))
             })
             .store(in: &cancellable)
 
 
         viewModel.aboutTitleCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.aboutTitle(item: value))
+                self.viewModel.setSection(.aboutTitle(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.aboutCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.about(item: value))
+                self.viewModel.setSection(.about(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.privacyCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.privacy(item: value))
+                self.viewModel.setSection(.privacy(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.termConditionCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.termCondition(item: value))
+                self.viewModel.setSection(.termCondition(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.supportTitleCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.supportTitle(item: value))
+                self.viewModel.setSection(.supportTitle(item: value))
             })
             .store(in: &cancellable)
 
         viewModel.feedbackCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                     
-                strongSelf.viewModel.setSection(.feedback(item: value))
+                self.viewModel.setSection(.feedback(item: value))
             })
             .store(in: &cancellable)
     }
@@ -179,21 +182,21 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
         surahService.getSurahEdition()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
                     if let error = error as? RequestError {
-                        strongSelf.view.makeToast(error.message)
+                        self.view.makeToast(error.message)
                     } else {
-                        strongSelf.view.makeToast(error.localizedDescription)
+                        self.view.makeToast(error.localizedDescription)
                     }
                 }
             } receiveValue: { [weak self] edition in
-                guard let strongSelf = self else { return }
-                strongSelf.viewModel.handleEditionSuccess(value: edition)
+                guard let self else { return }
+                self.viewModel.handleEditionSuccess(value: edition)
             }
             .store(in: &cancellable)
     }
@@ -206,67 +209,6 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
         dismiss(animated: true)
     }
     
-    private func navigateToReciterSelection(
-        items: [ItemSelector]
-    ) {
-        let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
-        let reciterName = selectedRecitationData?.englishName ?? "Alafasy"
-        let viewModel = SelectionViewModel(
-            title: NSLocalizedString(
-                "surah_recitation_drawer_title",
-                comment: ""
-            ),
-            selectedItem: ItemSelector(
-                title: reciterName,
-                value: "",
-                item: selectedRecitationData
-            ),
-            items: items
-        )
-        let vc = SelectionViewController(
-            viewModel: viewModel
-        )
-        vc.delegate = self
-        let profileNavigationController = UINavigationController(
-            rootViewController: vc
-        )
-        present(
-            profileNavigationController,
-            animated: true
-        )
-    }
-    
-    private func navigateToTranslationSelection(
-        items: [ItemSelector]
-    ) {
-        let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
-        let translationLanguage = selectedTranslationData?.language ?? ""
-        let translationName = selectedTranslationData?.name ?? ""
-        let language = Constants.getLanguageFromCode(code: translationLanguage)
-        let viewModel = SelectionViewModel(
-            title: NSLocalizedString(
-                "surah_translation_drawer_title",
-                comment: ""
-            ),
-            selectedItem: ItemSelector(
-                title: "\(language) - \(translationName)",
-                value: "",
-                item: selectedTranslationData
-            ),
-            items: items
-        )
-        let vc = SelectionViewController(
-            viewModel: viewModel
-        )
-        vc.delegate = self
-        let profileNavigationController = UINavigationController(
-            rootViewController: vc
-        )
-        present(
-            profileNavigationController,
-            animated: true
-        )
-    }
 
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
@@ -281,49 +223,140 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case SettingSection.recitation(item: viewModel.recitationCell.value).sectionOrder:
-            guard let newRecitationListItem = self.viewModel.newRecitationList.value else { return }
-
-            navigateToReciterSelection(items: newRecitationListItem)
+            navigateToReciterSelection()
         case SettingSection.translationLanguage(item: viewModel.translationLanguageCell.value).sectionOrder:
-            guard let newTranslationListItem = self.viewModel.newTranslationList.value else { return }
-
-            navigateToTranslationSelection(items: newTranslationListItem)
+            navigateToTranslationSelection()
         case SettingSection.about(item: viewModel.aboutCell.value).sectionOrder:
             guard let url = URL(string: Constants.websiteUrl) else { return }
             
             presentWebView(url) { [weak self] (vc) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.present(vc, animated: true, completion: nil)
+                self.present(vc, animated: true, completion: nil)
             }
         case SettingSection.privacy(item: viewModel.privacyCell.value).sectionOrder:
             guard let url = URL(string: Constants.privacyUrl) else { return }
             
             presentWebView(url) { [weak self] (vc) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.present(vc, animated: true, completion: nil)
+                self.present(vc, animated: true, completion: nil)
             }
         case SettingSection.termCondition(item: viewModel.termConditionCell.value).sectionOrder:
             guard let url = URL(string: Constants.termConditionUrl) else { return }
             
             presentWebView(url) { [weak self] (vc) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.present(vc, animated: true, completion: nil)
+                self.present(vc, animated: true, completion: nil)
             }
         case SettingSection.feedback(item: viewModel.feedbackCell.value).sectionOrder:
-            if MFMailComposeViewController.canSendMail() {
-                let mailVC = MFMailComposeViewController()
-                
-                mailVC.mailComposeDelegate = self
-                mailVC.setToRecipients([Constants.feedbackEmail])
-                
-                present(mailVC, animated: true)
-            }
+            let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+            let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+
+            navigateToEmail(
+                subject: String(
+                    format: NSLocalizedString(
+                        "setting_support_feedback_mail_title",
+                        comment: ""
+                    ),
+                    appVersion,
+                    buildNumber
+                ),
+                recipients: [
+                    Constants.feedbackEmail
+                ]
+            )
         default:
             break
         }
+    }
+}
+
+extension SettingViewController {
+    private func navigateToReciterSelection() {
+        guard let recitationListItem = viewModel.recitationListItem.value else { return }
+        
+        let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
+        let reciterName = selectedRecitationData?.englishName ?? "Alafasy"
+        let selectedItem = ItemSelector(
+            title: reciterName,
+            value: "",
+            item: selectedRecitationData
+        )
+
+        navigateToSelection(
+            title: NSLocalizedString(
+                "surah_recitation_drawer_title",
+                comment: ""
+            ),
+            items: recitationListItem,
+            selectedItem: selectedItem
+        )
+    }
+    
+    private func navigateToTranslationSelection() {
+        guard let translationListItem = viewModel.translationListItem.value else { return }
+
+        let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
+        let translationLanguage = selectedTranslationData?.language ?? ""
+        let translationName = selectedTranslationData?.name ?? ""
+        let language = Constants.getLanguageFromCode(
+            code: translationLanguage
+        )
+        let selectedItem = ItemSelector(
+            title: "\(language) - \(translationName)",
+            value: "",
+            item: selectedTranslationData
+        )
+
+        navigateToSelection(
+            title: NSLocalizedString(
+                "surah_translation_drawer_title",
+                comment: ""
+            ),
+            items: translationListItem,
+            selectedItem: selectedItem
+        )
+    }
+    
+    private func navigateToSelection(
+        title: String,
+        items: [ItemSelector],
+        selectedItem: ItemSelector?
+    ) {
+        let viewModel = SelectionViewModel(
+            title: title,
+            items: items,
+            selectedItem: selectedItem
+        )
+        let selectionViewController = SelectionViewController(
+            viewModel: viewModel
+        )
+        selectionViewController.delegate = self
+        let selectionNavigationController = UINavigationController(
+            rootViewController: selectionViewController
+        )
+        present(
+            selectionNavigationController,
+            animated: true
+        )
+    }
+    
+    private func navigateToEmail(
+        subject: String,
+        recipients: [String]
+    ) {
+        guard MFMailComposeViewController.canSendMail() else { return }
+
+        let mailViewController = MFMailComposeViewController()
+        mailViewController.mailComposeDelegate = self
+        mailViewController.setToRecipients(recipients)
+        mailViewController.setSubject(subject)
+        present(
+            mailViewController,
+            animated: true
+        )
     }
 }
 

@@ -25,9 +25,9 @@ protocol SettingViewModelTypes: SectionSetter, TableViewSectionSetter where Sect
     var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var feedbackCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
     var recitationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
-    var newRecitationList: CurrentValueSubject<[ItemSelector]?, Never> { get }
+    var recitationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
     var translationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
-    var newTranslationList: CurrentValueSubject<[ItemSelector]?, Never> { get }
+    var translationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
     var tapAction: CurrentValueSubject<Action<Section.Item, Never>, Never> { get }
     
     func handleEditionSuccess(value: Edition)
@@ -208,9 +208,9 @@ class SettingViewModel: SettingViewModelTypes {
 
     let title = CurrentValueSubject<String, Never>(NSLocalizedString("setting_header_title", comment: ""))
     let recitationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
-    let newRecitationList = CurrentValueSubject<[ItemSelector]?, Never>(nil)
+    let recitationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
     let translationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
-    let newTranslationList = CurrentValueSubject<[ItemSelector]?, Never>(nil)
+    let translationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
     let tapAction = CurrentValueSubject<Action<Section.Item, Swift.Never>, Never>(Action { _ in
         return Observable.empty()
     })
@@ -256,9 +256,9 @@ class SettingViewModel: SettingViewModelTypes {
         }
 
         recitationList.send(recitationEditions)
-        newRecitationList.send(newRecitationItems)
+        recitationListItem.send(newRecitationItems)
         translationList.send(translationEditions)
-        newTranslationList.send(newTranslationItems)
+        translationListItem.send(newTranslationItems)
     }
     
     required init() {

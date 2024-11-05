@@ -66,8 +66,14 @@ class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableV
     
     private var viewModel: ViewModel = ViewModel()
         
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         
         setupView()
         setupListener()

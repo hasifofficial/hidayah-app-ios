@@ -56,8 +56,14 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
     private var cancellable = Set<AnyCancellable>()
     private var viewModel: ViewModel = ViewModel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         
         setupView()
         setupListener()
@@ -101,170 +107,170 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
         
         viewModel.titleLabelText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self,
-                      strongSelf.viewModel.titleLabelAttributedText.value == nil,
+                guard let self,
+                      self.viewModel.titleLabelAttributedText.value == nil,
                       value != nil else { return }
 
-                strongSelf.titleLabel.text = value
+                self.titleLabel.text = value
             })
             .store(in: &cancellable)
 
         viewModel.titleLabelTextFont
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self,
-                      strongSelf.viewModel.titleLabelAttributedText.value == nil else { return }
+                guard let self,
+                      self.viewModel.titleLabelAttributedText.value == nil else { return }
 
-                strongSelf.titleLabel.font = value
+                self.titleLabel.font = value
             })
             .store(in: &cancellable)
 
         viewModel.titleLabelAttributedText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self,
+                guard let self,
                       value != nil else { return }
                 
-                strongSelf.titleLabel.attributedText = value
+                self.titleLabel.attributedText = value
             })
             .store(in: &cancellable)
 
         viewModel.titleLabelTextAlignment
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.titleLabel.textAlignment = value
+                self.titleLabel.textAlignment = value
             })
             .store(in: &cancellable)
 
         viewModel.titleLabelTextLine
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.titleLabel.numberOfLines = value
+                self.titleLabel.numberOfLines = value
             })
             .store(in: &cancellable)
         
         viewModel.leftButtonIcon
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftButton.setImage(value, for: .normal)
+                self.leftButton.setImage(value, for: .normal)
             })
             .store(in: &cancellable)
 
         viewModel.leftButtonIconTintColor
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftButton.tintColor = value
+                self.leftButton.tintColor = value
             })
             .store(in: &cancellable)
 
         viewModel.leftButtonWidth
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftButtonWidthConstraint.constant = value
+                self.leftButtonWidthConstraint.constant = value
             })
             .store(in: &cancellable)
         
         viewModel.leftButtonHeight
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self,
+                guard let self,
                       let value = value else { return }
 
-                strongSelf.leftButtonHeightConstraint.constant = value
-                strongSelf.leftButtonHeightConstraint.isActive = true
+                self.leftButtonHeightConstraint.constant = value
+                self.leftButtonHeightConstraint.isActive = true
             })
             .store(in: &cancellable)
 
         viewModel.rightButtonText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTextButton.setTitle(value, for: .normal)
+                self.rightTextButton.setTitle(value, for: .normal)
             })
             .store(in: &cancellable)
 
         viewModel.rightButtonTextColor
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTextButton.setTitleColor(value, for: .normal)
+                self.rightTextButton.setTitleColor(value, for: .normal)
             })
             .store(in: &cancellable)
 
         viewModel.rightButtonTextFont
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTextButton.titleLabel?.font = value
+                self.rightTextButton.titleLabel?.font = value
             })
             .store(in: &cancellable)
 
         viewModel.shouldHideLeftButton
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftButton.isHidden = value
+                self.leftButton.isHidden = value
                 if value {
-                    strongSelf.leftContentStackView.removeArrangedSubview(strongSelf.leftButton)
+                    self.leftContentStackView.removeArrangedSubview(self.leftButton)
                 } else {
-                    strongSelf.leftContentStackView.removeArrangedSubview(strongSelf.titleLabel)
-                    strongSelf.leftContentStackView.addArrangedSubview(strongSelf.leftButton)
-                    strongSelf.leftContentStackView.addArrangedSubview(strongSelf.titleLabel)
+                    self.leftContentStackView.removeArrangedSubview(self.titleLabel)
+                    self.leftContentStackView.addArrangedSubview(self.leftButton)
+                    self.leftContentStackView.addArrangedSubview(self.titleLabel)
                 }
             })
             .store(in: &cancellable)
 
         viewModel.shouldHideRightButton
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.rightTextButton.isHidden = value
+                self.rightTextButton.isHidden = value
             })
             .store(in: &cancellable)
 
         viewModel.accessoryType
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.accessoryType = value
+                self.accessoryType = value
             })
             .store(in: &cancellable)
 
         viewModel.containerTopSpacing
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.containerViewTopConstraint.constant = value
-                strongSelf.setNeedsLayout()
+                self.containerViewTopConstraint.constant = value
+                self.setNeedsLayout()
             })
             .store(in: &cancellable)
 
         viewModel.containerBottomSpacing
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.containerViewBottomConstraint.constant = -value
-                strongSelf.setNeedsLayout()
+                self.containerViewBottomConstraint.constant = -value
+                self.setNeedsLayout()
             })
             .store(in: &cancellable)
 
         viewModel.containerLeadingSpacing
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.containerViewLeadingConstraint.constant = value
-                strongSelf.setNeedsLayout()
+                self.containerViewLeadingConstraint.constant = value
+                self.setNeedsLayout()
             })
             .store(in: &cancellable)
 
         viewModel.containerTrailingSpacing
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.containerViewTrailingConstraint.constant = -value
-                strongSelf.setNeedsLayout()
+                self.containerViewTrailingConstraint.constant = -value
+                self.setNeedsLayout()
             })
             .store(in: &cancellable)
     }

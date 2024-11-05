@@ -20,10 +20,10 @@ protocol SurahDetailViewModelTypes: SectionSetter, TableViewSectionSetter where 
     var selectedSurahNo: CurrentValueSubject<Int?, Never> { get }
     var ayahList: CurrentValueSubject<[Ayah]?, Never> { get }
     var recitationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
-    var newRecitationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
+    var recitationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
     var selectedRecitationItem: CurrentValueSubject<ItemSelector?, Never> { get }
     var translationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
-    var newTranslationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
+    var translationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
     var selectedTranslationListItem: CurrentValueSubject<ItemSelector?, Never> { get }
     var notifyLoadSurahDetailSuccess: PassthroughSubject<Void, Never> { get }
     var tapAction: CurrentValueSubject<Action<Section.Item, Never>, Never> { get }
@@ -56,10 +56,10 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
     let selectedSurahNo = CurrentValueSubject<Int?, Never>(nil)
     let ayahList = CurrentValueSubject<[Ayah]?, Never>(nil)
     let recitationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
-    let newRecitationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
+    let recitationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
     let selectedRecitationItem = CurrentValueSubject<ItemSelector?, Never>(nil)
     let translationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
-    let newTranslationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
+    let translationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
     let selectedTranslationListItem = CurrentValueSubject<ItemSelector?, Never>(nil)
     let notifyLoadSurahDetailSuccess = PassthroughSubject<Void, Never>()
     let tapAction = CurrentValueSubject<Action<Section.Item, Swift.Never>, Never>(Action { _ in
@@ -196,9 +196,9 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
         }
 
         recitationList.send(recitationEditions)
-        newRecitationListItem.send(newRecitationItems)
+        recitationListItem.send(newRecitationItems)
         translationList.send(translationEditions)
-        newTranslationListItem.send(newTranslationItems)
+        translationListItem.send(newTranslationItems)
     }
         
     required init() {

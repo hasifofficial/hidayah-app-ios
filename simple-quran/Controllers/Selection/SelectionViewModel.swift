@@ -10,20 +10,18 @@ import Combine
 import UIKit
 
 class SelectionViewModel {
+    var titleSubject = CurrentValueSubject<String?, Never>(nil)
     var itemsSubject = CurrentValueSubject<[ItemSelector], Never>([])
     var selectedItemSubject = CurrentValueSubject<ItemSelector?, Never>(nil)
     var errorSubject = PassthroughSubject<Error, Never>()
 
-    let title: String
-    private var cancellable = Set<AnyCancellable>()
-
     init(
         title: String,
-        selectedItem: ItemSelector?,
-        items: [ItemSelector]
+        items: [ItemSelector],
+        selectedItem: ItemSelector?
     ) {
-        self.title = title
-        selectedItemSubject.send(selectedItem)
+        titleSubject.send(title)
         itemsSubject.send(items)
+        selectedItemSubject.send(selectedItem)
     }
 }

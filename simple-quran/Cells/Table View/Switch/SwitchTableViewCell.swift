@@ -37,8 +37,14 @@ class SwitchTableViewCell: UITableViewCell {
     
     weak var delegate: SwitchTableViewCellDelegate?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         
         setupView()
         setupListener()
@@ -79,49 +85,49 @@ class SwitchTableViewCell: UITableViewCell {
 
         viewModel.titleLabelText
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.titleLabel.text = value
+                self.titleLabel.text = value
             })
             .store(in: &cancellable)
 
         viewModel.titleLabelTextFont
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.titleLabel.font = value
+                self.titleLabel.font = value
             })
             .store(in: &cancellable)
 
         viewModel.titleLabelTextLine
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.titleLabel.numberOfLines = value
+                self.titleLabel.numberOfLines = value
             })
             .store(in: &cancellable)
 
         viewModel.leftButtonIcon
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftButton.setImage(value, for: .normal)
+                self.leftButton.setImage(value, for: .normal)
             })
             .store(in: &cancellable)
 
         viewModel.leftButtonIconTintColor
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
 
-                strongSelf.leftButton.tintColor = value
+                self.leftButton.tintColor = value
             })
             .store(in: &cancellable)
 
         viewModel.isSwitchOn
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.switchToggle.isOn = value
+                self.switchToggle.isOn = value
             })
             .store(in: &cancellable)
     }

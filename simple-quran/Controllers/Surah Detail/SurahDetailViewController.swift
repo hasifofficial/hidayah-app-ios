@@ -61,7 +61,10 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         self.bookmarkedAyah = bookmarkedAyah
         self.scrollToSpecificAyah = scrollToSpecificAyah
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -95,51 +98,51 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         
         viewModel.title
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.title = value
+                self.title = value
             })
             .store(in: &cancellable)
         
         viewModel.cardPlaceholderCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.viewModel.setSection(.cardPlaceholder(item: value))
+                self.viewModel.setSection(.cardPlaceholder(item: value))
             })
             .store(in: &cancellable)
         
         viewModel.ayahPlaceholderCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.viewModel.setSection(.ayahPlaceholder(item: value))
+                self.viewModel.setSection(.ayahPlaceholder(item: value))
             })
             .store(in: &cancellable)
         
         viewModel.cardCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.viewModel.setSection(.card(item: value))
+                self.viewModel.setSection(.card(item: value))
             })
             .store(in: &cancellable)
         
         viewModel.ayahCell
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
-                strongSelf.viewModel.setSection(.ayah(item: value))
+                self.viewModel.setSection(.ayah(item: value))
             })
             .store(in: &cancellable)
         
         viewModel.notifyLoadSurahDetailSuccess
             .sink(receiveValue: { [weak self] (value) in
-                guard let strongSelf = self,
-                      let bookmarkedAyah = strongSelf.bookmarkedAyah,
-                      strongSelf.scrollToSpecificAyah else { return }
+                guard let self,
+                      let bookmarkedAyah = self.bookmarkedAyah,
+                      self.scrollToSpecificAyah else { return }
                 
-                strongSelf.scrollToBookmarkedAyah(ayah: bookmarkedAyah)
+                self.scrollToBookmarkedAyah(ayah: bookmarkedAyah)
             })
             .store(in: &cancellable)
     }
@@ -179,21 +182,21 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         )
         .receive(on: DispatchQueue.main)
         .sink { [weak self] completion in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
             switch completion {
             case .finished:
                 break
             case .failure(let error):
                 if let error = error as? RequestError {
-                    strongSelf.view.makeToast(error.message)
+                    self.view.makeToast(error.message)
                 } else {
-                    strongSelf.view.makeToast(error.localizedDescription)
+                    self.view.makeToast(error.localizedDescription)
                 }
             }
         } receiveValue: { [weak self] surah in
-            guard let strongSelf = self else { return }
-            strongSelf.viewModel.handleSurahDetailSuccess(value: surah)
+            guard let self else { return }
+            self.viewModel.handleSurahDetailSuccess(value: surah)
         }
         .store(in: &cancellable)
     }
@@ -202,21 +205,21 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
         surahService.getSurahEdition()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                guard let strongSelf = self else { return }
+                guard let self else { return }
                 
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
                     if let error = error as? RequestError {
-                        strongSelf.view.makeToast(error.message)
+                        self.view.makeToast(error.message)
                     } else {
-                        strongSelf.view.makeToast(error.localizedDescription)
+                        self.view.makeToast(error.localizedDescription)
                     }
                 }
             } receiveValue: { [weak self] edition in
-                guard let strongSelf = self else { return }
-                strongSelf.viewModel.handleEditionSuccess(value: edition)
+                guard let self else { return }
+                self.viewModel.handleEditionSuccess(value: edition)
             }
             .store(in: &cancellable)
     }
@@ -227,68 +230,6 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
                 ayahCell.centerHeaderButtonImage.accept(UIImage(systemName: "play")?.withRenderingMode(.alwaysTemplate))
             }
         }
-    }
-
-    private func navigateToReciterSelection(
-        items: [ItemSelector]
-    ) {
-        let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
-        let reciterName = selectedRecitationData?.englishName ?? "Alafasy"
-        let viewModel = SelectionViewModel(
-            title: NSLocalizedString(
-                "surah_recitation_drawer_title",
-                comment: ""
-            ),
-            selectedItem: ItemSelector(
-                title: reciterName,
-                value: "",
-                item: selectedRecitationData
-            ),
-            items: items
-        )
-        let vc = SelectionViewController(
-            viewModel: viewModel
-        )
-        vc.delegate = self
-        let profileNavigationController = UINavigationController(
-            rootViewController: vc
-        )
-        present(
-            profileNavigationController,
-            animated: true
-        )
-    }
-    
-    private func navigateToTranslationSelection(
-        items: [ItemSelector]
-    ) {
-        let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
-        let translationLanguage = selectedTranslationData?.language ?? ""
-        let translationName = selectedTranslationData?.name ?? ""
-        let language = Constants.getLanguageFromCode(code: translationLanguage)
-        let viewModel = SelectionViewModel(
-            title: NSLocalizedString(
-                "surah_translation_drawer_title",
-                comment: ""
-            ),
-            selectedItem: ItemSelector(
-                title: "\(language) - \(translationName)",
-                value: "",
-                item: selectedTranslationData
-            ),
-            items: items
-        )
-        let vc = SelectionViewController(
-            viewModel: viewModel
-        )
-        vc.delegate = self
-        let profileNavigationController = UINavigationController(
-            rootViewController: vc
-        )
-        present(
-            profileNavigationController,
-            animated: true
-        )
     }
     
     private func scrollToBookmarkedAyah(ayah: Int) {
@@ -305,21 +246,90 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
     }
 }
 
+extension SurahDetailViewController {
+    private func navigateToReciterSelection() {
+        guard let recitationListItem = viewModel.recitationListItem.value else { return }
+        
+        let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
+        let reciterName = selectedRecitationData?.englishName ?? "Alafasy"
+        let selectedItem = ItemSelector(
+            title: reciterName,
+            value: "",
+            item: selectedRecitationData
+        )
+
+        navigateToSelection(
+            title: NSLocalizedString(
+                "surah_recitation_drawer_title",
+                comment: ""
+            ),
+            items: recitationListItem,
+            selectedItem: selectedItem
+        )
+    }
+    
+    private func navigateToTranslationSelection() {
+        guard let translationListItem = viewModel.translationListItem.value else { return }
+
+        let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
+        let translationLanguage = selectedTranslationData?.language ?? ""
+        let translationName = selectedTranslationData?.name ?? ""
+        let language = Constants.getLanguageFromCode(
+            code: translationLanguage
+        )
+        let selectedItem = ItemSelector(
+            title: "\(language) - \(translationName)",
+            value: "",
+            item: selectedTranslationData
+        )
+
+        navigateToSelection(
+            title: NSLocalizedString(
+                "surah_translation_drawer_title",
+                comment: ""
+            ),
+            items: translationListItem,
+            selectedItem: selectedItem
+        )
+    }
+    
+    private func navigateToSelection(
+        title: String,
+        items: [ItemSelector],
+        selectedItem: ItemSelector?
+    ) {
+        let viewModel = SelectionViewModel(
+            title: title,
+            items: items,
+            selectedItem: selectedItem
+        )
+        let selectionViewController = SelectionViewController(
+            viewModel: viewModel
+        )
+        selectionViewController.delegate = self
+        let selectionNavigationController = UINavigationController(
+            rootViewController: selectionViewController
+        )
+        present(
+            selectionNavigationController,
+            animated: true
+        )
+    }
+}
+
 extension SurahDetailViewController: DetailCardTableViewCellDelegate {
     func detailCardTableViewCell(
         didTapLeftButton cell: DetailCardTableViewCell,
         viewModel: DetailCardTableViewCellViewModelTypes
     ) {
-        guard let newRecitationListItem = self.viewModel.newRecitationListItem.value else { return }
-        navigateToReciterSelection(items: newRecitationListItem)
+        navigateToReciterSelection()
     }
     
     func detailCardTableViewCell(
         didTapRightButton cell: DetailCardTableViewCell,
         viewModel: DetailCardTableViewCellViewModelTypes
     ) {
-        guard let newTranslationListItem = self.viewModel.newTranslationListItem.value else { return }
-        navigateToTranslationSelection(items: newTranslationListItem)
+        navigateToTranslationSelection()
     }
 }
 
