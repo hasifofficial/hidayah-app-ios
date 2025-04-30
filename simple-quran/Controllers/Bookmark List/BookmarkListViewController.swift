@@ -11,9 +11,9 @@ import RxSwift
 import Toast_Swift
 
 class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: BookmarkListViewModelTypes {
-    
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
+    private let taskManager: TaskManager
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
     
@@ -39,9 +39,11 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     }
     
     init(
-        surahService: SurahService
+        surahService: SurahService,
+        taskManager: TaskManager
     ) {
         self.surahService = surahService
+        self.taskManager = taskManager
 
         super.init(
             nibName: nil,
@@ -125,12 +127,23 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     
     private func setupEmptyState() {
         let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString("bookmark_list_empty_list_title", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)]
+            string: NSLocalizedString(
+                "bookmark_list_empty_list_title",
+                comment: ""
+            ),
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+            ]
         )
         attributedText.append(NSAttributedString(
-            string: NSLocalizedString("bookmark_list_empty_list_subtitle", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+            string: NSLocalizedString(
+                "bookmark_list_empty_list_subtitle",
+                comment: ""
+            ),
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 14),
+                .foregroundColor: UIColor.textGray
+            ]
         ))
         
         let tempEmptyStateCells = SectionTitleTableViewCellViewModel()
@@ -172,7 +185,8 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     
     @objc private func settingButtonAction() {
         let vc = SettingViewController<SettingViewModel>(
-            surahService: surahService
+            surahService: surahService,
+            taskManager: taskManager
         )
         let settingNavigationController = UINavigationController(
             rootViewController: vc

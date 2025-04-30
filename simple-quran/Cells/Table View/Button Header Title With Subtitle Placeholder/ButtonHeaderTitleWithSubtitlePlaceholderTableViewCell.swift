@@ -11,7 +11,7 @@ class ButtonHeaderTitleWithSubtitlePlaceholderTableViewCell<ViewModel>: UITableV
     
     private lazy var headerView: UIView = {
         let newView = UIView()
-        newView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .backgroundLightGrayDarkMode : .backgroundLightGray
+        newView.backgroundColor = .backgroundGray
         newView.layer.cornerRadius = 10
         newView.translatesAutoresizingMaskIntoConstraints = false
         return newView

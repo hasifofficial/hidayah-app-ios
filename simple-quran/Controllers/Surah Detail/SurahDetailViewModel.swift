@@ -85,7 +85,17 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
         let tempCardCell = DetailCardTableViewCellViewModel()
         tempCardCell.titleLabelText.accept(surahName)
         tempCardCell.detailLabelText.accept(
-            String(format: NSLocalizedString("surah_description", comment: ""), surahName, translationSurahName, String(noOfAyahs), String(surahNo), origin.lowercased() == "meccan" ? "Makkah" : "Madinah")
+            String(
+                format: NSLocalizedString(
+                    "surah_description",
+                    comment: ""
+                ),
+                surahName,
+                translationSurahName,
+                String(noOfAyahs),
+                String(surahNo),
+                origin.lowercased() == "meccan" ? "Makkah" : "Madinah"
+            )
         )
         
         let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
@@ -133,13 +143,20 @@ class SurahDetailViewModel: SurahDetailViewModelTypes {
             tempAyahCell.titleLabelTextAlignment.accept(.right)
             tempAyahCell.subtitleLabelText.accept(translationVerse)
             tempAyahCell.subtitleLabelTextAlignment.accept(textDirection == .leftToRight ? .left : .right)
-            tempAyahCell.data.accept(ayah)
+            tempAyahCell.data.accept(
+                AyahDetail(
+                    ayah: ayah,
+                    surahNumber: surahNo,
+                    translation: translationVerse
+                )
+            )
             
             tempAyahCells.append(tempAyahCell)
         }
         
         cardPlaceholderCell.send(nil)
         ayahPlaceholderCell.send(nil)
+        title.send(surahName)
         cardCell.send(tempCardCell)
         ayahCell.send(tempAyahCells)
         ayahList.send(ayahs)

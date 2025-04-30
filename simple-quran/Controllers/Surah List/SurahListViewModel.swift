@@ -37,7 +37,10 @@ class SurahListViewModel: SurahListViewModelTypes {
         return CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never>(vm)
     }()
 
-    let title = CurrentValueSubject<String, Never>(NSLocalizedString("surah_list_header_title", comment: ""))
+    let title = CurrentValueSubject<String, Never>(NSLocalizedString(
+        "surah_list_header_title",
+        comment: ""
+    ))
     let surahCell = CurrentValueSubject<[DetailTitleTableViewCellViewModel]?, Never>(nil)
     let surahEmptyCell = CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never>(nil)
     let surahList = CurrentValueSubject<[SurahListResponse]?, Never>(nil)
@@ -82,7 +85,14 @@ class SurahListViewModel: SurahListViewModelTypes {
                 tempSurahCell.rightTitleLabelText.send(name)
                 tempSurahCell.leftTitleLabelText.send(englishName)
                 tempSurahCell.leftSubtitleLabelText.send(
-                    String(format: NSLocalizedString("surah_list_subtitle", comment: ""), origin.lowercased() == "meccan" ? "Makiyyah" : "Madaniyah", String(noOfAyahs))
+                    String(
+                        format: NSLocalizedString(
+                            "surah_list_subtitle",
+                            comment: ""
+                        ),
+                        origin.lowercased() == "meccan" ? "Makiyyah" : "Madaniyah",
+                        String(noOfAyahs)
+                    )
                 )
 
                 tempSurahCells.append(tempSurahCell)
@@ -92,12 +102,23 @@ class SurahListViewModel: SurahListViewModelTypes {
             surahCell.send(tempSurahCells)
         } else {
             let attributedText = NSMutableAttributedString(
-                string: NSLocalizedString("surah_list_search_empty_title", comment: ""),
-                attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]
+                string: NSLocalizedString(
+                    "surah_list_search_empty_title",
+                    comment: ""
+                ),
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+                ]
             )
             attributedText.append(NSAttributedString(
-                string: NSLocalizedString("surah_list_search_empty_subtitle", comment: ""),
-                attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+                string: NSLocalizedString(
+                    "surah_list_search_empty_subtitle",
+                    comment: ""
+                ),
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.textGray
+                ]
             ))
             
             let tempEmptyStateCells = SectionTitleTableViewCellViewModel()

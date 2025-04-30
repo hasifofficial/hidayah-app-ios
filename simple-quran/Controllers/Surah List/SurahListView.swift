@@ -24,7 +24,10 @@ class SurahListView: UIView {
     lazy var searchController: UISearchController = {
         let newSearchController = UISearchController(searchResultsController: nil)
         newSearchController.obscuresBackgroundDuringPresentation = false
-        newSearchController.searchBar.placeholder = NSLocalizedString("surah_list_search_placeholder", comment: "")
+        newSearchController.searchBar.placeholder = NSLocalizedString(
+            "surah_list_search_placeholder",
+            comment: ""
+        )
         return newSearchController
     }()
     

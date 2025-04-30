@@ -32,7 +32,13 @@ class SettingView: UIView {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
         let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
         let newLabel = UILabel()
-        newLabel.text = String(format: NSLocalizedString("setting_app_verison", comment: ""), appVersion, buildNumber)
+        newLabel.text = String(
+            format: NSLocalizedString(
+                "setting_app_verison",
+                comment: ""
+            ),
+            appVersion, buildNumber
+        )
         newLabel.font = .systemFont(ofSize: 14)
         newLabel.textColor = .textGray
         newLabel.textAlignment = .center

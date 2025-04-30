@@ -16,6 +16,10 @@ class AppController: NSObject {
     lazy var surahService = SurahService(
         apiClientService: apiClientService
     )
+    lazy var deeplinkManager = DeeplinkManager(
+        surahService: surahService
+    )
+    let taskManager = TaskManager.shared
 
     override init() {
         super.init()
@@ -23,6 +27,7 @@ class AppController: NSObject {
         FirebaseApp.configure()
         self.configureCustomFont()
         self.scheduleKahfNotification()
+        self.scheduleResetDailyTrackerNotification()
 
         UNUserNotificationCenter.current().requestAuthorization(options: [
             .alert,
@@ -33,12 +38,23 @@ class AppController: NSObject {
         UNUserNotificationCenter.current().delegate = self
     }
 
-    func start(with window: UIWindow) {
+    func start(
+        with window: UIWindow,
+        deepLink: URL? = nil
+    ) {
         self.window = window
         let rootViewController = RootViewController(
-            surahService: surahService
+            surahService: surahService,
+            taskManager: taskManager
         )
         window.rootViewController = rootViewController
+        if let deepLink = deepLink {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                _ = self.deeplinkManager.handleDeepLink(
+                    url: deepLink
+                )
+            }
+        }
     }
     
     func application(
@@ -98,6 +114,29 @@ class AppController: NSObject {
     ) {
 
     }
+    
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    ) -> Bool {
+        deeplinkManager.handleDeepLink(
+            url: url
+        )
+    }
+    
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let url = userActivity.webpageURL else { return false }
+
+        return deeplinkManager.handleDeepLink(
+            url: url
+        )
+    }
 }
 
 extension AppController {
@@ -107,19 +146,28 @@ extension AppController {
 
     private func scheduleKahfNotification() {
         let allowKahfReminder = Storage.load(key: .allowKahfReminder) as? Bool ?? true
-        let identifier = "Al-Kahf Notification"
+        let identifier = NotificationIdentifier.kahfReminder.rawValue
         
         if allowKahfReminder {
             let content = UNMutableNotificationContent()
-            content.title = NSLocalizedString("push_notification_kahf_reminder_title", comment: "")
-            content.body = NSLocalizedString("push_notification_kahf_reminder_body", comment: "")
+            content.title = NSLocalizedString(
+                "push_notification_kahf_reminder_title",
+                comment: ""
+            )
+            content.body = NSLocalizedString(
+                "push_notification_kahf_reminder_body",
+                comment: ""
+            )
+            content.userInfo = [
+                "url": "hidayahapp://inAppDeeplink/quran/18"
+            ]
             content.sound = UNNotificationSound.default
             
             var dateComponents = DateComponents()
             dateComponents.calendar = Calendar(identifier: .gregorian)
             dateComponents.weekday = 6
             dateComponents.hour = 9
-            dateComponents.minute = 00
+            dateComponents.minute = 0
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
@@ -128,6 +176,33 @@ extension AppController {
         } else {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
         }
+    }
+
+    private func scheduleResetDailyTrackerNotification() {
+        let identifier = NotificationIdentifier.trackerProgressReset.rawValue
+
+        let content = UNMutableNotificationContent()
+        content.title = NSLocalizedString(
+            "push_notification_istiqamah_tracker_daily_reset_title",
+            comment: ""
+        )
+        content.body = NSLocalizedString(
+            "push_notification_istiqamah_tracker_daily_reset_body",
+            comment: ""
+        )
+        content.userInfo = [
+            "url": "hidayahapp://inAppDeeplink/tracker"
+        ]
+        content.sound = UNNotificationSound.default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
     }
 }
 
@@ -150,14 +225,15 @@ extension AppController: UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
-        print(userInfo)
-        
-        if response.notification.request.identifier == "Al-Kahf Notification" {
-            #if DEBUG
-            print("Handling Al-Kahf Notification notifications")
-            #endif
+        let urlString = userInfo["url"] as? String
+        if let urlString = urlString,
+           let url = URL(string: urlString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-
+        if response.notification.request.identifier ==
+            NotificationIdentifier.trackerProgressReset.rawValue {
+            taskManager.resetDailyTasks()
+        }
         completionHandler()
     }
 }

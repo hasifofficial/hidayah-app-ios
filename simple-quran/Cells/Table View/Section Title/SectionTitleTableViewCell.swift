@@ -39,7 +39,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
         return newButton
     }()
 
-    private lazy var rightTextButton: UIButton = {
+    private lazy var rightButton: UIButton = {
         let newButton = UIButton()
         newButton.titleLabel?.textAlignment = .right
         newButton.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +83,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
         leftContentStackView.addArrangedSubview(titleLabel)
 
         containerStackView.addArrangedSubview(leftContentStackView)
-        containerStackView.addArrangedSubview(rightTextButton)
+        containerStackView.addArrangedSubview(rightButton)
         
         contentView.addSubview(containerStackView)
                 
@@ -103,7 +103,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
     }
     
     private func setupListener() {
-        rightTextButton.addTarget(self, action: #selector(rightTextButtonAction), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(rightButtonAction), for: .touchUpInside)
         
         viewModel.titleLabelText
             .sink(receiveValue: { [weak self] (value) in
@@ -121,6 +121,15 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
                       self.viewModel.titleLabelAttributedText.value == nil else { return }
 
                 self.titleLabel.font = value
+            })
+            .store(in: &cancellable)
+        
+        viewModel.titleLabelTextColor
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self,
+                      self.viewModel.titleLabelAttributedText.value == nil else { return }
+
+                self.titleLabel.textColor = value
             })
             .store(in: &cancellable)
 
@@ -187,7 +196,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
             .sink(receiveValue: { [weak self] (value) in
                 guard let self else { return }
                 
-                self.rightTextButton.setTitle(value, for: .normal)
+                self.rightButton.setTitle(value, for: .normal)
             })
             .store(in: &cancellable)
 
@@ -195,7 +204,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
             .sink(receiveValue: { [weak self] (value) in
                 guard let self else { return }
                 
-                self.rightTextButton.setTitleColor(value, for: .normal)
+                self.rightButton.setTitleColor(value, for: .normal)
             })
             .store(in: &cancellable)
 
@@ -203,7 +212,31 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
             .sink(receiveValue: { [weak self] (value) in
                 guard let self else { return }
                 
-                self.rightTextButton.titleLabel?.font = value
+                self.rightButton.titleLabel?.font = value
+            })
+            .store(in: &cancellable)
+        
+        viewModel.rightButtonTextAlignment
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                
+                self.rightButton.titleLabel?.textAlignment = value
+            })
+            .store(in: &cancellable)
+
+        viewModel.rightButtonIcon
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+
+                self.rightButton.setImage(value, for: .normal)
+            })
+            .store(in: &cancellable)
+
+        viewModel.rightButtonIconTintColor
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+
+                self.rightButton.tintColor = value
             })
             .store(in: &cancellable)
 
@@ -226,7 +259,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
             .sink(receiveValue: { [weak self] (value) in
                 guard let self else { return }
                 
-                self.rightTextButton.isHidden = value
+                self.rightButton.isHidden = value
             })
             .store(in: &cancellable)
 
@@ -275,7 +308,7 @@ class SectionTitleTableViewCell<ViewModel>: UITableViewCell where ViewModel: Sec
             .store(in: &cancellable)
     }
     
-    @objc private func rightTextButtonAction() {
+    @objc private func rightButtonAction() {
         guard let rightButtonTapHandler = viewModel.rightButtonTapHandler.value else { return }
    
         rightButtonTapHandler()

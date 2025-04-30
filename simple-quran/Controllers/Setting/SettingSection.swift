@@ -11,6 +11,8 @@ enum SettingSection: SectionModelType {
     case quranSettingTitle(item: SectionTitleTableViewCellViewModel?)
     case recitation(item: SectionTitleTableViewCellViewModel?)
     case translationLanguage(item: SectionTitleTableViewCellViewModel?)
+    case trackerSettingTitle(item: SectionTitleTableViewCellViewModel?)
+    case trackerSetting(item: SectionTitleTableViewCellViewModel?)
     case notificationSettingTitle(item: SectionTitleTableViewCellViewModel?)
     case kahfReminder(item: SwitchTableViewCellViewModel?)
     case aboutTitle(item: SectionTitleTableViewCellViewModel?)
@@ -27,6 +29,10 @@ enum SettingSection: SectionModelType {
         case .recitation(let item):
             return item != nil ? [item!] : []
         case .translationLanguage(let item):
+            return item != nil ? [item!] : []
+        case .trackerSettingTitle(let item):
+            return item != nil ? [item!] : []
+        case .trackerSetting(let item):
             return item != nil ? [item!] : []
         case .notificationSettingTitle(let item):
             return item != nil ? [item!] : []
@@ -55,6 +61,10 @@ enum SettingSection: SectionModelType {
             self = .recitation(item: items.first as? SectionTitleTableViewCellViewModel)
         case .translationLanguage:
             self = .translationLanguage(item: items.first as? SectionTitleTableViewCellViewModel)
+        case .trackerSettingTitle:
+            self = .trackerSettingTitle(item: items.first as? SectionTitleTableViewCellViewModel)
+        case .trackerSetting:
+            self = .trackerSetting(item: items.first as? SectionTitleTableViewCellViewModel)
         case .notificationSettingTitle:
             self = .notificationSettingTitle(item: items.first as? SectionTitleTableViewCellViewModel)
         case .kahfReminder:
@@ -83,6 +93,8 @@ extension SettingSection: TableViewDataSource {
             .quranSettingTitle(item: SectionTitleTableViewCellViewModel()),
             .recitation(item: SectionTitleTableViewCellViewModel()),
             .translationLanguage(item: SectionTitleTableViewCellViewModel()),
+            .trackerSettingTitle(item: SectionTitleTableViewCellViewModel()),
+            .trackerSetting(item: SectionTitleTableViewCellViewModel()),
             .notificationSettingTitle(item: SectionTitleTableViewCellViewModel()),
             .kahfReminder(item: SwitchTableViewCellViewModel()),
             .aboutTitle(item: SectionTitleTableViewCellViewModel()),
@@ -114,7 +126,7 @@ extension SettingSection: TableViewDataSource {
     
     var cellType: UITableViewCell.Type {
         switch self {
-        case .quranSettingTitle, .recitation, .translationLanguage, .notificationSettingTitle, .aboutTitle, .about, .privacy, .termCondition, .supportTitle, .feedback:
+        case .quranSettingTitle, .recitation, .translationLanguage, .trackerSettingTitle, .trackerSetting, .notificationSettingTitle, .aboutTitle, .about, .privacy, .termCondition, .supportTitle, .feedback:
             return SectionTitleTableViewCell<SectionTitleTableViewCellViewModel>.self
         case .kahfReminder:
             return SwitchTableViewCell.self
@@ -131,22 +143,26 @@ extension SettingSection: RelativeOrder {
             return 1
         case .translationLanguage:
             return 2
-        case .notificationSettingTitle:
+        case .trackerSettingTitle:
             return 3
-        case .kahfReminder:
+        case .trackerSetting:
             return 4
-        case .aboutTitle:
+        case .notificationSettingTitle:
             return 5
-        case .about:
+        case .kahfReminder:
             return 6
-        case .privacy:
+        case .aboutTitle:
             return 7
-        case .termCondition:
+        case .about:
             return 8
-        case .supportTitle:
+        case .privacy:
             return 9
-        case .feedback:
+        case .termCondition:
             return 10
+        case .supportTitle:
+            return 11
+        case .feedback:
+            return 12
         }
     }
 }

@@ -12,7 +12,6 @@ import RxSwift
 import Toast_Swift
 
 class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahDetailViewModelTypes {
-    
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
     private var cancellable = Set<AnyCancellable>()
@@ -231,9 +230,46 @@ class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegat
             }
         }
     }
-    
+
     private func scrollToBookmarkedAyah(ayah: Int) {
-        let indexPath = IndexPath(row: ayah - 1, section: 3)
+        guard ayah > 0 else {
+            view.makeToast(
+                NSLocalizedString(
+                    "common_error_content",
+                    comment: ""
+                )
+            )
+            return
+        }
+
+        let row = ayah - 1
+        let section = SurahDetailSection.ayah(item: viewModel.ayahCell.value).sectionOrder
+
+        guard section < rootView.tableView.numberOfSections else {
+            view.makeToast(
+                NSLocalizedString(
+                    "common_error_content",
+                    comment: ""
+                )
+            )
+            return
+        }
+
+        guard row < rootView.tableView.numberOfRows(inSection: section) else {
+            view.makeToast(
+                String(
+                    format: NSLocalizedString(
+                        "surah_scroll_to_ayah_out_of_range_error",
+                        comment: ""
+                    ),
+                    String(ayah),
+                    String(rootView.tableView.numberOfRows(inSection: section))
+                )
+            )
+            return
+        }
+        
+        let indexPath = IndexPath(row: row, section: section)
         rootView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
@@ -370,13 +406,16 @@ extension SurahDetailViewController: ButtonHeaderTitleWithSubtitleTableViewCellD
         didTapLeftButton cell: ButtonHeaderTitleWithSubtitleTableViewCell,
         viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes
     ) {
-        guard let ayahResponse = viewModel.data.value as? Ayah,
-              let arabicVerse = ayahResponse.text else { return }
+        guard let ayahDetail = viewModel.data.value as? AyahDetail,
+              let arabicVerse = ayahDetail.ayah.text,
+              let number = ayahDetail.ayah.number,
+              let numberInSurah = ayahDetail.ayah.numberInSurah else { return }
         
-        let tempArabicVerse = ayahResponse.numberInSurah == 1 ? (arabicVerse as NSString).replacingOccurrences(of: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ", with: "") : arabicVerse
+        let tempArabicVerse = numberInSurah == 1 ? (arabicVerse as NSString).replacingOccurrences(of: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ", with: "") : arabicVerse
                 
+        let tempSharableText = "\(tempArabicVerse)\n\(ayahDetail.translation) [\(ayahDetail.surahNumber):\(numberInSurah)]\n\nShared from Hidayah App\nhidayahapp://inAppDeeplink/quran/\(ayahDetail.surahNumber)/\(numberInSurah)"
         let activityController = UIActivityViewController(
-            activityItems: [tempArabicVerse],
+            activityItems: [tempSharableText],
             applicationActivities: nil
         )
         present(
@@ -390,8 +429,8 @@ extension SurahDetailViewController: ButtonHeaderTitleWithSubtitleTableViewCellD
         didTapCenterButton cell: ButtonHeaderTitleWithSubtitleTableViewCell,
         viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes
     ) {
-        guard let ayahResponse = viewModel.data.value as? Ayah,
-              let ayahAudioUrlString = ayahResponse.audio,
+        guard let ayahDetail = viewModel.data.value as? AyahDetail,
+              let ayahAudioUrlString = ayahDetail.ayah.audio,
               let ayahAudioUrl = URL(string: ayahAudioUrlString) else { return }
         
         if ayahAudioPlayer?.timeControlStatus == .playing {
@@ -419,8 +458,8 @@ extension SurahDetailViewController: ButtonHeaderTitleWithSubtitleTableViewCellD
         viewModel: ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes
     ) {
         guard let selectedSurah = self.viewModel.selectedSurahNo.value,
-              let ayahResponse = viewModel.data.value as? Ayah,
-              let numberInSurah = ayahResponse.numberInSurah else { return }
+              let ayahDetail = viewModel.data.value as? AyahDetail,
+              let numberInSurah = ayahDetail.ayah.numberInSurah else { return }
         
         let newBookmark = SurahBookmark(
             surahNumber: selectedSurah,
