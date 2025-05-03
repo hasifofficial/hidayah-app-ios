@@ -18,17 +18,35 @@ enum RequestError: Error {
     var message: String {
         switch self {
         case .decode:
-            return NSLocalizedString("request_error_decode", comment: "")
+            return NSLocalizedString(
+                "request_error_decode",
+                comment: ""
+            )
         case .invalidURL:
-            return NSLocalizedString("request_error_invalid_url", comment: "")
+            return NSLocalizedString(
+                "request_error_invalid_url",
+                comment: ""
+            )
         case .noResponse:
-            return NSLocalizedString("request_error_no_response", comment: "")
+            return NSLocalizedString(
+                "request_error_no_response",
+                comment: ""
+            )
         case .unauthorized:
-            return NSLocalizedString("request_error_unauthorized", comment: "")
+            return NSLocalizedString(
+                "request_error_unauthorized",
+                comment: ""
+            )
         case .unexpectedStatusCode:
-            return NSLocalizedString("request_error_unexpected_status_code", comment: "")
+            return NSLocalizedString(
+                "request_error_unexpected_status_code",
+                comment: ""
+            )
         case .unknown:
-            return NSLocalizedString("request_error_unknown", comment: "")
+            return NSLocalizedString(
+                "request_error_unknown",
+                comment: ""
+            )
         }
     }
 }

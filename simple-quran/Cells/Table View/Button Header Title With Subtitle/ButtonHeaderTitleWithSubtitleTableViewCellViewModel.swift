@@ -23,9 +23,6 @@ protocol ButtonHeaderTitleWithSubtitleTableViewCellViewModelTypes {
 
     var leftHeaderButtonImage: BehaviorRelay<UIImage?> { get }
     var leftHeaderButtonImageTintColor: BehaviorRelay<UIColor> { get }
-    
-    var headerViewBackgroundColor: BehaviorRelay<UIColor> { get }
-    var headerViewBackgroundColorDarkMode: BehaviorRelay<UIColor> { get }
 
     var titleLabelText: BehaviorRelay<String?> { get }
     var titleLabelTextFont: BehaviorRelay<UIFont> { get }
@@ -63,9 +60,6 @@ class ButtonHeaderTitleWithSubtitleTableViewCellViewModel: ButtonHeaderTitleWith
 
     let leftHeaderButtonImage = BehaviorRelay<UIImage?>(value: UIImage(systemName: "square.and.arrow.up")?.withRenderingMode(.alwaysTemplate))
     let leftHeaderButtonImageTintColor = BehaviorRelay<UIColor>(value: .lightGreen)
-    
-    let headerViewBackgroundColor = BehaviorRelay<UIColor>(value: .backgroundLightGray)
-    let headerViewBackgroundColorDarkMode = BehaviorRelay<UIColor>(value: .backgroundLightGrayDarkMode)
 
     let titleLabelText = BehaviorRelay<String?>(value: nil)
     let titleLabelTextFont = BehaviorRelay<UIFont>(value: .systemFont(ofSize: 14))

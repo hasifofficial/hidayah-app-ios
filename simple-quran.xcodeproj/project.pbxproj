@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -45,7 +45,6 @@
 		1B436752261891DD002878B8 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436751261891DD002878B8 /* ShimmerView.swift */; };
 		1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */; };
 		1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */; };
-		1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */; };
 		1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B54285F261E0BD3003C6100 /* UIView+Extension.swift */; };
 		1B5E7B792626D1710006244D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B5E7B782626D1710006244D /* GoogleService-Info.plist */; };
 		1B6256F32640587D0073F03D /* SurahListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6256F22640587D0073F03D /* SurahListView.swift */; };
@@ -58,7 +57,28 @@
 		1B78EB67260B338E004E07CD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B78EB69260B338E004E07CD /* Localizable.strings */; };
 		1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB7E260B362B004E07CD /* SurahList.swift */; };
 		1B78EB84260B36F1004E07CD /* Surah.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B78EB83260B36F1004E07CD /* Surah.swift */; };
+		1B791FE82DC1AF0A0007CDDF /* TrackerSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FE72DC1AF0A0007CDDF /* TrackerSettingView.swift */; };
+		1B791FEA2DC1AF1D0007CDDF /* TrackerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FE92DC1AF1D0007CDDF /* TrackerListView.swift */; };
+		1B791FEE2DC1AFFA0007CDDF /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FED2DC1AFFA0007CDDF /* Category.swift */; };
+		1B791FF02DC1B0190007CDDF /* TaskDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FEF2DC1B0190007CDDF /* TaskDetails.swift */; };
+		1B791FF22DC1B0320007CDDF /* WidgetContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FF12DC1B0320007CDDF /* WidgetContext.swift */; };
+		1B791FF92DC1B8D00007CDDF /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B791FF82DC1B8D00007CDDF /* WidgetKit.framework */; };
+		1B791FFB2DC1B8D00007CDDF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B791FFA2DC1B8D00007CDDF /* SwiftUI.framework */; };
+		1B79200C2DC1B8D10007CDDF /* app-widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1B791FF72DC1B8D00007CDDF /* app-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1B7920132DC1B9970007CDDF /* WidgetContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FF12DC1B0320007CDDF /* WidgetContext.swift */; };
 		1B8339382626A710007B5ADB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8339372626A710007B5ADB /* Constants.swift */; };
+		1B9F20D32DC44B0700DCBB0D /* TrackerSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20D22DC44B0700DCBB0D /* TrackerSettingViewController.swift */; };
+		1B9F20D52DC44B0C00DCBB0D /* TrackerSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20D42DC44B0C00DCBB0D /* TrackerSettingViewModel.swift */; };
+		1B9F20D72DC44B1E00DCBB0D /* TrackerSettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20D62DC44B1E00DCBB0D /* TrackerSettingSection.swift */; };
+		1B9F20DA2DC4C2F600DCBB0D /* ManageCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20D92DC4C2F600DCBB0D /* ManageCategoryView.swift */; };
+		1B9F20E12DC592C800DCBB0D /* TrackerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE972DC3AC8F00D2EE03 /* TrackerContext.swift */; };
+		1B9F20E22DC593DF00DCBB0D /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE852DC3A82A00D2EE03 /* TaskManager.swift */; };
+		1B9F20E32DC5946100DCBB0D /* TaskDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FEF2DC1B0190007CDDF /* TaskDetails.swift */; };
+		1B9F20E42DC5947200DCBB0D /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FED2DC1AFFA0007CDDF /* Category.swift */; };
+		1B9F20E72DC5DA7B00DCBB0D /* NotificationIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20E62DC5DA7B00DCBB0D /* NotificationIdentifier.swift */; };
+		1B9F20E82DC5DA7B00DCBB0D /* NotificationIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20E62DC5DA7B00DCBB0D /* NotificationIdentifier.swift */; };
+		1B9F21302DC6255B00DCBB0D /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F212F2DC6255B00DCBB0D /* DeeplinkManager.swift */; };
+		1B9F21362DC6357600DCBB0D /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F21352DC6357600DCBB0D /* Collection+Extension.swift */; };
 		1BA750B4260E65D100A27A2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA750B3260E65D100A27A2F /* AVFoundation.framework */; };
 		1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */; };
 		1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */; };
@@ -77,6 +97,16 @@
 		1BC162FA2CD3B7060051C974 /* BookmarkListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */; };
 		1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */; };
 		1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */; };
+		1BD6BE742DC220F500D2EE03 /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE732DC220F500D2EE03 /* EditTaskView.swift */; };
+		1BD6BE752DC2387D00D2EE03 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */; };
+		1BD6BE862DC3A82A00D2EE03 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE852DC3A82A00D2EE03 /* TaskManager.swift */; };
+		1BD6BE892DC3A89100D2EE03 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE882DC3A89100D2EE03 /* AddTaskView.swift */; };
+		1BD6BE8C2DC3A8C900D2EE03 /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE8B2DC3A8C900D2EE03 /* AddCategoryView.swift */; };
+		1BD6BE8F2DC3A91700D2EE03 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE8E2DC3A91700D2EE03 /* TaskRowView.swift */; };
+		1BD6BE922DC3A95200D2EE03 /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE912DC3A95200D2EE03 /* TaskCardView.swift */; };
+		1BD6BE952DC3A9E100D2EE03 /* ProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE942DC3A9E100D2EE03 /* ProgressHeaderView.swift */; };
+		1BD6BE982DC3AC8F00D2EE03 /* TrackerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE972DC3AC8F00D2EE03 /* TrackerContext.swift */; };
+		1BD6BE9B2DC3B21100D2EE03 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B42CF57261C97C80096F77F /* Storage.swift */; };
 		2BFC8683CC65ECE9F457293B /* Pods_simple_quranTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FA7EC7E88670FB17135927 /* Pods_simple_quranTests.framework */; };
 		8D4C6F94057A5959A43B64A1 /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C2C779ACFE8B9C266C078C /* Pods_simple_quran_simple_quranUITests.framework */; };
 		E5DDAF6BBD4EA4E467128E0A /* Pods_simple_quran.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5840B3A519B246F3B84C40 /* Pods_simple_quran.framework */; };
@@ -97,7 +127,28 @@
 			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
 			remoteInfo = "simple-quran";
 		};
+		1B79200A2DC1B8D10007CDDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1B791FF62DC1B8D00007CDDF;
+			remoteInfo = "app-widgetExtension";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1B7920112DC1B8D10007CDDF /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1B79200C2DC1B8D10007CDDF /* app-widgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1B1AAA47260E183A00E03B0B /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
@@ -138,7 +189,6 @@
 		1B436751261891DD002878B8 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		1B436768261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		1B43676D26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitlePlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
-		1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		1B54285F261E0BD3003C6100 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		1B5E7B782626D1710006244D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1B5E7BBA2626DD5B0006244D /* Hidayah Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hidayah Debug.entitlements"; sourceTree = "<group>"; };
@@ -158,7 +208,23 @@
 		1B78EB68260B338E004E07CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1B78EB7E260B362B004E07CD /* SurahList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahList.swift; sourceTree = "<group>"; };
 		1B78EB83260B36F1004E07CD /* Surah.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surah.swift; sourceTree = "<group>"; };
+		1B791FE72DC1AF0A0007CDDF /* TrackerSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettingView.swift; sourceTree = "<group>"; };
+		1B791FE92DC1AF1D0007CDDF /* TrackerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerListView.swift; sourceTree = "<group>"; };
+		1B791FED2DC1AFFA0007CDDF /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		1B791FEF2DC1B0190007CDDF /* TaskDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetails.swift; sourceTree = "<group>"; };
+		1B791FF12DC1B0320007CDDF /* WidgetContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetContext.swift; sourceTree = "<group>"; };
+		1B791FF72DC1B8D00007CDDF /* app-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "app-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B791FF82DC1B8D00007CDDF /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		1B791FFA2DC1B8D00007CDDF /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-widgetExtension.entitlements"; sourceTree = "<group>"; };
 		1B8339372626A710007B5ADB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1B9F20D22DC44B0700DCBB0D /* TrackerSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettingViewController.swift; sourceTree = "<group>"; };
+		1B9F20D42DC44B0C00DCBB0D /* TrackerSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettingViewModel.swift; sourceTree = "<group>"; };
+		1B9F20D62DC44B1E00DCBB0D /* TrackerSettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettingSection.swift; sourceTree = "<group>"; };
+		1B9F20D92DC4C2F600DCBB0D /* ManageCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryView.swift; sourceTree = "<group>"; };
+		1B9F20E62DC5DA7B00DCBB0D /* NotificationIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationIdentifier.swift; sourceTree = "<group>"; };
+		1B9F212F2DC6255B00DCBB0D /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
+		1B9F21352DC6357600DCBB0D /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		1BA750B3260E65D100A27A2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1BA832292618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		1BA8322E2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardPlaceholderTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -177,6 +243,14 @@
 		1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListSection.swift; sourceTree = "<group>"; };
 		1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		1BD6BE732DC220F500D2EE03 /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
+		1BD6BE852DC3A82A00D2EE03 /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
+		1BD6BE882DC3A89100D2EE03 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		1BD6BE8B2DC3A8C900D2EE03 /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
+		1BD6BE8E2DC3A91700D2EE03 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		1BD6BE912DC3A95200D2EE03 /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
+		1BD6BE942DC3A9E100D2EE03 /* ProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHeaderView.swift; sourceTree = "<group>"; };
+		1BD6BE972DC3AC8F00D2EE03 /* TrackerContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerContext.swift; sourceTree = "<group>"; };
 		2A92EA7EF1100C202B9D054C /* Pods-simple-quran.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran.release.xcconfig"; path = "Target Support Files/Pods-simple-quran/Pods-simple-quran.release.xcconfig"; sourceTree = "<group>"; };
 		348847873E98E7EDA7822334 /* Pods-simple-quranTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quranTests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quranTests/Pods-simple-quranTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3D97B698C23AE9CE4293EFC4 /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -187,6 +261,20 @@
 		EA6A7D497860222B43151BF6 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.release.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FC5840B3A519B246F3B84C40 /* Pods_simple_quran.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quran.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1B78EB0E260B327E004E07CD /* Frameworks */ = {
@@ -211,6 +299,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D4C6F94057A5959A43B64A1 /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B791FF42DC1B8D00007CDDF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B791FFB2DC1B8D00007CDDF /* SwiftUI.framework in Frameworks */,
+				1B791FF92DC1B8D00007CDDF /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,9 +342,9 @@
 				1B1AAA87260E227200E03B0B /* UITableView+Extension.swift */,
 				1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */,
 				1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */,
-				1B54285A261E0B95003C6100 /* UIApplication+Extension.swift */,
 				1B54285F261E0BD3003C6100 /* UIView+Extension.swift */,
 				1B6256F4264058A20073F03D /* UIViewController+Extension.swift */,
+				1B9F21352DC6357600DCBB0D /* Collection+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -388,6 +485,7 @@
 		1B436750261891C6002878B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1BD6BE962DC3AA5000D2EE03 /* Task */,
 				1B542831261E061F003C6100 /* Shimmer */,
 			);
 			path = Views;
@@ -420,9 +518,11 @@
 		1B78EB08260B327E004E07CD = {
 			isa = PBXGroup;
 			children = (
+				1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */,
 				1B78EB13260B327E004E07CD /* simple-quran */,
 				1B78EB2A260B3284004E07CD /* simple-quranTests */,
 				1B78EB35260B3284004E07CD /* simple-quranUITests */,
+				1B791FFC2DC1B8D00007CDDF /* app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
 				0E07FA50391EC7018A832128 /* Pods */,
 				57432DF57683D06809F12458 /* Frameworks */,
@@ -435,6 +535,7 @@
 				1B78EB11260B327E004E07CD /* Hidayah Debug.app */,
 				1B78EB27260B3284004E07CD /* simple-quranTests.xctest */,
 				1B78EB32260B3284004E07CD /* simple-quranUITests.xctest */,
+				1B791FF72DC1B8D00007CDDF /* app-widgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -447,6 +548,7 @@
 				1B1AAA86260E223600E03B0B /* Extensions */,
 				1B78EB79260B3406004E07CD /* Models */,
 				1BEE94442A360B9D00F07D90 /* Network */,
+				1BD6BE842DC3A81700D2EE03 /* Manager */,
 				1B42CF56261C97AD0096F77F /* Storage */,
 				1B78EB7A260B341C004E07CD /* Cells */,
 				1B436750261891C6002878B8 /* Views */,
@@ -490,6 +592,12 @@
 		1B78EB6D260B339A004E07CD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1B9F20D82DC4C2DE00DCBB0D /* Manage Category */,
+				1B791FE62DC1AEF00007CDDF /* Tracker Setting */,
+				1BD6BE8A2DC3A8BE00D2EE03 /* Add Category */,
+				1BD6BE722DC220E400D2EE03 /* Edit Task */,
+				1BD6BE872DC3A88400D2EE03 /* Add Task */,
+				1B791FE52DC1AEE30007CDDF /* Tracker List */,
 				1B33825B2CD289FA00CD9670 /* Selection */,
 				1B3DA58E260EDEE5003E4F96 /* Setting */,
 				1B1AAA8F260E29B300E03B0B /* Surah Detail */,
@@ -517,6 +625,11 @@
 				1B3382692CD2A1F600CD9670 /* Response */,
 				1B3382622CD28B0300CD9670 /* ItemSelector.swift */,
 				1BC162EC2CD3A6830051C974 /* SurahBookmark.swift */,
+				1B791FED2DC1AFFA0007CDDF /* Category.swift */,
+				1B791FEF2DC1B0190007CDDF /* TaskDetails.swift */,
+				1B791FF12DC1B0320007CDDF /* WidgetContext.swift */,
+				1BD6BE972DC3AC8F00D2EE03 /* TrackerContext.swift */,
+				1B9F20E62DC5DA7B00DCBB0D /* NotificationIdentifier.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -527,6 +640,33 @@
 				1B542864261E216D003C6100 /* Table View */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		1B791FE52DC1AEE30007CDDF /* Tracker List */ = {
+			isa = PBXGroup;
+			children = (
+				1B791FE92DC1AF1D0007CDDF /* TrackerListView.swift */,
+			);
+			path = "Tracker List";
+			sourceTree = "<group>";
+		};
+		1B791FE62DC1AEF00007CDDF /* Tracker Setting */ = {
+			isa = PBXGroup;
+			children = (
+				1B791FE72DC1AF0A0007CDDF /* TrackerSettingView.swift */,
+				1B9F20D22DC44B0700DCBB0D /* TrackerSettingViewController.swift */,
+				1B9F20D42DC44B0C00DCBB0D /* TrackerSettingViewModel.swift */,
+				1B9F20D62DC44B1E00DCBB0D /* TrackerSettingSection.swift */,
+			);
+			path = "Tracker Setting";
+			sourceTree = "<group>";
+		};
+		1B9F20D82DC4C2DE00DCBB0D /* Manage Category */ = {
+			isa = PBXGroup;
+			children = (
+				1B9F20D92DC4C2F600DCBB0D /* ManageCategoryView.swift */,
+			);
+			path = "Manage Category";
 			sourceTree = "<group>";
 		};
 		1BB3478E2A360C82000903CE /* Base */ = {
@@ -567,6 +707,73 @@
 			path = Switch;
 			sourceTree = "<group>";
 		};
+		1BD6BE722DC220E400D2EE03 /* Edit Task */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE732DC220F500D2EE03 /* EditTaskView.swift */,
+			);
+			path = "Edit Task";
+			sourceTree = "<group>";
+		};
+		1BD6BE842DC3A81700D2EE03 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE852DC3A82A00D2EE03 /* TaskManager.swift */,
+				1B9F212F2DC6255B00DCBB0D /* DeeplinkManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		1BD6BE872DC3A88400D2EE03 /* Add Task */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE882DC3A89100D2EE03 /* AddTaskView.swift */,
+			);
+			path = "Add Task";
+			sourceTree = "<group>";
+		};
+		1BD6BE8A2DC3A8BE00D2EE03 /* Add Category */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE8B2DC3A8C900D2EE03 /* AddCategoryView.swift */,
+			);
+			path = "Add Category";
+			sourceTree = "<group>";
+		};
+		1BD6BE8D2DC3A90E00D2EE03 /* Task Row */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE8E2DC3A91700D2EE03 /* TaskRowView.swift */,
+			);
+			path = "Task Row";
+			sourceTree = "<group>";
+		};
+		1BD6BE902DC3A93C00D2EE03 /* Task Card */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE912DC3A95200D2EE03 /* TaskCardView.swift */,
+			);
+			path = "Task Card";
+			sourceTree = "<group>";
+		};
+		1BD6BE932DC3A9D000D2EE03 /* Task Progress Header */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE942DC3A9E100D2EE03 /* ProgressHeaderView.swift */,
+			);
+			path = "Task Progress Header";
+			sourceTree = "<group>";
+		};
+		1BD6BE962DC3AA5000D2EE03 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				1BD6BE932DC3A9D000D2EE03 /* Task Progress Header */,
+				1BD6BE902DC3A93C00D2EE03 /* Task Card */,
+				1BD6BE8D2DC3A90E00D2EE03 /* Task Row */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
 		1BEE94442A360B9D00F07D90 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,6 +808,8 @@
 				FC5840B3A519B246F3B84C40 /* Pods_simple_quran.framework */,
 				68C2C779ACFE8B9C266C078C /* Pods_simple_quran_simple_quranUITests.framework */,
 				48FA7EC7E88670FB17135927 /* Pods_simple_quranTests.framework */,
+				1B791FF82DC1B8D00007CDDF /* WidgetKit.framework */,
+				1B791FFA2DC1B8D00007CDDF /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -616,12 +825,14 @@
 				1B78EB0D260B327E004E07CD /* Sources */,
 				1B78EB0E260B327E004E07CD /* Frameworks */,
 				1B78EB0F260B327E004E07CD /* Resources */,
-				1B5E7BB02626D5A90006244D /* Crashlytics */,
 				369A2A715D054BF173669777 /* [CP] Embed Pods Frameworks */,
+				1B7920112DC1B8D10007CDDF /* Embed Foundation Extensions */,
+				1B5E7BB02626D5A90006244D /* Crashlytics */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */,
 			);
 			name = "simple-quran";
 			productName = "simple-quran";
@@ -667,13 +878,35 @@
 			productReference = 1B78EB32260B3284004E07CD /* simple-quranUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		1B791FF62DC1B8D00007CDDF /* app-widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "app-widgetExtension" */;
+			buildPhases = (
+				1B791FF32DC1B8D00007CDDF /* Sources */,
+				1B791FF42DC1B8D00007CDDF /* Frameworks */,
+				1B791FF52DC1B8D00007CDDF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1B791FFC2DC1B8D00007CDDF /* app-widget */,
+			);
+			name = "app-widgetExtension";
+			packageProductDependencies = (
+			);
+			productName = "app-widgetExtension";
+			productReference = 1B791FF72DC1B8D00007CDDF /* app-widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		1B78EB09260B327E004E07CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					1B78EB10260B327E004E07CD = {
@@ -686,6 +919,9 @@
 					1B78EB31260B3284004E07CD = {
 						CreatedOnToolsVersion = 12.4;
 						TestTargetID = 1B78EB10260B327E004E07CD;
+					};
+					1B791FF62DC1B8D00007CDDF = {
+						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
@@ -705,6 +941,7 @@
 				1B78EB10260B327E004E07CD /* simple-quran */,
 				1B78EB26260B3284004E07CD /* simple-quranTests */,
 				1B78EB31260B3284004E07CD /* simple-quranUITests */,
+				1B791FF62DC1B8D00007CDDF /* app-widgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -730,6 +967,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1B78EB30260B3284004E07CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B791FF52DC1B8D00007CDDF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -789,9 +1033,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -806,9 +1054,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -867,36 +1119,47 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BC162F62CD3B6FA0051C974 /* BookmarkListViewController.swift in Sources */,
+				1BD6BE922DC3A95200D2EE03 /* TaskCardView.swift in Sources */,
 				1B3382662CD28B3F00CD9670 /* NewSectionTitleTableViewCell.swift in Sources */,
+				1B791FE82DC1AF0A0007CDDF /* TrackerSettingView.swift in Sources */,
+				1B9F20D52DC44B0C00DCBB0D /* TrackerSettingViewModel.swift in Sources */,
 				1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */,
 				1B3761AA260F2119000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCell.swift in Sources */,
 				1B78EB84260B36F1004E07CD /* Surah.swift in Sources */,
 				1B33825A2CD285D200CD9670 /* APIClientService.swift in Sources */,
 				1B542860261E0BD3003C6100 /* UIView+Extension.swift in Sources */,
 				1B78EB15260B327E004E07CD /* AppDelegate.swift in Sources */,
+				1BD6BE952DC3A9E100D2EE03 /* ProgressHeaderView.swift in Sources */,
 				1B3382612CD28A1200CD9670 /* SelectionViewModel.swift in Sources */,
 				1BB347902A360C9E000903CE /* RequestError.swift in Sources */,
 				1B1AAAC5260E48E000E03B0B /* DetailTitleTableViewCellViewModel.swift in Sources */,
+				1BD6BE862DC3A82A00D2EE03 /* TaskManager.swift in Sources */,
 				1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */,
 				1B1AAA88260E227200E03B0B /* UITableView+Extension.swift in Sources */,
+				1BD6BE982DC3AC8F00D2EE03 /* TrackerContext.swift in Sources */,
 				1BC162F82CD3B6FF0051C974 /* BookmarkListViewModel.swift in Sources */,
 				1B33825F2CD28A0D00CD9670 /* SelectionViewController.swift in Sources */,
 				1B1AAA91260E29DF00E03B0B /* SurahDetailView.swift in Sources */,
 				1B3382632CD28B0300CD9670 /* ItemSelector.swift in Sources */,
+				1BD6BE742DC220F500D2EE03 /* EditTaskView.swift in Sources */,
 				1B78EB7F260B362B004E07CD /* SurahList.swift in Sources */,
 				1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */,
 				1B43676E26189579002878B8 /* DetailTitlePlaceholderTableViewCellViewModel.swift in Sources */,
 				1B3DA5A2260EDF45003E4F96 /* SettingSection.swift in Sources */,
+				1BD6BE8F2DC3A91700D2EE03 /* TaskRowView.swift in Sources */,
 				1B3DA580260EDD0F003E4F96 /* SurahListViewController.swift in Sources */,
 				1BC162F42CD3B6F40051C974 /* BookmarkListView.swift in Sources */,
 				1BA832392618D65000CCC35C /* ButtonHeaderTitleWithSubtitlePlaceholderTableViewCellViewModel.swift in Sources */,
 				1BC162F12CD3B6910051C974 /* RootViewController.swift in Sources */,
 				1B33825D2CD28A0600CD9670 /* SelectionView.swift in Sources */,
+				1B791FF02DC1B0190007CDDF /* TaskDetails.swift in Sources */,
 				1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */,
-				1B54285B261E0B95003C6100 /* UIApplication+Extension.swift in Sources */,
 				1BB347982A360EB2000903CE /* SurahService.swift in Sources */,
 				1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */,
 				1B8339382626A710007B5ADB /* Constants.swift in Sources */,
+				1B791FF22DC1B0320007CDDF /* WidgetContext.swift in Sources */,
+				1B9F21362DC6357600DCBB0D /* Collection+Extension.swift in Sources */,
+				1B9F20DA2DC4C2F600DCBB0D /* ManageCategoryView.swift in Sources */,
 				1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */,
 				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
 				1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */,
@@ -912,11 +1175,17 @@
 				1B3761C5260F7310000ADF3D /* DetailCardTableViewCellViewModel.swift in Sources */,
 				1B436752261891DD002878B8 /* ShimmerView.swift in Sources */,
 				1BB347922A360CB1000903CE /* RequestMethod.swift in Sources */,
+				1B9F21302DC6255B00DCBB0D /* DeeplinkManager.swift in Sources */,
+				1BD6BE892DC3A89100D2EE03 /* AddTaskView.swift in Sources */,
 				1B3382682CD28B9100CD9670 /* NewSectionTitleTableViewCellViewModel.swift in Sources */,
 				1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */,
 				1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */,
 				1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */,
+				1B9F20D72DC44B1E00DCBB0D /* TrackerSettingSection.swift in Sources */,
+				1B791FEA2DC1AF1D0007CDDF /* TrackerListView.swift in Sources */,
 				1B1AAAA3260E2A1300E03B0B /* SurahDetailSection.swift in Sources */,
+				1B9F20E82DC5DA7B00DCBB0D /* NotificationIdentifier.swift in Sources */,
+				1B9F20D32DC44B0700DCBB0D /* TrackerSettingViewController.swift in Sources */,
 				1B3DA598260EDF07003E4F96 /* SettingViewController.swift in Sources */,
 				1B42CF58261C97C80096F77F /* Storage.swift in Sources */,
 				1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */,
@@ -924,10 +1193,12 @@
 				1B3761BD260F7301000ADF3D /* DetailCardTableViewCell.swift in Sources */,
 				1B3761A1260EF74A000ADF3D /* Edition.swift in Sources */,
 				1B1AAA99260E29F200E03B0B /* SurahDetailViewController.swift in Sources */,
+				1BD6BE8C2DC3A8C900D2EE03 /* AddCategoryView.swift in Sources */,
 				1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */,
 				1B3382582CD25BA100CD9670 /* AppController.swift in Sources */,
 				1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */,
 				1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */,
+				1B791FEE2DC1AFFA0007CDDF /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -947,6 +1218,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1B791FF32DC1B8D00007CDDF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B9F20E32DC5946100DCBB0D /* TaskDetails.swift in Sources */,
+				1BD6BE9B2DC3B21100D2EE03 /* Storage.swift in Sources */,
+				1BD6BE752DC2387D00D2EE03 /* UIColor+Extension.swift in Sources */,
+				1B9F20E22DC593DF00DCBB0D /* TaskManager.swift in Sources */,
+				1B9F20E12DC592C800DCBB0D /* TrackerContext.swift in Sources */,
+				1B7920132DC1B9970007CDDF /* WidgetContext.swift in Sources */,
+				1B9F20E42DC5947200DCBB0D /* Category.swift in Sources */,
+				1B9F20E72DC5DA7B00DCBB0D /* NotificationIdentifier.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -959,6 +1245,11 @@
 			isa = PBXTargetDependency;
 			target = 1B78EB10260B327E004E07CD /* simple-quran */;
 			targetProxy = 1B78EB33260B3284004E07CD /* PBXContainerItemProxy */;
+		};
+		1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
+			targetProxy = 1B79200A2DC1B8D10007CDDF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1106,7 +1397,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 22;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quran/Info.plist";
@@ -1115,7 +1406,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
 				PRODUCT_NAME = "Hidayah Debug";
 				SWIFT_VERSION = 5.0;
@@ -1131,7 +1422,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quran/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1139,7 +1430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
 				PRODUCT_NAME = Hidayah;
 				SWIFT_VERSION = 5.0;
@@ -1235,6 +1526,75 @@
 			};
 			name = Release;
 		};
+		1B79200F2DC1B8D10007CDDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "app-widgetExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "app-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "app-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran.app-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1B7920102DC1B8D10007CDDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "app-widgetExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "app-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "app-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran.app-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1270,6 +1630,15 @@
 			buildConfigurations = (
 				1B78EB42260B3284004E07CD /* Debug */,
 				1B78EB43260B3284004E07CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "app-widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B79200F2DC1B8D10007CDDF /* Debug */,
+				1B7920102DC1B8D10007CDDF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

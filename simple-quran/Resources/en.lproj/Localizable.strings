@@ -20,6 +20,9 @@
 "push_notification_kahf_reminder_title" = "Al-Kahf Reminder";
 "push_notification_kahf_reminder_body" = "Jumu'ah Mubarakah. Have you read Al-Kahf today?";
 
+"push_notification_istiqamah_tracker_daily_reset_title" = "Istiqamah Tracker";
+"push_notification_istiqamah_tracker_daily_reset_body" = "Assalamualaikum! It looks like the day has ended, so we’ll reset your progress for tomorrow. Tap to continue.";
+
 "surah_list_header_title" = "Quran";
 "surah_list_search_placeholder" = "Search surah";
 "surah_list_subtitle" = "%@ • %@ verses";
@@ -36,14 +39,22 @@
 "bookmark_list_empty_list_title" = "You have no bookmarks\n";
 "bookmark_list_empty_list_subtitle" = "Tap on bookmark icon when reading to add bookmark";
 
+"tracker_list_tab_bar_title" = "Tracker";
+"tracker_list_header_title" = "Istiqamah Tracker";
+"tracker_list_add_task_floating_button" = "Add Task";
+"tracker_list_add_category_floating_button" = "Add Category";
+
 "surah_description" = "%@ means %@ and consists of %@ verses. Its compilation order is %@. It was revealed in %@.";
 "surah_recitation_drawer_title" = "Choose recitation";
 "surah_translation_drawer_title" = "Choose translation";
+"surah_scroll_to_ayah_out_of_range_error" = "Invalid verse number %@. This surah only has %@ verses";
 
-"setting_header_title" = "Setting";
+"setting_header_title" = "Settings";
 "setting_quran_section_title" = "Quran";
 "setting_quran_recitation_title" = "Recitation";
 "setting_quran_translation_title" = "Translation";
+"setting_tracker_section_title" = "Istiqamah Tracker";
+"setting_tracker_title" = "Tracker Settings";
 "setting_notification_section_title" = "Notification";
 "setting_notification_alkahf_title" = "Al-Kahf Reminder";
 "setting_notification_section_title" = "Notification";
@@ -55,3 +66,49 @@
 "setting_support_feedback_title" = "Feedback";
 "setting_support_feedback_mail_title" = "Feedback for Hidayah App v%@ (%@)";
 "setting_app_verison" = "Version %@ (%@)";
+
+"setting_tracker_header_title" = "Tracker Settings";
+"setting_tracker_history_title" = "History";
+"setting_tracker_pass_history_title" = "Previous Tracker History";
+"setting_tracker_category_title" = "Category";
+"setting_tracker_manage_category_title" = "Manage Categories";
+"setting_tracker_reset_daily_progress_title" = "Reset Today's Progress";
+"setting_tracker_reset_all_title" = "Reset All";
+"setting_tracker_reset_daily_progress_alert_title" = "Reset Today's Progress?";
+"setting_tracker_reset_daily_progress_alert_description" = "Are you sure you want to reset today's progress?";
+"setting_tracker_reset_daily_progress_alert_reset_button" = "Reset";
+"setting_tracker_reset_daily_progress_alert_cancel_button" = "Cancel";
+"setting_tracker_reset_all_alert_title" = "Reset All?";
+"setting_tracker_reset_all_alert_description" = "Reset all will restore everything back to default including remove all custom categories. Are you sure you want to continue?";
+"setting_tracker_reset_all_alert_reset_button" = "Reset";
+"setting_tracker_reset_all_alert_cancel_button" = "Cancel";
+
+"setting_manage_category_header_title" = "Manage Categories";
+"setting_manage_category_footer_title" = "Swipe to delete a category. Please note that all tasks under this category will also be deleted";
+"setting_manage_category_empty_title" = "You have no custom categories";
+"setting_manage_category_empty_subtitle" = "Tap on + button and choose add category to add new one";
+
+"add_task_header_title" = "Add Task";
+"add_task_task_detail_section_title" = "Task Details";
+"add_task_task_detail_task_name" = "Task Name";
+"add_task_task_detail_category" = "Category";
+"add_task_task_detail_add_task_button" = "Add Task";
+"add_task_cancel_button" = "Cancel";
+
+"add_category_header_title" = "Add Category";
+"add_category_cancel_button" = "Cancel";
+"add_category_category_detail_section_title" = "Category Details";
+"add_category_category_detail_category_name" = "Category Name";
+"add_category_category_detail_icon" = "Icon";
+"add_category_category_detail_add_category_button" = "Add Category";
+
+"edit_task_header_title" = "Edit Task";
+"edit_task_task_detail_section_title" = "Task Details";
+"edit_task_task_detail_task_name" = "Task Name";
+"edit_task_task_detail_category" = "Category";
+"edit_task_save_button" = "Save";
+"edit_task_delete_task_button" = "Delete Task";
+"edit_task_delete_task_confirmation_dialog_title" = "Delete Task";
+"edit_task_delete_task_confirmation_dialog_subtitle" = "Are you sure you want to delete this task?";
+"edit_task_delete_task_confirmation_dialog_delete_button" = "Delete";
+"edit_task_delete_task_confirmation_dialog_cancel_button" = "Cancel";

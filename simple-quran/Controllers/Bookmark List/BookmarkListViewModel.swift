@@ -37,7 +37,10 @@ class BookmarkListViewModel: BookmarkListViewModelTypes {
         return CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never>(vm)
     }()
 
-    let title = CurrentValueSubject<String, Never>(NSLocalizedString("bookmark_list_header_title", comment: ""))
+    let title = CurrentValueSubject<String, Never>(NSLocalizedString(
+        "bookmark_list_header_title",
+        comment: ""
+    ))
     let surahCell = CurrentValueSubject<[DetailTitleTableViewCellViewModel]?, Never>(nil)
     var surahEmptyCell = CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never>(nil)
     let bookmarkedSurahList = CurrentValueSubject<[(surahDetail: SurahListResponse?, bookmarkDetail: SurahBookmark?)]?, Never>(nil)
@@ -116,12 +119,23 @@ class BookmarkListViewModel: BookmarkListViewModelTypes {
             surahCell.send(tempSurahCells)
         } else {
             let attributedText = NSMutableAttributedString(
-                string: NSLocalizedString("bookmark_list_search_empty_title", comment: ""),
-                attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]
+                string: NSLocalizedString(
+                    "bookmark_list_search_empty_title",
+                    comment: ""
+                ),
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+                ]
             )
             attributedText.append(NSAttributedString(
-                string: NSLocalizedString("bookmark_list_search_empty_subtitle", comment: ""),
-                attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+                string: NSLocalizedString(
+                    "bookmark_list_search_empty_subtitle",
+                    comment: ""
+                ),
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.textGray
+                ]
             ))
             
             let tempEmptyStateCells = SectionTitleTableViewCellViewModel()

@@ -8,19 +8,23 @@
 import Foundation
 
 class Storage {
+    static let userDefaults = UserDefaults(suiteName: "group.com.hasifofficial.simple-quran")
+
     enum StorageKey: String, CaseIterable {
         case bookmarkRecitations
         case selectedRecitation
         case selectedTranslation
         case allowKahfReminder
+        case trackerContext
+        case widgetContext
     }
-    
+
     static func save(_ key: StorageKey, _ value: Any) {
-        UserDefaults.standard.set(value, forKey: key.rawValue)
+        userDefaults?.set(value, forKey: key.rawValue)
     }
 
     static func loadObject<T>(key: StorageKey) -> T? where T: Decodable {
-        if let data = UserDefaults.standard.value(forKey: key.rawValue) as? Data {
+        if let data = userDefaults?.value(forKey: key.rawValue) as? Data {
             do {
                 return try JSONDecoder().decode(T.self, from: data) as T
             } catch {
@@ -32,10 +36,10 @@ class Storage {
     }
     
     static func load(key: StorageKey) -> Any? {
-        return UserDefaults.standard.value(forKey: key.rawValue)
+        return userDefaults?.value(forKey: key.rawValue)
     }
     
     static func delete(_ key: StorageKey) {
-        UserDefaults.standard.removeObject(forKey: key.rawValue)
+        userDefaults?.removeObject(forKey: key.rawValue)
     }
 }

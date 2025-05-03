@@ -39,6 +39,17 @@ extension UIColor {
         }
     }
     
+    static var backgroundGray: UIColor {
+        return UIColor { traitCollection in
+            switch traitCollection.userInterfaceStyle {
+            case .dark:
+                return .backgroundLightGrayDarkMode
+            default:
+                return .backgroundLightGray
+            }
+        }
+    }
+    
     static func hexStringToUIColor(_ hex: String) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 

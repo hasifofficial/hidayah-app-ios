@@ -11,9 +11,9 @@ import RxSwift
 import Toast_Swift
 
 class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SurahListViewModelTypes {
-    
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
+    private let taskManager: TaskManager
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
 
@@ -33,9 +33,11 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     }
 
     init(
-        surahService: SurahService
+        surahService: SurahService,
+        taskManager: TaskManager
     ) {
         self.surahService = surahService
+        self.taskManager = taskManager
 
         super.init(
             nibName: nil,
@@ -120,12 +122,23 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     
     private func setupEmptyState() {
         let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString("surah_list_empty_list_title", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)]
+            string: NSLocalizedString(
+                "surah_list_empty_list_title",
+                comment: ""
+            ),
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+            ]
         )
         attributedText.append(NSAttributedString(
-            string: NSLocalizedString("surah_list_empty_list_subtitle", comment: ""),
-            attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.textGray]
+            string: NSLocalizedString(
+                "surah_list_empty_list_subtitle",
+                comment: ""
+            ),
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 14),
+                .foregroundColor: UIColor.textGray
+            ]
         ))
         
         let tempEmptyStateCells = SectionTitleTableViewCellViewModel()
@@ -169,7 +182,8 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     
     @objc private func settingButtonAction() {
         let vc = SettingViewController<SettingViewModel>(
-            surahService: surahService
+            surahService: surahService,
+            taskManager: taskManager
         )
         let settingNavigationController = UINavigationController(
             rootViewController: vc
@@ -202,7 +216,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
             let selectedSurah = surahs[indexPath.row]
                             
             let vc = SurahDetailViewController<SurahDetailViewModel>(surahService: surahService)
-            vc.viewModel.title.send(selectedSurah.englishName)
             vc.viewModel.selectedSurahNo.send(selectedSurah.number)
             
             navigationController?.pushViewController(vc, animated: true)

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Combine
 import MessageUI
 import AVFoundation
@@ -13,9 +14,9 @@ import RxSwift
 import Toast_Swift
 
 class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, MFMailComposeViewControllerDelegate where ViewModel: SettingViewModelTypes {
-    
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
+    private let taskManager: TaskManager
     private var cancellable = Set<AnyCancellable>()
     private var disposeBag = DisposeBag()
 
@@ -41,9 +42,11 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
     }
 
     init(
-        surahService: SurahService
+        surahService: SurahService,
+        taskManager: TaskManager
     ) {
         self.surahService = surahService
+        self.taskManager = taskManager
 
         super.init(
             nibName: nil,
@@ -109,6 +112,22 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
                 guard let self else { return }
                     
                 self.viewModel.setSection(.translationLanguage(item: value))
+            })
+            .store(in: &cancellable)
+        
+        viewModel.trackerSettingTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.trackerSettingTitle(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.trackerSettingCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.trackerSetting(item: value))
             })
             .store(in: &cancellable)
 
@@ -226,6 +245,8 @@ class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, M
             navigateToReciterSelection()
         case SettingSection.translationLanguage(item: viewModel.translationLanguageCell.value).sectionOrder:
             navigateToTranslationSelection()
+        case SettingSection.trackerSetting(item: viewModel.trackerSettingCell.value).sectionOrder:
+            navigateToTrackerSetting()
         case SettingSection.about(item: viewModel.aboutCell.value).sectionOrder:
             guard let url = URL(string: Constants.websiteUrl) else { return }
             
@@ -343,6 +364,12 @@ extension SettingViewController {
         )
     }
     
+    private func navigateToTrackerSetting() {
+        let vc = TrackerSettingViewController<TrackerSettingViewModel>(taskManager: taskManager)
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     private func navigateToEmail(
         subject: String,
         recipients: [String]
@@ -401,5 +428,24 @@ extension SettingViewController: SelectionViewControllerDelegate {
 extension SettingViewController: SwitchTableViewCellDelegate {
     func switchTableViewCell(cell: SwitchTableViewCell, didToggle switchToggle: Bool) {
         Storage.save(.allowKahfReminder, switchToggle)
+    }
+}
+
+struct SettingViewControllerWrapper: UIViewControllerRepresentable {
+    let surahService: SurahService
+    let taskManager: TaskManager
+
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let vc = SettingViewController<SettingViewModel>(
+            surahService: surahService,
+            taskManager: taskManager
+        )
+        return UINavigationController(
+            rootViewController: vc
+        )
+    }
+    
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+
     }
 }

@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SwiftUI
 
 class RootViewController: UITabBarController {
-
     private let surahService: SurahService
+    private let taskManager: TaskManager
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,9 +19,11 @@ class RootViewController: UITabBarController {
     }
 
     init(
-        surahService: SurahService
+        surahService: SurahService,
+        taskManager: TaskManager
     ) {
         self.surahService = surahService
+        self.taskManager = taskManager
 
         super.init(
             nibName: nil,
@@ -34,7 +37,8 @@ class RootViewController: UITabBarController {
 
     private func setupView() {
         let surahListViewController = SurahListViewController<SurahListViewModel>(
-            surahService: surahService
+            surahService: surahService,
+            taskManager: taskManager
         )
         
         let surahListNavigationController = UINavigationController(
@@ -51,7 +55,8 @@ class RootViewController: UITabBarController {
         )
 
         let bookmarkListViewController = BookmarkListViewController<BookmarkListViewModel>(
-            surahService: surahService
+            surahService: surahService,
+            taskManager: taskManager
         )
         let bookmarkListNavigationController = UINavigationController(
             rootViewController: bookmarkListViewController
@@ -66,9 +71,27 @@ class RootViewController: UITabBarController {
             selectedImage: UIImage(systemName: "bookmark.fill")
         )
 
+        let trackerListView = TrackerListView(
+            surahService: surahService,
+            taskManager: taskManager
+        )
+        let trackerListHostingController = UIHostingController(
+            rootView: trackerListView
+        )
+        trackerListHostingController.navigationController?.navigationBar.tintColor = .lightGreen
+        trackerListHostingController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString(
+                "tracker_list_tab_bar_title",
+                comment: ""
+            ),
+            image: UIImage(systemName: "checklist.unchecked"),
+            selectedImage: UIImage(systemName: "checklist.checked")
+        )
+
         viewControllers = [
             surahListNavigationController,
-            bookmarkListNavigationController
+            bookmarkListNavigationController,
+            trackerListHostingController
         ]
 
         tabBar.tintColor = .lightGreen
