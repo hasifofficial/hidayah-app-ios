@@ -58,4 +58,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
 
     }
+    
+    func scene(
+        _ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        appDelegate.appController.scene(
+            scene,
+            openURLContexts: URLContexts
+        )
+    }
+    
+    func scene(
+        _ scene: UIScene,
+        continue userActivity: NSUserActivity
+    ) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        appDelegate.appController.scene(
+            scene,
+            continue: userActivity
+        )
+    }
 }

@@ -137,6 +137,29 @@ class AppController: NSObject {
             url: url
         )
     }
+    
+    func scene(
+        _ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) {
+        guard let urlContext = URLContexts.first else { return }
+
+        _ = deeplinkManager.handleDeepLink(
+            url: urlContext.url
+        )
+    }
+    
+    func scene(
+        _ scene: UIScene,
+        continue userActivity: NSUserActivity
+    ) {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let url = userActivity.webpageURL else { return }
+
+        _ = deeplinkManager.handleDeepLink(
+            url: url
+        )
+    }
 }
 
 extension AppController {
