@@ -36,6 +36,10 @@ class RootViewController: UITabBarController {
     }
 
     private func setupView() {
+        if #available(iOS 26.0, *) {
+            tabBarMinimizeBehavior = .onScrollDown
+        }
+        
         let surahListViewController = SurahListViewController<SurahListViewModel>(
             surahService: surahService,
             taskManager: taskManager
@@ -87,11 +91,25 @@ class RootViewController: UITabBarController {
             image: UIImage(systemName: "checklist.unchecked"),
             selectedImage: UIImage(systemName: "checklist.checked")
         )
+        
+        let searchViewController = SearchViewController<SearchViewModel>(
+            surahService: surahService,
+            taskManager: taskManager
+        )        
+        let searchNavigationController = UINavigationController(
+            rootViewController: searchViewController
+        )
+        searchNavigationController.navigationBar.prefersLargeTitles = true
+        searchNavigationController.tabBarItem = UITabBarItem(
+            tabBarSystemItem: .search,
+            tag: 3
+        )
 
         viewControllers = [
             surahListNavigationController,
             bookmarkListNavigationController,
-            trackerListHostingController
+            trackerListHostingController,
+            searchNavigationController
         ]
 
         tabBar.tintColor = .lightGreen
