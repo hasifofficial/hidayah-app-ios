@@ -66,6 +66,7 @@
 		1B791FFB2DC1B8D00007CDDF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B791FFA2DC1B8D00007CDDF /* SwiftUI.framework */; };
 		1B79200C2DC1B8D10007CDDF /* app-widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1B791FF72DC1B8D00007CDDF /* app-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1B7920132DC1B9970007CDDF /* WidgetContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B791FF12DC1B0320007CDDF /* WidgetContext.swift */; };
+		1B7C43D32EB5E55400F95F17 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7C43D22EB5E55400F95F17 /* SceneDelegate.swift */; };
 		1B8339382626A710007B5ADB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8339372626A710007B5ADB /* Constants.swift */; };
 		1B9F20D32DC44B0700DCBB0D /* TrackerSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20D22DC44B0700DCBB0D /* TrackerSettingViewController.swift */; };
 		1B9F20D52DC44B0C00DCBB0D /* TrackerSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9F20D42DC44B0C00DCBB0D /* TrackerSettingViewModel.swift */; };
@@ -95,6 +96,10 @@
 		1BC162F62CD3B6FA0051C974 /* BookmarkListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F52CD3B6FA0051C974 /* BookmarkListViewController.swift */; };
 		1BC162F82CD3B6FF0051C974 /* BookmarkListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */; };
 		1BC162FA2CD3B7060051C974 /* BookmarkListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */; };
+		1BCA4D2B2EB6598B003D93C7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA4D2A2EB6598B003D93C7 /* SearchViewController.swift */; };
+		1BCA4D2D2EB65998003D93C7 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA4D2C2EB65998003D93C7 /* SearchViewModel.swift */; };
+		1BCA4D2F2EB659B4003D93C7 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA4D2E2EB659B4003D93C7 /* SearchView.swift */; };
+		1BCA4D312EB659D0003D93C7 /* SearchSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA4D302EB659D0003D93C7 /* SearchSection.swift */; };
 		1BD3393E2620483700CB412D /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */; };
 		1BD339432620484400CB412D /* SwitchTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */; };
 		1BD6BE742DC220F500D2EE03 /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE732DC220F500D2EE03 /* EditTaskView.swift */; };
@@ -217,6 +222,7 @@
 		1B791FF82DC1B8D00007CDDF /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		1B791FFA2DC1B8D00007CDDF /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-widgetExtension.entitlements"; sourceTree = "<group>"; };
+		1B7C43D22EB5E55400F95F17 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		1B8339372626A710007B5ADB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1B9F20D22DC44B0700DCBB0D /* TrackerSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettingViewController.swift; sourceTree = "<group>"; };
 		1B9F20D42DC44B0C00DCBB0D /* TrackerSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettingViewModel.swift; sourceTree = "<group>"; };
@@ -241,6 +247,10 @@
 		1BC162F52CD3B6FA0051C974 /* BookmarkListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListViewController.swift; sourceTree = "<group>"; };
 		1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListViewModel.swift; sourceTree = "<group>"; };
 		1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListSection.swift; sourceTree = "<group>"; };
+		1BCA4D2A2EB6598B003D93C7 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		1BCA4D2C2EB65998003D93C7 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		1BCA4D2E2EB659B4003D93C7 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		1BCA4D302EB659D0003D93C7 /* SearchSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSection.swift; sourceTree = "<group>"; };
 		1BD3393D2620483700CB412D /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		1BD339422620484400CB412D /* SwitchTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		1BD6BE732DC220F500D2EE03 /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
@@ -603,6 +613,7 @@
 				1B1AAA8F260E29B300E03B0B /* Surah Detail */,
 				1BC162F22CD3B6B70051C974 /* Bookmark List */,
 				1B3DA576260EDCD5003E4F96 /* Surah List */,
+				1BCA4D292EB65971003D93C7 /* Search */,
 				1BC162EF2CD3B67F0051C974 /* Root */,
 				1B78EB6E260B33AB004E07CD /* Base */,
 			);
@@ -613,6 +624,7 @@
 			isa = PBXGroup;
 			children = (
 				1B78EB14260B327E004E07CD /* AppDelegate.swift */,
+				1B7C43D22EB5E55400F95F17 /* SceneDelegate.swift */,
 				1B3382572CD25BA100CD9670 /* AppController.swift */,
 				1B78EB1F260B3284004E07CD /* LaunchScreen.storyboard */,
 			);
@@ -696,6 +708,17 @@
 				1BC162F92CD3B7060051C974 /* BookmarkListSection.swift */,
 			);
 			path = "Bookmark List";
+			sourceTree = "<group>";
+		};
+		1BCA4D292EB65971003D93C7 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				1BCA4D2E2EB659B4003D93C7 /* SearchView.swift */,
+				1BCA4D2A2EB6598B003D93C7 /* SearchViewController.swift */,
+				1BCA4D2C2EB65998003D93C7 /* SearchViewModel.swift */,
+				1BCA4D302EB659D0003D93C7 /* SearchSection.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		1BD3393C2620481700CB412D /* Switch */ = {
@@ -1158,12 +1181,14 @@
 				1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */,
 				1B8339382626A710007B5ADB /* Constants.swift in Sources */,
 				1B791FF22DC1B0320007CDDF /* WidgetContext.swift in Sources */,
+				1BCA4D2F2EB659B4003D93C7 /* SearchView.swift in Sources */,
 				1B9F21362DC6357600DCBB0D /* Collection+Extension.swift in Sources */,
 				1B9F20DA2DC4C2F600DCBB0D /* ManageCategoryView.swift in Sources */,
 				1B3DA58A260EDD2A003E4F96 /* SurahListSection.swift in Sources */,
 				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
 				1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */,
 				1BB347942A360CC7000903CE /* Endpoint.swift in Sources */,
+				1BCA4D312EB659D0003D93C7 /* SearchSection.swift in Sources */,
 				1B436769261894F9002878B8 /* DetailTitlePlaceholderTableViewCell.swift in Sources */,
 				1B1AAA7D260E1F1A00E03B0B /* SectionTitleTableViewCellViewModel.swift in Sources */,
 				1B6256F32640587D0073F03D /* SurahListView.swift in Sources */,
@@ -1179,6 +1204,7 @@
 				1BD6BE892DC3A89100D2EE03 /* AddTaskView.swift in Sources */,
 				1B3382682CD28B9100CD9670 /* NewSectionTitleTableViewCellViewModel.swift in Sources */,
 				1BA8322F2618CC0500CCC35C /* DetailCardPlaceholderTableViewCellViewModel.swift in Sources */,
+				1BCA4D2B2EB6598B003D93C7 /* SearchViewController.swift in Sources */,
 				1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */,
 				1B3761B2260F2125000ADF3D /* ButtonHeaderTitleWithSubtitleTableViewCellViewModel.swift in Sources */,
 				1B9F20D72DC44B1E00DCBB0D /* TrackerSettingSection.swift in Sources */,
@@ -1195,6 +1221,8 @@
 				1B1AAA99260E29F200E03B0B /* SurahDetailViewController.swift in Sources */,
 				1BD6BE8C2DC3A8C900D2EE03 /* AddCategoryView.swift in Sources */,
 				1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */,
+				1BCA4D2D2EB65998003D93C7 /* SearchViewModel.swift in Sources */,
+				1B7C43D32EB5E55400F95F17 /* SceneDelegate.swift in Sources */,
 				1B3382582CD25BA100CD9670 /* AppController.swift in Sources */,
 				1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */,
 				1BA8322A2618CBF500CCC35C /* DetailCardPlaceholderTableViewCell.swift in Sources */,
@@ -1535,7 +1563,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "app-widgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -1550,7 +1578,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran.app-widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1570,7 +1598,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "app-widgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -1585,7 +1613,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran.app-widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

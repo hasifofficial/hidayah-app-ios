@@ -1,0 +1,280 @@
+//
+//  SearchViewController.swift
+//  simple-quran
+//
+//  Created by Mohammad Hasif Afiq on 11/1/25.
+//
+
+import UIKit
+import Combine
+import RxSwift
+import Toast_Swift
+
+class SearchViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SearchViewModelTypes {
+    private(set) lazy var viewModel: ViewModel = ViewModel()
+    private let surahService: SurahService
+    private let taskManager: TaskManager
+    private var cancellable = Set<AnyCancellable>()
+    private var disposeBag = DisposeBag()
+
+    var rootView: SearchView {
+        return view as! SearchView
+    }
+
+    override func loadView() {
+        view = SearchView(frame: UIScreen.main.bounds)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupView()
+        setupListener()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        loadSurah()
+    }
+
+    init(
+        surahService: SurahService,
+        taskManager: TaskManager
+    ) {
+        self.surahService = surahService
+        self.taskManager = taskManager
+
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupView() {
+        for section in SearchSection.allCases {
+            rootView.tableView.registerCellClass(section.cellType)
+        }
+
+        setupNavBar()
+    }
+    
+    private func setupListener() {
+        disposeBag = DisposeBag()
+        
+        rootView.tableView.delegate = self
+        rootView.searchController.searchResultsUpdater = self
+        rootView.settingButton.addTarget(self, action: #selector(settingButtonAction), for: .touchUpInside)
+
+        viewModel.sectionedItems
+            .bind(to: rootView.tableView.rx.items(dataSource: viewModel.dataSource))
+            .disposed(by: disposeBag)
+        
+        viewModel.title
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+
+                self.title = value
+            })
+            .store(in: &cancellable)
+        
+        viewModel.surahPlaceholderCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.surahPlaceholder(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.bookmarkedSurahTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.bookmarkedSurahTitle(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.bookmarkedSurahCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.bookmarkedSurah(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.surahTitleCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.surahTitle(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.surahCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.surah(item: value))
+            })
+            .store(in: &cancellable)
+
+        viewModel.surahEmptyCell
+            .sink(receiveValue: { [weak self] (value) in
+                guard let self else { return }
+                    
+                self.viewModel.setSection(.surahEmpty(item: value))
+            })
+            .store(in: &cancellable)
+    }
+    
+    private func setupNavBar() {
+        navigationController?.navigationBar.tintColor = .lightGreen
+        navigationItem.rightBarButtonItem = rootView.settingButtonItem
+        navigationItem.searchController = rootView.searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    private func setupPlaceholder() {
+        var vm = [DetailTitlePlaceholderTableViewCellViewModel]()
+        
+        for _ in 0..<10 {
+            vm.append(DetailTitlePlaceholderTableViewCellViewModel())
+        }
+        
+        viewModel.surahPlaceholderCell.send(vm)
+        viewModel.bookmarkedSurahTitleCell.send(nil)
+        viewModel.bookmarkedSurahCell.send(nil)
+        viewModel.surahTitleCell.send(nil)
+        viewModel.surahCell.send(nil)
+        viewModel.surahPlaceholderCell.send(nil)
+    }
+    
+    private func setupEmptyState() {
+        let attributedText = NSMutableAttributedString(
+            string: NSLocalizedString(
+                "surah_list_empty_list_title",
+                comment: ""
+            ),
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+            ]
+        )
+        attributedText.append(NSAttributedString(
+            string: NSLocalizedString(
+                "surah_list_empty_list_subtitle",
+                comment: ""
+            ),
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 14),
+                .foregroundColor: UIColor.textGray
+            ]
+        ))
+        
+        let tempEmptyStateCells = SectionTitleTableViewCellViewModel()
+        tempEmptyStateCells.titleLabelAttributedText.send(attributedText)
+        tempEmptyStateCells.titleLabelTextAlignment.send(.center)
+        tempEmptyStateCells.containerTopSpacing.send(100)
+        
+        viewModel.surahEmptyCell.send(tempEmptyStateCells)
+        viewModel.bookmarkedSurahTitleCell.send(nil)
+        viewModel.bookmarkedSurahCell.send(nil)
+        viewModel.surahTitleCell.send(nil)
+        viewModel.surahCell.send(nil)
+        viewModel.surahPlaceholderCell.send(nil)
+    }
+    
+    private func loadSurah() {
+        setupPlaceholder()
+
+        surahService.getSurahList()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let self else { return }
+
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    self.setupEmptyState()
+                    
+                    if let error = error as? RequestError {
+                        self.view.makeToast(error.message)
+                    } else {
+                        self.view.makeToast(error.localizedDescription)
+                    }
+                }
+            } receiveValue: { [weak self] list in
+                guard let self else { return }
+                self.viewModel.handleSuccess(value: list)
+            }
+            .store(in: &cancellable)
+    }
+    
+    @objc private func settingButtonAction() {
+        let vc = SettingViewController<SettingViewModel>(
+            surahService: surahService,
+            taskManager: taskManager
+        )
+        let settingNavigationController = UINavigationController(
+            rootViewController: vc
+        )
+        present(settingNavigationController, animated: true)
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else {
+            viewModel.filterSurah(keyword: nil)
+
+            return
+        }
+        
+        if text.isEmpty {
+            viewModel.filterSurah(keyword: nil)
+        } else {
+            NSObject.cancelPreviousPerformRequests(withTarget: self)
+            DispatchQueue.main.asyncAfter(
+                deadline: DispatchTime.now() + 1
+            ) { [weak self] in
+                guard let self else { return }
+                
+                self.viewModel.filterSurah(keyword: text)
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case SearchSection.bookmarkedSurah(item: viewModel.bookmarkedSurahCell.value).sectionOrder:
+            guard let surahs = viewModel.filteredBookmarkedSurahList.value,
+                  indexPath.row < surahs.count else { return }
+            
+            let selectedSurah = surahs[indexPath.row]
+                            
+            let vc = SurahDetailViewController<SurahDetailViewModel>(
+                surahService: surahService,
+                bookmarkedAyah: selectedSurah.bookmarkDetail?.numberInSurah,
+                scrollToSpecificAyah: true
+            )
+            vc.viewModel.title.send(selectedSurah.surahDetail?.englishName)
+            vc.viewModel.selectedSurahNo.send(selectedSurah.surahDetail?.number)
+
+            navigationController?.pushViewController(vc, animated: true)
+        case SearchSection.surah(item: viewModel.surahCell.value).sectionOrder:
+            guard let surahs = viewModel.filteredSurahList.value,
+                  indexPath.row < surahs.count else { return }
+            
+            let selectedSurah = surahs[indexPath.row]
+                            
+            let vc = SurahDetailViewController<SurahDetailViewModel>(surahService: surahService)
+            vc.viewModel.selectedSurahNo.send(selectedSurah.number)
+            
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
+    }
+}
