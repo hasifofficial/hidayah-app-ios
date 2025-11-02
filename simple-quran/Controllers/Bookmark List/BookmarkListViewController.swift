@@ -10,7 +10,7 @@ import Combine
 import RxSwift
 import Toast_Swift
 
-class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: BookmarkListViewModelTypes {
+class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: BookmarkListViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
     private let taskManager: TaskManager
@@ -67,7 +67,6 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
         disposeBag = DisposeBag()
         
         rootView.tableView.delegate = self
-        rootView.searchController.searchResultsUpdater = self
         rootView.settingButton.addTarget(self, action: #selector(settingButtonAction), for: .touchUpInside)
         rootView.refreshControl.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
@@ -111,7 +110,6 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     private func setupNavBar() {
         navigationController?.navigationBar.tintColor = .lightGreen
         navigationItem.rightBarButtonItem = rootView.settingButtonItem
-        navigationItem.searchController = rootView.searchController
     }
         
     private func setupPlaceholder() {
@@ -196,17 +194,6 @@ class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelega
     
     @objc private func refreshControlAction() {
         loadSurah()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [weak self] in
-            guard let self else { return }
-            
-            self.viewModel.filterSurah(keyword: text)
-        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

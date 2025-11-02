@@ -21,16 +21,6 @@ class BookmarkListView: UIView {
         return newButton
     }()
     
-    lazy var searchController: UISearchController = {
-        let newSearchController = UISearchController(searchResultsController: nil)
-        newSearchController.obscuresBackgroundDuringPresentation = false
-        newSearchController.searchBar.placeholder = NSLocalizedString(
-            "bookmark_list_search_placeholder",
-            comment: ""
-        )
-        return newSearchController
-    }()
-
     lazy var tableView: UITableView = {
         let newTableView = UITableView(frame: .zero, style: .plain)
         newTableView.separatorStyle = .none

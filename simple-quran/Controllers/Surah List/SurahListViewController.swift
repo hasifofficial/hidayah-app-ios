@@ -10,7 +10,7 @@ import Combine
 import RxSwift
 import Toast_Swift
 
-class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SurahListViewModelTypes {
+class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahListViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()
     private let surahService: SurahService
     private let taskManager: TaskManager
@@ -62,7 +62,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
         disposeBag = DisposeBag()
         
         rootView.tableView.delegate = self
-        rootView.searchController.searchResultsUpdater = self
         rootView.settingButton.addTarget(self, action: #selector(settingButtonAction), for: .touchUpInside)
         rootView.refreshControl.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
@@ -106,7 +105,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     private func setupNavBar() {
         navigationController?.navigationBar.tintColor = .lightGreen
         navigationItem.rightBarButtonItem = rootView.settingButtonItem
-        navigationItem.searchController = rootView.searchController
     }
 
     private func setupPlaceholder() {
@@ -193,17 +191,6 @@ class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate,
     
     @objc private func refreshControlAction() {
         loadSurah()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [weak self] in
-            guard let self else { return }
-            
-            self.viewModel.filterSurah(keyword: text)
-        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
