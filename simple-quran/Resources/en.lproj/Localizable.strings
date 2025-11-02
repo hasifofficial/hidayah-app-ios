@@ -23,6 +23,11 @@
 "push_notification_istiqamah_tracker_daily_reset_title" = "Istiqamah Tracker";
 "push_notification_istiqamah_tracker_daily_reset_body" = "Assalamualaikum! It looks like the day has ended, so we’ll reset your progress for tomorrow. Tap to continue.";
 
+"search_header_title" = "Search";
+"search_textfield_placeholder" = "Search surah";
+"search_bookmarked_surah_section_title" = "Bookmark";
+"search_surah_section_title" = "Surah";
+
 "surah_list_header_title" = "Quran";
 "surah_list_search_placeholder" = "Search surah";
 "surah_list_subtitle" = "%@ • %@ verses";
