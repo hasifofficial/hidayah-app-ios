@@ -92,7 +92,7 @@ struct SurahDetailView: View {
                 .multilineTextAlignment(.center)
 
             Rectangle()
-                .fill(Color.white.opacity(0.85))
+                .fill(.white.opacity(0.85))
                 .frame(height: 1)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
@@ -134,7 +134,7 @@ struct SurahDetailView: View {
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.lightGreen)
+                .fill(.lightGreen)
         )
         .shadow(color: .black.opacity(0.15), radius: 5, y: 2)
         .padding(.horizontal, 16)
@@ -225,7 +225,7 @@ struct SurahDetailView: View {
     private var placeholder: some View {
         VStack(spacing: 16) {
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.lightGreen.opacity(0.25))
+                .fill(.lightGreen.opacity(0.25))
                 .frame(height: 220)
 
             ForEach(0..<3, id: \.self) { _ in

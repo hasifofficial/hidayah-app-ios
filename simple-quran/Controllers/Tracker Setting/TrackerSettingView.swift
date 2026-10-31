@@ -16,41 +16,43 @@ struct TrackerSettingsView: View {
 
     var body: some View {
         List {
-            Section {
-                Button {
-                    onManageCategories()
-                } label: {
-                    TrackerSettingsRow(
-                        icon: "square.grid.2x2",
-                        title: NSLocalizedString(
-                            "setting_tracker_manage_category_title",
-                            comment: ""
-                        ),
-                        showsChevron: true
-                    )
-                }
-                .buttonStyle(.plain)
-            } header: {
-                sectionHeader("setting_tracker_category_title")
+            SettingsSectionHeader(
+                title: NSLocalizedString(
+                    "setting_tracker_category_title",
+                    comment: ""
+                ),
+                topPadding: 16
+            )
+
+            SettingsActionRow(
+                icon: "square.grid.2x2",
+                title: NSLocalizedString(
+                    "setting_tracker_manage_category_title",
+                    comment: ""
+                )
+            ) {
+                onManageCategories()
             }
 
-            Section {
-                Button {
-                    activeAlert = .daily
-                } label: {
-                    resetRow("setting_tracker_reset_daily_progress_title")
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    activeAlert = .all
-                } label: {
-                    resetRow("setting_tracker_reset_all_title")
-                }
-                .buttonStyle(.plain)
+            Button {
+                activeAlert = .daily
+            } label: {
+                resetRow("setting_tracker_reset_daily_progress_title")
             }
+            .buttonStyle(.plain)
+            .settingsListRow()
+
+            Button {
+                activeAlert = .all
+            } label: {
+                resetRow("setting_tracker_reset_all_title")
+            }
+            .buttonStyle(.plain)
+            .settingsListRow()
         }
         .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(.sheetBackground)
         .alert(
             activeAlert?.title ?? "",
             isPresented: Binding(
@@ -95,13 +97,6 @@ struct TrackerSettingsView: View {
         }
     }
 
-    private func sectionHeader(_ key: String) -> some View {
-        Text(NSLocalizedString(key, comment: ""))
-            .font(.system(size: 16, weight: .bold))
-            .foregroundColor(.title)
-            .textCase(nil)
-    }
-
     private func resetRow(_ key: String) -> some View {
         HStack(spacing: 12) {
             Text(NSLocalizedString(key, comment: ""))
@@ -113,34 +108,8 @@ struct TrackerSettingsView: View {
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.red)
         }
-        .padding(.vertical, 4)
-        .contentShape(Rectangle())
-    }
-}
-
-private struct TrackerSettingsRow: View {
-    let icon: String
-    let title: String
-    let showsChevron: Bool
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .frame(width: 24)
-                .foregroundColor(.title)
-
-            Text(title)
-                .foregroundColor(.title)
-
-            Spacer()
-
-            if showsChevron {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.textGray)
-            }
-        }
-        .padding(.vertical, 4)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
         .contentShape(Rectangle())
     }
 }

@@ -369,7 +369,7 @@ struct MailView: UIViewControllerRepresentable {
     }
 }
 
-private extension View {
+extension View {
     func settingsListRow() -> some View {
         self
             .listRowInsets(EdgeInsets())
