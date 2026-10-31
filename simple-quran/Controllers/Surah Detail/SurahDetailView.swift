@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct SurahDetailView: View {
     let viewModel: SurahDetailViewModel
@@ -88,7 +87,7 @@ struct SurahDetailView: View {
                 .foregroundColor(.white)
 
             Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
-                .font(Font(UIFont.amiriRegular(size: 22)))
+                .font(.amiriRegular(size: 22))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
 
@@ -201,7 +200,7 @@ struct SurahDetailView: View {
             .padding(.horizontal, 16)
 
             Text(ayah.arabic)
-                .font(Font(UIFont.kitabRegular(size: 22)))
+                .font(.kitabRegular(size: 22))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)

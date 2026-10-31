@@ -1,5 +1,5 @@
 //
-//  RootViewController.swift
+//  RootView.swift
 //  simple-quran
 //
 //  Created by Mohammad Hasif Afiq on 10/31/24.
@@ -54,24 +54,6 @@ enum AppTab: Int, Hashable, Identifiable {
             return "magnifyingglass"
         }
     }
-}
-
-enum AppRoute: Hashable {
-    case surahDetail(
-        surahNumber: Int,
-        title: String?,
-        bookmarkedAyah: Int?
-    )
-}
-
-@Observable
-final class AppRouter {
-    var selectedTab: AppTab = .quran
-    var quranPath: [AppRoute] = []
-    var bookmarkPath: [AppRoute] = []
-    var searchPath: [AppRoute] = []
-    var settingsPresented = false
-    var errorMessage: String?
 }
 
 struct RootView: View {
@@ -345,11 +327,6 @@ struct RootView: View {
             )
         }
     }
-}
-
-private enum SettingsRoute: Hashable {
-    case trackerSettings
-    case manageCategories
 }
 
 private struct SettingsSheet: View {

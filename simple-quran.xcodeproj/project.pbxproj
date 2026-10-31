@@ -13,13 +13,11 @@
 		1B1AAA91260E29DF00E03B0B /* SurahDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA90260E29DF00E03B0B /* SurahDetailView.swift */; };
 		1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA9D260E2A0200E03B0B /* SurahDetailViewModel.swift */; };
 		1B1AAAB6260E416500E03B0B /* Fonts.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B1AAAB5260E416500E03B0B /* Fonts.bundle */; };
-		1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */; };
 		1B3382582CD25BA100CD9670 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3382572CD25BA100CD9670 /* AppController.swift */; };
 		1B33825A2CD285D200CD9670 /* APIClientService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3382592CD285D200CD9670 /* APIClientService.swift */; };
 		1B33825D2CD28A0600CD9670 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B33825C2CD28A0600CD9670 /* SelectionView.swift */; };
 		1B3382632CD28B0300CD9670 /* ItemSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3382622CD28B0300CD9670 /* ItemSelector.swift */; };
 		1B3761A1260EF74A000ADF3D /* Edition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761A0260EF74A000ADF3D /* Edition.swift */; };
-		1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */; };
 		1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */; };
 		1B3DA590260EDEF8003E4F96 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA58F260EDEF8003E4F96 /* SettingView.swift */; };
 		1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */; };
@@ -57,13 +55,12 @@
 		1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347952A360D27000903CE /* SurahEndpoints.swift */; };
 		1BB347982A360EB2000903CE /* SurahService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB347972A360EB2000903CE /* SurahService.swift */; };
 		1BC162ED2CD3A6830051C974 /* SurahBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162EC2CD3A6830051C974 /* SurahBookmark.swift */; };
-		1BC162F12CD3B6910051C974 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F02CD3B6910051C974 /* RootViewController.swift */; };
+		1BC162F12CD3B6910051C974 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F02CD3B6910051C974 /* RootView.swift */; };
 		1BC162F42CD3B6F40051C974 /* BookmarkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F32CD3B6F40051C974 /* BookmarkListView.swift */; };
 		1BC162F82CD3B6FF0051C974 /* BookmarkListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */; };
 		1BCA4D2D2EB65998003D93C7 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA4D2C2EB65998003D93C7 /* SearchViewModel.swift */; };
 		1BCA4D2F2EB659B4003D93C7 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA4D2E2EB659B4003D93C7 /* SearchView.swift */; };
 		1BD6BE742DC220F500D2EE03 /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE732DC220F500D2EE03 /* EditTaskView.swift */; };
-		1BD6BE752DC2387D00D2EE03 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */; };
 		1BD6BE862DC3A82A00D2EE03 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE852DC3A82A00D2EE03 /* TaskManager.swift */; };
 		1BD6BE892DC3A89100D2EE03 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE882DC3A89100D2EE03 /* AddTaskView.swift */; };
 		1BD6BE8C2DC3A8C900D2EE03 /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE8B2DC3A8C900D2EE03 /* AddCategoryView.swift */; };
@@ -77,6 +74,7 @@
 		4878478005C4692B80684440 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		537C3B48B331D72F0AB16FBE /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		5A980873823AC29180C94B35 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		5E73C0C18A766AEBB36F1578 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC7852D0CBD415202E48040 /* Font+Extension.swift */; };
 		826FC500672A06C86EC4FD6C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		AACD2DCAEC0B8C287B4DEC9E /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
@@ -119,16 +117,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0EC7852D0CBD415202E48040 /* Font+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		1B1AAA90260E29DF00E03B0B /* SurahDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahDetailView.swift; sourceTree = "<group>"; };
 		1B1AAA9D260E2A0200E03B0B /* SurahDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahDetailViewModel.swift; sourceTree = "<group>"; };
 		1B1AAAB5260E416500E03B0B /* Fonts.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Fonts.bundle; sourceTree = "<group>"; };
-		1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		1B3382572CD25BA100CD9670 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		1B3382592CD285D200CD9670 /* APIClientService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientService.swift; sourceTree = "<group>"; };
 		1B33825C2CD28A0600CD9670 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		1B3382622CD28B0300CD9670 /* ItemSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelector.swift; sourceTree = "<group>"; };
 		1B3761A0260EF74A000ADF3D /* Edition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edition.swift; sourceTree = "<group>"; };
-		1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		1B3DA584260EDD1C003E4F96 /* SurahListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListViewModel.swift; sourceTree = "<group>"; };
 		1B3DA58F260EDEF8003E4F96 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		1B3DA59C260EDF11003E4F96 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
@@ -165,7 +162,7 @@
 		1BB347952A360D27000903CE /* SurahEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahEndpoints.swift; sourceTree = "<group>"; };
 		1BB347972A360EB2000903CE /* SurahService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahService.swift; sourceTree = "<group>"; };
 		1BC162EC2CD3A6830051C974 /* SurahBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahBookmark.swift; sourceTree = "<group>"; };
-		1BC162F02CD3B6910051C974 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		1BC162F02CD3B6910051C974 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1BC162F32CD3B6F40051C974 /* BookmarkListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListView.swift; sourceTree = "<group>"; };
 		1BC162F72CD3B6FF0051C974 /* BookmarkListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkListViewModel.swift; sourceTree = "<group>"; };
 		1BCA4D2C2EB65998003D93C7 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -196,6 +193,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
+		1B8DF8C930962FDD00AFCBFA /* Router */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Router; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,9 +241,8 @@
 		1B1AAA86260E223600E03B0B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1B1AAABA260E41AC00E03B0B /* UIFont+Extension.swift */,
-				1B3761B6260F2B69000ADF3D /* UIColor+Extension.swift */,
 				1B9F21352DC6357600DCBB0D /* Collection+Extension.swift */,
+				0EC7852D0CBD415202E48040 /* Font+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -343,6 +340,7 @@
 				1B1AAA86260E223600E03B0B /* Extensions */,
 				1B78EB79260B3406004E07CD /* Models */,
 				1BEE94442A360B9D00F07D90 /* Network */,
+				1B8DF8C930962FDD00AFCBFA /* Router */,
 				1BD6BE842DC3A81700D2EE03 /* Manager */,
 				1B42CF56261C97AD0096F77F /* Storage */,
 				1B436750261891C6002878B8 /* Views */,
@@ -466,7 +464,7 @@
 		1BC162EF2CD3B67F0051C974 /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				1BC162F02CD3B6910051C974 /* RootViewController.swift */,
+				1BC162F02CD3B6910051C974 /* RootView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -607,6 +605,9 @@
 			);
 			dependencies = (
 				1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1B8DF8C930962FDD00AFCBFA /* Router */,
 			);
 			name = "simple-quran";
 			packageProductDependencies = (
@@ -803,7 +804,7 @@
 				1B3DA585260EDD1C003E4F96 /* SurahListViewModel.swift in Sources */,
 				1BD6BE8F2DC3A91700D2EE03 /* TaskRowView.swift in Sources */,
 				1BC162F42CD3B6F40051C974 /* BookmarkListView.swift in Sources */,
-				1BC162F12CD3B6910051C974 /* RootViewController.swift in Sources */,
+				1BC162F12CD3B6910051C974 /* RootView.swift in Sources */,
 				1B33825D2CD28A0600CD9670 /* SelectionView.swift in Sources */,
 				1B791FF02DC1B0190007CDDF /* TaskDetails.swift in Sources */,
 				1BB347982A360EB2000903CE /* SurahService.swift in Sources */,
@@ -812,7 +813,6 @@
 				1BCA4D2F2EB659B4003D93C7 /* SearchView.swift in Sources */,
 				1B9F21362DC6357600DCBB0D /* Collection+Extension.swift in Sources */,
 				1B9F20DA2DC4C2F600DCBB0D /* ManageCategoryView.swift in Sources */,
-				1B1AAABB260E41AC00E03B0B /* UIFont+Extension.swift in Sources */,
 				1BB347962A360D27000903CE /* SurahEndpoints.swift in Sources */,
 				1BB347942A360CC7000903CE /* Endpoint.swift in Sources */,
 				1B6256F32640587D0073F03D /* SurahListView.swift in Sources */,
@@ -828,11 +828,11 @@
 				1B3DA59D260EDF11003E4F96 /* SettingViewModel.swift in Sources */,
 				1B3761A1260EF74A000ADF3D /* Edition.swift in Sources */,
 				1BD6BE8C2DC3A8C900D2EE03 /* AddCategoryView.swift in Sources */,
-				1B3761B7260F2B69000ADF3D /* UIColor+Extension.swift in Sources */,
 				1BCA4D2D2EB65998003D93C7 /* SearchViewModel.swift in Sources */,
 				1B3382582CD25BA100CD9670 /* AppController.swift in Sources */,
 				1B1AAA9E260E2A0200E03B0B /* SurahDetailViewModel.swift in Sources */,
 				1B791FEE2DC1AFFA0007CDDF /* Category.swift in Sources */,
+				5E73C0C18A766AEBB36F1578 /* Font+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,7 +858,6 @@
 			files = (
 				1B9F20E32DC5946100DCBB0D /* TaskDetails.swift in Sources */,
 				1BD6BE9B2DC3B21100D2EE03 /* Storage.swift in Sources */,
-				1BD6BE752DC2387D00D2EE03 /* UIColor+Extension.swift in Sources */,
 				1B9F20E22DC593DF00DCBB0D /* TaskManager.swift in Sources */,
 				1B9F20E12DC592C800DCBB0D /* TrackerContext.swift in Sources */,
 				1B7920132DC1B9970007CDDF /* WidgetContext.swift in Sources */,
@@ -1027,6 +1026,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
 				CODE_SIGN_STYLE = Automatic;
@@ -1055,6 +1055,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
 				CODE_SIGN_STYLE = Automatic;
@@ -1082,6 +1083,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
@@ -1104,6 +1106,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
@@ -1126,6 +1129,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
@@ -1147,6 +1151,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quranUITests/Info.plist";

@@ -133,7 +133,7 @@ struct SurahRowView: View {
             Spacer(minLength: 8)
 
             Text(arabicTitle)
-                .font(.custom("Kitab-Bold", size: 22))
+                .font(.kitabBold(size: 22))
                 .foregroundColor(.lightGreen)
                 .multilineTextAlignment(.trailing)
                 .fixedSize(horizontal: false, vertical: true)

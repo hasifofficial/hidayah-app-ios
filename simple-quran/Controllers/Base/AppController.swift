@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 import UserNotifications
 import FirebaseCore
@@ -69,7 +70,7 @@ class AppController: NSObject {
 
 extension AppController {
     private func configureCustomFont() {
-        UIFont.loadFontsBundle(bundle: "Fonts", fontExtension: "ttf")
+        Font.loadFontsBundle(bundle: "Fonts", fontExtension: "ttf")
     }
 
     private func scheduleKahfNotification() {
