@@ -5,153 +5,93 @@
 //  Created by Mohammad Hasif Afiq on 10/31/24.
 //
 
-import UIKit
+import Foundation
 import Combine
-import Action
-import RxSwift
-import RxCocoa
-import RxDataSources
+import Observation
 
-protocol BookmarkListViewModelTypes: SectionSetter, TableViewSectionSetter where Section == BookmarkListSection {
-    var title: CurrentValueSubject<String, Never> { get }
-    var surahPlaceholderCell: CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never> { get }
-    var surahCell: CurrentValueSubject<[DetailTitleTableViewCellViewModel]?, Never> { get }
-    var surahEmptyCell: CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never> { get }
-    var bookmarkedSurahList: CurrentValueSubject<[(surahDetail: SurahListResponse?, bookmarkDetail: SurahBookmark?)]?, Never> { get }
-    var filteredSurahList: CurrentValueSubject<[(surahDetail: SurahListResponse?, bookmarkDetail: SurahBookmark?)]?, Never> { get }
-    var tapAction: CurrentValueSubject<Action<Section.Item, Never>, Never> { get }
-    
-    func handleSuccess(value: SurahList)
-    func filterSurah(keyword: String?)
-    
-    init()
+struct BookmarkedSurah: Identifiable {
+    let surah: SurahListResponse
+    let bookmark: SurahBookmark
+
+    var id: String {
+        "\(bookmark.surahNumber)-\(bookmark.numberInSurah)"
+    }
 }
 
-class BookmarkListViewModel: BookmarkListViewModelTypes {
-    let surahPlaceholderCell: CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never> = {
-        var vm = [DetailTitlePlaceholderTableViewCellViewModel]()
-        
-        for _ in 0..<10 {
-            vm.append(DetailTitlePlaceholderTableViewCellViewModel())
-        }
-        
-        return CurrentValueSubject<[DetailTitlePlaceholderTableViewCellViewModel]?, Never>(vm)
-    }()
+@Observable
+final class BookmarkListViewModel {
+    private(set) var bookmarks: [BookmarkedSurah] = []
+    private(set) var isLoading = true
 
-    let title = CurrentValueSubject<String, Never>(NSLocalizedString(
-        "bookmark_list_header_title",
-        comment: ""
-    ))
-    let surahCell = CurrentValueSubject<[DetailTitleTableViewCellViewModel]?, Never>(nil)
-    var surahEmptyCell = CurrentValueSubject<SectionTitleTableViewCellViewModel?, Never>(nil)
-    let bookmarkedSurahList = CurrentValueSubject<[(surahDetail: SurahListResponse?, bookmarkDetail: SurahBookmark?)]?, Never>(nil)
-    let filteredSurahList = CurrentValueSubject<[(surahDetail: SurahListResponse?, bookmarkDetail: SurahBookmark?)]?, Never>(nil)
-    let tapAction = CurrentValueSubject<Action<Section.Item, Swift.Never>, Never>(Action { _ in
-        return Observable.empty()
-    })
+    @ObservationIgnored
+    var onSelect: ((BookmarkedSurah) -> Void)?
 
-    var dataSource: RxTableViewSectionedReloadDataSource<BookmarkListSection> = Section.generateDataSource()
-    var sectionCache = [Int : BookmarkListSection]()
-    private(set) var sectionedItems = BehaviorRelay<[BookmarkListSection]>(value: [])
-    
-    func handleSuccess(value: SurahList) {
-        guard let surahs = value.data else { return }
+    @ObservationIgnored
+    var onError: ((String) -> Void)?
 
-        var tempBookmarkedSurahList = [(surahDetail: SurahListResponse?, bookmarkDetail: SurahBookmark?)]()
-        if let recentBookmarks: [SurahBookmark] = Storage.loadObject(key: .bookmarkRecitations) {
-            let sortedRecentBookmarks = recentBookmarks.sorted {
-                if $0.surahNumber == $1.surahNumber {
-                    return $0.numberInSurah < $1.numberInSurah
+    @ObservationIgnored
+    private let surahService: SurahService
+
+    @ObservationIgnored
+    private var cancellables = Set<AnyCancellable>()
+
+    init(surahService: SurahService) {
+        self.surahService = surahService
+    }
+
+    func load(completion: (() -> Void)? = nil) {
+        isLoading = true
+
+        surahService.getSurahList()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                defer { completion?() }
+                guard let self else { return }
+
+                self.isLoading = false
+
+                if case .failure(let error) = result {
+                    self.bookmarks = []
+                    self.onError?(
+                        (error as? RequestError)?.message
+                            ?? error.localizedDescription
+                    )
                 }
-                return $0.surahNumber < $1.surahNumber
-            }
+            } receiveValue: { [weak self] list in
+                guard let self else { return }
 
-            for filteredSurah in sortedRecentBookmarks {
-                guard let surah = surahs.first(where: { $0.number == filteredSurah.surahNumber }) else { return }
-                
-                tempBookmarkedSurahList.append(
-                    (
-                        surahDetail: surah,
-                        bookmarkDetail: filteredSurah
+                let surahs = list.data ?? []
+                let storedBookmarks: [SurahBookmark] = Storage.loadObject(
+                    key: .bookmarkRecitations
+                ) ?? []
+                let sortedBookmarks = storedBookmarks.sorted {
+                    if $0.surahNumber == $1.surahNumber {
+                        return $0.numberInSurah < $1.numberInSurah
+                    }
+                    return $0.surahNumber < $1.surahNumber
+                }
+
+                self.bookmarks = sortedBookmarks.compactMap { bookmark in
+                    guard let surah = surahs.first(where: {
+                        $0.number == bookmark.surahNumber
+                    }) else {
+                        return nil
+                    }
+
+                    return BookmarkedSurah(
+                        surah: surah,
+                        bookmark: bookmark
                     )
-                )
+                }
             }
-        }
-        bookmarkedSurahList.send(tempBookmarkedSurahList)
-
-        filterSurah(keyword: nil)
-    }
-    
-    func filterSurah(keyword: String?) {
-        guard let bookmarkedSurahList = bookmarkedSurahList.value else { return }
-
-        if let keyword = keyword?.lowercased(), !keyword.isEmpty {
-            filteredSurahList.send(bookmarkedSurahList.filter { $0.surahDetail?.englishName?.lowercased().contains(keyword) ?? false })
-        } else {
-            filteredSurahList.send(bookmarkedSurahList)
-        }
-        
-        guard let filteredSurahs = filteredSurahList.value else { return }
-        
-        var tempSurahCells = [DetailTitleTableViewCellViewModel]()
-        if filteredSurahs.count > 0 {
-            for surah in filteredSurahs {
-                guard let bookmarkDetail = surah.bookmarkDetail,
-                      let surahDetail = surah.surahDetail,
-                      let name = surahDetail.name,
-                      let englishName = surahDetail.englishName else { return }
-                
-                let tempSurahCell = DetailTitleTableViewCellViewModel()
-                tempSurahCell.rightTitleLabelText.send(name)
-                tempSurahCell.leftTitleLabelText.send(englishName)
-                tempSurahCell.leftSubtitleLabelText.send(
-                    String(
-                        format: NSLocalizedString(
-                            "bookmark_list_subtitle",
-                            comment: ""
-                        ),
-                        String(bookmarkDetail.numberInSurah)
-                    )
-                )
-                tempSurahCells.append(tempSurahCell)
-            }
-            
-            surahEmptyCell.send(nil)
-            surahCell.send(tempSurahCells)
-        } else {
-            let attributedText = NSMutableAttributedString(
-                string: NSLocalizedString(
-                    "bookmark_list_search_empty_title",
-                    comment: ""
-                ),
-                attributes: [
-                    .font: UIFont.systemFont(ofSize: 14, weight: .bold)
-                ]
-            )
-            attributedText.append(NSAttributedString(
-                string: NSLocalizedString(
-                    "bookmark_list_search_empty_subtitle",
-                    comment: ""
-                ),
-                attributes: [
-                    .font: UIFont.systemFont(ofSize: 14),
-                    .foregroundColor: UIColor.textGray
-                ]
-            ))
-            
-            let tempEmptyStateCells = SectionTitleTableViewCellViewModel()
-            tempEmptyStateCells.titleLabelAttributedText.send(attributedText)
-            tempEmptyStateCells.titleLabelTextAlignment.send(.center)
-            tempEmptyStateCells.containerTopSpacing.send(100)
-            
-            surahEmptyCell.send(tempEmptyStateCells)
-            surahCell.send(nil)
-        }
-
-        surahPlaceholderCell.send(nil)
+            .store(in: &cancellables)
     }
 
-    required init() {
-        
+    func refresh() async {
+        await withCheckedContinuation { continuation in
+            load {
+                continuation.resume()
+            }
+        }
     }
 }

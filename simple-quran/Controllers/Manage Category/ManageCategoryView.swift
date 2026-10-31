@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ManageCategoryContentView: View {
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
 
     private func deleteCategories(at offsets: IndexSet) {
         offsets.forEach { index in
@@ -25,7 +25,7 @@ struct ManageCategoryContentView: View {
     }
 
     var body: some View {
-        NavigationView {
+        Group {
             if !taskManager.customCategories.isEmpty {
                 Form {
                     if !taskManager.customCategories.isEmpty {
@@ -42,20 +42,26 @@ struct ManageCategoryContentView: View {
                     }
                 }
             } else {
-                VStack {
-                    Text("setting_manage_category_empty_title")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(Color(uiColor: .title))
-                        .multilineTextAlignment(.center)
-
-                    Text("setting_manage_category_empty_subtitle")
-                        .font(.system(size: 14))
-                        .foregroundColor(Color(uiColor: .textGray))
-                        .multilineTextAlignment(.center)
-                    
-                    Spacer()
+                ContentUnavailableView {
+                    Label {
+                        Text(
+                            NSLocalizedString(
+                                "setting_manage_category_empty_title",
+                                comment: ""
+                            )
+                        )
+                    } icon: {
+                        Image(systemName: "square.grid.2x2")
+                    }
+                } description: {
+                    Text(
+                        NSLocalizedString(
+                            "setting_manage_category_empty_subtitle",
+                            comment: ""
+                        )
+                    )
                 }
-                .padding(.top, 100)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .navigationTitle("setting_manage_category_header_title")
@@ -68,6 +74,6 @@ struct ManageCategoryView: View {
     
     var body: some View {
         ManageCategoryContentView()
-            .environmentObject(taskManager)
+            .environment(taskManager)
     }
 }

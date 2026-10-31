@@ -5,15 +5,15 @@
 //  Created by Mohammad Hasif Afiq on 5/3/25.
 //
 
-import UIKit
+import Foundation
 
 class DeeplinkManager: NSObject {
-    let surahService: SurahService
+    private let router: AppRouter
 
-    init(
-        surahService: SurahService
-    ) {
-        self.surahService = surahService
+    init(router: AppRouter) {
+        self.router = router
+
+        super.init()
     }
 
     enum DeepLink {
@@ -37,15 +37,14 @@ class DeeplinkManager: NSObject {
         }
         
         private static func handleTabDeeplink(pathComponents: [String]) -> DeepLink? {
-            guard !pathComponents.isEmpty else { return nil }
-            
-            switch pathComponents[0] {
+            guard let firstComponent = pathComponents.first else { return nil }
+
+            switch firstComponent {
             case "quran":
                 var selectedAyahNumber: Int?
 
                 if pathComponents.count > 1,
                    let surahNumber = Int(pathComponents[1]) {
-                    
                     if let ayahNumber = pathComponents[safe: 2] {
                         selectedAyahNumber = Int(ayahNumber)
                     }
@@ -66,60 +65,45 @@ class DeeplinkManager: NSObject {
         }
     }
 
+    @discardableResult
     func handleDeepLink(
-        url: URL,
+        url: URL
     ) -> Bool {
-        guard let deepLink = DeepLink.build(from: url) else { return false }
-        
-        switch deepLink {
-        case .quran:
-            return navigateToTab(index: 0)
-        case .bookmark:
-            return navigateToTab(index: 1)
-        case .tracker:
-            return navigateToTab(index: 2)
-        case .quranDetail(let surahNumber, let selectedAyahNumber):
-            let tabSelected = navigateToTab(index: 0)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.navigateToSurahDetail(
-                    surahNumber: surahNumber,
-                    selectedAyahNumber: selectedAyahNumber
-                )
-            }
-            return tabSelected
-        }
-    }
-    
-    private func navigateToTab(index: Int) -> Bool {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootVC = windowScene.windows.first?.rootViewController as? RootViewController,
-              index < (rootVC.viewControllers?.count ?? 0) else {
+        #if DEBUG
+        print("🔗 Deeplink received: \(url.absoluteString)")
+        #endif
+
+        guard let deepLink = DeepLink.build(from: url) else {
+            #if DEBUG
+            print("⚠️ Deeplink could not be parsed")
+            #endif
             return false
         }
-        
-        rootVC.selectedIndex = index
-        return true
-    }
 
-    private func navigateToSurahDetail(
-        surahNumber: Int,
-        selectedAyahNumber: Int? = nil,
-    ) {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootVC = windowScene.windows.first?.rootViewController as? RootViewController,
-              let navigationController = rootVC.viewControllers?[rootVC.selectedIndex] as? UINavigationController else {
-            return
+        router.settingsPresented = false
+
+        switch deepLink {
+        case .quran:
+            router.selectedTab = .quran
+        case .bookmark:
+            router.selectedTab = .bookmark
+        case .tracker:
+            router.selectedTab = .tracker
+        case .quranDetail(let surahNumber, let selectedAyahNumber):
+            router.selectedTab = .quran
+            router.quranPath = [
+                .surahDetail(
+                    surahNumber: surahNumber,
+                    title: nil,
+                    bookmarkedAyah: selectedAyahNumber
+                )
+            ]
         }
-        
-        navigationController.popToRootViewController(animated: false)
-        
-        let vc = SurahDetailViewController<SurahDetailViewModel>(
-            surahService: surahService,
-            bookmarkedAyah: selectedAyahNumber,
-            scrollToSpecificAyah: selectedAyahNumber != nil
-        )
-        vc.viewModel.selectedSurahNo.send(surahNumber)
-        
-        navigationController.pushViewController(vc, animated: true)
+
+        #if DEBUG
+        print("✅ Deeplink handled")
+        #endif
+
+        return true
     }
 }

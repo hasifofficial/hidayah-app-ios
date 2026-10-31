@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskCardView: View {
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
     @State private var isEditing = false
 
     let category: Category

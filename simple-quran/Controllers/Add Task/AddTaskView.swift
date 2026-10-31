@@ -9,12 +9,12 @@ import SwiftUI
 
 struct AddTaskView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
     @State private var taskName = ""
     @State private var selectedCategory: Category?
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("add_task_task_detail_section_title")) {
                     TextField(

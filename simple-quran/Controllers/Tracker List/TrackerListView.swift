@@ -8,93 +8,75 @@
 import SwiftUI
 
 struct TrackerListContentView: View {
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
     @State private var showingAddCategory = false
     @State private var showingAddTask = false
-    @State private var showingUIKitSettings = false
-    
-    let surahService: SurahService
+
+    let onOpenSettings: () -> Void
 
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .bottomTrailing) {
-                ScrollView {
-                    VStack(spacing: 20) {
-                        ProgressHeaderView()
-                            .padding(.top)
-                        
-                        ForEach(taskManager.allCategories(), id: \.id) { category in
-                            if !taskManager.tasks(for: category).isEmpty {
-                                TaskCardView(category: category)
-                            }
+        ZStack(alignment: .bottomTrailing) {
+            ScrollView {
+                VStack(spacing: 20) {
+                    ProgressHeaderView()
+                        .padding(.top)
+
+                    ForEach(taskManager.allCategories(), id: \.id) { category in
+                        if !taskManager.tasks(for: category).isEmpty {
+                            TaskCardView(category: category)
                         }
                     }
-                    .padding(.horizontal)
+                }
+                .padding(.horizontal)
+            }
+
+            Menu {
+                Button {
+                    showingAddTask = true
+                } label: {
+                    Label(
+                        "tracker_list_add_task_floating_button",
+                        systemImage: "plus.circle"
+                    )
                 }
 
-                Menu {
-                    Button {
-                        showingAddTask = true
-                    } label: {
-                        Label(
-                            "tracker_list_add_task_floating_button",
-                            systemImage: "plus.circle"
-                        )
-                    }
-                    
-                    Button {
-                        showingAddCategory = true
-                    } label: {
-                        Label(
-                            "tracker_list_add_category_floating_button",
-                            systemImage: "square.grid.2x2"
-                        )
-                    }
+                Button {
+                    showingAddCategory = true
                 } label: {
-                    Image(systemName: "plus")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .frame(width: 56, height: 56)
-                        .background(Color(uiColor: .lightGreen))
-                        .clipShape(Circle())
-                        .shadow(radius: 5)
+                    Label(
+                        "tracker_list_add_category_floating_button",
+                        systemImage: "square.grid.2x2"
+                    )
                 }
-                .padding(.trailing, 20)
-                .padding(.bottom, 20)
-                .menuStyle(BorderlessButtonMenuStyle())
+            } label: {
+                Image(systemName: "plus")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .frame(width: 56, height: 56)
+                    .background(Color(uiColor: .lightGreen))
+                    .clipShape(Circle())
+                    .shadow(radius: 5)
             }
-            .navigationTitle("tracker_list_header_title")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingUIKitSettings = true
-                    }) {
-                        Image(systemName: "ellipsis")
-                            .tint(.gray)
-                            .frame(width: 32, height: 32)
-                    }
+            .padding(.trailing, 20)
+            .padding(.bottom, 20)
+            .menuStyle(BorderlessButtonMenuStyle())
+        }
+        .navigationTitle("tracker_list_header_title")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: onOpenSettings) {
+                    Image(systemName: "ellipsis")
+                        .tint(.gray)
+                        .frame(width: 32, height: 32)
                 }
-            }
-            .sheet(
-                isPresented: $showingUIKitSettings
-            ) {
-                SettingViewControllerWrapper(
-                    surahService: surahService,
-                    taskManager: taskManager
-                )
-            }
-            .sheet(
-                isPresented: $showingAddCategory
-            ) {
-                AddCategoryView()
-            }
-            .sheet(
-                isPresented: $showingAddTask
-            ) {
-                AddTaskView()
             }
         }
-        .navigationViewStyle(.stack)
+        .sheet(isPresented: $showingAddCategory) {
+            AddCategoryView()
+        }
+        .sheet(isPresented: $showingAddTask) {
+            AddTaskView()
+        }
         .onAppear {
             taskManager.loadTasks()
         }
@@ -102,13 +84,11 @@ struct TrackerListContentView: View {
 }
 
 struct TrackerListView: View {
-    let surahService: SurahService
     let taskManager: TaskManager
-    
+    let onOpenSettings: () -> Void
+
     var body: some View {
-        TrackerListContentView(
-            surahService: surahService
-        )
-        .environmentObject(taskManager)
+        TrackerListContentView(onOpenSettings: onOpenSettings)
+            .environment(taskManager)
     }
 }

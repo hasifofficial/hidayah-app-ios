@@ -1,0 +1,45 @@
+//
+//  HidayahApp.swift
+//  simple-quran
+//
+//  Created by Mohammad Hasif Afiq on 31/10/2026.
+//
+
+import Foundation
+import SwiftUI
+
+@main
+struct HidayahApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
+
+    var body: some Scene {
+        WindowGroup {
+            RootView(
+                surahService: appDelegate.appController.surahService,
+                taskManager: appDelegate.appController.taskManager,
+                router: appDelegate.appController.router
+            )
+            .onOpenURL { url in
+                appDelegate.appController.deeplinkManager.handleDeepLink(url: url)
+            }
+            .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
+                guard let url = userActivity.webpageURL else { return }
+
+                appDelegate.appController.deeplinkManager.handleDeepLink(url: url)
+            }
+            .task {
+                TaskManager.shared.loadTasks()
+                try? await UNUserNotificationCenter.current().setBadgeCount(0)
+            }
+            .onChange(of: scenePhase) { _, phase in
+                guard phase == .active else { return }
+
+                TaskManager.shared.loadTasks()
+                Task {
+                    try? await UNUserNotificationCenter.current().setBadgeCount(0)
+                }
+            }
+        }
+    }
+}

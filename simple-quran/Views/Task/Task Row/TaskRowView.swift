@@ -10,13 +10,13 @@ import SwiftUI
 struct TaskRowView: View {
     let task: TaskDetails
 
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
     @Binding var isEditing: Bool
 
     var body: some View {
         HStack {
             if isEditing {
-                NavigationLink(destination: EditTaskView(task: task).environmentObject(taskManager)) {
+                NavigationLink(destination: EditTaskView(task: task).environment(taskManager)) {
                     HStack {
                         Text(task.name)
                             .font(

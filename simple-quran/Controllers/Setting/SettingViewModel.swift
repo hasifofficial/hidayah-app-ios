@@ -5,349 +5,227 @@
 //  Created by Mohammad Hasif Afiq on 3/27/21.
 //
 
-import UIKit
+import Foundation
 import Combine
-import Action
-import RxSwift
-import RxCocoa
-import RxDataSources
+import Observation
 
-protocol SettingViewModelTypes: SectionSetter, TableViewSectionSetter where Section == SettingSection {
-    var title: CurrentValueSubject<String, Never> { get }
-    var quranSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var recitationCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var trackerSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var trackerSettingCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var translationLanguageCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var notificationSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var kahfRemnderCell: CurrentValueSubject<SwitchTableViewCellViewModel, Never> { get }
-    var aboutTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var aboutCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var privacyCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var termConditionCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var feedbackCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> { get }
-    var recitationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
-    var recitationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
-    var translationList: CurrentValueSubject<[EditionResponse]?, Never> { get }
-    var translationListItem: CurrentValueSubject<[ItemSelector]?, Never> { get }
-    var tapAction: CurrentValueSubject<Action<Section.Item, Never>, Never> { get }
-    
-    func handleEditionSuccess(value: Edition)
-    
-    init()
+enum SettingsSelection: String, Identifiable {
+    case recitation
+    case translation
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .recitation:
+            return NSLocalizedString(
+                "surah_recitation_drawer_title",
+                comment: ""
+            )
+        case .translation:
+            return NSLocalizedString(
+                "surah_translation_drawer_title",
+                comment: ""
+            )
+        }
+    }
 }
 
-class SettingViewModel: SettingViewModelTypes {
-    var quranSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString(
-                "setting_quran_section_title",
-                comment: ""
-            ),
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 16, weight: .bold),
-                .foregroundColor: UIColor.title
-            ]
+@Observable
+final class SettingsViewModel {
+    private(set) var recitationItems: [ItemSelector] = []
+    private(set) var translationItems: [ItemSelector] = []
+    private(set) var selectedRecitationName: String
+    private(set) var selectedTranslationName: String
+    private(set) var selectedRecitationValue: String?
+    private(set) var selectedTranslationValue: String?
+    var allowKahfReminder: Bool
+
+    @ObservationIgnored
+    var onTrackerSettings: (() -> Void)?
+
+    @ObservationIgnored
+    var onError: ((String) -> Void)?
+
+    @ObservationIgnored
+    private let surahService: SurahService
+
+    @ObservationIgnored
+    private var cancellables = Set<AnyCancellable>()
+
+    @ObservationIgnored
+    private var hasLoadedEditions = false
+
+    init(surahService: SurahService) {
+        self.surahService = surahService
+
+        let recitation: EditionResponse? = Storage.loadObject(
+            key: .selectedRecitation
         )
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelAttributedText.send(attributedText)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-
-    var recitationCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let selectedRecitationData: EditionResponse? = Storage.loadObject(key: .selectedRecitation)
-        let reciterName = selectedRecitationData?.englishName ?? "Alafasy"
-
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_quran_recitation_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "speaker.wave.2.bubble")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.rightButtonText.send(reciterName)
-        vm.rightButtonTextColor.send(.textGray)
-        vm.shouldHideLeftButton.send(false)
-        vm.shouldHideRightButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-
-    var translationLanguageCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        var language = "English"
-        let selectedTranslationData: EditionResponse? = Storage.loadObject(key: .selectedTranslation)
-        if let translatedLanguage = selectedTranslationData?.language {
-            language = Constants.getLanguageFromCode(code: translatedLanguage)
-        }
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_quran_translation_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "globe")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.rightButtonText.send(language)
-        vm.rightButtonTextColor.send(.textGray)
-        vm.shouldHideLeftButton.send(false)
-        vm.shouldHideRightButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-    
-    var trackerSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString(
-                "setting_tracker_section_title",
-                comment: ""
-            ),
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 16, weight: .bold),
-                .foregroundColor: UIColor.title
-            ]
+        let translation: EditionResponse? = Storage.loadObject(
+            key: .selectedTranslation
         )
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelAttributedText.send(attributedText)
-        vm.containerTopSpacing.send(24)
-        vm.containerBottomSpacing.send(0)
 
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-    
-    var trackerSettingCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_tracker_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "checklist.checked")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.shouldHideLeftButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
+        let recitationName = recitation?.englishName ?? "Alafasy"
+        selectedRecitationName = recitationName
+        selectedRecitationValue = recitation?.identifier
 
-    var notificationSettingTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString(
-                "setting_notification_section_title",
-                comment: ""
-            ),
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 16, weight: .bold),
-                .foregroundColor: UIColor.title
-            ]
+        let translationLanguage = Constants.getLanguageFromCode(
+            code: translation?.language ?? ""
         )
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelAttributedText.send(attributedText)
-        vm.containerTopSpacing.send(24)
-        vm.containerBottomSpacing.send(8)
+        selectedTranslationName = translation == nil
+            ? "English"
+            : translationLanguage
 
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-    
-    var kahfRemnderCell: CurrentValueSubject<SwitchTableViewCellViewModel, Never> = {
-        let isSwitchOn = Storage.load(key: .allowKahfReminder) as? Bool ?? true
-        let vm = SwitchTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_notification_alkahf_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "bell")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.isSwitchOn.send(isSwitchOn)
-        
-        return CurrentValueSubject<SwitchTableViewCellViewModel, Never>(vm)
-    }()
-    
-    var aboutTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString(
-                "setting_about_section_title",
-                comment: ""
-            ),
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 16, weight: .bold),
-                .foregroundColor: UIColor.title
-            ]
-        )
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelAttributedText.send(attributedText)
-        vm.containerTopSpacing.send(24)
-        vm.containerBottomSpacing.send(0)
+        selectedTranslationValue = translation?.identifier
 
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-    
-    var aboutCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString("setting_about_us_title", comment: ""))
-        vm.leftButtonIcon.send(UIImage(systemName: "info.circle")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.shouldHideLeftButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-
-    var privacyCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_about_privacy_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "book.pages")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.shouldHideLeftButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-    
-    var termConditionCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_about_term_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "book.pages")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.shouldHideLeftButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject(vm)
-    }()
-
-    var supportTitleCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let attributedText = NSMutableAttributedString(
-            string: NSLocalizedString(
-                "setting_support_section_title",
-                comment: ""
-            ),
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 16, weight: .bold),
-                .foregroundColor: UIColor.title
-            ]
-        )
-        
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelAttributedText.send(attributedText)
-        vm.containerTopSpacing.send(24)
-        vm.containerBottomSpacing.send(0)
-
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-
-    var feedbackCell: CurrentValueSubject<SectionTitleTableViewCellViewModel, Never> = {
-        let vm = SectionTitleTableViewCellViewModel()
-        
-        vm.titleLabelText.send(NSLocalizedString(
-            "setting_support_feedback_title",
-            comment: ""
-        ))
-        vm.leftButtonIcon.send(UIImage(systemName: "text.bubble")?.withRenderingMode(.alwaysTemplate))
-        vm.leftButtonIconTintColor.send(.title)
-        vm.shouldHideLeftButton.send(false)
-        vm.accessoryType.send(.disclosureIndicator)
-        vm.containerTopSpacing.send(8)
-        vm.containerBottomSpacing.send(0)
-        
-        return CurrentValueSubject<SectionTitleTableViewCellViewModel, Never>(vm)
-    }()
-
-    let title = CurrentValueSubject<String, Never>(NSLocalizedString(
-        "setting_header_title",
-        comment: ""
-    ))
-    let recitationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
-    let recitationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
-    let translationList = CurrentValueSubject<[EditionResponse]?, Never>(nil)
-    let translationListItem = CurrentValueSubject<[ItemSelector]?, Never>(nil)
-    let tapAction = CurrentValueSubject<Action<Section.Item, Swift.Never>, Never>(Action { _ in
-        return Observable.empty()
-    })
-
-    var dataSource: RxTableViewSectionedReloadDataSource<SettingSection> = Section.generateDataSource()
-    var sectionCache = [Int : SettingSection]()
-    private(set) var sectionedItems = BehaviorRelay<[SettingSection]>(value: [])
-    
-    func handleEditionSuccess(value: Edition) {
-        guard let editions = value.data else { return }
-        
-        let recitationEditions = editions.filter({ $0.format == .audio && $0.language == "ar" && $0.type == "versebyverse" })
-        let translationEditions = editions.filter({ $0.format == .text && $0.type == "translation" })
-        
-        var newRecitationItems = [ItemSelector]()
-        var newTranslationItems = [ItemSelector]()
-
-        for recitationEdition in recitationEditions {
-            let qariName = recitationEdition.englishName ?? ""
-
-            newRecitationItems.append(
-                ItemSelector(
-                    title: qariName,
-                    value: "",
-                    item: recitationEdition
-                )
-            )
-        }
-        
-        for translationEdition in translationEditions {
-            let translationLanguage = translationEdition.language ?? ""
-            let translationName = translationEdition.name ?? ""
-            
-            let language = Constants.getLanguageFromCode(code: translationLanguage)
-
-            newTranslationItems.append(
-                ItemSelector(
-                    title: "\(language) - \(translationName)",
-                    value: "",
-                    item: translationEdition
-                )
-            )
-        }
-
-        recitationList.send(recitationEditions)
-        recitationListItem.send(newRecitationItems)
-        translationList.send(translationEditions)
-        translationListItem.send(newTranslationItems)
+        allowKahfReminder = Storage.load(key: .allowKahfReminder) as? Bool ?? true
     }
-    
-    required init() {
-        
+
+    var versionText: String {
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+
+        return String(
+            format: NSLocalizedString(
+                "setting_app_verison",
+                comment: ""
+            ),
+            appVersion,
+            buildNumber
+        )
+    }
+
+    func loadEditionsIfNeeded() {
+        guard !hasLoadedEditions else { return }
+
+        hasLoadedEditions = true
+        loadEditions()
+    }
+
+    func loadEditions() {
+        surahService.getSurahEdition()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                guard let self else { return }
+
+                if case .failure(let error) = result {
+                    self.onError?(
+                        (error as? RequestError)?.message
+                            ?? error.localizedDescription
+                    )
+                }
+            } receiveValue: { [weak self] edition in
+                self?.handleEditionSuccess(edition)
+            }
+            .store(in: &cancellables)
+    }
+
+    func items(for selection: SettingsSelection) -> [ItemSelector] {
+        switch selection {
+        case .recitation:
+            return recitationItems
+        case .translation:
+            return translationItems
+        }
+    }
+
+    func selectedValue(for selection: SettingsSelection) -> String? {
+        switch selection {
+        case .recitation:
+            return selectedRecitationValue
+        case .translation:
+            return selectedTranslationValue
+        }
+    }
+
+    func select(_ item: ItemSelector, for selection: SettingsSelection) {
+        switch selection {
+        case .recitation:
+            selectRecitation(item)
+        case .translation:
+            selectTranslation(item)
+        }
+    }
+
+    func setKahfReminder(_ value: Bool) {
+        allowKahfReminder = value
+        Storage.save(.allowKahfReminder, value)
+    }
+
+    private func handleEditionSuccess(_ edition: Edition) {
+        guard let editions = edition.data else { return }
+
+        let recitationEditions = editions.filter {
+            $0.format == .audio
+                && $0.language == "ar"
+                && $0.type == "versebyverse"
+        }
+
+        recitationItems = recitationEditions.map {
+            ItemSelector(
+                title: $0.englishName ?? "",
+                value: $0.identifier ?? "",
+                item: $0
+            )
+        }
+
+        if selectedRecitationValue == nil {
+            selectedRecitationValue = recitationItems.first(where: {
+                $0.title == selectedRecitationName
+            })?.value
+        }
+
+        translationItems = editions
+            .filter {
+                $0.format == .text && $0.type == "translation"
+            }
+            .map {
+                let language = Constants.getLanguageFromCode(
+                    code: $0.language ?? ""
+                )
+                return ItemSelector(
+                    title: "\(language) - \($0.name ?? "")",
+                    value: $0.identifier ?? "",
+                    item: $0
+                )
+            }
+    }
+
+    private func selectRecitation(_ item: ItemSelector) {
+        guard let recitation = item.item as? EditionResponse,
+              let qariName = recitation.englishName else { return }
+
+        do {
+            try save(recitation, key: .selectedRecitation)
+            selectedRecitationName = qariName
+            selectedRecitationValue = recitation.identifier
+        } catch {
+            onError?(error.localizedDescription)
+        }
+    }
+
+    private func selectTranslation(_ item: ItemSelector) {
+        guard let translation = item.item as? EditionResponse,
+              let language = translation.language else { return }
+
+        do {
+            try save(translation, key: .selectedTranslation)
+            selectedTranslationName = Constants.getLanguageFromCode(
+                code: language
+            )
+            selectedTranslationValue = translation.identifier
+        } catch {
+            onError?(error.localizedDescription)
+        }
+    }
+
+    private func save(
+        _ edition: EditionResponse,
+        key: Storage.StorageKey
+    ) throws {
+        Storage.delete(key)
+        let data = try JSONEncoder().encode(edition)
+        Storage.save(key, data)
     }
 }

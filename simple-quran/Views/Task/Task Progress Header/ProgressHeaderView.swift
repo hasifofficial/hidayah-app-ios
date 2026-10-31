@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgressHeaderView: View {
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
 
     var progress: Double {
         guard !taskManager.tasks.isEmpty else { return 0 }

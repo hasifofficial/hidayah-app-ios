@@ -6,6 +6,21 @@
 //
 
 import UIKit
+import SwiftUI
+
+extension Color {
+    static var lightGreen: Color {
+        return Color(uiColor: .lightGreen)
+    }
+
+    static var textGray: Color {
+        return Color(uiColor: .textGray)
+    }
+
+    static var placeholderGray: Color {
+        return Color(uiColor: .placeholderGray)
+    }
+}
 
 extension UIColor {
     static var lightGreen: UIColor {

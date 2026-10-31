@@ -5,58 +5,129 @@
 //  Created by Mohammad Hasif Afiq on 11/1/25.
 //
 
-import UIKit
+import SwiftUI
 
-class SearchView: UIView {
-    lazy var settingButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: settingButton)
-    }()
-    
-    lazy var settingButton: UIButton = {
-        let newButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        newButton.setImage(UIImage(systemName: "ellipsis")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        newButton.tintColor = .gray
-        newButton.backgroundColor = .clear
-        return newButton
-    }()
-        
-    lazy var tableView: UITableView = {
-        let newTableView = UITableView(frame: .zero, style: .plain)
-        newTableView.separatorStyle = .none
-        newTableView.estimatedRowHeight = 100
-        newTableView.translatesAutoresizingMaskIntoConstraints = false
-        return newTableView
-    }()
-    
-    lazy var searchController: UISearchController = {
-        let newSearchController = UISearchController(searchResultsController: nil)
-        newSearchController.obscuresBackgroundDuringPresentation = false
-        newSearchController.searchBar.searchTextField.tintColor = .lightGreen
-        newSearchController.searchBar.placeholder = NSLocalizedString(
-            "search_textfield_placeholder",
-            comment: ""
+struct SearchView: View {
+    let viewModel: SearchViewModel
+
+    var body: some View {
+        Group {
+            if viewModel.isLoading && viewModel.surahList.isEmpty {
+                List {
+                    ForEach(0..<10, id: \.self) { _ in
+                        ListRowPlaceholder()
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                    }
+                }
+                .listStyle(.plain)
+            } else if viewModel.keyword.trimmingCharacters(
+                in: .whitespacesAndNewlines
+            ).isEmpty {
+                emptyState
+            } else if viewModel.filteredSurahList.isEmpty
+                        && viewModel.filteredBookmarkedSurahs.isEmpty {
+                emptyState
+            } else {
+                List {
+                    if !viewModel.filteredBookmarkedSurahs.isEmpty {
+                        Section {
+                            ForEach(viewModel.filteredBookmarkedSurahs) { item in
+                                Button {
+                                    viewModel.onSelectBookmark?(item)
+                                } label: {
+                                    SurahRowView(
+                                        title: item.surah.englishName ?? "",
+                                        subtitle: String(
+                                            format: NSLocalizedString(
+                                                "bookmark_list_subtitle",
+                                                comment: ""
+                                            ),
+                                            String(item.bookmark.numberInSurah)
+                                        ),
+                                        arabicTitle: item.surah.name ?? ""
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                                .listRowInsets(EdgeInsets())
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                            }
+                        } header: {
+                            sectionHeader("search_bookmarked_surah_section_title")
+                        }
+                    }
+
+                    if !viewModel.filteredSurahList.isEmpty {
+                        Section {
+                            ForEach(viewModel.filteredSurahList, id: \.number) { surah in
+                                Button {
+                                    viewModel.onSelectSurah?(surah)
+                                } label: {
+                                    SurahRowView(
+                                        title: surah.englishName ?? "",
+                                        subtitle: subtitle(for: surah),
+                                        arabicTitle: surah.name ?? ""
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                                .listRowInsets(EdgeInsets())
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                            }
+                        } header: {
+                            sectionHeader("search_surah_section_title")
+                        }
+                    }
+                }
+                .listStyle(.plain)
+            }
+        }
+    }
+
+    private var emptyState: some View {
+        ContentUnavailableView {
+            Label {
+                Text(
+                    NSLocalizedString(
+                        "surah_list_search_empty_title",
+                        comment: ""
+                    )
+                )
+            } icon: {
+                Image(systemName: "magnifyingglass")
+            }
+        } description: {
+            Text(
+                NSLocalizedString(
+                    "surah_list_search_empty_subtitle",
+                    comment: ""
+                )
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func sectionHeader(_ key: String) -> some View {
+        Text(NSLocalizedString(key, comment: ""))
+            .font(.system(size: 16, weight: .bold))
+            .foregroundColor(Color(uiColor: .title))
+            .textCase(nil)
+    }
+
+    private func subtitle(for surah: SurahListResponse) -> String {
+        let origin = surah.revelationType?.lowercased() == "meccan"
+            ? "Makiyyah"
+            : "Madaniyah"
+
+        return String(
+            format: NSLocalizedString(
+                "surah_list_subtitle",
+                comment: ""
+            ),
+            origin,
+            String(surah.numberOfAyahs ?? 0)
         )
-        return newSearchController
-    }()
-        
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setupSubviews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupSubviews() {
-        addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor)
-        ])
     }
 }

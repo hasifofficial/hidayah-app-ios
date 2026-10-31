@@ -5,53 +5,93 @@
 //  Created by Mohammad Hasif Afiq on 10/30/24.
 //
 
-import UIKit
+import SwiftUI
 
-class SelectionView: UIView {
-    lazy var closeButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: closeButton)
-    }()
-    
-    lazy var closeButton: UIButton = {
-        let newButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        newButton.setImage(UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        newButton.tintColor = .gray
-        newButton.backgroundColor = .clear
-        return newButton
-    }()
+struct SelectionView: View {
+    let title: String
+    let items: [ItemSelector]
+    let selectedValue: String?
+    let onSelect: (ItemSelector) -> Void
 
-    lazy var tableView: UITableView = {
-        let newTableView = UITableView(
-            frame: .zero,
-            style: .plain
-        )
-        newTableView.separatorStyle = .singleLine
-        newTableView.backgroundColor = .clear
-        newTableView.estimatedRowHeight = 100
-        newTableView.translatesAutoresizingMaskIntoConstraints = false
-        return newTableView
-    }()
+    @Environment(\.dismiss) private var dismiss
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setupSubviews()
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 8) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.gray)
+                        .frame(width: 30, height: 30)
+                }
+                .modifier(SelectionCloseButtonStyle())
+
+                Spacer()
+
+                Text(title)
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.primary)
+                    .multilineTextAlignment(.center)
+
+                Spacer()
+
+                Color.clear
+                    .frame(width: 30, height: 30)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+
+            Divider()
+
+            List(items.indices, id: \.self) { index in
+                let item = items[index]
+
+                Button {
+                    onSelect(item)
+                    dismiss()
+                } label: {
+                    HStack(spacing: 12) {
+                        Text(item.title)
+                            .font(.system(size: 14))
+                            .foregroundColor(.primary)
+
+                        Spacer(minLength: 8)
+
+                        Image(
+                            systemName: item.value == selectedValue
+                                ? "circle.fill"
+                                : "circle"
+                        )
+                        .foregroundColor(
+                            item.value == selectedValue
+                                ? .lightGreen
+                                : .textGray
+                        )
+                    }
+                    .padding(.vertical, 8)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+            .listStyle(.plain)
+        }
+        .background(Color(uiColor: .systemBackground))
+        .interactiveDismissDisabled()
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupSubviews() {
-        backgroundColor = .systemBackground
+}
 
-        addSubview(tableView)
-
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-        ])
+private struct SelectionCloseButtonStyle: ViewModifier {
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content
+                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
+        } else {
+            content
+                .buttonStyle(.plain)
+        }
     }
 }

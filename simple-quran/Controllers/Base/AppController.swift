@@ -15,8 +15,9 @@ class AppController: NSObject {
     lazy var surahService = SurahService(
         apiClientService: apiClientService
     )
+    let router = AppRouter()
     lazy var deeplinkManager = DeeplinkManager(
-        surahService: surahService
+        router: router
     )
     let taskManager = TaskManager.shared
 
@@ -37,24 +38,6 @@ class AppController: NSObject {
         UNUserNotificationCenter.current().delegate = self
     }
 
-    func start(
-        with window: UIWindow,
-        deepLink: URL? = nil
-    ) {
-        let rootViewController = RootViewController(
-            surahService: surahService,
-            taskManager: taskManager
-        )
-        window.rootViewController = rootViewController
-        if let deepLink = deepLink {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                _ = self.deeplinkManager.handleDeepLink(
-                    url: deepLink
-                )
-            }
-        }
-    }
-    
     func application(
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
@@ -81,29 +64,6 @@ class AppController: NSObject {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
 
-    }
-
-    func scene(
-        _ scene: UIScene,
-        openURLContexts URLContexts: Set<UIOpenURLContext>
-    ) {
-        guard let urlContext = URLContexts.first else { return }
-
-        _ = deeplinkManager.handleDeepLink(
-            url: urlContext.url
-        )
-    }
-    
-    func scene(
-        _ scene: UIScene,
-        continue userActivity: NSUserActivity
-    ) {
-        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-              let url = userActivity.webpageURL else { return }
-
-        _ = deeplinkManager.handleDeepLink(
-            url: url
-        )
     }
 }
 
@@ -196,7 +156,9 @@ extension AppController: UNUserNotificationCenterDelegate {
         let urlString = userInfo["url"] as? String
         if let urlString = urlString,
            let url = URL(string: urlString) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            DispatchQueue.main.async { [weak self] in
+                _ = self?.deeplinkManager.handleDeepLink(url: url)
+            }
         }
         if response.notification.request.identifier ==
             NotificationIdentifier.trackerProgressReset.rawValue {

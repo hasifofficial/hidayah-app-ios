@@ -6,10 +6,12 @@
 //
 
 import WidgetKit
+import Observation
 
-class TaskManager: ObservableObject {
-    @Published var tasks: [TaskDetails] = []
-    @Published var customCategories: [CustomCategory] = []
+@Observable
+class TaskManager {
+    var tasks: [TaskDetails] = []
+    var customCategories: [CustomCategory] = []
 
     static let shared = TaskManager()
 
@@ -211,7 +213,9 @@ extension TaskManager {
     func updateWidget() {
         let completed = tasks.filter { $0.isCompleted }.count
         let total = tasks.count
-        let progress = Double(completed) / Double(total)
+        let progress = total > 0
+            ? Double(completed) / Double(total)
+            : 0
         let upcomingTasks = tasks
             .filter { !$0.isCompleted }
             .prefix(3)
@@ -224,6 +228,7 @@ extension TaskManager {
         )
         if let encoded = try? JSONEncoder().encode(widgetContext) {
             Storage.save(.widgetContext, encoded)
+            Storage.userDefaults?.synchronize()
         }
         WidgetCenter.shared.reloadAllTimelines()
     }

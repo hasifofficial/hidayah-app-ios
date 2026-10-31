@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditTaskView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
     @State private var taskName: String
     @State private var selectedCategory: Category
     @State private var showingDeleteConfirmation = false

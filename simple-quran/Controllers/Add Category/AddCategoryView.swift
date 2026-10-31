@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddCategoryView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var taskManager: TaskManager
+    @Environment(TaskManager.self) private var taskManager
     @State private var categoryName = ""
     @State private var iconName = "folder"
     
@@ -27,7 +27,7 @@ struct AddCategoryView: View {
     ]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("add_category_category_detail_section_title")) {
                     TextField(

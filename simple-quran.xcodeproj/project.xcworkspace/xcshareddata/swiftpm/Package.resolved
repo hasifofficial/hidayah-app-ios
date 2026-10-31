@@ -1,5 +1,5 @@
 {
-  "originHash" : "77f55db17c354a5900df7d9747956319f51b392bec6a00dbe4a61287b1b978fb",
+  "originHash" : "c63c63846d9c539229e96de38d6af51417e28c0ee9a0bc48bd0f0f19d923c329",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "26509120768c4add61cc1a63059f15f4fb49edb4",
         "version" : "1.2025051202.0"
-      }
-    },
-    {
-      "identity" : "action",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RxSwiftCommunity/Action",
-      "state" : {
-        "revision" : "21110e93ef7b08ce9f01806827e4f381b5b09ab1",
-        "version" : "4.3.0"
       }
     },
     {
@@ -125,33 +116,6 @@
       "state" : {
         "revision" : "f4a19a3c313dc2616c70bb49d29a799fb16be837",
         "version" : "2.4.1"
-      }
-    },
-    {
-      "identity" : "rxdatasources",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RxSwiftCommunity/RxDataSources",
-      "state" : {
-        "revision" : "90c29b48b628479097fe775ed1966d75ac374518",
-        "version" : "5.0.2"
-      }
-    },
-    {
-      "identity" : "rxswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ReactiveX/RxSwift",
-      "state" : {
-        "revision" : "132aea4f236ccadc51590b38af0357a331d51fa2",
-        "version" : "6.10.2"
-      }
-    },
-    {
-      "identity" : "toast-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/scalessec/Toast-Swift",
-      "state" : {
-        "revision" : "ddccd20d6fb718448d9b179c454c561653fda7d5",
-        "version" : "5.1.1"
       }
     }
   ],

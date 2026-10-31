@@ -11,19 +11,12 @@ resolved versions are committed in
 
 Remote packages:
 
-- Firebase (`FirebaseAnalytics`, `FirebaseCrashlytics`, `FirebaseMessaging`, `FirebaseCore`)
-- RxSwift / RxCocoa / RxDataSources
-- Action
-- Toast-Swift
-
-`Shimmer` is vendored as a local Swift package in
-[`Packages/Shimmer`](Packages/Shimmer/README.md) because the upstream fork does
-not ship a `Package.swift`.
+- Firebase (`FirebaseCore`, `FirebaseCrashlytics`)
 
 ## Requirements
 
-- Xcode 26 or newer (the project uses Firebase 13, which requires iOS 15+)
-- iOS 15.0 deployment target
+- Xcode 26 or newer
+- iOS 17.0 deployment target (the app uses SwiftUI Observation)
 
 ## Build
 
