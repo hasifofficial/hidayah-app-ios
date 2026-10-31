@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 import RxSwift
-import Toast_Swift
+import Toast
 
 class SurahListViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahListViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()

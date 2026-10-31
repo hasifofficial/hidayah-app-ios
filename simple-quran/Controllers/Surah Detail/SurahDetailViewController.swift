@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import AVFoundation
 import RxSwift
-import Toast_Swift
+import Toast
 
 class SurahDetailViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: SurahDetailViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()

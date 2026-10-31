@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 import RxSwift
-import Toast_Swift
+import Toast
 
 class BookmarkListViewController<ViewModel>: UIViewController, UITableViewDelegate where ViewModel: BookmarkListViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()

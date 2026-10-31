@@ -11,7 +11,7 @@ import Combine
 import MessageUI
 import AVFoundation
 import RxSwift
-import Toast_Swift
+import Toast
 
 class SettingViewController<ViewModel>: UIViewController, UITableViewDelegate, MFMailComposeViewControllerDelegate where ViewModel: SettingViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()

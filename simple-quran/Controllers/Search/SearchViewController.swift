@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 import RxSwift
-import Toast_Swift
+import Toast
 
 class SearchViewController<ViewModel>: UIViewController, UITableViewDelegate, UISearchResultsUpdating where ViewModel: SearchViewModelTypes {
     private(set) lazy var viewModel: ViewModel = ViewModel()

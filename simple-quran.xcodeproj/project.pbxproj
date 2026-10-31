@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043B55B6B7277749F69732CA /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = C40E7D1B7821BE3B59F4F41B /* RxDataSources */; };
+		098324EA51143A6512426384 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C73559E5E9E2E0672C30B0F /* FirebaseCore */; };
+		099BB5965B6F3C3C6BB6AED9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B065BD85B32D84A08660A6FE /* FirebaseAnalytics */; };
 		1B1AAA48260E183A00E03B0B /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA47260E183A00E03B0B /* TableViewDataSource.swift */; };
 		1B1AAA50260E185100E03B0B /* SectionSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA4F260E185100E03B0B /* SectionSetter.swift */; };
 		1B1AAA78260E1F0300E03B0B /* SectionTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1AAA77260E1F0300E03B0B /* SectionTitleTableViewCell.swift */; };
@@ -112,9 +115,13 @@
 		1BD6BE952DC3A9E100D2EE03 /* ProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE942DC3A9E100D2EE03 /* ProgressHeaderView.swift */; };
 		1BD6BE982DC3AC8F00D2EE03 /* TrackerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6BE972DC3AC8F00D2EE03 /* TrackerContext.swift */; };
 		1BD6BE9B2DC3B21100D2EE03 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B42CF57261C97C80096F77F /* Storage.swift */; };
-		2BFC8683CC65ECE9F457293B /* Pods_simple_quranTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FA7EC7E88670FB17135927 /* Pods_simple_quranTests.framework */; };
-		8D4C6F94057A5959A43B64A1 /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C2C779ACFE8B9C266C078C /* Pods_simple_quran_simple_quranUITests.framework */; };
-		E5DDAF6BBD4EA4E467128E0A /* Pods_simple_quran.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5840B3A519B246F3B84C40 /* Pods_simple_quran.framework */; };
+		2121D455DCFA2E93200BEBA2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */; };
+		35EBF09F77151CAC1C1556B6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 422B9E1D237613A3B2E6C50C /* FirebaseMessaging */; };
+		4878478005C4692B80684440 /* Action in Frameworks */ = {isa = PBXBuildFile; productRef = 4F1F6A82A40818FDDED2875C /* Action */; };
+		537C3B48B331D72F0AB16FBE /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 7CD2CCDA2753F6316691B143 /* Shimmer */; };
+		5A980873823AC29180C94B35 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 2CFF2630F96AD9A7A1AE5A66 /* RxCocoa */; };
+		826FC500672A06C86EC4FD6C /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = CD1058FC8ED98415E6A0769C /* Toast */; };
+		AACD2DCAEC0B8C287B4DEC9E /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F4D0C3FAECF991BAF1F8E09A /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,19 +268,10 @@
 		1BD6BE912DC3A95200D2EE03 /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
 		1BD6BE942DC3A9E100D2EE03 /* ProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHeaderView.swift; sourceTree = "<group>"; };
 		1BD6BE972DC3AC8F00D2EE03 /* TrackerContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerContext.swift; sourceTree = "<group>"; };
-		2A92EA7EF1100C202B9D054C /* Pods-simple-quran.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran.release.xcconfig"; path = "Target Support Files/Pods-simple-quran/Pods-simple-quran.release.xcconfig"; sourceTree = "<group>"; };
-		348847873E98E7EDA7822334 /* Pods-simple-quranTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quranTests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quranTests/Pods-simple-quranTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3D97B698C23AE9CE4293EFC4 /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.debug.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		48FA7EC7E88670FB17135927 /* Pods_simple_quranTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quranTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		545C534724F75115C434C69B /* Pods-simple-quran.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran.debug.xcconfig"; path = "Target Support Files/Pods-simple-quran/Pods-simple-quran.debug.xcconfig"; sourceTree = "<group>"; };
-		65D5A15DFE11E2B40698B048 /* Pods-simple-quranTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quranTests.release.xcconfig"; path = "Target Support Files/Pods-simple-quranTests/Pods-simple-quranTests.release.xcconfig"; sourceTree = "<group>"; };
-		68C2C779ACFE8B9C266C078C /* Pods_simple_quran_simple_quranUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quran_simple_quranUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA6A7D497860222B43151BF6 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-quran-simple-quranUITests.release.xcconfig"; path = "Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests.release.xcconfig"; sourceTree = "<group>"; };
-		FC5840B3A519B246F3B84C40 /* Pods_simple_quran.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_quran.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		1B79200D2DC1B8D10007CDDF /* Exceptions for "app-widget" folder in "app-widgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -283,7 +281,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
+		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1B79200D2DC1B8D10007CDDF /* Exceptions for "app-widget" folder in "app-widgetExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = "app-widget";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,7 +301,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BA750B4260E65D100A27A2F /* AVFoundation.framework in Frameworks */,
-				E5DDAF6BBD4EA4E467128E0A /* Pods_simple_quran.framework in Frameworks */,
+				099BB5965B6F3C3C6BB6AED9 /* FirebaseAnalytics in Frameworks */,
+				2121D455DCFA2E93200BEBA2 /* FirebaseCrashlytics in Frameworks */,
+				35EBF09F77151CAC1C1556B6 /* FirebaseMessaging in Frameworks */,
+				098324EA51143A6512426384 /* FirebaseCore in Frameworks */,
+				AACD2DCAEC0B8C287B4DEC9E /* RxSwift in Frameworks */,
+				5A980873823AC29180C94B35 /* RxCocoa in Frameworks */,
+				043B55B6B7277749F69732CA /* RxDataSources in Frameworks */,
+				4878478005C4692B80684440 /* Action in Frameworks */,
+				826FC500672A06C86EC4FD6C /* Toast in Frameworks */,
+				537C3B48B331D72F0AB16FBE /* Shimmer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +318,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BFC8683CC65ECE9F457293B /* Pods_simple_quranTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,7 +325,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D4C6F94057A5959A43B64A1 /* Pods_simple_quran_simple_quranUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,19 +340,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E07FA50391EC7018A832128 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				545C534724F75115C434C69B /* Pods-simple-quran.debug.xcconfig */,
-				2A92EA7EF1100C202B9D054C /* Pods-simple-quran.release.xcconfig */,
-				3D97B698C23AE9CE4293EFC4 /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */,
-				EA6A7D497860222B43151BF6 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */,
-				348847873E98E7EDA7822334 /* Pods-simple-quranTests.debug.xcconfig */,
-				65D5A15DFE11E2B40698B048 /* Pods-simple-quranTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		1B1AAA46260E182800E03B0B /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,7 +537,6 @@
 				1B78EB35260B3284004E07CD /* simple-quranUITests */,
 				1B791FFC2DC1B8D00007CDDF /* app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
-				0E07FA50391EC7018A832128 /* Pods */,
 				57432DF57683D06809F12458 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -828,9 +830,6 @@
 			isa = PBXGroup;
 			children = (
 				1BA750B3260E65D100A27A2F /* AVFoundation.framework */,
-				FC5840B3A519B246F3B84C40 /* Pods_simple_quran.framework */,
-				68C2C779ACFE8B9C266C078C /* Pods_simple_quran_simple_quranUITests.framework */,
-				48FA7EC7E88670FB17135927 /* Pods_simple_quranTests.framework */,
 				1B791FF82DC1B8D00007CDDF /* WidgetKit.framework */,
 				1B791FFA2DC1B8D00007CDDF /* SwiftUI.framework */,
 			);
@@ -844,11 +843,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quran" */;
 			buildPhases = (
-				2532E3B43FAF6A7A738FBF37 /* [CP] Check Pods Manifest.lock */,
 				1B78EB0D260B327E004E07CD /* Sources */,
 				1B78EB0E260B327E004E07CD /* Frameworks */,
 				1B78EB0F260B327E004E07CD /* Resources */,
-				369A2A715D054BF173669777 /* [CP] Embed Pods Frameworks */,
 				1B7920112DC1B8D10007CDDF /* Embed Foundation Extensions */,
 				1B5E7BB02626D5A90006244D /* Crashlytics */,
 			);
@@ -858,6 +855,18 @@
 				1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */,
 			);
 			name = "simple-quran";
+			packageProductDependencies = (
+				B065BD85B32D84A08660A6FE /* FirebaseAnalytics */,
+				B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */,
+				422B9E1D237613A3B2E6C50C /* FirebaseMessaging */,
+				4C73559E5E9E2E0672C30B0F /* FirebaseCore */,
+				F4D0C3FAECF991BAF1F8E09A /* RxSwift */,
+				2CFF2630F96AD9A7A1AE5A66 /* RxCocoa */,
+				C40E7D1B7821BE3B59F4F41B /* RxDataSources */,
+				4F1F6A82A40818FDDED2875C /* Action */,
+				CD1058FC8ED98415E6A0769C /* Toast */,
+				7CD2CCDA2753F6316691B143 /* Shimmer */,
+			);
 			productName = "simple-quran";
 			productReference = 1B78EB11260B327E004E07CD /* Hidayah Debug.app */;
 			productType = "com.apple.product-type.application";
@@ -866,7 +875,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B78EB3E260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranTests" */;
 			buildPhases = (
-				DF13A3ACA4013F2891E14EC5 /* [CP] Check Pods Manifest.lock */,
 				1B78EB23260B3284004E07CD /* Sources */,
 				1B78EB24260B3284004E07CD /* Frameworks */,
 				1B78EB25260B3284004E07CD /* Resources */,
@@ -885,11 +893,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B78EB41260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranUITests" */;
 			buildPhases = (
-				FFA175042D1D4762F176E3BA /* [CP] Check Pods Manifest.lock */,
 				1B78EB2E260B3284004E07CD /* Sources */,
 				1B78EB2F260B3284004E07CD /* Frameworks */,
 				1B78EB30260B3284004E07CD /* Resources */,
-				40B1F1B25EBA901433513A7B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -917,8 +923,6 @@
 				1B791FFC2DC1B8D00007CDDF /* app-widget */,
 			);
 			name = "app-widgetExtension";
-			packageProductDependencies = (
-			);
 			productName = "app-widgetExtension";
 			productReference = 1B791FF72DC1B8D00007CDDF /* app-widgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -957,6 +961,14 @@
 				Base,
 			);
 			mainGroup = 1B78EB08260B327E004E07CD;
+			packageReferences = (
+				02B2404727FF521BCC3F95D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9CF9E91FB281DC1A6E8BB05B /* XCRemoteSwiftPackageReference "RxSwift" */,
+				256E0DE27748F162531F8606 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				337C567F0A735D38AE0CE965 /* XCRemoteSwiftPackageReference "Action" */,
+				5D732D6B3BE171898CC8A08D /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				BBD7CA4519F1D247839397D2 /* XCLocalSwiftPackageReference "Shimmer" */,
+			);
 			productRefGroup = 1B78EB12260B327E004E07CD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1024,115 +1036,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
-		};
-		2532E3B43FAF6A7A738FBF37 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-simple-quran-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		369A2A715D054BF173669777 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simple-quran/Pods-simple-quran-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		40B1F1B25EBA901433513A7B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simple-quran-simple-quranUITests/Pods-simple-quran-simple-quranUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DF13A3ACA4013F2891E14EC5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-simple-quranTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FFA175042D1D4762F176E3BA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-simple-quran-simple-quranUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1352,7 +1256,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1407,7 +1311,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1419,7 +1323,6 @@
 		};
 		1B78EB3C260B3284004E07CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 545C534724F75115C434C69B /* Pods-simple-quran.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1435,6 +1338,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.1;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
 				PRODUCT_NAME = "Hidayah Debug";
 				SWIFT_VERSION = 5.0;
@@ -1444,7 +1351,6 @@
 		};
 		1B78EB3D260B3284004E07CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A92EA7EF1100C202B9D054C /* Pods-simple-quran.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1459,6 +1365,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.1;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
 				PRODUCT_NAME = Hidayah;
 				SWIFT_VERSION = 5.0;
@@ -1468,14 +1378,13 @@
 		};
 		1B78EB3F260B3284004E07CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 348847873E98E7EDA7822334 /* Pods-simple-quranTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quranTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1491,14 +1400,13 @@
 		};
 		1B78EB40260B3284004E07CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 65D5A15DFE11E2B40698B048 /* Pods-simple-quranTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quranTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1514,12 +1422,12 @@
 		};
 		1B78EB42260B3284004E07CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D97B698C23AE9CE4293EFC4 /* Pods-simple-quran-simple-quranUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1535,12 +1443,12 @@
 		};
 		1B78EB43260B3284004E07CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA6A7D497860222B43151BF6 /* Pods-simple-quran-simple-quranUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1672,6 +1580,109 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		BBD7CA4519F1D247839397D2 /* XCLocalSwiftPackageReference "Shimmer" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Shimmer;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		02B2404727FF521BCC3F95D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.1;
+			};
+		};
+		256E0DE27748F162531F8606 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		337C567F0A735D38AE0CE965 /* XCRemoteSwiftPackageReference "Action" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/Action";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.3.0;
+			};
+		};
+		5D732D6B3BE171898CC8A08D /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+		9CF9E91FB281DC1A6E8BB05B /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2CFF2630F96AD9A7A1AE5A66 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CF9E91FB281DC1A6E8BB05B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		422B9E1D237613A3B2E6C50C /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B2404727FF521BCC3F95D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		4C73559E5E9E2E0672C30B0F /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B2404727FF521BCC3F95D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		4F1F6A82A40818FDDED2875C /* Action */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 337C567F0A735D38AE0CE965 /* XCRemoteSwiftPackageReference "Action" */;
+			productName = Action;
+		};
+		7CD2CCDA2753F6316691B143 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBD7CA4519F1D247839397D2 /* XCLocalSwiftPackageReference "Shimmer" */;
+			productName = Shimmer;
+		};
+		B065BD85B32D84A08660A6FE /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B2404727FF521BCC3F95D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B2404727FF521BCC3F95D4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		C40E7D1B7821BE3B59F4F41B /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 256E0DE27748F162531F8606 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
+		CD1058FC8ED98415E6A0769C /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D732D6B3BE171898CC8A08D /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+		F4D0C3FAECF991BAF1F8E09A /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CF9E91FB281DC1A6E8BB05B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1B78EB09260B327E004E07CD /* Project object */;
 }

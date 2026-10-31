@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import UserNotifications
-import Firebase
+import FirebaseCore
 
 class AppController: NSObject {
     var window: UIWindow?

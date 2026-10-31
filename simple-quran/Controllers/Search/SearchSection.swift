@@ -5,6 +5,7 @@
 //  Created by Mohammad Hasif Afiq on 11/1/25.
 //
 
+import UIKit
 import RxDataSources
 
 enum SearchSection: SectionModelType {
