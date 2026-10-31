@@ -77,7 +77,7 @@ struct SelectionView: View {
             }
             .listStyle(.plain)
         }
-        .background(Color(uiColor: .systemBackground))
+        .background(.appBackground)
         .interactiveDismissDisabled()
     }
 }

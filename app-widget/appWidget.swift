@@ -131,12 +131,12 @@ struct IstiqamahWidgetMediumView: View {
                     Circle()
                         .stroke(lineWidth: 10)
                         .opacity(0.3)
-                        .foregroundColor(Color(uiColor: .lightGreen))
+                        .foregroundColor(.lightGreen)
                     
                     Circle()
                         .trim(from: 0.0, to: CGFloat(min(entry.progress, 1.0)))
                         .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
-                        .foregroundColor(Color(uiColor: .lightGreen))
+                        .foregroundColor(.lightGreen)
                         .rotationEffect(Angle(degrees: 270.0))
                         .animation(.linear, value: entry.progress)
                     
@@ -146,7 +146,7 @@ struct IstiqamahWidgetMediumView: View {
                             .bold()
                         Text("\(entry.completedTasks)/\(entry.totalTasks) tasks")
                             .font(.system(size: 10))
-                            .foregroundColor(Color(uiColor: .textGray))
+                            .foregroundColor(.textGray)
                     }
                 }
                 .frame(width: 100, height: 100)
@@ -157,7 +157,7 @@ struct IstiqamahWidgetMediumView: View {
                             Text("Upcoming:")
                                 .font(.system(size: 14))
                                 .bold()
-                                .foregroundColor(Color(uiColor: .title))
+                                .foregroundColor(.title)
                             
                             ForEach(entry.upcomingTasks.prefix(3), id: \.id.self) { task in
                                 Button(
@@ -206,12 +206,12 @@ struct IstiqamahWidgetSmallView: View {
                 Circle()
                     .stroke(lineWidth: 10)
                     .opacity(0.3)
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                 
                 Circle()
                     .trim(from: 0.0, to: CGFloat(min(entry.progress, 1.0)))
                     .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                     .rotationEffect(Angle(degrees: 270.0))
                     .animation(.linear, value: entry.progress)
                 
@@ -221,7 +221,7 @@ struct IstiqamahWidgetSmallView: View {
                         .bold()
                     Text("\(entry.completedTasks)/\(entry.totalTasks) tasks")
                         .font(.system(size: 10))
-                        .foregroundColor(Color(uiColor: .textGray))
+                        .foregroundColor(.textGray)
                 }
             }
             .frame(width: 100, height: 100)

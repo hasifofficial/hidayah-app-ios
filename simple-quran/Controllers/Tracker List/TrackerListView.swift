@@ -53,7 +53,7 @@ struct TrackerListContentView: View {
                     .font(.title)
                     .foregroundColor(.white)
                     .frame(width: 56, height: 56)
-                    .background(Color(uiColor: .lightGreen))
+                    .background(.lightGreen)
                     .clipShape(Circle())
                     .shadow(radius: 5)
             }

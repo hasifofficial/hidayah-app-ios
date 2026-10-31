@@ -29,7 +29,7 @@ struct SurahDetailView: View {
                     }
                 }
             }
-            .background(Color(uiColor: .systemBackground))
+            .background(.appBackground)
             .onChange(of: viewModel.scrollToAyah) { _, ayah in
                 guard let ayah else { return }
 
@@ -196,7 +196,7 @@ struct SurahDetailView: View {
             .frame(height: 46)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(uiColor: .backgroundGray))
+                    .fill(.backgroundGray)
             )
             .padding(.horizontal, 16)
 
@@ -232,7 +232,7 @@ struct SurahDetailView: View {
             ForEach(0..<3, id: \.self) { _ in
                 VStack(spacing: 16) {
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(uiColor: .backgroundGray))
+                        .fill(.backgroundGray)
                         .frame(height: 46)
 
                     ShimmerBar()

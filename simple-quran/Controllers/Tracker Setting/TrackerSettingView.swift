@@ -111,7 +111,7 @@ struct TrackerSettingsView: View {
     private func sectionHeader(_ key: String) -> some View {
         Text(NSLocalizedString(key, comment: ""))
             .font(.system(size: 16, weight: .bold))
-            .foregroundColor(Color(uiColor: .title))
+            .foregroundColor(.title)
             .textCase(nil)
     }
 
@@ -140,10 +140,10 @@ private struct TrackerSettingsRow: View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .frame(width: 24)
-                .foregroundColor(Color(uiColor: .title))
+                .foregroundColor(.title)
 
             Text(title)
-                .foregroundColor(Color(uiColor: .title))
+                .foregroundColor(.title)
 
             Spacer()
 

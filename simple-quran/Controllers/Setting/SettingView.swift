@@ -190,7 +190,7 @@ struct SettingsView: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(Color(uiColor: .systemBackground))
+            .background(.appBackground)
     }
 
     private var feedbackSubject: String {

@@ -71,7 +71,7 @@ struct EditTaskView: View {
                     presentationMode.wrappedValue.dismiss()
                 }
                 .disabled(taskName.isEmpty)
-                .foregroundColor(Color(uiColor: .lightGreen))
+                .foregroundColor(.lightGreen)
             }
         }
         .confirmationDialog(

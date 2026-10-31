@@ -63,7 +63,7 @@ struct AddCategoryView: View {
                             Spacer()
                         }
                     }
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                     .disabled(categoryName.isEmpty)
                 }
             }
@@ -73,7 +73,7 @@ struct AddCategoryView: View {
                     Button("add_category_cancel_button") {
                         presentationMode.wrappedValue.dismiss()
                     }
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                 }
             }
         }

@@ -112,7 +112,7 @@ struct SearchView: View {
     private func sectionHeader(_ key: String) -> some View {
         Text(NSLocalizedString(key, comment: ""))
             .font(.system(size: 16, weight: .bold))
-            .foregroundColor(Color(uiColor: .title))
+            .foregroundColor(.title)
             .textCase(nil)
     }
 

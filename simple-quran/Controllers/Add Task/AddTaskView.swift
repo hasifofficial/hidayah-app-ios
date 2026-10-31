@@ -52,7 +52,7 @@ struct AddTaskView: View {
                             Spacer()
                         }
                     }
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                     .disabled(taskName.isEmpty || selectedCategory == nil)
                 }
             }
@@ -62,7 +62,7 @@ struct AddTaskView: View {
                     Button("add_task_cancel_button") {
                         presentationMode.wrappedValue.dismiss()
                     }
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                 }
             }
             .onAppear {

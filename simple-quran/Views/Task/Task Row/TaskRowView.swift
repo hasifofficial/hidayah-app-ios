@@ -25,13 +25,13 @@ struct TaskRowView: View {
                                 )
                             )
                             .strikethrough(task.isCompleted)
-                            .foregroundColor(Color(uiColor: .title))
+                            .foregroundColor(.title)
                             .multilineTextAlignment(.leading)
                         
                         Spacer()
                         
                         Image(systemName: "pencil")
-                            .foregroundColor(Color(uiColor: .textGray))
+                            .foregroundColor(.textGray)
                     }
                 }
             } else {
@@ -40,12 +40,12 @@ struct TaskRowView: View {
                 }) {
                     HStack(alignment: .firstTextBaseline) {
                         Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                            .foregroundColor(task.isCompleted ? Color(uiColor: .lightGreen) : .gray)
+                            .foregroundColor(task.isCompleted ? .lightGreen : .gray)
                         
                         Text(task.name)
                             .font(.system(size: 15))
                             .strikethrough(task.isCompleted)
-                            .foregroundColor(task.isCompleted ? Color(uiColor: .textGray) : Color(uiColor: .title))
+                            .foregroundColor(task.isCompleted ? .textGray : .title)
                             .multilineTextAlignment(.leading)
                         
                         Spacer()

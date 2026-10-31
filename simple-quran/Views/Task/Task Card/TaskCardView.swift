@@ -27,14 +27,14 @@ struct TaskCardView: View {
                         .font(.system(size: 14, weight: .semibold))
                 } icon: {
                     Image(systemName: category.icon)
-                        .foregroundColor(Color(uiColor: .title))
+                        .foregroundColor(.title)
                 }
                 
                 Spacer()
                 
                 Text("\(completedCount)/\(tasks.count)")
                     .font(.system(size: 14))
-                    .foregroundColor(Color(uiColor: .textGray))
+                    .foregroundColor(.textGray)
 
                 Button(action: {
                     withAnimation {
@@ -43,7 +43,7 @@ struct TaskCardView: View {
                 }) {
                     Text(isEditing ? "Done" : "Edit")
                         .font(.system(size: 14))
-                        .foregroundColor(Color(uiColor: .lightGreen))
+                        .foregroundColor(.lightGreen)
                 }
             }
             
@@ -66,7 +66,7 @@ struct TaskCardView: View {
             }
         }
         .padding()
-        .background(Color(uiColor: .backgroundGray))
+        .background(.backgroundGray)
         .cornerRadius(10)
     }
 }

@@ -36,12 +36,12 @@ struct ProgressHeaderView: View {
                 Circle()
                     .stroke(lineWidth: 10)
                     .opacity(0.3)
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                 
                 Circle()
                     .trim(from: 0.0, to: CGFloat(min(progress, 1.0)))
                     .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
-                    .foregroundColor(Color(uiColor: .lightGreen))
+                    .foregroundColor(.lightGreen)
                     .rotationEffect(Angle(degrees: 270.0))
                     .animation(.linear, value: progress)
                 
@@ -58,11 +58,11 @@ struct ProgressHeaderView: View {
             VStack(spacing: 4) {
                 Text(todayDateString())
                     .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color(uiColor: .title))
+                    .foregroundColor(.title)
 
                 Text(todayIslamicDateString())
                     .font(.system(size: 14))
-                    .foregroundColor(Color(uiColor: .textGray))
+                    .foregroundColor(.textGray)
             }
             .padding(.top, 10)
         }
