@@ -141,6 +141,8 @@ struct SettingsView: View {
             }
         }
         .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(.sheetBackground)
         .safeAreaInset(edge: .bottom) {
             versionLabel
         }
@@ -190,7 +192,7 @@ struct SettingsView: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(.appBackground)
+            .background(.sheetBackground)
     }
 
     private var feedbackSubject: String {

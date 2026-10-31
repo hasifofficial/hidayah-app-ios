@@ -133,6 +133,7 @@ struct RootView: View {
                 surahService: surahService,
                 taskManager: taskManager
             )
+            .presentationBackground(.sheetBackground)
             .environment(taskManager)
         }
         .alert(

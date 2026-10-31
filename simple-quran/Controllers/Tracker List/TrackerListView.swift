@@ -66,7 +66,7 @@ struct TrackerListContentView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: onOpenSettings) {
                     Image(systemName: "ellipsis")
-                        .tint(.gray)
+                        .foregroundColor(.gray)
                         .frame(width: 32, height: 32)
                 }
             }

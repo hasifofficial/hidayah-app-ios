@@ -76,8 +76,11 @@ struct SelectionView: View {
                 .buttonStyle(.plain)
             }
             .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .background(.sheetBackground)
         }
-        .background(.appBackground)
+        .background(.sheetBackground)
+        .presentationBackground(.sheetBackground)
         .interactiveDismissDisabled()
     }
 }
