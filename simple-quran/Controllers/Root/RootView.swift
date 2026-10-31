@@ -9,7 +9,7 @@ import SwiftUI
 import Observation
 import UIKit
 
-enum AppTab: Int, Hashable, Identifiable {
+enum AppTab: Int, Hashable, Identifiable, CaseIterable {
     case quran
     case bookmark
     case tracker
@@ -61,6 +61,8 @@ struct RootView: View {
     private let taskManager: TaskManager
 
     @Bindable private var router: AppRouter
+
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var quranViewModel: SurahListViewModel
     @State private var bookmarkViewModel: BookmarkListViewModel
@@ -125,7 +127,13 @@ struct RootView: View {
     }
 
     var body: some View {
-        legacyTabView
+        Group {
+            if horizontalSizeClass == .regular {
+                splitView
+            } else {
+                legacyTabView
+            }
+        }
         .tint(.lightGreen)
         .environment(taskManager)
         .sheet(isPresented: $router.settingsPresented) {
@@ -150,6 +158,76 @@ struct RootView: View {
             Button("OK") {
                 router.errorMessage = nil
             }
+        }
+    }
+
+    private var splitView: some View {
+        NavigationSplitView {
+            List(selection: selectedTabBinding) {
+                ForEach(AppTab.allCases) { tab in
+                    Label(tab.title, systemImage: tab.icon)
+                        .symbolVariant(
+                            router.selectedTab == tab ? .fill : .none
+                        )
+                        .tag(tab)
+                }
+            }
+            .listStyle(.sidebar)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                sidebarLogo
+            }
+        } detail: {
+            selectedTabContent
+        }
+        .navigationSplitViewStyle(.balanced)
+    }
+
+    @ToolbarContentBuilder
+    private var sidebarLogo: some ToolbarContent {
+        if #available(iOS 26.0, *) {
+            ToolbarItem(placement: .topBarLeading) {
+                sidebarLogoImage
+            }
+            .sharedBackgroundVisibility(.hidden)
+        } else {
+            ToolbarItem(placement: .topBarLeading) {
+                sidebarLogoImage
+            }
+        }
+    }
+
+    private var sidebarLogoImage: some View {
+        Image("hidayah_logo")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 96, height: 44)
+            .accessibilityLabel("Hidayah")
+    }
+
+    private var selectedTabBinding: Binding<AppTab?> {
+        Binding(
+            get: { router.selectedTab },
+            set: { selectedTab in
+                if let selectedTab {
+                    router.selectedTab = selectedTab
+                }
+            }
+        )
+    }
+
+    @ViewBuilder
+    private var selectedTabContent: some View {
+        switch router.selectedTab {
+        case .quran:
+            quranTab
+        case .bookmark:
+            bookmarkTab
+        case .tracker:
+            trackerTab
+        case .search:
+            searchTab
         }
     }
 
