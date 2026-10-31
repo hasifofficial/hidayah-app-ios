@@ -11,7 +11,6 @@ import UserNotifications
 import FirebaseCore
 
 class AppController: NSObject {
-    var window: UIWindow?
     let apiClientService = APIClientService()
     lazy var surahService = SurahService(
         apiClientService: apiClientService
@@ -42,7 +41,6 @@ class AppController: NSObject {
         with window: UIWindow,
         deepLink: URL? = nil
     ) {
-        self.window = window
         let rootViewController = RootViewController(
             surahService: surahService,
             taskManager: taskManager
@@ -85,59 +83,6 @@ class AppController: NSObject {
 
     }
 
-    func applicationWillResignActive(
-        _ application: UIApplication
-    ) {
-
-    }
-
-    func applicationDidEnterBackground(
-        _ application: UIApplication
-    ) {
-
-    }
-
-    func applicationWillEnterForeground(
-        _ application: UIApplication
-    ) {
-
-    }
-
-    func applicationDidBecomeActive(
-        _ application: UIApplication
-    ) {
-
-    }
-
-    func applicationWillTerminate(
-        _ application: UIApplication
-    ) {
-
-    }
-    
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-    ) -> Bool {
-        deeplinkManager.handleDeepLink(
-            url: url
-        )
-    }
-    
-    func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
-        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-              let url = userActivity.webpageURL else { return false }
-
-        return deeplinkManager.handleDeepLink(
-            url: url
-        )
-    }
-    
     func scene(
         _ scene: UIScene,
         openURLContexts URLContexts: Set<UIOpenURLContext>

@@ -7,7 +7,7 @@
 
 import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let appController = AppController()
 
@@ -18,17 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         return true
-    }
-    
-    func application(
-        _ application: UIApplication,
-        configurationForConnecting connectingSceneSession: UISceneSession,
-        options: UIScene.ConnectionOptions
-    ) -> UISceneConfiguration {
-        UISceneConfiguration(
-            name: "Default Configuration",
-            sessionRole: connectingSceneSession.role
-        )
     }
 
     func application(
@@ -60,60 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application,
             didReceiveRemoteNotification: userInfo,
             fetchCompletionHandler: completionHandler
-        )
-    }
-
-    func applicationWillResignActive(
-        _ application: UIApplication
-    ) {
-        appController.applicationWillResignActive(application)
-    }
-
-    func applicationDidEnterBackground(
-        _ application: UIApplication
-    ) {
-        appController.applicationDidEnterBackground(application)
-    }
-
-    func applicationWillEnterForeground(
-        _ application: UIApplication
-    ) {
-        appController.applicationWillEnterForeground(application)
-    }
-
-    func applicationDidBecomeActive(
-        _ application: UIApplication
-    ) {
-        appController.applicationDidBecomeActive(application)
-    }
-
-    func applicationWillTerminate(
-        _ application: UIApplication
-    ) {
-        appController.applicationWillTerminate(application)
-    }
-
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-    ) -> Bool {
-        appController.application(
-            app,
-            open: url,
-            options: options
-        )
-    }
-
-    func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
-        appController.application(
-            application,
-            continue: userActivity,
-            restorationHandler: restorationHandler
         )
     }
 }

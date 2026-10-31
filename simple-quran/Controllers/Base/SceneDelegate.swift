@@ -16,8 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-        let windowScene = scene as? UIWindowScene else { return }
-        
+              let windowScene = scene as? UIWindowScene else { return }
+
         let window = UIWindow(
             windowScene: windowScene
         )
@@ -25,26 +25,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
 
         appDelegate.appController.start(
-            with: window
+            with: window,
+            deepLink: connectionOptions.urlContexts.first?.url
         )
+
+        if let userActivity = connectionOptions.userActivities.first(where: {
+            $0.activityType == NSUserActivityTypeBrowsingWeb
+        }) {
+            appDelegate.appController.scene(
+                scene,
+                continue: userActivity
+            )
+        }
     }
 
     func sceneDidDisconnect(
         _ scene: UIScene
     ) {
-
-    }
-
-    func sceneDidBecomeActive(
-        _ scene: UIScene
-    ) {
-
-    }
-
-    func sceneWillResignActive(
-        _ scene: UIScene
-    ) {
-
+        window = nil
     }
 
     func sceneWillEnterForeground(
@@ -53,12 +51,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
-    func sceneDidEnterBackground(
-        _ scene: UIScene
-    ) {
-
-    }
-    
     func scene(
         _ scene: UIScene,
         openURLContexts URLContexts: Set<UIOpenURLContext>
@@ -70,7 +62,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             openURLContexts: URLContexts
         )
     }
-    
+
     func scene(
         _ scene: UIScene,
         continue userActivity: NSUserActivity
