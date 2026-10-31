@@ -112,6 +112,22 @@ class RootViewController: UITabBarController {
             searchNavigationController
         ]
 
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithDefaultBackground()
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .lightGreen
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.lightGreen
+        ]
+        tabBarAppearance.inlineLayoutAppearance.selected.iconColor = .lightGreen
+        tabBarAppearance.inlineLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.lightGreen
+        ]
+        tabBarAppearance.compactInlineLayoutAppearance.selected.iconColor = .lightGreen
+        tabBarAppearance.compactInlineLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.lightGreen
+        ]
+        tabBar.standardAppearance = tabBarAppearance
+        tabBar.scrollEdgeAppearance = tabBarAppearance
         tabBar.tintColor = .lightGreen
     }
 }
