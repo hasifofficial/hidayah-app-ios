@@ -17,19 +17,6 @@ struct TrackerSettingsView: View {
     var body: some View {
         List {
             Section {
-                TrackerSettingsRow(
-                    icon: "checkmark.arrow.trianglehead.counterclockwise",
-                    title: NSLocalizedString(
-                        "setting_tracker_pass_history_title",
-                        comment: ""
-                    ),
-                    showsChevron: true
-                )
-            } header: {
-                sectionHeader("setting_tracker_history_title")
-            }
-
-            Section {
                 Button {
                     onManageCategories()
                 } label: {
