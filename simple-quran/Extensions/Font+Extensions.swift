@@ -1,5 +1,5 @@
 //
-//  Font+Extension.swift
+//  Font+Extensions.swift
 //  simple-quran
 //
 

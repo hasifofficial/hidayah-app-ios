@@ -1,5 +1,5 @@
 //
-//  Collection+Extension.swift
+//  Collection+Extensions.swift
 //  simple-quran
 //
 //  Created by Mohammad Hasif Afiq on 5/3/25.
