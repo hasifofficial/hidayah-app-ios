@@ -94,6 +94,7 @@ struct TrackerListContentView: View {
                 AddTaskView()
             }
         }
+        .navigationViewStyle(.stack)
         .onAppear {
             taskManager.loadTasks()
         }
