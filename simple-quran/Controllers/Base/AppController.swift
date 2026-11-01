@@ -28,7 +28,7 @@ class AppController: NSObject {
         FirebaseApp.configure()
         self.configureCustomFont()
         self.scheduleKahfNotification()
-        self.scheduleResetDailyTrackerNotification()
+        TrackerNotificationScheduler.shared.syncDailyCheer()
 
         UNUserNotificationCenter.current().requestAuthorization(options: [
             .alert,
@@ -37,6 +37,11 @@ class AppController: NSObject {
             .carPlay
         ]) { (_, _) in }
         UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().removePendingNotificationRequests(
+            withIdentifiers: [
+                "com.hasifofficial.simple-quran.tracker-progress-reset-notification"
+            ]
+        )
     }
 
     func application(
@@ -107,32 +112,6 @@ extension AppController {
         }
     }
 
-    private func scheduleResetDailyTrackerNotification() {
-        let identifier = NotificationIdentifier.trackerProgressReset.rawValue
-
-        let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString(
-            "push_notification_istiqamah_tracker_daily_reset_title",
-            comment: ""
-        )
-        content.body = NSLocalizedString(
-            "push_notification_istiqamah_tracker_daily_reset_body",
-            comment: ""
-        )
-        content.userInfo = [
-            "url": "hidayahapp://inAppDeeplink/tracker"
-        ]
-        content.sound = UNNotificationSound.default
-        
-        var dateComponents = DateComponents()
-        dateComponents.hour = 0
-        dateComponents.minute = 0
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
-    }
 }
 
 extension AppController: UNUserNotificationCenterDelegate {
@@ -160,10 +139,6 @@ extension AppController: UNUserNotificationCenterDelegate {
             DispatchQueue.main.async { [weak self] in
                 _ = self?.deeplinkManager.handleDeepLink(url: url)
             }
-        }
-        if response.notification.request.identifier ==
-            NotificationIdentifier.trackerProgressReset.rawValue {
-            taskManager.resetDailyTasks()
         }
         completionHandler()
     }

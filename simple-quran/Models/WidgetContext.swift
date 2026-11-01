@@ -12,4 +12,7 @@ struct WidgetContext: Codable {
     let completedTasks: Int
     let totalTasks: Int
     let upcomingTasks: [TaskDetails]
+    let currentStreak: Int?
+    let level: Int?
+    let points: Int?
 }

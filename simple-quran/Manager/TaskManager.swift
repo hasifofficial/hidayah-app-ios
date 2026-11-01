@@ -12,19 +12,115 @@ import Observation
 class TaskManager {
     var tasks: [TaskDetails] = []
     var customCategories: [CustomCategory] = []
+    var history: [TrackerDayRecord] = []
+    var activeDayKey: String?
+    var startDayKey: String?
 
     static let shared = TaskManager()
 
+    @ObservationIgnored
+    private let historyEngine = TrackerHistoryEngine()
+
+    @ObservationIgnored
+    private let store = HidayahStore.shared
+
+    @ObservationIgnored
+    private var dayChangeObserver: NSObjectProtocol?
+
     private init() {
         loadTasks()
+
+        dayChangeObserver = NotificationCenter.default.addObserver(
+            forName: .NSCalendarDayChanged,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.refreshForCurrentDay()
+        }
     }
-    
+
+    deinit {
+        if let dayChangeObserver {
+            NotificationCenter.default.removeObserver(dayChangeObserver)
+        }
+    }
+
     func loadTasks() {
         loadSavedData()
-        
+
         if tasks.isEmpty {
             loadDefaultTasks()
         }
+
+        if activeDayKey == nil {
+            activeDayKey = TrackerDayKey.today()
+        }
+        if startDayKey == nil {
+            startDayKey = activeDayKey
+        }
+
+        upsertTodayRecord()
+        refreshForCurrentDay()
+        updateWidget()
+    }
+
+    func refreshForCurrentDay() {
+        let today = TrackerDayKey.today()
+
+        guard activeDayKey != today else { return }
+
+        if activeDayKey == nil {
+            activeDayKey = today
+            if startDayKey == nil {
+                startDayKey = today
+            }
+            saveData()
+            return
+        }
+
+        let previousDayKey = activeDayKey
+        activeDayKey = historyEngine.rollover(
+            activeDayKey: activeDayKey,
+            tasks: &tasks,
+            history: &history
+        )
+
+        if startDayKey == nil {
+            startDayKey = previousDayKey
+        }
+
+        saveData()
+    }
+
+    var stats: TrackerStats {
+        historyEngine.stats(for: history)
+    }
+
+    var todayRecord: TrackerDayRecord? {
+        record(for: activeDayKey ?? TrackerDayKey.today())
+    }
+
+    func record(for dayKey: String) -> TrackerDayRecord? {
+        history.first { $0.dayKey == dayKey }
+    }
+
+    func records(in month: Date) -> [TrackerDayRecord] {
+        let calendar = TrackerDayKey.calendar
+        let components = calendar.dateComponents([.year, .month], from: month)
+        guard let start = calendar.date(from: components),
+              let end = calendar.date(byAdding: .month, value: 1, to: start) else {
+            return []
+        }
+
+        let startKey = TrackerDayKey.key(for: start)
+        let endKey = TrackerDayKey.key(for: end)
+        return history.filter { $0.dayKey >= startKey && $0.dayKey < endKey }
+    }
+
+    func upsertTodayRecord() {
+        let dayKey = activeDayKey ?? TrackerDayKey.today()
+        let record = historyEngine.makeRecord(for: tasks, on: dayKey)
+        historyEngine.upsert(record, for: dayKey, in: &history)
     }
 
     func allCategories() -> [Category] {
@@ -38,13 +134,19 @@ class TaskManager {
     }
 
     func saveData() {
-        let trackerContext = TrackerContext(
-            tasks: tasks,
-            customCategories: customCategories
+        upsertTodayRecord()
+
+        store.saveTasks(tasks)
+        store.saveCategories(customCategories)
+        store.saveActiveState(
+            activeDayKey: activeDayKey,
+            startDayKey: startDayKey
         )
-        if let encoded = try? JSONEncoder().encode(trackerContext) {
-            Storage.save(.trackerContext, encoded)
+
+        if let todayRecord {
+            store.saveDay(todayRecord)
         }
+
         updateWidget()
     }
 
@@ -94,25 +196,43 @@ class TaskManager {
     func toggleTaskCompletion(
         task: TaskDetails
     ) {
+        refreshForCurrentDay()
+
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].isCompleted.toggle()
             saveData()
+            TrackerNotificationScheduler.shared.progressDidChange(
+                record: todayRecord,
+                stats: stats
+            )
         }
     }
 
     func resetDailyTasks() {
         DispatchQueue.main.async {
+            self.refreshForCurrentDay()
+
             for index in self.tasks.indices {
                 self.tasks[index].isCompleted = false
             }
+
+            let dayKey = self.activeDayKey ?? TrackerDayKey.today()
+            self.history.removeAll { $0.dayKey == dayKey }
             self.saveData()
+            TrackerNotificationScheduler.shared.clearMilestones()
         }
     }
-    
+
     func resetAll() {
+        HidayahStore.shared.resetTracker()
+
         tasks = []
         customCategories = []
+        history = []
+        activeDayKey = TrackerDayKey.today()
+        startDayKey = activeDayKey
         saveData()
+        TrackerNotificationScheduler.shared.clearAll()
         loadTasks()
     }
 }
@@ -201,11 +321,12 @@ extension TaskManager {
     }
     
     private func loadSavedData() {
-        let trackerContext: TrackerContext? = Storage.loadObject(key: .trackerContext)
-        if let trackerContext = trackerContext {
-            tasks = trackerContext.tasks
-            customCategories = trackerContext.customCategories
-        }
+        let snapshot = store.loadTrackerData()
+        tasks = snapshot.tasks
+        customCategories = snapshot.customCategories
+        history = snapshot.history
+        activeDayKey = snapshot.activeDayKey
+        startDayKey = snapshot.startDayKey
     }
 }
 
@@ -218,13 +339,17 @@ extension TaskManager {
             : 0
         let upcomingTasks = tasks
             .filter { !$0.isCompleted }
-            .prefix(3)
+            .prefix(5)
             .map { $0 }
+        let trackerStats = stats
         let widgetContext = WidgetContext(
             progress: progress,
             completedTasks: completed,
             totalTasks: total,
-            upcomingTasks: upcomingTasks
+            upcomingTasks: upcomingTasks,
+            currentStreak: trackerStats.currentStreak,
+            level: trackerStats.level,
+            points: trackerStats.totalPoints
         )
         if let encoded = try? JSONEncoder().encode(widgetContext) {
             Storage.save(.widgetContext, encoded)

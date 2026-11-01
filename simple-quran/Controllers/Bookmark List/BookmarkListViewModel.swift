@@ -61,9 +61,7 @@ final class BookmarkListViewModel {
                 guard let self else { return }
 
                 let surahs = list.data ?? []
-                let storedBookmarks: [SurahBookmark] = Storage.loadObject(
-                    key: .bookmarkRecitations
-                ) ?? []
+                let storedBookmarks = HidayahStore.shared.bookmarks()
                 let sortedBookmarks = storedBookmarks.sorted {
                     if $0.surahNumber == $1.surahNumber {
                         return $0.numberInSurah < $1.numberInSurah

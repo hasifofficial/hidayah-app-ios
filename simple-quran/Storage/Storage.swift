@@ -11,12 +11,17 @@ class Storage {
     static let userDefaults = UserDefaults(suiteName: "group.com.hasifofficial.simple-quran")
 
     enum StorageKey: String, CaseIterable {
-        case bookmarkRecitations
         case selectedRecitation
         case selectedTranslation
         case allowKahfReminder
-        case trackerContext
+        case allowTrackerCheerleader
+        case trackerCheerState
         case widgetContext
+        case quranArabicFontSize
+        case quranShowTranslation
+        case trackerActiveDayKey
+        case trackerStartDayKey
+        case hasMigratedToSwiftData
     }
 
     static func save(_ key: StorageKey, _ value: Any) {

@@ -9,5 +9,7 @@ import Foundation
 
 enum NotificationIdentifier: String {
     case kahfReminder = "com.hasifofficial.simple-quran.kahf-reminder-notification"
-    case trackerProgressReset = "com.hasifofficial.simple-quran.tracker-progress-reset-notification"
+    case trackerDailyCheer = "com.hasifofficial.simple-quran.tracker-daily-cheer"
+
+    static let trackerMilestonePrefix = "com.hasifofficial.simple-quran.tracker-cheer-"
 }

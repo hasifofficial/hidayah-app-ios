@@ -54,6 +54,19 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
             return "magnifyingglass"
         }
     }
+
+    var selectedIcon: String {
+        switch self {
+        case .quran:
+            return "book.fill"
+        case .bookmark:
+            return "bookmark.fill"
+        case .tracker:
+            return "checklist.checked"
+        case .search:
+            return "magnifyingglass"
+        }
+    }
 }
 
 struct RootView: View {
@@ -64,6 +77,7 @@ struct RootView: View {
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+    @State private var useSplitView = false
     @State private var quranViewModel: SurahListViewModel
     @State private var bookmarkViewModel: BookmarkListViewModel
     @State private var searchViewModel: SearchViewModel
@@ -128,13 +142,23 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if horizontalSizeClass == .regular {
+            if useSplitView {
                 splitView
             } else {
                 legacyTabView
             }
         }
         .tint(.lightGreen)
+        .environment(router)
+        .onAppear {
+            updateLayoutForCurrentTraits()
+        }
+        .onChange(of: horizontalSizeClass) { _, _ in
+            updateLayoutForCurrentTraits()
+        }
+        .onChange(of: hasPushedNavigation) { _, _ in
+            updateLayoutForCurrentTraits()
+        }
         .environment(taskManager)
         .sheet(isPresented: $router.settingsPresented) {
             SettingsSheet(
@@ -161,15 +185,28 @@ struct RootView: View {
         }
     }
 
+    private var hasPushedNavigation: Bool {
+        !router.quranPath.isEmpty
+            || !router.bookmarkPath.isEmpty
+            || !router.searchPath.isEmpty
+            || !router.trackerPath.isEmpty
+    }
+
+    private func updateLayoutForCurrentTraits() {
+        useSplitView = horizontalSizeClass == .regular
+    }
+
     private var splitView: some View {
         NavigationSplitView {
             List(selection: selectedTabBinding) {
                 ForEach(AppTab.allCases) { tab in
-                    Label(tab.title, systemImage: tab.icon)
-                        .symbolVariant(
-                            router.selectedTab == tab ? .fill : .none
-                        )
-                        .tag(tab)
+                    Label(
+                        tab.title,
+                        systemImage: router.selectedTab == tab
+                            ? tab.selectedIcon
+                            : tab.icon
+                    )
+                    .tag(tab)
                 }
             }
             .listStyle(.sidebar)
@@ -206,12 +243,19 @@ struct RootView: View {
             .accessibilityLabel("Hidayah")
     }
 
+    private var tabSelectionBinding: Binding<AppTab> {
+        Binding(
+            get: { router.selectedTab },
+            set: { router.selectTab($0, clearingPaths: useSplitView) }
+        )
+    }
+
     private var selectedTabBinding: Binding<AppTab?> {
         Binding(
             get: { router.selectedTab },
             set: { selectedTab in
                 if let selectedTab {
-                    router.selectedTab = selectedTab
+                    router.selectTab(selectedTab, clearingPaths: true)
                 }
             }
         )
@@ -232,7 +276,7 @@ struct RootView: View {
     }
 
     private var legacyTabView: some View {
-        TabView(selection: $router.selectedTab) {
+        TabView(selection: tabSelectionBinding) {
             quranTab
                 .tabItem {
                     tabLabel(.quran)
@@ -342,13 +386,51 @@ struct RootView: View {
     }
 
     private var trackerTab: some View {
-        NavigationStack {
+        NavigationStack(path: $router.trackerPath) {
             TrackerListView(
                 taskManager: taskManager,
+                onOpenCalendar: {
+                    router.trackerPath.append(.trackerCalendar)
+                },
+                onOpenAchievements: {
+                    router.trackerPath.append(.trackerAchievements)
+                },
+                onOpenLevels: {
+                    router.trackerPath.append(.trackerLevels)
+                },
                 onOpenSettings: {
                     router.settingsPresented = true
                 }
             )
+            .navigationDestination(for: AppRoute.self) { route in
+                switch route {
+                case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
+                    SurahDetailScreen(
+                        surahService: surahService,
+                        surahNumber: surahNumber,
+                        title: title,
+                        bookmarkedAyah: bookmarkedAyah
+                    )
+                case .trackerCalendar:
+                    TrackerCalendarView(
+                        onSelectDay: { dayKey in
+                            router.trackerPath.append(.trackerDay(dayKey: dayKey))
+                        }
+                    )
+                    .environment(taskManager)
+                case .trackerAchievements:
+                    TrackerAchievementsView()
+                        .environment(taskManager)
+                case .trackerLevels:
+                    TrackerLevelsView()
+                        .environment(taskManager)
+                case .trackerDay(let dayKey):
+                    TrackerDayDetailView(
+                        dayKey: dayKey,
+                        record: taskManager.record(for: dayKey)
+                    )
+                }
+            }
         }
     }
 
@@ -376,7 +458,7 @@ struct RootView: View {
                             router.settingsPresented = true
                         } label: {
                             Image(systemName: "ellipsis")
-                                .foregroundColor(.gray)
+                                .foregroundColor(.primary)
                         }
                     }
                 }
@@ -403,6 +485,24 @@ struct RootView: View {
                 surahNumber: surahNumber,
                 title: title,
                 bookmarkedAyah: bookmarkedAyah
+            )
+        case .trackerCalendar:
+            TrackerCalendarView(
+                onSelectDay: { dayKey in
+                    router.trackerPath.append(.trackerDay(dayKey: dayKey))
+                }
+            )
+            .environment(taskManager)
+        case .trackerAchievements:
+            TrackerAchievementsView()
+                .environment(taskManager)
+        case .trackerLevels:
+            TrackerLevelsView()
+                .environment(taskManager)
+        case .trackerDay(let dayKey):
+            TrackerDayDetailView(
+                dayKey: dayKey,
+                record: taskManager.record(for: dayKey)
             )
         }
     }

@@ -92,9 +92,7 @@ final class SearchViewModel {
             return
         }
 
-        let bookmarks: [SurahBookmark] = Storage.loadObject(
-            key: .bookmarkRecitations
-        ) ?? []
+        let bookmarks = HidayahStore.shared.bookmarks()
 
         bookmarkedSurahs = bookmarks
             .sorted {

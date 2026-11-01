@@ -359,23 +359,12 @@ final class SurahDetailViewModel {
             numberInSurah: ayah.numberInSurah
         )
 
-        var bookmarks: [SurahBookmark] = Storage.loadObject(
-            key: .bookmarkRecitations
-        ) ?? []
-
-        if let index = bookmarks.firstIndex(of: bookmark) {
-            bookmarks.remove(at: index)
-            bookmarkedAyahs.remove(ayah.numberInSurah)
-        } else {
-            bookmarks.insert(bookmark, at: 0)
-            bookmarkedAyahs.insert(ayah.numberInSurah)
-        }
-
-        if bookmarks.isEmpty {
-            Storage.delete(.bookmarkRecitations)
-        } else if let encoded = try? JSONEncoder().encode(bookmarks) {
-            Storage.save(.bookmarkRecitations, encoded)
-        }
+        let bookmarks = HidayahStore.shared.toggleBookmark(bookmark)
+        bookmarkedAyahs = Set(
+            bookmarks
+                .filter { $0.surahNumber == selectedSurahNo }
+                .map(\.numberInSurah)
+        )
     }
 
     func toggleAudio(ayah: SurahDetailAyah) {
@@ -423,14 +412,8 @@ final class SurahDetailViewModel {
     }
 
     private func bookmarkedNumbers(for surahNumber: Int) -> Set<Int> {
-        guard let bookmarks: [SurahBookmark] = Storage.loadObject(
-            key: .bookmarkRecitations
-        ) else {
-            return []
-        }
-
-        return Set(
-            bookmarks
+        Set(
+            HidayahStore.shared.bookmarks()
                 .filter { $0.surahNumber == surahNumber }
                 .map(\.numberInSurah)
         )

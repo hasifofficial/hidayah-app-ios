@@ -26,52 +26,97 @@ struct ManageCategoryContentView: View {
 
     var body: some View {
         Group {
-            if !taskManager.customCategories.isEmpty {
-                Form {
-                    if !taskManager.customCategories.isEmpty {
-                        Section(footer: Text("setting_manage_category_footer_title")) {
-                            ForEach(taskManager.customCategories) { category in
-                                HStack {
-                                    Image(systemName: category.icon)
-                                    Text(category.name)
-                                    Spacer()
-                                }
-                            }
-                            .onDelete(perform: deleteCategories)
-                        }
-                    }
-                }
+            if taskManager.customCategories.isEmpty {
+                emptyState
             } else {
-                ContentUnavailableView {
-                    Label {
-                        Text(
-                            NSLocalizedString(
-                                "setting_manage_category_empty_title",
-                                comment: ""
-                            )
-                        )
-                    } icon: {
-                        Image(systemName: "square.grid.2x2")
+                List {
+                    SettingsSectionHeader(
+                        title: NSLocalizedString(
+                            "setting_manage_category_section_title",
+                            comment: ""
+                        ),
+                        topPadding: 16
+                    )
+
+                    ForEach(taskManager.customCategories) { category in
+                        categoryRow(category)
                     }
-                } description: {
+                    .onDelete(perform: deleteCategories)
+
                     Text(
                         NSLocalizedString(
-                            "setting_manage_category_empty_subtitle",
+                            "setting_manage_category_footer_title",
                             comment: ""
                         )
                     )
+                    .font(.system(size: 12))
+                    .foregroundColor(.textGray)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 4)
+                    .padding(.bottom, 24)
+                    .settingsListRow()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .background(.sheetBackground)
             }
         }
-        .navigationTitle("setting_manage_category_header_title")
+        .navigationTitle(
+            NSLocalizedString(
+                "setting_manage_category_header_title",
+                comment: ""
+            )
+        )
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func categoryRow(_ category: CustomCategory) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: category.icon)
+                .font(.system(size: 18))
+                .foregroundColor(.primary)
+                .frame(width: 32, height: 32)
+
+            Text(category.name)
+                .font(.system(size: 14))
+                .foregroundColor(.primary)
+
+            Spacer(minLength: 8)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .contentShape(Rectangle())
+        .settingsListRow()
+    }
+
+    private var emptyState: some View {
+        ContentUnavailableView {
+            Label {
+                Text(
+                    NSLocalizedString(
+                        "setting_manage_category_empty_title",
+                        comment: ""
+                    )
+                )
+            } icon: {
+                Image(systemName: "square.grid.2x2")
+            }
+        } description: {
+            Text(
+                NSLocalizedString(
+                    "setting_manage_category_empty_subtitle",
+                    comment: ""
+                )
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.sheetBackground)
     }
 }
 
 struct ManageCategoryView: View {
     let taskManager: TaskManager
-    
+
     var body: some View {
         ManageCategoryContentView()
             .environment(taskManager)

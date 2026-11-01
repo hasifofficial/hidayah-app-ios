@@ -40,6 +40,7 @@ final class SettingsViewModel {
     private(set) var selectedRecitationValue: String?
     private(set) var selectedTranslationValue: String?
     var allowKahfReminder: Bool
+    var allowTrackerCheerleader: Bool
 
     @ObservationIgnored
     var onTrackerSettings: (() -> Void)?
@@ -80,6 +81,7 @@ final class SettingsViewModel {
         selectedTranslationValue = translation?.identifier
 
         allowKahfReminder = Storage.load(key: .allowKahfReminder) as? Bool ?? true
+        allowTrackerCheerleader = Storage.load(key: .allowTrackerCheerleader) as? Bool ?? true
     }
 
     var versionText: String {
@@ -151,6 +153,12 @@ final class SettingsViewModel {
     func setKahfReminder(_ value: Bool) {
         allowKahfReminder = value
         Storage.save(.allowKahfReminder, value)
+    }
+
+    func setTrackerCheerleader(_ value: Bool) {
+        allowTrackerCheerleader = value
+        Storage.save(.allowTrackerCheerleader, value)
+        TrackerNotificationScheduler.shared.syncDailyCheer()
     }
 
     private func handleEditionSuccess(_ edition: Edition) {

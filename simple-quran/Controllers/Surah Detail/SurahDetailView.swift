@@ -11,6 +11,17 @@ struct SurahDetailView: View {
     let viewModel: SurahDetailViewModel
 
     @State private var activeSelection: DetailSelection?
+    @State private var showingReadingSettings = false
+
+    @AppStorage(
+        Storage.StorageKey.quranArabicFontSize.rawValue,
+        store: Storage.userDefaults
+    ) private var arabicFontSize = 22.0
+
+    @AppStorage(
+        Storage.StorageKey.quranShowTranslation.rawValue,
+        store: Storage.userDefaults
+    ) private var showTranslation = true
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -20,10 +31,21 @@ struct SurahDetailView: View {
                         placeholder
                     } else {
                         detailCard
+                            .loadAnimation(offset: 16)
 
-                        ForEach(viewModel.ayahs) { ayah in
+                        ForEach(
+                            Array(viewModel.ayahs.enumerated()),
+                            id: \.element.id
+                        ) { index, ayah in
                             ayahView(ayah)
                                 .id(ayah.numberInSurah)
+                                .loadAnimation(
+                                    delay: min(
+                                        Double(index) * 0.02,
+                                        0.3
+                                    ),
+                                    offset: 12
+                                )
                         }
                     }
                 }
@@ -63,6 +85,27 @@ struct SurahDetailView: View {
         }
         .navigationTitle(viewModel.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingReadingSettings = true
+                } label: {
+                    Image(systemName: "gearshape")
+                        .foregroundColor(.primary)
+                }
+                .accessibilityLabel(
+                    NSLocalizedString(
+                        "quran_reading_settings_title",
+                        comment: ""
+                    )
+                )
+            }
+        }
+        .sheet(isPresented: $showingReadingSettings) {
+            QuranReadingSettingsView()
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
         .alert(
             viewModel.errorMessage ?? "",
             isPresented: Binding(
@@ -81,145 +124,220 @@ struct SurahDetailView: View {
     }
 
     private var detailCard: some View {
-        VStack(spacing: 8) {
-            Text(viewModel.surahName)
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(.white)
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top, spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color.lightGreen.opacity(0.12))
+
+                    Image(systemName: "book.closed.fill")
+                        .font(.system(size: 19, weight: .semibold))
+                        .foregroundColor(.lightGreen)
+                }
+                .frame(width: 42, height: 42)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(NSLocalizedString("surah_detail_heading", comment: ""))
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.textGray)
+                        .textCase(.uppercase)
+
+                    Text(viewModel.surahName)
+                        .font(.system(size: 21, weight: .bold))
+                        .foregroundColor(.title)
+                }
+
+                Spacer(minLength: 0)
+            }
 
             Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
-                .font(.amiriRegular(size: 22))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-
-            Rectangle()
-                .fill(.white.opacity(0.85))
-                .frame(height: 1)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
+                .font(.amiriRegular(size: 23))
+                .foregroundColor(.lightGreen)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(viewModel.descriptionText)
-                .font(.system(size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
+                .font(.system(size: 13))
+                .foregroundColor(.textGray)
+                .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
 
-            HStack(spacing: 16) {
-                Button {
+            HStack(spacing: 8) {
+                selectionButton(
+                    icon: "speaker.wave.2.bubble",
+                    title: viewModel.reciterName
+                ) {
                     activeSelection = .recitation
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "speaker.wave.2.bubble")
-                        Text(viewModel.reciterName)
-                    }
-                    .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.plain)
 
-                Button {
+                selectionButton(
+                    icon: "globe",
+                    title: viewModel.translationName
+                ) {
                     activeSelection = .translation
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "globe")
-                        Text(viewModel.translationName)
-                    }
-                    .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.plain)
             }
-            .font(.system(size: 14))
-            .foregroundColor(.white)
-            .padding(.top, 8)
         }
         .padding(16)
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.lightGreen)
-        )
-        .shadow(color: .black.opacity(0.15), radius: 5, y: 2)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.lightGreen.opacity(0.14),
+                            Color.backgroundGray
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.lightGreen.opacity(0.16), lineWidth: 1)
+        }
         .padding(.horizontal, 16)
         .padding(.top, 16)
     }
 
+    private func selectionButton(
+        icon: String,
+        title: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 7) {
+                Image(systemName: icon)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.lightGreen)
+
+                Text(title)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.title)
+                    .lineLimit(1)
+
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 11)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity)
+            .background(Color.appBackground.opacity(0.45))
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+
     private func ayahView(_ ayah: SurahDetailAyah) -> some View {
-        VStack(spacing: 16) {
-            HStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 8) {
                 ZStack {
                     Image(systemName: "seal.fill")
-                        .font(.system(size: 30))
+                        .font(.system(size: 32))
                         .foregroundColor(.lightGreen)
 
                     Text("\(ayah.numberInSurah)")
-                        .font(.system(size: 14))
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.white)
                 }
 
-                Spacer()
+                Spacer(minLength: 8)
 
                 ShareLink(item: viewModel.shareText(for: ayah)) {
                     Image(systemName: "square.and.arrow.up")
-                        .frame(width: 30, height: 30)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.lightGreen)
+                        .frame(width: 40, height: 40)
+                        .background(Color.backgroundGray)
+                        .clipShape(Circle())
                 }
                 .buttonStyle(.plain)
-                .foregroundColor(.lightGreen)
+                .accessibilityLabel(
+                    NSLocalizedString("surah_detail_share_ayah", comment: "")
+                )
 
-                Button {
+                ayahActionButton(
+                    icon: viewModel.playingAyahID == ayah.id
+                        ? "pause.fill"
+                        : "play.fill",
+                    isActive: viewModel.playingAyahID == ayah.id,
+                    accessibilityLabel: viewModel.playingAyahID == ayah.id
+                        ? "surah_detail_pause_ayah"
+                        : "surah_detail_play_ayah"
+                ) {
                     viewModel.toggleAudio(ayah: ayah)
-                } label: {
-                    Image(
-                        systemName: viewModel.playingAyahID == ayah.id
-                            ? "pause.fill"
-                            : "play"
-                    )
-                    .frame(width: 30, height: 30)
                 }
-                .buttonStyle(.plain)
-                .foregroundColor(.lightGreen)
 
-                Button {
-                    viewModel.toggleBookmark(ayah: ayah)
-                } label: {
-                    Image(
-                        systemName: viewModel.bookmarkedAyahs.contains(
-                            ayah.numberInSurah
-                        )
-                            ? "bookmark.fill"
-                            : "bookmark"
+                ayahActionButton(
+                    icon: viewModel.bookmarkedAyahs.contains(
+                        ayah.numberInSurah
                     )
-                    .frame(width: 30, height: 30)
+                        ? "bookmark.fill"
+                        : "bookmark",
+                    isActive: viewModel.bookmarkedAyahs.contains(
+                        ayah.numberInSurah
+                    ),
+                    accessibilityLabel: viewModel.bookmarkedAyahs.contains(
+                        ayah.numberInSurah
+                    )
+                        ? "surah_detail_remove_bookmark_ayah"
+                        : "surah_detail_bookmark_ayah"
+                ) {
+                    viewModel.toggleBookmark(ayah: ayah)
                 }
-                .buttonStyle(.plain)
-                .foregroundColor(.lightGreen)
             }
             .padding(.horizontal, 16)
-            .frame(height: 46)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.backgroundGray)
-            )
-            .padding(.horizontal, 16)
+            .padding(.top, 8)
 
             Text(ayah.arabic)
-                .font(.kitabRegular(size: 22))
+                .font(.kitabRegular(size: CGFloat(arabicFontSize)))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .lineSpacing(6)
                 .padding(.horizontal, 16)
+                .padding(.top, 10)
 
-            Text(ayah.translation)
-                .font(.system(size: 14))
-                .foregroundColor(.primary)
-                .multilineTextAlignment(
-                    ayah.translationIsRTL ? .trailing : .leading
-                )
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: ayah.translationIsRTL ? .trailing : .leading
-                )
+            if showTranslation {
+                Text(ayah.translation)
+                    .font(.system(size: 15))
+                    .foregroundColor(.primary)
+                    .lineSpacing(4)
+                    .multilineTextAlignment(
+                        ayah.translationIsRTL ? .trailing : .leading
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: ayah.translationIsRTL ? .trailing : .leading
+                    )
+                    .padding(.horizontal, 16)
+                    .padding(.top, 12)
+            }
+
+            Divider()
+                .overlay(Color.textGray.opacity(0.12))
                 .padding(.horizontal, 16)
+                .padding(.top, 18)
         }
-        .padding(.top, 16)
-        .padding(.bottom, 16)
+        .padding(.top, 8)
+    }
+
+    private func ayahActionButton(
+        icon: String,
+        isActive: Bool,
+        accessibilityLabel: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(isActive ? .white : .lightGreen)
+                .frame(width: 40, height: 40)
+                .background(isActive ? Color.lightGreen : Color.backgroundGray)
+                .clipShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(NSLocalizedString(accessibilityLabel, comment: ""))
     }
 
     private var placeholder: some View {

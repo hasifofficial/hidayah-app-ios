@@ -15,6 +15,17 @@ struct SettingsView: View {
     @State private var activeSelection: SettingsSelection?
     @State private var safariURL: URL?
     @State private var showingMail = false
+    @State private var showingQuranReadingSettings = false
+
+    @AppStorage(
+        Storage.StorageKey.quranArabicFontSize.rawValue,
+        store: Storage.userDefaults
+    ) private var arabicFontSize = 22.0
+
+    @AppStorage(
+        Storage.StorageKey.quranShowTranslation.rawValue,
+        store: Storage.userDefaults
+    ) private var showTranslation = true
 
     var body: some View {
         List {
@@ -47,6 +58,26 @@ struct SettingsView: View {
             ) {
                 openSelection(.translation)
             }
+
+            SettingsActionRow(
+                icon: "textformat.size",
+                title: NSLocalizedString(
+                    "setting_quran_font_size_title",
+                    comment: ""
+                ),
+                value: "\(Int(arabicFontSize)) pt"
+            ) {
+                showingQuranReadingSettings = true
+            }
+
+            SettingsToggleRow(
+                icon: "character.book.closed",
+                title: NSLocalizedString(
+                    "setting_quran_show_translation_title",
+                    comment: ""
+                ),
+                isOn: $showTranslation
+            )
 
             SettingsSectionHeader(
                 title: NSLocalizedString(
@@ -81,6 +112,18 @@ struct SettingsView: View {
                 isOn: Binding(
                     get: { viewModel.allowKahfReminder },
                     set: { viewModel.setKahfReminder($0) }
+                )
+            )
+
+            SettingsToggleRow(
+                icon: "flame",
+                title: NSLocalizedString(
+                    "setting_notification_tracker_cheerleader_title",
+                    comment: ""
+                ),
+                isOn: Binding(
+                    get: { viewModel.allowTrackerCheerleader },
+                    set: { viewModel.setTrackerCheerleader($0) }
                 )
             )
 
@@ -156,6 +199,11 @@ struct SettingsView: View {
                     viewModel.select(item, for: selection)
                 }
             )
+        }
+        .sheet(isPresented: $showingQuranReadingSettings) {
+            QuranReadingSettingsView()
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showingMail) {
             MailView(
