@@ -6,8 +6,6 @@
   
 */
 
-"common_error_network_not_reachable" = "Network is not reachable.";
-"common_error_connection_time_out" = "Connection timed out.";
 "common_error_content" = "Something went wrong. Please try again later.";
 
 "request_error_decode" = "Data cannot be parsed. Please try again later.";
@@ -27,7 +25,6 @@
 "search_surah_section_title" = "Surah";
 
 "surah_list_header_title" = "Quran";
-"surah_list_search_placeholder" = "Search surah";
 "surah_list_subtitle" = "%@ • %@ verses";
 "surah_list_search_empty_title" = "No Search Results\n";
 "surah_list_search_empty_subtitle" = "Please try type another keyword.";
@@ -35,10 +32,7 @@
 "surah_list_empty_list_subtitle" = "Something went wrong.\nPlease try again.";
 
 "bookmark_list_header_title" = "Bookmarks";
-"bookmark_list_search_placeholder" = "Search bookmarks";
 "bookmark_list_subtitle" = "Verse %@";
-"bookmark_list_search_empty_title" = "You have no bookmarks\n";
-"bookmark_list_search_empty_subtitle" = "Tap on bookmark icon when reading to add bookmark.";
 "bookmark_list_empty_list_title" = "You have no bookmarks\n";
 "bookmark_list_empty_list_subtitle" = "Tap on bookmark icon when reading to add bookmark";
 
@@ -60,7 +54,6 @@
 "setting_tracker_title" = "Tracker Settings";
 "setting_notification_section_title" = "Notification";
 "setting_notification_alkahf_title" = "Al-Kahf Reminder";
-"setting_notification_section_title" = "Notification";
 "setting_about_section_title" = "About";
 "setting_about_us_title" = "About Us";
 "setting_about_privacy_title" = "Privacy Policy";
@@ -71,8 +64,6 @@
 "setting_app_verison" = "Version %@ (%@)";
 
 "setting_tracker_header_title" = "Tracker Settings";
-"setting_tracker_history_title" = "History";
-"setting_tracker_pass_history_title" = "Previous Tracker History";
 "setting_tracker_category_title" = "Category";
 "setting_tracker_manage_category_title" = "Manage Categories";
 "setting_tracker_reset_daily_progress_title" = "Reset Today's Progress";
@@ -84,7 +75,6 @@
 "setting_tracker_reset_all_alert_title" = "Reset All?";
 "setting_tracker_reset_all_alert_description" = "Reset all will restore everything back to default including remove all custom categories. Are you sure you want to continue?";
 "setting_tracker_reset_all_alert_reset_button" = "Reset";
-"setting_tracker_reset_all_alert_cancel_button" = "Cancel";
 
 "setting_manage_category_header_title" = "Manage Categories";
 "setting_manage_category_footer_title" = "Swipe to delete a category. Please note that all tasks under this category will also be deleted";

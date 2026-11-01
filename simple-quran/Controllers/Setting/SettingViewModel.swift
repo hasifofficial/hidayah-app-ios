@@ -43,9 +43,6 @@ final class SettingsViewModel {
     var allowTrackerCheerleader: Bool
 
     @ObservationIgnored
-    var onTrackerSettings: (() -> Void)?
-
-    @ObservationIgnored
     var onError: ((String) -> Void)?
 
     @ObservationIgnored

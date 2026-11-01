@@ -36,8 +36,3 @@ struct Ayah: Codable {
     let hizbQuarter: Int?
 }
 
-struct AyahDetail: Codable {
-    let ayah: Ayah
-    let surahNumber: Int
-    let translation: String
-}

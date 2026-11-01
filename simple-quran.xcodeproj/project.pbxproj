@@ -107,8 +107,8 @@
 		1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Manager/TaskManager.swift,
 				Manager/HidayahStore.swift,
+				Manager/TaskManager.swift,
 				Models/Category.swift,
 				Models/NotificationIdentifier.swift,
 				Models/SurahBookmark.swift,

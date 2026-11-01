@@ -34,11 +34,7 @@ struct Provider: TimelineProvider {
                     name: "Morning adhkar",
                     category: .default(.morning)
                 )
-            ],
-            currentStreak: 7,
-            level: 4,
-            points: 620
-        )
+            ]        )
     }
 
     func getSnapshot(
@@ -63,11 +59,7 @@ struct Provider: TimelineProvider {
                     name: "Morning adhkar",
                     category: .default(.morning)
                 )
-            ],
-            currentStreak: 7,
-            level: 4,
-            points: 620
-        )
+            ]        )
         completion(entry)
     }
 
@@ -83,11 +75,7 @@ struct Provider: TimelineProvider {
             progress: widgetContext?.progress ?? 0,
             completedTasks: widgetContext?.completedTasks ?? 0,
             totalTasks: widgetContext?.totalTasks ?? 1,
-            upcomingTasks: widgetContext?.upcomingTasks ?? [],
-            currentStreak: widgetContext?.currentStreak ?? 0,
-            level: widgetContext?.level ?? 1,
-            points: widgetContext?.points ?? 0
-        )
+            upcomingTasks: widgetContext?.upcomingTasks ?? []        )
         let timeline = Timeline(
             entries: [entry],
             policy: .after(Date().addingTimeInterval(60 * 15))
@@ -102,9 +90,6 @@ struct SimpleEntry: TimelineEntry {
     let completedTasks: Int
     let totalTasks: Int
     let upcomingTasks: [TaskDetails]
-    var currentStreak: Int = 0
-    var level: Int = 1
-    var points: Int = 0
 }
 
 struct IstiqamahWidgetSmallView: View {
@@ -389,9 +374,6 @@ struct appWidget: Widget {
                 name: "Morning adhkar",
                 category: .default(.morning)
             )
-        ],
-        currentStreak: 7,
-        level: 4,
-        points: 620
+        ]
     )
 }

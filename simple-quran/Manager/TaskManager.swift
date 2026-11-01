@@ -341,15 +341,11 @@ extension TaskManager {
             .filter { !$0.isCompleted }
             .prefix(5)
             .map { $0 }
-        let trackerStats = stats
         let widgetContext = WidgetContext(
             progress: progress,
             completedTasks: completed,
             totalTasks: total,
-            upcomingTasks: upcomingTasks,
-            currentStreak: trackerStats.currentStreak,
-            level: trackerStats.level,
-            points: trackerStats.totalPoints
+            upcomingTasks: upcomingTasks
         )
         if let encoded = try? JSONEncoder().encode(widgetContext) {
             Storage.save(.widgetContext, encoded)
