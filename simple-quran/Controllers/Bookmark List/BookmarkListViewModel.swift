@@ -35,8 +35,29 @@ final class BookmarkListViewModel {
     @ObservationIgnored
     private var cancellables = Set<AnyCancellable>()
 
+    @ObservationIgnored
+    private var hasLoaded = false
+
     init(surahService: SurahService) {
         self.surahService = surahService
+    }
+
+    func loadIfNeeded() {
+        if hasLoaded {
+            hydrate(with: SurahCatalog.shared.surahs)
+            return
+        }
+
+        hasLoaded = true
+
+        if SurahCatalog.shared.isLoaded,
+           !SurahCatalog.shared.surahs.isEmpty {
+            isLoading = false
+            hydrate(with: SurahCatalog.shared.surahs)
+            return
+        }
+
+        load()
     }
 
     func load(completion: (() -> Void)? = nil) {
@@ -61,28 +82,38 @@ final class BookmarkListViewModel {
                 guard let self else { return }
 
                 let surahs = list.data ?? []
-                let storedBookmarks = HidayahStore.shared.bookmarks()
-                let sortedBookmarks = storedBookmarks.sorted {
-                    if $0.surahNumber == $1.surahNumber {
-                        return $0.numberInSurah < $1.numberInSurah
-                    }
-                    return $0.surahNumber < $1.surahNumber
-                }
-
-                self.bookmarks = sortedBookmarks.compactMap { bookmark in
-                    guard let surah = surahs.first(where: {
-                        $0.number == bookmark.surahNumber
-                    }) else {
-                        return nil
-                    }
-
-                    return BookmarkedSurah(
-                        surah: surah,
-                        bookmark: bookmark
-                    )
-                }
+                SurahCatalog.shared.store(surahs)
+                self.hydrate(with: surahs)
             }
             .store(in: &cancellables)
+    }
+
+    private func hydrate(with surahs: [SurahListResponse]) {
+        guard !surahs.isEmpty else {
+            bookmarks = []
+            return
+        }
+
+        let storedBookmarks = HidayahStore.shared.bookmarks()
+        let sortedBookmarks = storedBookmarks.sorted {
+            if $0.surahNumber == $1.surahNumber {
+                return $0.numberInSurah < $1.numberInSurah
+            }
+            return $0.surahNumber < $1.surahNumber
+        }
+
+        bookmarks = sortedBookmarks.compactMap { bookmark in
+            guard let surah = surahs.first(where: {
+                $0.number == bookmark.surahNumber
+            }) else {
+                return nil
+            }
+
+            return BookmarkedSurah(
+                surah: surah,
+                bookmark: bookmark
+            )
+        }
     }
 
     func refresh() async {

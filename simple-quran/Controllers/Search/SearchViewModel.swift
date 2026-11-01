@@ -52,9 +52,18 @@ final class SearchViewModel {
     func loadIfNeeded() {
         if hasLoaded {
             refreshBookmarks()
-        } else {
-            load()
+            return
         }
+
+        if SurahCatalog.shared.isLoaded,
+           !SurahCatalog.shared.surahs.isEmpty {
+            surahList = SurahCatalog.shared.surahs
+            hasLoaded = true
+            refreshBookmarks()
+            return
+        }
+
+        load()
     }
 
     func load() {
@@ -78,7 +87,9 @@ final class SearchViewModel {
             } receiveValue: { [weak self] list in
                 guard let self else { return }
 
-                self.surahList = list.data ?? []
+                let surahs = list.data ?? []
+                self.surahList = surahs
+                SurahCatalog.shared.store(surahs)
                 self.hasLoaded = true
                 self.refreshBookmarks()
             }

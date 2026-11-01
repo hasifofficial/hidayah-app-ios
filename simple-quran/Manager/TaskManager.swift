@@ -25,6 +25,24 @@ class TaskManager {
     private let store = HidayahStore.shared
 
     @ObservationIgnored
+    private var dirtyTaskIDs: Set<UUID> = []
+
+    @ObservationIgnored
+    private var deletedTaskIDs: Set<UUID> = []
+
+    @ObservationIgnored
+    private var cachedStats: TrackerStats?
+
+    @ObservationIgnored
+    private var historyLookup: [String: TrackerDayRecord] = [:]
+
+    @ObservationIgnored
+    private var lastWidgetData: Data?
+
+    @ObservationIgnored
+    private var widgetReloadWorkItem: DispatchWorkItem?
+
+    @ObservationIgnored
     private var dayChangeObserver: NSObjectProtocol?
 
     private init() {
@@ -61,6 +79,7 @@ class TaskManager {
 
         upsertTodayRecord()
         refreshForCurrentDay()
+        invalidateStats()
         updateWidget()
     }
 
@@ -84,6 +103,8 @@ class TaskManager {
             tasks: &tasks,
             history: &history
         )
+        dirtyTaskIDs.formUnion(tasks.map(\.id))
+        invalidateStats()
 
         if startDayKey == nil {
             startDayKey = previousDayKey
@@ -93,7 +114,12 @@ class TaskManager {
     }
 
     var stats: TrackerStats {
-        historyEngine.stats(for: history)
+        if let cachedStats {
+            return cachedStats
+        }
+        let value = historyEngine.stats(for: history)
+        cachedStats = value
+        return value
     }
 
     var todayRecord: TrackerDayRecord? {
@@ -101,7 +127,27 @@ class TaskManager {
     }
 
     func record(for dayKey: String) -> TrackerDayRecord? {
-        history.first { $0.dayKey == dayKey }
+        if historyLookup.isEmpty && !history.isEmpty {
+            rebuildHistoryLookup()
+        }
+
+        guard let record = historyLookup[dayKey] else {
+            return nil
+        }
+
+        guard record.tasks.isEmpty, record.totalCount > 0 else {
+            return record
+        }
+
+        guard let fullRecord = store.loadDay(dayKey) else {
+            return record
+        }
+
+        if let index = history.firstIndex(where: { $0.dayKey == dayKey }) {
+            history[index] = fullRecord
+        }
+        historyLookup[dayKey] = fullRecord
+        return fullRecord
     }
 
     func records(in month: Date) -> [TrackerDayRecord] {
@@ -121,6 +167,7 @@ class TaskManager {
         let dayKey = activeDayKey ?? TrackerDayKey.today()
         let record = historyEngine.makeRecord(for: tasks, on: dayKey)
         historyEngine.upsert(record, for: dayKey, in: &history)
+        invalidateStats()
     }
 
     func allCategories() -> [Category] {
@@ -136,7 +183,13 @@ class TaskManager {
     func saveData() {
         upsertTodayRecord()
 
-        store.saveTasks(tasks)
+        store.saveTasks(
+            tasks,
+            changedIDs: dirtyTaskIDs,
+            deletedIDs: deletedTaskIDs
+        )
+        dirtyTaskIDs.removeAll()
+        deletedTaskIDs.removeAll()
         store.saveCategories(customCategories)
         store.saveActiveState(
             activeDayKey: activeDayKey,
@@ -145,6 +198,8 @@ class TaskManager {
 
         if let todayRecord {
             store.saveDay(todayRecord)
+        } else if let activeDayKey {
+            store.deleteDay(activeDayKey)
         }
 
         updateWidget()
@@ -171,6 +226,7 @@ class TaskManager {
             category: category
         )
         tasks.append(newTask)
+        dirtyTaskIDs.insert(newTask.id)
         saveData()
     }
 
@@ -178,6 +234,8 @@ class TaskManager {
         task: TaskDetails
     ) {
         tasks.removeAll { $0.id == task.id }
+        dirtyTaskIDs.remove(task.id)
+        deletedTaskIDs.insert(task.id)
         saveData()
     }
 
@@ -189,6 +247,7 @@ class TaskManager {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].name = newName
             tasks[index].category = newCategory
+            dirtyTaskIDs.insert(task.id)
             saveData()
         }
     }
@@ -200,6 +259,7 @@ class TaskManager {
 
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].isCompleted.toggle()
+            dirtyTaskIDs.insert(task.id)
             saveData()
             TrackerNotificationScheduler.shared.progressDidChange(
                 record: todayRecord,
@@ -215,6 +275,7 @@ class TaskManager {
             for index in self.tasks.indices {
                 self.tasks[index].isCompleted = false
             }
+            self.dirtyTaskIDs.formUnion(self.tasks.map(\.id))
 
             let dayKey = self.activeDayKey ?? TrackerDayKey.today()
             self.history.removeAll { $0.dayKey == dayKey }
@@ -231,9 +292,23 @@ class TaskManager {
         history = []
         activeDayKey = TrackerDayKey.today()
         startDayKey = activeDayKey
+        dirtyTaskIDs.removeAll()
+        deletedTaskIDs.removeAll()
+        invalidateStats()
         saveData()
         TrackerNotificationScheduler.shared.clearAll()
         loadTasks()
+    }
+
+    private func invalidateStats() {
+        cachedStats = nil
+        rebuildHistoryLookup()
+    }
+
+    private func rebuildHistoryLookup() {
+        historyLookup = Dictionary(
+            uniqueKeysWithValues: history.map { ($0.dayKey, $0) }
+        )
     }
 }
 
@@ -317,6 +392,7 @@ extension TaskManager {
             TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.bedtime)),
             TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.bedtime)),
         ]
+        dirtyTaskIDs = Set(tasks.map(\.id))
         saveData()
     }
     
@@ -327,6 +403,9 @@ extension TaskManager {
         history = snapshot.history
         activeDayKey = snapshot.activeDayKey
         startDayKey = snapshot.startDayKey
+        dirtyTaskIDs.removeAll()
+        deletedTaskIDs.removeAll()
+        invalidateStats()
     }
 }
 
@@ -347,10 +426,22 @@ extension TaskManager {
             totalTasks: total,
             upcomingTasks: upcomingTasks
         )
-        if let encoded = try? JSONEncoder().encode(widgetContext) {
-            Storage.save(.widgetContext, encoded)
-            Storage.userDefaults?.synchronize()
+        guard let encoded = try? JSONEncoder().encode(widgetContext),
+              encoded != lastWidgetData else {
+            return
         }
-        WidgetCenter.shared.reloadAllTimelines()
+
+        lastWidgetData = encoded
+        Storage.save(.widgetContext, encoded)
+
+        widgetReloadWorkItem?.cancel()
+        let workItem = DispatchWorkItem {
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+        widgetReloadWorkItem = workItem
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + 0.6,
+            execute: workItem
+        )
     }
 }

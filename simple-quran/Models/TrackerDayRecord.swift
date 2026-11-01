@@ -93,6 +93,19 @@ struct TrackerDayRecord: Codable, Identifiable, Equatable {
             totalCount: totalCount
         )
     }
+
+    init(
+        dayKey: String,
+        completedCount: Int,
+        totalCount: Int,
+        points: Int
+    ) {
+        self.dayKey = dayKey
+        self.tasks = []
+        self.completedCount = completedCount
+        self.totalCount = totalCount
+        self.points = points
+    }
 }
 
 enum TrackerScoring {

@@ -71,7 +71,7 @@ struct BookmarkListView: View {
             }
         }
         .onAppear {
-            viewModel.load()
+            viewModel.loadIfNeeded()
         }
     }
 

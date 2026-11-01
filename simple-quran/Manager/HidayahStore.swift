@@ -49,6 +49,9 @@ final class StoredDay {
     @Attribute(.unique) var dayKey: String
     var payload: Data
     var updatedAt: Date
+    var completedCount: Int = 0
+    var totalCount: Int = 0
+    var points: Int = 0
 
     init(dayKey: String, payload: Data) {
         self.dayKey = dayKey
@@ -170,31 +173,37 @@ final class HidayahStore {
             )
         }
 
-        let storedDays = fetch(
-            FetchDescriptor<StoredDay>(
-                sortBy: [SortDescriptor(\.dayKey)]
-            )
-        )
-        let history = storedDays.compactMap {
-            try? JSONDecoder().decode(TrackerDayRecord.self, from: $0.payload)
-        }
-
         return TrackerStorageSnapshot(
             tasks: tasks,
             customCategories: customCategories,
-            history: history,
+            history: loadHistorySummaries(),
             activeDayKey: Storage.load(key: .trackerActiveDayKey) as? String,
             startDayKey: Storage.load(key: .trackerStartDayKey) as? String
         )
     }
 
-    func saveTasks(_ tasks: [TaskDetails]) {
+    func saveTasks(
+        _ tasks: [TaskDetails],
+        changedIDs: Set<UUID>? = nil,
+        deletedIDs: Set<UUID> = []
+    ) {
         let existing = fetch(FetchDescriptor<StoredTask>())
         var remaining = Dictionary(
             uniqueKeysWithValues: existing.map { ($0.id, $0) }
         )
 
+        for id in deletedIDs {
+            if let stored = remaining.removeValue(forKey: id) {
+                context.delete(stored)
+            }
+        }
+
         for (index, task) in tasks.enumerated() {
+            let shouldWrite = changedIDs == nil
+                || changedIDs?.contains(task.id) == true
+                || remaining[task.id] == nil
+            guard shouldWrite else { continue }
+
             if let stored = remaining.removeValue(forKey: task.id) {
                 stored.name = task.name
                 stored.categoryID = task.category.id
@@ -213,8 +222,10 @@ final class HidayahStore {
             }
         }
 
-        for stored in remaining.values {
-            context.delete(stored)
+        if changedIDs == nil {
+            for stored in remaining.values {
+                context.delete(stored)
+            }
         }
         save()
     }
@@ -260,10 +271,88 @@ final class HidayahStore {
         if let existing = try? context.fetch(descriptor).first {
             existing.payload = data
             existing.updatedAt = Date()
+            existing.completedCount = record.completedCount
+            existing.totalCount = record.totalCount
+            existing.points = record.points
         } else {
-            context.insert(StoredDay(dayKey: key, payload: data))
+            let stored = StoredDay(dayKey: key, payload: data)
+            stored.completedCount = record.completedCount
+            stored.totalCount = record.totalCount
+            stored.points = record.points
+            context.insert(stored)
         }
         save()
+    }
+
+    func loadHistorySummaries() -> [TrackerDayRecord] {
+        let storedDays = fetch(
+            FetchDescriptor<StoredDay>(
+                sortBy: [SortDescriptor(\.dayKey)]
+            )
+        )
+        var needsSave = false
+
+        let summaries = storedDays.map { stored -> TrackerDayRecord in
+            if stored.totalCount > 0 {
+                return TrackerDayRecord(
+                    dayKey: stored.dayKey,
+                    completedCount: stored.completedCount,
+                    totalCount: stored.totalCount,
+                    points: stored.points
+                )
+            }
+
+            if let full = try? JSONDecoder().decode(
+                TrackerDayRecord.self,
+                from: stored.payload
+            ) {
+                stored.completedCount = full.completedCount
+                stored.totalCount = full.totalCount
+                stored.points = full.points
+                needsSave = true
+                return full
+            }
+
+            return TrackerDayRecord(
+                dayKey: stored.dayKey,
+                completedCount: 0,
+                totalCount: 0,
+                points: 0
+            )
+        }
+
+        if needsSave {
+            save()
+        }
+        return summaries
+    }
+
+    func deleteDay(_ dayKey: String) {
+        var descriptor = FetchDescriptor<StoredDay>(
+            predicate: #Predicate { $0.dayKey == dayKey }
+        )
+        descriptor.fetchLimit = 1
+
+        if let stored = try? context.fetch(descriptor).first {
+            context.delete(stored)
+            save()
+        }
+    }
+
+    func loadDay(_ dayKey: String) -> TrackerDayRecord? {
+        var descriptor = FetchDescriptor<StoredDay>(
+            predicate: #Predicate { $0.dayKey == dayKey }
+        )
+        descriptor.fetchLimit = 1
+
+        guard let stored = try? context.fetch(descriptor).first,
+              let record = try? JSONDecoder().decode(
+                TrackerDayRecord.self,
+                from: stored.payload
+              ) else {
+            return nil
+        }
+        return record
     }
 
     func saveActiveState(activeDayKey: String?, startDayKey: String?) {

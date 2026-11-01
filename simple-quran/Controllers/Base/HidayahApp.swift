@@ -12,6 +12,7 @@ import SwiftUI
 struct HidayahApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @Environment(\.scenePhase) private var scenePhase
+    @State private var hasLoadedTracker = false
 
     var body: some Scene {
         WindowGroup {
@@ -29,11 +30,14 @@ struct HidayahApp: App {
                 appDelegate.appController.deeplinkManager.handleDeepLink(url: url)
             }
             .task {
+                guard !hasLoadedTracker else { return }
+                hasLoadedTracker = true
+
                 TaskManager.shared.loadTasks()
                 try? await UNUserNotificationCenter.current().setBadgeCount(0)
             }
             .onChange(of: scenePhase) { _, phase in
-                guard phase == .active else { return }
+                guard phase == .active, hasLoadedTracker else { return }
 
                 TaskManager.shared.loadTasks()
                 Task {

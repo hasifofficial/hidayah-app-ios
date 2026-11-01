@@ -37,6 +37,14 @@ final class SurahListViewModel {
         guard !hasLoaded else { return }
 
         hasLoaded = true
+
+        if SurahCatalog.shared.isLoaded,
+           !SurahCatalog.shared.surahs.isEmpty {
+            surahs = SurahCatalog.shared.surahs
+            isLoading = false
+            return
+        }
+
         load()
     }
 
@@ -52,14 +60,20 @@ final class SurahListViewModel {
                 self.isLoading = false
 
                 if case .failure(let error) = result {
-                    self.surahs = []
+                    if SurahCatalog.shared.isLoaded {
+                        self.surahs = SurahCatalog.shared.surahs
+                    } else {
+                        self.surahs = []
+                    }
                     self.onError?(
                         (error as? RequestError)?.message
                             ?? error.localizedDescription
                     )
                 }
             } receiveValue: { [weak self] list in
-                self?.surahs = list.data ?? []
+                let surahs = list.data ?? []
+                self?.surahs = surahs
+                SurahCatalog.shared.store(surahs)
             }
             .store(in: &cancellables)
     }
