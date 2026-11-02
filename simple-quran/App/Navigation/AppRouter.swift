@@ -86,4 +86,5 @@ enum AppRoute: Hashable {
 enum SettingsRoute: Hashable {
     case trackerSettings
     case manageCategories
+    case widgetGuide
 }

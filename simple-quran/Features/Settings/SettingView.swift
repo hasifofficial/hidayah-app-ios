@@ -11,6 +11,7 @@ import MessageUI
 struct SettingsView: View {
     let viewModel: SettingsViewModel
     var onOpenTrackerSettings: (() -> Void)? = nil
+    var onOpenWidgetGuide: (() -> Void)? = nil
 
     @State private var activeSelection: SettingsSelection?
     @State private var safariURL: URL?
@@ -97,6 +98,23 @@ struct SettingsView: View {
                 )
             ) {
                 onOpenTrackerSettings?()
+            }
+
+            SettingsSectionHeader(
+                title: NSLocalizedString(
+                    "setting_widgets_section_title",
+                    comment: ""
+                )
+            )
+
+            SettingsActionRow(
+                icon: "square.grid.2x2",
+                title: NSLocalizedString(
+                    "setting_widgets_action_title",
+                    comment: ""
+                )
+            ) {
+                onOpenWidgetGuide?()
             }
 
             SettingsSectionHeader(

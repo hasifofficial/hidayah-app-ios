@@ -1,97 +1,15 @@
 //
-//  appWidget.swift
-//  app-widget
+//  TrackerWidgetView.swift
+//  app-widgetExtension
 //
-//  Created by Mohammad Hasif Afiq on 4/30/25.
+//  Created by Mohammad Hasif Afiq on 02/11/2026.
 //
 
-import WidgetKit
 import SwiftUI
-import AppIntents
+import WidgetKit
 
-struct Provider: TimelineProvider {
-    @AppStorage(
-        Storage.StorageKey.widgetContext.rawValue,
-        store: Storage.userDefaults
-    ) var widgetContext = Data()
-
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(
-            date: Date(),
-            progress: 0.65,
-            completedTasks: 15,
-            totalTasks: 23,
-            upcomingTasks: [
-                TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
-                TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
-                TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
-                TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
-                TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
-                TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
-                TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
-                TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
-                TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
-                TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
-            ]
-        )
-    }
-
-    func getSnapshot(
-        in context: Context,
-        completion: @escaping (SimpleEntry) -> ()
-    ) {
-        let entry = SimpleEntry(
-            date: Date(),
-            progress: 0.65,
-            completedTasks: 15,
-            totalTasks: 23,
-            upcomingTasks: [
-                TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
-                TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
-                TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
-                TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
-                TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
-                TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
-                TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
-                TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
-                TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
-                TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
-            ]
-        )
-        completion(entry)
-    }
-
-    func getTimeline(
-        in context: Context,
-        completion: @escaping (Timeline<Entry>) -> ()
-    ) {
-        let widgetContext: WidgetContext? = Storage.loadObject(
-            key: .widgetContext
-        )
-        let entry = SimpleEntry(
-            date: Date(),
-            progress: widgetContext?.progress ?? 0,
-            completedTasks: widgetContext?.completedTasks ?? 0,
-            totalTasks: widgetContext?.totalTasks ?? 1,
-            upcomingTasks: widgetContext?.upcomingTasks ?? []        )
-        let timeline = Timeline(
-            entries: [entry],
-            policy: .after(Date().addingTimeInterval(60 * 15))
-        )
-        completion(timeline)
-    }
-}
-
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let progress: Double
-    let completedTasks: Int
-    let totalTasks: Int
-    let upcomingTasks: [TaskDetails]
-}
-
-struct IstiqamahWidgetSmallView: View {
-    var entry: Provider.Entry
+struct TrackerWidgetSmallView: View {
+    var entry: TrackerProvider.Entry
 
     private var percent: Int {
         Int(min(max(entry.progress, 0), 1) * 100)
@@ -156,8 +74,8 @@ struct IstiqamahWidgetSmallView: View {
     }
 }
 
-struct IstiqamahWidgetMediumView: View {
-    var entry: Provider.Entry
+struct TrackerWidgetMediumView: View {
+    var entry: TrackerProvider.Entry
 
     private var percent: Int {
         Int(min(max(entry.progress, 0), 1) * 100)
@@ -300,8 +218,8 @@ struct IstiqamahWidgetMediumView: View {
     }
 }
 
-struct IstiqamahWidgetEntryView: View {
-    var entry: Provider.Entry
+struct TrackerWidgetEntryView: View {
+    var entry: TrackerProvider.Entry
 
     @Environment(\.widgetFamily) private var family: WidgetFamily
 
@@ -309,19 +227,19 @@ struct IstiqamahWidgetEntryView: View {
     var body: some View {
         Group {
             if family == .systemMedium {
-                IstiqamahWidgetMediumView(entry: entry)
+                TrackerWidgetMediumView(entry: entry)
             } else {
-                IstiqamahWidgetSmallView(entry: entry)
+                TrackerWidgetSmallView(entry: entry)
             }
         }
         .widgetURL(URL(string: "hidayahapp://inAppDeeplink/tracker"))
         .containerBackground(for: .widget) {
-            IstiqamahWidgetBackground()
+            TrackerWidgetBackground()
         }
     }
 }
 
-struct IstiqamahWidgetBackground: View {
+struct TrackerWidgetBackground: View {
     @Environment(\.widgetFamily) private var family
 
     private var tintOpacity: Double {
@@ -350,49 +268,4 @@ private func widgetLogo(width: CGFloat) -> some View {
         .resizable()
         .scaledToFit()
         .frame(width: width, height: width * 0.5)
-}
-
-
-
-struct appWidget: Widget {
-    let kind: String = "IstiqamahWidget"
-
-    var body: some WidgetConfiguration {
-        StaticConfiguration(
-            kind: kind,
-            provider: Provider()
-        ) { entry in
-            IstiqamahWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName(
-            LocalizedStringResource("widget_configuration_title")
-        )
-        .description(
-            LocalizedStringResource("widget_configuration_description")
-        )
-        .supportedFamilies([.systemSmall, .systemMedium])
-    }
-}
-
-#Preview(as: .systemMedium) {
-    appWidget()
-} timeline: {
-    SimpleEntry(
-        date: Date(),
-        progress: 0.65,
-        completedTasks: 15,
-        totalTasks: 23,
-        upcomingTasks: [
-            TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
-            TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
-            TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
-            TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
-            TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
-            TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
-            TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
-            TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
-            TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
-            TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
-        ]
-    )
 }

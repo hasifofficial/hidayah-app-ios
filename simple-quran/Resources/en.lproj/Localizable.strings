@@ -267,3 +267,34 @@
 "default_category_maghrib" = "Maghrib (Sunset Prayer)";
 "default_category_isha" = "Isha (Night Prayer)";
 "default_category_bedtime" = "Before Sleeping";
+
+"setting_widgets_section_title" = "Widgets";
+"setting_widgets_action_title" = "Widget Guide";
+"widget_guide_tracker_title" = "Istiqamah Tracker";
+"widget_guide_tracker_body" = "Track daily progress and upcoming tasks. Available in small and medium sizes.";
+"widget_guide_quick_title" = "Quick Surahs";
+"widget_guide_quick_body" = "Open your chosen surahs instantly. Medium size.";
+"widget_guide_add_title" = "How to Add a Widget";
+"widget_guide_add_step_1" = "Touch and hold an empty area of the Home Screen.";
+"widget_guide_add_step_2" = "Tap Edit, then Add Widget. On older iOS versions, tap the + button.";
+"widget_guide_add_step_3" = "Search for Hidayah and choose Tracker or Quick Surahs.";
+"widget_guide_add_step_4" = "Choose the widget size, then tap Add Widget.";
+"widget_guide_configure_title" = "Customize Quick Surahs";
+"widget_guide_configure_body" = "After adding Quick Surahs, choose which surahs appear in it.";
+"widget_guide_configure_step_1" = "Touch and hold the Quick Surahs widget.";
+"widget_guide_configure_step_2" = "Tap Edit Widget.";
+"widget_guide_configure_step_3" = "Select Surahs, search for a surah, and choose up to three.";
+"widget_guide_footer" = "Widgets update automatically as your tracker progress and surah preferences change.";
+
+"widget_upcoming_title" = "Upcoming";
+
+"widget_guide_select_title" = "Choose a widget";
+"widget_guide_live_preview" = "Live Preview";
+"widget_guide_no_upcoming" = "No upcoming tasks";
+
+"widget_quick_access_title" = "Quick Access";
+
+"widget_guide_app_messages" = "Messages";
+"widget_guide_app_safari" = "Safari";
+"widget_guide_app_camera" = "Camera";
+"widget_guide_app_music" = "Music";

@@ -159,8 +159,7 @@ struct RootView: View {
         .tint(.lightGreen)
         .environment(router)
         .onAppear {
-            updateLayoutForCurrentTraits()
-        }
+            updateLayoutForCurrentTraits()        }
         .onChange(of: horizontalSizeClass) { _, _ in
             updateLayoutForCurrentTraits()
         }
@@ -572,6 +571,9 @@ private struct SettingsSheet: View {
                 viewModel: viewModel,
                 onOpenTrackerSettings: {
                     path.append(.trackerSettings)
+                },
+                onOpenWidgetGuide: {
+                    path.append(.widgetGuide)
                 }
             )
             .navigationTitle(
@@ -614,6 +616,8 @@ private struct SettingsSheet: View {
                         )
                     )
                     .navigationBarTitleDisplayMode(.inline)
+                case .widgetGuide:
+                    WidgetGuideView(taskManager: taskManager)
                 case .manageCategories:
                     ManageCategoryView(
                         taskManager: taskManager
@@ -629,8 +633,7 @@ private struct SettingsSheet: View {
         .onAppear {
             viewModel.onError = { message in
                 errorMessage = message
-            }
-        }
+            }        }
         .alert(
             errorMessage ?? "",
             isPresented: Binding(

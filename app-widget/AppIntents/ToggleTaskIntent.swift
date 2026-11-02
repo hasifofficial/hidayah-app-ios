@@ -1,8 +1,8 @@
 //
-//  AppIntent.swift
-//  app-widget
+//  ToggleTaskIntent.swift
+//  app-widgetExtension
 //
-//  Created by Mohammad Hasif Afiq on 4/30/25.
+//  Created by Mohammad Hasif Afiq on 02/11/2026.
 //
 
 import AppIntents
