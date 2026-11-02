@@ -7,22 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		043B55B6B7277749F69732CA /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		043B55B6B7277749F69732CA /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		098324EA51143A6512426384 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C73559E5E9E2E0672C30B0F /* FirebaseCore */; };
-		099BB5965B6F3C3C6BB6AED9 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		099BB5965B6F3C3C6BB6AED9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		149A89557E56E51616EEC678 /* app-widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D69317EB623433755CA5F244 /* app-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2121D455DCFA2E93200BEBA2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */; };
-		21BB8A400DA25BEF5C4BDF9F /* TrackerCheerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B777F0A542CF3FFE25AF0815 /* TrackerCheerState.swift */; };
-		35EBF09F77151CAC1C1556B6 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		4878478005C4692B80684440 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		4899571847673869AD126914 /* TrackerNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB7523708D632E501B074AE /* TrackerNotificationScheduler.swift */; };
-		537C3B48B331D72F0AB16FBE /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		5A980873823AC29180C94B35 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		7CA66544644D6BCA34DFD4C6 /* TrackerHistoryEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF9DD3E7744E050EA958702 /* TrackerHistoryEngine.swift */; };
-		826FC500672A06C86EC4FD6C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		A5131EB41987F283736A0922 /* TrackerBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EBB9C8D5ABA7AF10B19EB8 /* TrackerBadge.swift */; };
-		AACD2DCAEC0B8C287B4DEC9E /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		DA5BA539A1027BFD18A357E3 /* TrackerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CA67C3E81893759A4F1930 /* TrackerStats.swift */; };
+		35EBF09F77151CAC1C1556B6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		4878478005C4692B80684440 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		537C3B48B331D72F0AB16FBE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		5A980873823AC29180C94B35 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		826FC500672A06C86EC4FD6C /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		AACD2DCAEC0B8C287B4DEC9E /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,50 +47,74 @@
 /* Begin PBXFileReference section */
 		1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-widgetExtension.entitlements"; sourceTree = "<group>"; };
 		35019315922F29D19A05C964 /* Hidayah Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hidayah Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4EB7523708D632E501B074AE /* TrackerNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerNotificationScheduler.swift; path = "simple-quran/Core/Tracker/TrackerNotificationScheduler.swift"; sourceTree = "<group>"; };
 		52011893B3B28C5841643AB0 /* simple-quranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		86CA67C3E81893759A4F1930 /* TrackerStats.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerStats.swift; path = "simple-quran/Core/Models/Tracker/TrackerStats.swift"; sourceTree = "<group>"; };
-		A4EBB9C8D5ABA7AF10B19EB8 /* TrackerBadge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerBadge.swift; path = "simple-quran/Core/Models/Tracker/TrackerBadge.swift"; sourceTree = "<group>"; };
-		B777F0A542CF3FFE25AF0815 /* TrackerCheerState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerCheerState.swift; path = "simple-quran/Core/Models/Tracker/TrackerCheerState.swift"; sourceTree = "<group>"; };
 		C2A3DBFF57F3347F61B8E94F /* simple-quranUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69317EB623433755CA5F244 /* app-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "app-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FDF9DD3E7744E050EA958702 /* TrackerHistoryEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerHistoryEngine.swift; path = "simple-quran/Core/Tracker/TrackerHistoryEngine.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		1B79200D2DC1B8D10007CDDF /* Exceptions for "app-widget" folder in "app-widgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
 		};
-		1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		1B8DFA4830963CBE00AFCBFA /* Exceptions for "simple-quran" folder in "simple-quran" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 1B78EB10260B327E004E07CD /* simple-quran */;
 		};
-		1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		1B8DFA4930963CBE00AFCBFA /* Exceptions for "simple-quran" folder in "app-widgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Core/Models/Category.swift,
 				Core/Models/NotificationIdentifier.swift,
 				Core/Models/Quran/SurahBookmark.swift,
+				Core/Models/Tracker/TrackerBadge.swift,
+				Core/Models/Tracker/TrackerCheerState.swift,
+				Core/Models/Tracker/TrackerDayRecord.swift,
+				Core/Models/Tracker/TrackerStats.swift,
+				Core/Persistence/HidayahStore.swift,
+				Core/Tracker/TaskManager.swift,
+				Core/Tracker/TrackerHistoryEngine.swift,
+				Core/Tracker/TrackerNotificationScheduler.swift,
 				Core/Models/TaskDetails.swift,
 				Core/Models/Widget/WidgetContext.swift,
-				Core/Persistence/HidayahStore.swift,
 				Core/Persistence/Storage.swift,
-				Core/Tracker/TaskManager.swift,
 			);
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
-		1B8DFA0B30963CBD00AFCBFA /* simple-quran */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quran"; sourceTree = "<group>"; };
+		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1B79200D2DC1B8D10007CDDF /* Exceptions for "app-widget" folder in "app-widgetExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = "app-widget";
+			sourceTree = "<group>";
+		};
+		1B8DFA0B30963CBD00AFCBFA /* simple-quran */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1B8DFA4830963CBE00AFCBFA /* Exceptions for "simple-quran" folder in "simple-quran" target */,
+				1B8DFA4930963CBE00AFCBFA /* Exceptions for "simple-quran" folder in "app-widgetExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = "simple-quran";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,16 +122,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				099BB5965B6F3C3C6BB6AED9 /* (null) in Frameworks */,
+				099BB5965B6F3C3C6BB6AED9 /* BuildFile in Frameworks */,
 				2121D455DCFA2E93200BEBA2 /* FirebaseCrashlytics in Frameworks */,
-				35EBF09F77151CAC1C1556B6 /* (null) in Frameworks */,
+				35EBF09F77151CAC1C1556B6 /* BuildFile in Frameworks */,
 				098324EA51143A6512426384 /* FirebaseCore in Frameworks */,
-				AACD2DCAEC0B8C287B4DEC9E /* (null) in Frameworks */,
-				5A980873823AC29180C94B35 /* (null) in Frameworks */,
-				043B55B6B7277749F69732CA /* (null) in Frameworks */,
-				4878478005C4692B80684440 /* (null) in Frameworks */,
-				826FC500672A06C86EC4FD6C /* (null) in Frameworks */,
-				537C3B48B331D72F0AB16FBE /* (null) in Frameworks */,
+				AACD2DCAEC0B8C287B4DEC9E /* BuildFile in Frameworks */,
+				5A980873823AC29180C94B35 /* BuildFile in Frameworks */,
+				043B55B6B7277749F69732CA /* BuildFile in Frameworks */,
+				4878478005C4692B80684440 /* BuildFile in Frameworks */,
+				826FC500672A06C86EC4FD6C /* BuildFile in Frameworks */,
+				537C3B48B331D72F0AB16FBE /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,11 +153,6 @@
 				1B791FFC2DC1B8D00007CDDF /* app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
 				57432DF57683D06809F12458 /* Frameworks */,
-				A4EBB9C8D5ABA7AF10B19EB8 /* TrackerBadge.swift */,
-				86CA67C3E81893759A4F1930 /* TrackerStats.swift */,
-				B777F0A542CF3FFE25AF0815 /* TrackerCheerState.swift */,
-				FDF9DD3E7744E050EA958702 /* TrackerHistoryEngine.swift */,
-				4EB7523708D632E501B074AE /* TrackerNotificationScheduler.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -312,11 +326,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5131EB41987F283736A0922 /* TrackerBadge.swift in Sources */,
-				DA5BA539A1027BFD18A357E3 /* TrackerStats.swift in Sources */,
-				21BB8A400DA25BEF5C4BDF9F /* TrackerCheerState.swift in Sources */,
-				7CA66544644D6BCA34DFD4C6 /* TrackerHistoryEngine.swift in Sources */,
-				4899571847673869AD126914 /* TrackerNotificationScheduler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
