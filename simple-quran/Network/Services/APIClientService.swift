@@ -52,7 +52,7 @@ class APIClientService {
                 #if DEBUG
                 print("⬅️⬅️⬅️⬅️⬅️ Request:")
                 print("🎯 Endpoint: \(url)")
-                print("👤 Header: \(endpoint.header)")
+                print("👤 Header: \(endpoint.header ?? [:])")
                 if let requestBody = endpoint.body,
                    let jsonData = try? JSONSerialization.data(
                         withJSONObject: requestBody,
