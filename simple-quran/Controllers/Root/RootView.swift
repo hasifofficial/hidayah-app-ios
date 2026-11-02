@@ -11,7 +11,6 @@ import UIKit
 
 enum AppTab: Int, Hashable, Identifiable, CaseIterable {
     case quran
-    case bookmark
     case tracker
     case search
 
@@ -22,11 +21,6 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         case .quran:
             return NSLocalizedString(
                 "surah_list_header_title",
-                comment: ""
-            )
-        case .bookmark:
-            return NSLocalizedString(
-                "bookmark_list_header_title",
                 comment: ""
             )
         case .tracker:
@@ -46,8 +40,6 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         switch self {
         case .quran:
             return "book"
-        case .bookmark:
-            return "bookmark"
         case .tracker:
             return "checklist.unchecked"
         case .search:
@@ -59,8 +51,6 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         switch self {
         case .quran:
             return "book.fill"
-        case .bookmark:
-            return "bookmark.fill"
         case .tracker:
             return "checklist.checked"
         case .search:
@@ -187,7 +177,6 @@ struct RootView: View {
 
     private var hasPushedNavigation: Bool {
         !router.quranPath.isEmpty
-            || !router.bookmarkPath.isEmpty
             || !router.searchPath.isEmpty
             || !router.trackerPath.isEmpty
     }
@@ -266,8 +255,6 @@ struct RootView: View {
         switch router.selectedTab {
         case .quran:
             quranTab
-        case .bookmark:
-            bookmarkTab
         case .tracker:
             trackerTab
         case .search:
@@ -282,12 +269,6 @@ struct RootView: View {
                     tabLabel(.quran)
                 }
                 .tag(AppTab.quran)
-
-            bookmarkTab
-                .tabItem {
-                    tabLabel(.bookmark)
-                }
-                .tag(AppTab.bookmark)
 
             trackerTab
                 .tabItem {
@@ -350,30 +331,8 @@ struct RootView: View {
                         )
                     )
                 },
-                onOpenSettings: {
-                    router.settingsPresented = true
-                }
-            )
-            .navigationDestination(for: AppRoute.self) { route in
-                destination(for: route)
-            }
-        }
-    }
-
-    private var bookmarkTab: some View {
-        NavigationStack(path: $router.bookmarkPath) {
-            BookmarkListView(
-                viewModel: bookmarkViewModel,
-                onSelect: { bookmark in
-                    guard let surahNumber = bookmark.surah.number else { return }
-
-                    router.bookmarkPath.append(
-                        .surahDetail(
-                            surahNumber: surahNumber,
-                            title: bookmark.surah.englishName,
-                            bookmarkedAyah: bookmark.bookmark.numberInSurah
-                        )
-                    )
+                onOpenBookmarks: {
+                    router.quranPath.append(.bookmarkList)
                 },
                 onOpenSettings: {
                     router.settingsPresented = true
@@ -429,6 +388,8 @@ struct RootView: View {
                         dayKey: dayKey,
                         record: taskManager.record(for: dayKey)
                     )
+                case .bookmarkList:
+                    bookmarkListDestination
                 }
             }
         }
@@ -504,7 +465,29 @@ struct RootView: View {
                 dayKey: dayKey,
                 record: taskManager.record(for: dayKey)
             )
+        case .bookmarkList:
+            bookmarkListDestination
         }
+    }
+
+    private var bookmarkListDestination: some View {
+        BookmarkListView(
+            viewModel: bookmarkViewModel,
+            onSelect: { bookmark in
+                guard let surahNumber = bookmark.surah.number else { return }
+
+                router.quranPath.append(
+                    .surahDetail(
+                        surahNumber: surahNumber,
+                        title: bookmark.surah.englishName,
+                        bookmarkedAyah: bookmark.bookmark.numberInSurah
+                    )
+                )
+            },
+            onOpenSettings: {
+                router.settingsPresented = true
+            }
+        )
     }
 }
 
@@ -650,13 +633,12 @@ private struct TabBarIconConfigurator: UIViewRepresentable {
                 in: rootViewController
               ),
               let items = tabBarController.tabBar.items,
-              items.count >= 4 else {
+              items.count >= 3 else {
             return
         }
 
         let icons = [
             ("book", "book.fill"),
-            ("bookmark", "bookmark.fill"),
             ("checklist.unchecked", "checklist.checked"),
             ("magnifyingglass", "magnifyingglass")
         ]

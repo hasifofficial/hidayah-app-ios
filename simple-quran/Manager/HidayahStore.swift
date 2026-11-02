@@ -414,42 +414,19 @@ final class HidayahStore {
     // MARK: - Migration / Reset
 
     private func prepareStorageIfNeeded() {
-        removeLegacyStorageKeys()
-
         let hasMigrated = Storage.load(
             key: .hasMigratedToSwiftData
         ) as? Bool ?? false
 
         guard !hasMigrated else { return }
 
-        // This is a deliberate one-time reset. The previous local store is
-        // cleared before SwiftData becomes the source of truth.
-        deleteAll(StoredTask.self)
-        deleteAll(StoredCategory.self)
-        deleteAll(StoredDay.self)
-        deleteAll(StoredBookmark.self)
-        save()
-
-        for key in Storage.StorageKey.allCases
-            where key != .hasMigratedToSwiftData {
-            Storage.delete(key)
-        }
-
+        // Never delete existing data automatically. The old reset path was
+        // destructive and caused data loss when the flag or App Group
+        // container was recreated. Mark the store as ready and keep data.
         Storage.save(.hasMigratedToSwiftData, true)
         Storage.userDefaults?.synchronize()
     }
 
-    private func removeLegacyStorageKeys() {
-        let legacyKeys = [
-            "trackerContext",
-            "bookmarkRecitations",
-            "storageSchemaVersion"
-        ]
-        for key in legacyKeys {
-            Storage.userDefaults?.removeObject(forKey: key)
-        }
-        Storage.userDefaults?.synchronize()
-    }
 
     // MARK: - Helpers
 

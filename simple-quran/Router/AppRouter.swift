@@ -11,12 +11,10 @@ import Foundation
 final class AppRouter {
     var selectedTab: AppTab = .quran
     var quranPath: [AppRoute] = []
-    var bookmarkPath: [AppRoute] = []
     var searchPath: [AppRoute] = []
     var trackerPath: [AppRoute] = []
 
     var savedQuranPath: [AppRoute] = []
-    var savedBookmarkPath: [AppRoute] = []
     var savedSearchPath: [AppRoute] = []
     var savedTrackerPath: [AppRoute] = []
     var settingsPresented = false
@@ -36,8 +34,6 @@ final class AppRouter {
         switch selectedTab {
         case .quran:
             savedQuranPath = quranPath
-        case .bookmark:
-            savedBookmarkPath = bookmarkPath
         case .tracker:
             savedTrackerPath = trackerPath
         case .search:
@@ -45,14 +41,12 @@ final class AppRouter {
         }
 
         let restoredQuranPath = savedQuranPath
-        let restoredBookmarkPath = savedBookmarkPath
         let restoredSearchPath = savedSearchPath
         let restoredTrackerPath = savedTrackerPath
 
         // NavigationSplitView cannot keep different route types in hidden
         // column stacks at the same time. Clear all paths before switching.
         quranPath = []
-        bookmarkPath = []
         searchPath = []
         trackerPath = []
 
@@ -62,9 +56,6 @@ final class AppRouter {
         case .quran:
             quranPath = restoredQuranPath
             savedQuranPath = []
-        case .bookmark:
-            bookmarkPath = restoredBookmarkPath
-            savedBookmarkPath = []
         case .search:
             searchPath = restoredSearchPath
             savedSearchPath = []
@@ -85,6 +76,7 @@ enum AppRoute: Hashable {
     case trackerAchievements
     case trackerLevels
     case trackerDay(dayKey: String)
+    case bookmarkList
 }
 
 enum SettingsRoute: Hashable {

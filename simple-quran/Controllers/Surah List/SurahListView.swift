@@ -10,6 +10,7 @@ import SwiftUI
 struct SurahListView: View {
     let viewModel: SurahListViewModel
     var onSelect: ((SurahListResponse) -> Void)? = nil
+    var onOpenBookmarks: (() -> Void)? = nil
     var onOpenSettings: (() -> Void)? = nil
 
     var body: some View {
@@ -66,7 +67,20 @@ struct SurahListView: View {
         )
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button {
+                    onOpenBookmarks?()
+                } label: {
+                    Image(systemName: "bookmark")
+                        .foregroundColor(.primary)
+                }
+                .accessibilityLabel(
+                    NSLocalizedString(
+                        "bookmark_list_header_title",
+                        comment: ""
+                    )
+                )
+
                 Button {
                     onOpenSettings?()
                 } label: {

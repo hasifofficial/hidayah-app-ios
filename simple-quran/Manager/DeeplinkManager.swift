@@ -86,7 +86,8 @@ class DeeplinkManager: NSObject {
         case .quran:
             router.selectTab(.quran)
         case .bookmark:
-            router.selectTab(.bookmark)
+            router.selectTab(.quran)
+            router.quranPath = [.bookmarkList]
         case .tracker:
             router.selectTab(.tracker)
         case .quranDetail(let surahNumber, let selectedAyahNumber):

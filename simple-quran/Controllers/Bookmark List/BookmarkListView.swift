@@ -59,7 +59,7 @@ struct BookmarkListView: View {
                 comment: ""
             )
         )
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
