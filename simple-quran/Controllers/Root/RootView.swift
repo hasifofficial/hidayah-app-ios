@@ -67,6 +67,14 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
             return "magnifyingglass"
         }
     }
+
+    var assetIcon: String? {
+        self == .tasbih ? "TasbihIcon" : nil
+    }
+
+    var selectedAssetIcon: String? {
+        self == .tasbih ? "TasbihIconFill" : nil
+    }
 }
 
 struct RootView: View {
@@ -199,12 +207,14 @@ struct RootView: View {
         NavigationSplitView {
             List(selection: selectedTabBinding) {
                 ForEach(AppTab.allCases) { tab in
-                    Label(
-                        tab.title,
-                        systemImage: router.selectedTab == tab
-                            ? tab.selectedIcon
-                            : tab.icon
-                    )
+                    Label {
+                        Text(tab.title)
+                    } icon: {
+                        tabIcon(
+                            tab,
+                            selected: router.selectedTab == tab
+                        )
+                    }
                     .tag(tab)
                 }
             }
@@ -307,7 +317,24 @@ struct RootView: View {
         Label {
             Text(tab.title)
         } icon: {
-            tabImage(tab.icon)
+            tabIcon(tab, selected: false)
+        }
+    }
+
+    @ViewBuilder
+    private func tabIcon(
+        _ tab: AppTab,
+        selected: Bool
+    ) -> some View {
+        if let assetName = selected
+            ? tab.selectedAssetIcon
+            : tab.assetIcon {
+            Image(assetName)
+                .renderingMode(.template)
+        } else {
+            tabImage(
+                selected ? tab.selectedIcon : tab.icon
+            )
         }
     }
 
@@ -661,22 +688,29 @@ private struct TabBarIconConfigurator: UIViewRepresentable {
             return
         }
 
-        let icons = [
-            ("book", "book.fill"),
-            ("circle.grid.3x3", "circle.grid.3x3.fill"),
-            ("checklist.unchecked", "checklist.checked"),
-            ("magnifyingglass", "magnifyingglass")
+        let icons: [(UIImage?, UIImage?)] = [
+            (
+                UIImage(systemName: "book"),
+                UIImage(systemName: "book.fill")
+            ),
+            (
+                UIImage(named: "TasbihIcon"),
+                UIImage(named: "TasbihIconFill")
+            ),
+            (
+                UIImage(systemName: "checklist.unchecked"),
+                UIImage(systemName: "checklist.checked")
+            ),
+            (
+                UIImage(systemName: "magnifyingglass"),
+                UIImage(systemName: "magnifyingglass")
+            )
         ]
 
         for (index, icon) in icons.enumerated() where index < items.count {
             let item = items[index]
-
-            item.image = UIImage(
-                systemName: icon.0
-            )?.withRenderingMode(.alwaysTemplate)
-            item.selectedImage = UIImage(
-                systemName: icon.1
-            )?.withRenderingMode(.alwaysTemplate)
+            item.image = icon.0?.withRenderingMode(.alwaysTemplate)
+            item.selectedImage = icon.1?.withRenderingMode(.alwaysTemplate)
         }
     }
 

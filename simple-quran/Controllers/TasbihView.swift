@@ -24,12 +24,7 @@ struct TasbihView: View {
         TasbihPhrase(
             nameKey: "tasbih_phrase_3_title",
             arabic: "ٱللَّٰهُ أَكْبَرُ"
-        ),
-        TasbihPhrase(
-            nameKey: "tasbih_phrase_4_title",
-            arabic: "لَا إِلَٰهَ إِلَّا ٱللَّٰهُ"
-        )
-    ]
+        )    ]
 
     @State private var phraseIndex = 0
     @State private var count = 0
@@ -38,6 +33,7 @@ struct TasbihView: View {
     @State private var isCompleting = false
     @State private var pulse = false
     @State private var isPresented = false
+    @State private var showCompletion = false
 
     private let target = 33
 
@@ -74,6 +70,23 @@ struct TasbihView: View {
                         .padding(.bottom, 96)
                 }
             }
+        }
+        .alert(
+            NSLocalizedString("tasbih_completion_title", comment: ""),
+            isPresented: $showCompletion
+        ) {
+            Button(
+                NSLocalizedString("tasbih_start_again", comment: "")
+            ) {
+                startAgain()
+            }
+        } message: {
+            Text(
+                NSLocalizedString(
+                    "tasbih_completion_message",
+                    comment: ""
+                )
+            )
         }
         .onAppear {
             guard !isPresented else { return }
@@ -153,58 +166,58 @@ struct TasbihView: View {
     }
 
     private var phrasePicker: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(phrases.indices, id: \.self) { index in
-                    Button {
-                        selectPhrase(index)
-                    } label: {
-                        HStack(spacing: 5) {
-                            Text("\(index + 1)")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundColor(
-                                    index == phraseIndex
-                                        ? .lightGreen
-                                        : .textGray
-                                )
-
-                            Text(
-                                NSLocalizedString(
-                                    phrases[index].nameKey,
-                                    comment: ""
-                                )
-                            )
-                            .font(.system(size: 11, weight: .medium))
+        HStack(spacing: 8) {
+            ForEach(phrases.indices, id: \.self) { index in
+                Button {
+                    selectPhrase(index)
+                } label: {
+                    HStack(spacing: 5) {
+                        Text("\(index + 1)")
+                            .font(.system(size: 10, weight: .bold))
                             .foregroundColor(
                                 index == phraseIndex
-                                    ? .title
+                                    ? .lightGreen
                                     : .textGray
                             )
-                            .lineLimit(1)
-                        }
-                        .padding(.horizontal, 11)
-                        .padding(.vertical, 7)
-                        .background(
-                            index == phraseIndex
-                                ? Color.lightGreen.opacity(0.14)
-                                : Color.backgroundGray
+
+                        Text(
+                            NSLocalizedString(
+                                phrases[index].nameKey,
+                                comment: ""
+                            )
                         )
-                        .clipShape(Capsule())
-                        .overlay {
-                            Capsule()
-                                .stroke(
-                                    index == phraseIndex
-                                        ? Color.lightGreen.opacity(0.35)
-                                        : Color.textGray.opacity(0.08),
-                                    lineWidth: 1
-                                )
-                        }
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(
+                            index == phraseIndex
+                                ? .title
+                                : .textGray
+                        )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                     }
-                    .buttonStyle(.plain)
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 7)
+                    .background(
+                        index == phraseIndex
+                            ? Color.lightGreen.opacity(0.14)
+                            : Color.backgroundGray
+                    )
+                    .clipShape(Capsule())
+                    .overlay {
+                        Capsule()
+                            .stroke(
+                                index == phraseIndex
+                                    ? Color.lightGreen.opacity(0.35)
+                                    : Color.textGray.opacity(0.08),
+                                lineWidth: 1
+                            )
+                    }
                 }
+                .buttonStyle(.plain)
             }
-            .padding(.horizontal, 24)
         }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding(.horizontal, 20)
     }
 
     private var freeCountingContent: some View {
@@ -432,12 +445,31 @@ struct TasbihView: View {
         isCompleting = true
         HapticFeedback.success()
 
+        if phraseIndex == phrases.count - 1 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showCompletion = true
+            }
+            return
+        }
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             withAnimation(.easeInOut(duration: 0.3)) {
                 count = 0
-                phraseIndex = (phraseIndex + 1) % phrases.count
+                phraseIndex += 1
                 isCompleting = false
             }
+        }
+    }
+
+    private func startAgain() {
+        HapticFeedback.success()
+
+        withAnimation(.easeInOut(duration: 0.25)) {
+            count = 0
+            phraseIndex = 0
+            isFreeCount = false
+            showCompletion = false
+            isCompleting = false
         }
     }
 
@@ -487,11 +519,17 @@ private struct TasbihBeadsView: View {
 
     private let beadCount = 9
     private let activeColor = Color.lightGreen
+    private let highlightColor = Color(red: 0.82, green: 0.69, blue: 0.38)
 
     var body: some View {
         GeometryReader { proxy in
             let width = proxy.size.width
             let height = proxy.size.height
+
+            let filledCount = min(
+                beadCount,
+                Int(ceil(progress * Double(beadCount)))
+            )
 
             ZStack {
                 ForEach(0..<beadCount, id: \.self) { index in
@@ -501,14 +539,16 @@ private struct TasbihBeadsView: View {
                         width: width,
                         height: height
                     )
-                    let filled = Double(index) / Double(beadCount) < progress
+                    let filled = index >= beadCount - filledCount
                     let isHighlighted = highlightedBead == index
 
                     Circle()
                         .fill(
-                            filled
-                                ? activeColor
-                                : Color.lightGreen.opacity(0.16)
+                            isHighlighted
+                                ? highlightColor
+                                : (filled
+                                    ? activeColor
+                                    : Color.lightGreen.opacity(0.16))
                         )
                         .frame(
                             width: isHighlighted ? 36 : 30,
@@ -517,16 +557,18 @@ private struct TasbihBeadsView: View {
                         .overlay {
                             Circle()
                                 .stroke(
-                                    filled
-                                        ? activeColor.opacity(0.9)
-                                        : Color.textGray.opacity(0.08),
+                                    isHighlighted
+                                        ? highlightColor.opacity(0.9)
+                                        : (filled
+                                            ? activeColor.opacity(0.9)
+                                            : Color.textGray.opacity(0.08)),
                                     lineWidth: 1
                                 )
                         }
                         .overlay {
                             Circle()
                                 .stroke(
-                                    activeColor.opacity(
+                                    highlightColor.opacity(
                                         isHighlighted ? 0.45 : 0
                                     ),
                                     lineWidth: 2
@@ -534,11 +576,9 @@ private struct TasbihBeadsView: View {
                                 .scaleEffect(isHighlighted ? 1.45 : 1)
                         }
                         .shadow(
-                            color: filled
-                                ? activeColor.opacity(
-                                    isHighlighted ? 0.55 : 0.25
-                                )
-                                : .clear,
+                            color: isHighlighted
+                                ? highlightColor.opacity(0.55)
+                                : (filled ? activeColor.opacity(0.25) : .clear),
                             radius: isHighlighted ? 12 : 5
                         )
                         .scaleEffect(
@@ -564,6 +604,30 @@ private struct TasbihBeadsView: View {
                             value: filled
                         )
                 }
+
+                if let highlightedBead {
+                    let t = Double(highlightedBead)
+                        / Double(beadCount - 1)
+                    let point = beadPoint(
+                        t: t,
+                        width: width,
+                        height: height
+                    )
+
+                    Circle()
+                        .fill(highlightColor.opacity(0.30))
+                        .frame(width: 44, height: 44)
+                        .blur(radius: 9)
+                        .position(point)
+                        .allowsHitTesting(false)
+                        .animation(
+                            .spring(
+                                response: 0.32,
+                                dampingFraction: 0.7
+                            ),
+                            value: highlightedBead
+                        )
+                }
             }
         }
         .onChange(of: count) { _, newCount in
@@ -574,19 +638,20 @@ private struct TasbihBeadsView: View {
     private func animateBead(for newCount: Int) {
         guard newCount > 0, target > 0 else {
             highlightedBead = nil
+            isPulsing = false
             return
         }
 
-        let index = min(
-            beadCount - 1,
-            max(
-                0,
-                Int(
+        let filledCount = min(
+            beadCount,
+            Int(
+                ceil(
                     (Double(newCount) / Double(target))
                         * Double(beadCount)
                 )
             )
         )
+        let index = max(0, beadCount - filledCount)
 
         highlightedBead = index
         isPulsing = false
@@ -601,14 +666,6 @@ private struct TasbihBeadsView: View {
             withAnimation(.easeOut(duration: 0.2)) {
                 if highlightedBead == index {
                     isPulsing = false
-                }
-            }
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if highlightedBead == index {
-                withAnimation(.easeOut(duration: 0.2)) {
-                    highlightedBead = nil
                 }
             }
         }

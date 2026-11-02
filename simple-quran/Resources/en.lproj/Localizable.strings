@@ -233,7 +233,7 @@
 
 "setting_manage_category_section_title" = "Custom Categories";
 
-"tasbih_header_title" = "TASBIH";
+"tasbih_header_title" = "Tasbih";
 "tasbih_free_count" = "Free count";
 "tasbih_free_count_active" = "Free count active";
 "tasbih_count_of_format" = "of %d";
@@ -242,6 +242,9 @@
 "tasbih_phrase_1_title" = "Subhanallah";
 "tasbih_phrase_2_title" = "Alhamdulillah";
 "tasbih_phrase_3_title" = "Allahu Akbar";
-"tasbih_phrase_4_title" = "La ilaha illa Allah";
 
 "tasbih_tab_title" = "Tasbih";
+
+"tasbih_completion_title" = "99 Dhikr Complete";
+"tasbih_completion_message" = "Alhamdulillah! You’ve completed 99 dhikr. May Allah accept your remembrance.";
+"tasbih_start_again" = "Start Again";
