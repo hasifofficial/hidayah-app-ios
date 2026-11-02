@@ -2,7 +2,7 @@
 //  Constants.swift
 //  simple-quran
 //
-//  Created by Mohammad Hasif Afiq on 4/14/21.
+//  Created by Mohammad Hasif Afiq on 11/02/26.
 //
 
 import Foundation

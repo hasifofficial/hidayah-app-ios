@@ -27,20 +27,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1B78EB28260B3284004E07CD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
-			remoteInfo = "simple-quran";
-		};
-		1B78EB33260B3284004E07CD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
-			remoteInfo = "simple-quran";
-		};
 		1B79200A2DC1B8D10007CDDF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
@@ -65,20 +51,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1A7416BAD0C7269824018102 /* TrackerCalendarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerCalendarView.swift; path = "simple-quran/Views/Tracker/TrackerCalendarView.swift"; sourceTree = "<group>"; };
 		1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-widgetExtension.entitlements"; sourceTree = "<group>"; };
 		35019315922F29D19A05C964 /* Hidayah Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hidayah Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4EB7523708D632E501B074AE /* TrackerNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerNotificationScheduler.swift; path = "simple-quran/Manager/Tracker/TrackerNotificationScheduler.swift"; sourceTree = "<group>"; };
+		4EB7523708D632E501B074AE /* TrackerNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerNotificationScheduler.swift; path = "simple-quran/Core/Tracker/TrackerNotificationScheduler.swift"; sourceTree = "<group>"; };
 		52011893B3B28C5841643AB0 /* simple-quranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		772F03CC6F9114D91051489F /* TrackerAchievementsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerAchievementsView.swift; path = "simple-quran/Views/Tracker/TrackerAchievementsView.swift"; sourceTree = "<group>"; };
-		86CA67C3E81893759A4F1930 /* TrackerStats.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerStats.swift; path = "simple-quran/Models/TrackerStats.swift"; sourceTree = "<group>"; };
-		9EB8BFA8F73E1FA506119C55 /* TrackerDayDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerDayDetailView.swift; path = "simple-quran/Views/Tracker/TrackerDayDetailView.swift"; sourceTree = "<group>"; };
-		A4EBB9C8D5ABA7AF10B19EB8 /* TrackerBadge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerBadge.swift; path = "simple-quran/Models/TrackerBadge.swift"; sourceTree = "<group>"; };
-		B777F0A542CF3FFE25AF0815 /* TrackerCheerState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerCheerState.swift; path = "simple-quran/Models/TrackerCheerState.swift"; sourceTree = "<group>"; };
+		86CA67C3E81893759A4F1930 /* TrackerStats.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerStats.swift; path = "simple-quran/Core/Models/Tracker/TrackerStats.swift"; sourceTree = "<group>"; };
+		A4EBB9C8D5ABA7AF10B19EB8 /* TrackerBadge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerBadge.swift; path = "simple-quran/Core/Models/Tracker/TrackerBadge.swift"; sourceTree = "<group>"; };
+		B777F0A542CF3FFE25AF0815 /* TrackerCheerState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerCheerState.swift; path = "simple-quran/Core/Models/Tracker/TrackerCheerState.swift"; sourceTree = "<group>"; };
 		C2A3DBFF57F3347F61B8E94F /* simple-quranUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA0DEC3B35D4704E76023E57 /* TrackerDayRecord.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerDayRecord.swift; path = "simple-quran/Models/TrackerDayRecord.swift"; sourceTree = "<group>"; };
+		CA0DEC3B35D4704E76023E57 /* TrackerDayRecord.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerDayRecord.swift; path = "simple-quran/Core/Models/Tracker/TrackerDayRecord.swift"; sourceTree = "<group>"; };
 		D69317EB623433755CA5F244 /* app-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "app-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FDF9DD3E7744E050EA958702 /* TrackerHistoryEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerHistoryEngine.swift; path = "simple-quran/Manager/TrackerHistoryEngine.swift"; sourceTree = "<group>"; };
+		FDF9DD3E7744E050EA958702 /* TrackerHistoryEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackerHistoryEngine.swift; path = "simple-quran/Core/Tracker/TrackerHistoryEngine.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -99,38 +82,22 @@
 		1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Manager/HidayahStore.swift,
-				Manager/TaskManager.swift,
-				Models/Category.swift,
-				Models/NotificationIdentifier.swift,
-				Models/SurahBookmark.swift,
-				Models/TaskDetails.swift,
-				Models/WidgetContext.swift,
-				Storage/Storage.swift,
+				Core/Models/Category.swift,
+				Core/Models/NotificationIdentifier.swift,
+				Core/Models/Quran/SurahBookmark.swift,
+				Core/Models/TaskDetails.swift,
+				Core/Models/Widget/WidgetContext.swift,
+				Core/Persistence/HidayahStore.swift,
+				Core/Persistence/Storage.swift,
+				Core/Tracker/TaskManager.swift,
 			);
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
-		};
-		1B8DFA4E30963CD400AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				simple_quranTests.swift,
-			);
-			target = 1B78EB26260B3284004E07CD /* simple-quranTests */;
-		};
-		1B8DFA5330963CD900AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				simple_quranUITests.swift,
-			);
-			target = 1B78EB31260B3284004E07CD /* simple-quranUITests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
 		1B8DFA0B30963CBD00AFCBFA /* simple-quran */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quran"; sourceTree = "<group>"; };
-		1B8DFA4C30963CD300AFCBFA /* simple-quranTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4E30963CD400AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quranTests"; sourceTree = "<group>"; };
-		1B8DFA5130963CD800AFCBFA /* simple-quranUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA5330963CD900AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quranUITests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,20 +118,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1B78EB24260B3284004E07CD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1B78EB2F260B3284004E07CD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1B791FF42DC1B8D00007CDDF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -180,8 +133,6 @@
 			children = (
 				1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */,
 				1B8DFA0B30963CBD00AFCBFA /* simple-quran */,
-				1B8DFA4C30963CD300AFCBFA /* simple-quranTests */,
-				1B8DFA5130963CD800AFCBFA /* simple-quranUITests */,
 				1B791FFC2DC1B8D00007CDDF /* app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
 				57432DF57683D06809F12458 /* Frameworks */,
@@ -191,9 +142,6 @@
 				B777F0A542CF3FFE25AF0815 /* TrackerCheerState.swift */,
 				FDF9DD3E7744E050EA958702 /* TrackerHistoryEngine.swift */,
 				4EB7523708D632E501B074AE /* TrackerNotificationScheduler.swift */,
-				1A7416BAD0C7269824018102 /* TrackerCalendarView.swift */,
-				9EB8BFA8F73E1FA506119C55 /* TrackerDayDetailView.swift */,
-				772F03CC6F9114D91051489F /* TrackerAchievementsView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -245,42 +193,6 @@
 			productReference = 35019315922F29D19A05C964 /* Hidayah Debug.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1B78EB26260B3284004E07CD /* simple-quranTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1B78EB3E260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranTests" */;
-			buildPhases = (
-				1B78EB23260B3284004E07CD /* Sources */,
-				1B78EB24260B3284004E07CD /* Frameworks */,
-				1B78EB25260B3284004E07CD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1B78EB29260B3284004E07CD /* PBXTargetDependency */,
-			);
-			name = "simple-quranTests";
-			productName = "simple-quranTests";
-			productReference = 52011893B3B28C5841643AB0 /* simple-quranTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		1B78EB31260B3284004E07CD /* simple-quranUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1B78EB41260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranUITests" */;
-			buildPhases = (
-				1B78EB2E260B3284004E07CD /* Sources */,
-				1B78EB2F260B3284004E07CD /* Frameworks */,
-				1B78EB30260B3284004E07CD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1B78EB34260B3284004E07CD /* PBXTargetDependency */,
-			);
-			name = "simple-quranUITests";
-			productName = "simple-quranUITests";
-			productReference = C2A3DBFF57F3347F61B8E94F /* simple-quranUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		1B791FF62DC1B8D00007CDDF /* app-widgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "app-widgetExtension" */;
@@ -318,14 +230,6 @@
 							};
 						};
 					};
-					1B78EB26260B3284004E07CD = {
-						CreatedOnToolsVersion = 12.4;
-						TestTargetID = 1B78EB10260B327E004E07CD;
-					};
-					1B78EB31260B3284004E07CD = {
-						CreatedOnToolsVersion = 12.4;
-						TestTargetID = 1B78EB10260B327E004E07CD;
-					};
 					1B791FF62DC1B8D00007CDDF = {
 						CreatedOnToolsVersion = 16.3;
 						SystemCapabilities = {
@@ -353,8 +257,6 @@
 			projectRoot = "";
 			targets = (
 				1B78EB10260B327E004E07CD /* simple-quran */,
-				1B78EB26260B3284004E07CD /* simple-quranTests */,
-				1B78EB31260B3284004E07CD /* simple-quranUITests */,
 				1B791FF62DC1B8D00007CDDF /* app-widgetExtension */,
 			);
 		};
@@ -362,20 +264,6 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		1B78EB0F260B327E004E07CD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1B78EB25260B3284004E07CD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1B78EB30260B3284004E07CD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -423,20 +311,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1B78EB23260B3284004E07CD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1B78EB2E260B3284004E07CD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1B791FF32DC1B8D00007CDDF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -453,16 +327,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1B78EB29260B3284004E07CD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1B78EB10260B327E004E07CD /* simple-quran */;
-			targetProxy = 1B78EB28260B3284004E07CD /* PBXContainerItemProxy */;
-		};
-		1B78EB34260B3284004E07CD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1B78EB10260B327E004E07CD /* simple-quran */;
-			targetProxy = 1B78EB33260B3284004E07CD /* PBXContainerItemProxy */;
-		};
 		1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
@@ -593,7 +457,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -623,7 +487,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah Debug.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
@@ -643,92 +507,6 @@
 				PRODUCT_NAME = Hidayah;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		1B78EB3F260B3284004E07CD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R53DENZ7QG;
-				INFOPLIST_FILE = "simple-quranTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hidayah Debug.app/Hidayah Debug";
-			};
-			name = Debug;
-		};
-		1B78EB40260B3284004E07CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R53DENZ7QG;
-				INFOPLIST_FILE = "simple-quranTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hidayah.app/Hidayah";
-			};
-			name = Release;
-		};
-		1B78EB42260B3284004E07CD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R53DENZ7QG;
-				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "simple-quran";
-			};
-			name = Debug;
-		};
-		1B78EB43260B3284004E07CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R53DENZ7QG;
-				INFOPLIST_FILE = "simple-quranUITests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "simple-quran";
 			};
 			name = Release;
 		};
@@ -818,24 +596,6 @@
 			buildConfigurations = (
 				1B78EB3C260B3284004E07CD /* Debug */,
 				1B78EB3D260B3284004E07CD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1B78EB3E260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1B78EB3F260B3284004E07CD /* Debug */,
-				1B78EB40260B3284004E07CD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1B78EB41260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quranUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1B78EB42260B3284004E07CD /* Debug */,
-				1B78EB43260B3284004E07CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
