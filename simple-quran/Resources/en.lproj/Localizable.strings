@@ -232,3 +232,16 @@
 "add_task_task_detail_category_placeholder" = "Select a category";
 
 "setting_manage_category_section_title" = "Custom Categories";
+
+"tasbih_header_title" = "TASBIH";
+"tasbih_free_count" = "Free count";
+"tasbih_free_count_active" = "Free count active";
+"tasbih_count_of_format" = "of %d";
+"tasbih_tap_instruction" = "Tap anywhere to count";
+"tasbih_reset" = "Reset";
+"tasbih_phrase_1_title" = "Subhanallah";
+"tasbih_phrase_2_title" = "Alhamdulillah";
+"tasbih_phrase_3_title" = "Allahu Akbar";
+"tasbih_phrase_4_title" = "La ilaha illa Allah";
+
+"tasbih_tab_title" = "Tasbih";

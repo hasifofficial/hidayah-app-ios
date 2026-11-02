@@ -11,6 +11,7 @@ import UIKit
 
 enum AppTab: Int, Hashable, Identifiable, CaseIterable {
     case quran
+    case tasbih
     case tracker
     case search
 
@@ -21,6 +22,11 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         case .quran:
             return NSLocalizedString(
                 "surah_list_header_title",
+                comment: ""
+            )
+        case .tasbih:
+            return NSLocalizedString(
+                "tasbih_tab_title",
                 comment: ""
             )
         case .tracker:
@@ -40,6 +46,8 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         switch self {
         case .quran:
             return "book"
+        case .tasbih:
+            return "circle.grid.3x3"
         case .tracker:
             return "checklist.unchecked"
         case .search:
@@ -51,6 +59,8 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         switch self {
         case .quran:
             return "book.fill"
+        case .tasbih:
+            return "circle.grid.3x3.fill"
         case .tracker:
             return "checklist.checked"
         case .search:
@@ -255,6 +265,8 @@ struct RootView: View {
         switch router.selectedTab {
         case .quran:
             quranTab
+        case .tasbih:
+            tasbihTab
         case .tracker:
             trackerTab
         case .search:
@@ -269,6 +281,12 @@ struct RootView: View {
                     tabLabel(.quran)
                 }
                 .tag(AppTab.quran)
+
+            tasbihTab
+                .tabItem {
+                    tabLabel(.tasbih)
+                }
+                .tag(AppTab.tasbih)
 
             trackerTab
                 .tabItem {
@@ -341,6 +359,12 @@ struct RootView: View {
             .navigationDestination(for: AppRoute.self) { route in
                 destination(for: route)
             }
+        }
+    }
+
+    private var tasbihTab: some View {
+        NavigationStack {
+            TasbihView()
         }
     }
 
@@ -633,12 +657,13 @@ private struct TabBarIconConfigurator: UIViewRepresentable {
                 in: rootViewController
               ),
               let items = tabBarController.tabBar.items,
-              items.count >= 3 else {
+              items.count >= 4 else {
             return
         }
 
         let icons = [
             ("book", "book.fill"),
+            ("circle.grid.3x3", "circle.grid.3x3.fill"),
             ("checklist.unchecked", "checklist.checked"),
             ("magnifyingglass", "magnifyingglass")
         ]

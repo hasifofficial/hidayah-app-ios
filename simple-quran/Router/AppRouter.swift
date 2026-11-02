@@ -34,6 +34,8 @@ final class AppRouter {
         switch selectedTab {
         case .quran:
             savedQuranPath = quranPath
+        case .tasbih:
+            break
         case .tracker:
             savedTrackerPath = trackerPath
         case .search:
@@ -56,6 +58,8 @@ final class AppRouter {
         case .quran:
             quranPath = restoredQuranPath
             savedQuranPath = []
+        case .tasbih:
+            break
         case .search:
             searchPath = restoredSearchPath
             savedSearchPath = []
