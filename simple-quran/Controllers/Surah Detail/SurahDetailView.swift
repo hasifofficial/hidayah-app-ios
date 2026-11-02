@@ -90,7 +90,7 @@ struct SurahDetailView: View {
                 Button {
                     showingReadingSettings = true
                 } label: {
-                    Image(systemName: "gearshape")
+                    Image(systemName: "textformat.size")
                         .foregroundColor(.primary)
                 }
                 .accessibilityLabel(
