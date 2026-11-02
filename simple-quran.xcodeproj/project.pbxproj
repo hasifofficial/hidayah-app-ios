@@ -7,17 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		043B55B6B7277749F69732CA /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		098324EA51143A6512426384 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C73559E5E9E2E0672C30B0F /* FirebaseCore */; };
-		099BB5965B6F3C3C6BB6AED9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		149A89557E56E51616EEC678 /* app-widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D69317EB623433755CA5F244 /* app-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		2121D455DCFA2E93200BEBA2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */; };
-		35EBF09F77151CAC1C1556B6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		4878478005C4692B80684440 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		537C3B48B331D72F0AB16FBE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		5A980873823AC29180C94B35 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		826FC500672A06C86EC4FD6C /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		AACD2DCAEC0B8C287B4DEC9E /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,17 +63,17 @@
 				Core/Models/Category.swift,
 				Core/Models/NotificationIdentifier.swift,
 				Core/Models/Quran/SurahBookmark.swift,
+				Core/Models/TaskDetails.swift,
 				Core/Models/Tracker/TrackerBadge.swift,
 				Core/Models/Tracker/TrackerCheerState.swift,
 				Core/Models/Tracker/TrackerDayRecord.swift,
 				Core/Models/Tracker/TrackerStats.swift,
+				Core/Models/Widget/WidgetContext.swift,
 				Core/Persistence/HidayahStore.swift,
+				Core/Persistence/Storage.swift,
 				Core/Tracker/TaskManager.swift,
 				Core/Tracker/TrackerHistoryEngine.swift,
 				Core/Tracker/TrackerNotificationScheduler.swift,
-				Core/Models/TaskDetails.swift,
-				Core/Models/Widget/WidgetContext.swift,
-				Core/Persistence/Storage.swift,
 			);
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
 		};
@@ -122,16 +112,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				099BB5965B6F3C3C6BB6AED9 /* BuildFile in Frameworks */,
-				2121D455DCFA2E93200BEBA2 /* FirebaseCrashlytics in Frameworks */,
-				35EBF09F77151CAC1C1556B6 /* BuildFile in Frameworks */,
-				098324EA51143A6512426384 /* FirebaseCore in Frameworks */,
-				AACD2DCAEC0B8C287B4DEC9E /* BuildFile in Frameworks */,
-				5A980873823AC29180C94B35 /* BuildFile in Frameworks */,
-				043B55B6B7277749F69732CA /* BuildFile in Frameworks */,
-				4878478005C4692B80684440 /* BuildFile in Frameworks */,
-				826FC500672A06C86EC4FD6C /* BuildFile in Frameworks */,
-				537C3B48B331D72F0AB16FBE /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

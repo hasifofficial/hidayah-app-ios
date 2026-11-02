@@ -187,7 +187,7 @@ struct RootView: View {
                 }
             )
         ) {
-            Button("OK") {
+            Button(NSLocalizedString("common_ok", comment: "")) {
                 router.errorMessage = nil
             }
         }
@@ -642,7 +642,7 @@ private struct SettingsSheet: View {
                 }
             )
         ) {
-            Button("OK") {
+            Button(NSLocalizedString("common_ok", comment: "")) {
                 errorMessage = nil
             }
         }

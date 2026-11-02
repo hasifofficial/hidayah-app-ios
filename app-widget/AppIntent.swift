@@ -8,9 +8,9 @@
 import AppIntents
 
 struct ToggleTaskIntent: AppIntent {
-    static var title: LocalizedStringResource = "Mark selected task as complete"
+    static var title: LocalizedStringResource = "widget_toggle_task_title"
 
-    @Parameter(title: "Task id")
+    @Parameter(title: LocalizedStringResource("widget_task_id_parameter"))
     var id: String
 
     init() {}

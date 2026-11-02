@@ -22,19 +22,18 @@ struct Provider: TimelineProvider {
             completedTasks: 15,
             totalTasks: 23,
             upcomingTasks: [
-                .init(
-                    name: "Tahajjud prayer with do'a",
-                    category: .default(.tahajjud)
-                ),
-                .init(
-                    name: "Read Quran",
-                    category: .default(.recitation)
-                ),
-                .init(
-                    name: "Morning adhkar",
-                    category: .default(.morning)
-                )
-            ]        )
+                TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
+                TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
+                TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
+                TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
+                TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
+                TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
+                TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
+                TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
+                TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
+                TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
+            ]
+        )
     }
 
     func getSnapshot(
@@ -47,19 +46,18 @@ struct Provider: TimelineProvider {
             completedTasks: 15,
             totalTasks: 23,
             upcomingTasks: [
-                .init(
-                    name: "Tahajjud prayer with do'a",
-                    category: .default(.tahajjud)
-                ),
-                .init(
-                    name: "Read Quran",
-                    category: .default(.recitation)
-                ),
-                .init(
-                    name: "Morning adhkar",
-                    category: .default(.morning)
-                )
-            ]        )
+                TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
+                TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
+                TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
+                TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
+                TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
+                TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
+                TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
+                TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
+                TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
+                TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
+            ]
+        )
         completion(entry)
     }
 
@@ -138,7 +136,16 @@ struct IstiqamahWidgetSmallView: View {
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.title)
 
-                Text("\(entry.completedTasks)/\(entry.totalTasks) tasks")
+                Text(
+                    String(
+                        format: NSLocalizedString(
+                            "widget_tasks_count_format",
+                            comment: ""
+                        ),
+                        entry.completedTasks,
+                        entry.totalTasks
+                    )
+                )
                     .font(.system(size: 9))
                     .foregroundColor(.textGray)
                     .lineLimit(1)
@@ -166,7 +173,7 @@ struct IstiqamahWidgetMediumView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
-                    Text("Upcoming")
+                    Text(NSLocalizedString("widget_upcoming_title", comment: ""))
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.title)
 
@@ -244,6 +251,15 @@ struct IstiqamahWidgetMediumView: View {
         .frame(width: 90, height: 90)
     }
 
+    private var completionMessage: String {
+        let messages = (1...5).map { index in
+            NSLocalizedString("widget_completion_\(index)", comment: "")
+        }
+
+        let seed = Int(entry.date.timeIntervalSince1970 / 900)
+        return messages[abs(seed) % messages.count]
+    }
+
     private var completedState: some View {
         let hasTasks = entry.totalTasks > 0
         let allComplete = hasTasks
@@ -262,21 +278,22 @@ struct IstiqamahWidgetMediumView: View {
             VStack(alignment: .leading, spacing: 1) {
                 Text(
                     allComplete
-                        ? "All tasks complete"
-                        : (hasTasks ? "No upcoming tasks" : "No tasks yet")
+                        ? NSLocalizedString("widget_complete_title", comment: "")
+                        : NSLocalizedString(hasTasks ? "widget_no_upcoming_title" : "widget_no_tasks_title", comment: "")
                 )
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(.title)
 
                 Text(
                     allComplete
-                        ? "Alhamdulillah"
+                        ? completionMessage
                         : (hasTasks
-                            ? "\(remaining) remaining"
-                            : "Add tasks in the app")
+                            ? String(format: NSLocalizedString("widget_remaining_format", comment: ""), remaining)
+                            : NSLocalizedString("widget_add_tasks_hint", comment: ""))
                 )
                 .font(.system(size: 9))
                 .foregroundColor(.textGray)
+                .lineLimit(2)
             }
         }
         .padding(.vertical, 2)
@@ -347,8 +364,12 @@ struct appWidget: Widget {
         ) { entry in
             IstiqamahWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Istiqamah Tracker")
-        .description("View your daily progress and upcoming tasks.")
+        .configurationDisplayName(
+            LocalizedStringResource("widget_configuration_title")
+        )
+        .description(
+            LocalizedStringResource("widget_configuration_description")
+        )
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -362,18 +383,16 @@ struct appWidget: Widget {
         completedTasks: 15,
         totalTasks: 23,
         upcomingTasks: [
-            .init(
-                name: "Tahajjud prayer with do'a",
-                category: .default(.tahajjud)
-            ),
-            .init(
-                name: "Read Quran",
-                category: .default(.recitation)
-            ),
-            .init(
-                name: "Morning adhkar",
-                category: .default(.morning)
-            )
+            TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
+            TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
+            TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
+            TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
+            TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
+            TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
+            TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
+            TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
+            TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
+            TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
         ]
     )
 }

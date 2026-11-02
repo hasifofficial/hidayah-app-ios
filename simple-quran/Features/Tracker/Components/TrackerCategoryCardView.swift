@@ -100,7 +100,7 @@ struct TrackerCategoryCardView: View {
                             Button(role: .destructive) {
                                 taskManager.deleteTask(task: task)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label(NSLocalizedString("common_delete", comment: ""), systemImage: "trash")
                             }
                         }
                 }

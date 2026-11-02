@@ -65,7 +65,10 @@ struct SettingsView: View {
                     "setting_quran_font_size_title",
                     comment: ""
                 ),
-                value: "\(Int(arabicFontSize)) pt"
+                value: String(
+                    format: NSLocalizedString("quran_font_size_value_format", comment: ""),
+                    Int(arabicFontSize)
+                )
             ) {
                 showingQuranReadingSettings = true
             }

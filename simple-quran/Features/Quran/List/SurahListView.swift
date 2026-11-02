@@ -258,8 +258,8 @@ struct SurahListView: View {
 
     private func subtitle(for surah: SurahListResponse) -> String {
         let origin = surah.revelationType?.lowercased() == "meccan"
-            ? "Makiyyah"
-            : "Madaniyah"
+            ? NSLocalizedString("quran_revelation_makkan", comment: "")
+            : NSLocalizedString("quran_revelation_madani", comment: "")
 
         return String(
             format: NSLocalizedString(

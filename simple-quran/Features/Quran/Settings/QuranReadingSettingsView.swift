@@ -180,7 +180,12 @@ struct QuranReadingSettingsView: View {
 
                     Spacer()
 
-                    Text("\(Int(arabicFontSize)) pt")
+                    Text(
+                        String(
+                            format: NSLocalizedString("quran_font_size_value_format", comment: ""),
+                            Int(arabicFontSize)
+                        )
+                    )
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.lightGreen)
                 }

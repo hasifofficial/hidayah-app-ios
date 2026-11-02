@@ -26,7 +26,7 @@ struct EditTaskView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("edit_task_task_detail_section_title")) {
+            Section(header: Text(NSLocalizedString("edit_task_task_detail_section_title", comment: ""))) {
                 TextField(
                     "edit_task_task_detail_task_name",
                     text: $taskName
@@ -52,17 +52,19 @@ struct EditTaskView: View {
                 } label: {
                     HStack {
                         Spacer()
-                        Text("edit_task_delete_task_button")
+                        Text(NSLocalizedString("edit_task_delete_task_button", comment: ""))
                         Spacer()
                     }
                 }
             }
         }
-        .navigationTitle("edit_task_header_title")
+        .navigationTitle(
+            NSLocalizedString("edit_task_header_title", comment: "")
+        )
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("edit_task_save_button") {
+                Button(NSLocalizedString("edit_task_save_button", comment: "")) {
                     taskManager.updateTask(
                         task: task,
                         newName: taskName,
@@ -91,7 +93,7 @@ struct EditTaskView: View {
                 role: .cancel
             ) {}
         } message: {
-            Text("edit_task_delete_task_confirmation_dialog_subtitle")
+            Text(NSLocalizedString("edit_task_delete_task_confirmation_dialog_subtitle", comment: ""))
         }
     }
 }

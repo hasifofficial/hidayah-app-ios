@@ -21,6 +21,31 @@ enum DefaultCategory: String, CaseIterable, Identifiable, Codable {
 
     var id: String { self.rawValue }
 
+    var displayName: String {
+        switch self {
+        case .morning:
+            return NSLocalizedString("default_category_morning", comment: "")
+        case .tahajjud:
+            return NSLocalizedString("default_category_tahajjud", comment: "")
+        case .fajr:
+            return NSLocalizedString("default_category_fajr", comment: "")
+        case .recitation:
+            return NSLocalizedString("default_category_recitation", comment: "")
+        case .dhuha:
+            return NSLocalizedString("default_category_dhuha", comment: "")
+        case .dhuhr:
+            return NSLocalizedString("default_category_dhuhr", comment: "")
+        case .asr:
+            return NSLocalizedString("default_category_asr", comment: "")
+        case .maghrib:
+            return NSLocalizedString("default_category_maghrib", comment: "")
+        case .isha:
+            return NSLocalizedString("default_category_isha", comment: "")
+        case .bedtime:
+            return NSLocalizedString("default_category_bedtime", comment: "")
+        }
+    }
+
     var icon: String {
         switch self {
         case .morning: return "sunrise"
@@ -69,7 +94,7 @@ enum Category: Identifiable, Hashable, Codable {
     var name: String {
         switch self {
         case .default(let defaultTime):
-            return defaultTime.rawValue
+            return defaultTime.displayName
         case .custom(let custom):
             return custom.name
         }

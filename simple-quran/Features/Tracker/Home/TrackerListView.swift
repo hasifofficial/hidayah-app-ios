@@ -110,7 +110,9 @@ struct TrackerListContentView: View {
             .padding(.bottom, 24)
             .menuStyle(BorderlessButtonMenuStyle())
         }
-        .navigationTitle("tracker_list_header_title")
+        .navigationTitle(
+            NSLocalizedString("tracker_list_header_title", comment: "")
+        )
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button(action: onOpenCalendar) {

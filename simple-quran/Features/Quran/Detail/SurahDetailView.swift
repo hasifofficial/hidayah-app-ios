@@ -117,7 +117,7 @@ struct SurahDetailView: View {
                 }
             )
         ) {
-            Button("OK") {
+            Button(NSLocalizedString("common_ok", comment: "")) {
                 viewModel.errorMessage = nil
             }
         }

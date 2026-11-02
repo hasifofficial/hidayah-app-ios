@@ -248,3 +248,22 @@
 "tasbih_completion_title" = "99 Dhikr Complete";
 "tasbih_completion_message" = "Alhamdulillah! You’ve completed 99 dhikr. May Allah accept your remembrance.";
 "tasbih_start_again" = "Start Again";
+
+"common_ok" = "OK";
+"common_delete" = "Delete";
+"common_shared_from_hidayah" = "Shared from Hidayah App";
+"quran_font_size_value_format" = "%d pt";
+"quran_revelation_makkan" = "Makkiyah";
+"quran_revelation_madani" = "Madaniyah";
+"quran_language_unknown" = "Unknown";
+"quran_reading_preview_translation" = "In the name of Allah, the Entirely Merciful, the Especially Merciful.";
+"default_category_morning" = "Upon Waking Up";
+"default_category_tahajjud" = "Tahajjud Companions";
+"default_category_fajr" = "Fajr (Dawn Prayer)";
+"default_category_recitation" = "Recitation";
+"default_category_dhuha" = "Dhuha";
+"default_category_dhuhr" = "Dhuhr (Noon Prayer)";
+"default_category_asr" = "Asr (Afternoon Prayer)";
+"default_category_maghrib" = "Maghrib (Sunset Prayer)";
+"default_category_isha" = "Isha (Night Prayer)";
+"default_category_bedtime" = "Before Sleeping";
