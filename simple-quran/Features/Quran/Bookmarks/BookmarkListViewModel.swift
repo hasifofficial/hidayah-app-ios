@@ -17,6 +17,7 @@ struct BookmarkedSurah: Identifiable {
     }
 }
 
+@MainActor
 @Observable
 final class BookmarkListViewModel {
     private(set) var bookmarks: [BookmarkedSurah] = []

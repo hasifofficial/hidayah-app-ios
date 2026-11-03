@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 enum AppHaptics {
     private static let impact = UIImpactFeedbackGenerator(style: .light)
     private static let notification = UINotificationFeedbackGenerator()

@@ -18,6 +18,7 @@ struct SurahDetailAyah: Identifiable {
     let translationIsRTL: Bool
 }
 
+@MainActor
 @Observable
 final class SurahDetailViewModel {
     var title: String = ""
@@ -61,8 +62,10 @@ final class SurahDetailViewModel {
     @ObservationIgnored
     private var audioPlayer: AVPlayer?
 
+    // Only touched on the main actor and in deinit, which has exclusive
+    // access to the instance.
     @ObservationIgnored
-    private var audioEndObserver: NSObjectProtocol?
+    nonisolated(unsafe) private var audioEndObserver: NSObjectProtocol?
 
     init(
         surahService: SurahService,
@@ -386,7 +389,9 @@ final class SurahDetailViewModel {
             object: item,
             queue: .main
         ) { [weak self] _ in
-            self?.playingAyahID = nil
+            MainActor.assumeIsolated {
+                self?.playingAyahID = nil
+            }
         }
 
         player.play()

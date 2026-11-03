@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 
+@MainActor
 final class TrackerNotificationScheduler {
     static let shared = TrackerNotificationScheduler()
 
@@ -90,11 +91,11 @@ final class TrackerNotificationScheduler {
 
     func clearMilestones() {
         let prefix = NotificationIdentifier.trackerMilestonePrefix
-        center.getPendingNotificationRequests { [weak self] requests in
-            let identifiers = requests
+        Task {
+            let identifiers = await center.pendingNotificationRequests()
                 .map(\.identifier)
                 .filter { $0.hasPrefix(prefix) }
-            self?.center.removePendingNotificationRequests(
+            center.removePendingNotificationRequests(
                 withIdentifiers: identifiers
             )
         }

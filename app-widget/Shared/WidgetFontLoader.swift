@@ -8,6 +8,7 @@ import Foundation
 
 // MARK: - Fonts
 
+@MainActor
 enum WidgetFontLoader {
     private static var isRegistered = false
 

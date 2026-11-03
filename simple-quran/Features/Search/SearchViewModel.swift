@@ -17,6 +17,7 @@ struct SearchBookmark: Identifiable {
     }
 }
 
+@MainActor
 @Observable
 final class SearchViewModel {
     var keyword: String = ""

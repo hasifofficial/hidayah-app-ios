@@ -30,7 +30,8 @@ struct MailView: UIViewControllerRepresentable {
         Coordinator(onFinish: onFinish)
     }
 
-    final class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+    @MainActor
+    final class Coordinator: NSObject, @preconcurrency MFMailComposeViewControllerDelegate {
         private let onFinish: () -> Void
 
         init(onFinish: @escaping () -> Void) {

@@ -20,6 +20,7 @@ struct TrackerCalendarDay: Identifiable {
     }
 }
 
+@MainActor
 @Observable
 final class TrackerCalendarViewModel {
     let taskManager: TaskManager

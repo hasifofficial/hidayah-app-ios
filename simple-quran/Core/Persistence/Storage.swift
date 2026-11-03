@@ -8,7 +8,8 @@
 import Foundation
 
 class Storage {
-    static let userDefaults = UserDefaults(suiteName: "group.com.hasifofficial.simple-quran")
+    // UserDefaults is documented as thread-safe but is not marked Sendable.
+    nonisolated(unsafe) static let userDefaults = UserDefaults(suiteName: "group.com.hasifofficial.simple-quran")
 
     enum StorageKey: String, CaseIterable {
         case selectedRecitation

@@ -8,6 +8,7 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
 final class TrackerAchievementsViewModel {
     private let taskManager: TaskManager

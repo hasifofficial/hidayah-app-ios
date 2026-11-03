@@ -8,7 +8,7 @@
 import AppIntents
 
 struct ToggleTaskIntent: AppIntent {
-    static var title: LocalizedStringResource = "widget_toggle_task_title"
+    static let title: LocalizedStringResource = "widget_toggle_task_title"
 
     @Parameter(title: LocalizedStringResource("widget_task_id_parameter"))
     var id: String
@@ -21,6 +21,7 @@ struct ToggleTaskIntent: AppIntent {
         self.id = id
     }
     
+    @MainActor
     func perform() async throws -> some IntentResult {
         TaskManager.shared.loadTasks()
 

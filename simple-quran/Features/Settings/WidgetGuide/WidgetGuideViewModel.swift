@@ -48,6 +48,7 @@ struct WidgetGuideSurah: Identifiable {
     var id: Int { number }
 }
 
+@MainActor
 @Observable
 final class WidgetGuideViewModel {
     var selectedWidget: WidgetGuideKind = .tracker

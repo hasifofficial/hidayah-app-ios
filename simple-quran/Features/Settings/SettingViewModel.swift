@@ -30,6 +30,7 @@ enum SettingsSelection: String, Identifiable {
     }
 }
 
+@MainActor
 @Observable
 final class SettingsViewModel {
     private(set) var recitationItems: [ItemSelector] = []

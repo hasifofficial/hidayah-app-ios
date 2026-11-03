@@ -12,6 +12,7 @@ import UserNotifications
 import FirebaseCore
 import FirebaseCrashlytics
 
+@MainActor
 class AppController: NSObject {
     let apiClientService = APIClientService()
     lazy var surahService = SurahService(
@@ -127,7 +128,7 @@ extension AppController {
 }
 
 extension AppController: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
@@ -139,7 +140,7 @@ extension AppController: UNUserNotificationCenterDelegate {
         ])
     }
 
-    func userNotificationCenter(
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
@@ -148,7 +149,7 @@ extension AppController: UNUserNotificationCenterDelegate {
         let urlString = userInfo["url"] as? String
         if let urlString = urlString,
            let url = URL(string: urlString) {
-            DispatchQueue.main.async { [weak self] in
+            Task { @MainActor [weak self] in
                 _ = self?.deeplinkManager.handleDeepLink(url: url)
             }
         }

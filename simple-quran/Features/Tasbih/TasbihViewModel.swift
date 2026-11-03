@@ -14,6 +14,7 @@ struct TasbihPhrase {
     let arabic: String
 }
 
+@MainActor
 @Observable
 final class TasbihViewModel {
     let target = 33

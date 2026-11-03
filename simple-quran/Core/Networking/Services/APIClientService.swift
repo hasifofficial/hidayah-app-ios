@@ -7,7 +7,7 @@
 
 import Foundation
 
-class APIClientService {
+final class APIClientService: Sendable {
     func request<T: Codable>(
         endpoint: Endpoint,
         type: T.Type

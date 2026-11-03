@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol SurahServiceable {
+protocol SurahServiceable: Sendable {
     func getSurahEdition() async throws -> Edition
     func getSurahList() async throws -> SurahList
     func getSurahDetail(surahNo: Int, recitationId: String, translationId: String) async throws -> Surah
 }
 
-class SurahService: SurahServiceable {
+final class SurahService: SurahServiceable {
     private let apiClientService: APIClientService
 
     init(
@@ -52,6 +52,7 @@ class SurahService: SurahServiceable {
     }
 }
 
+@MainActor
 final class SurahCatalog {
     static let shared = SurahCatalog()
 

@@ -116,6 +116,7 @@ struct TrackerStorageSnapshot {
     let startDayKey: String?
 }
 
+@MainActor
 final class HidayahStore {
     static let shared = HidayahStore()
 

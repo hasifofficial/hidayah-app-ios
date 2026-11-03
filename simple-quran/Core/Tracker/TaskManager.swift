@@ -8,6 +8,7 @@
 import WidgetKit
 import Observation
 
+@MainActor
 @Observable
 class TaskManager {
     var tasks: [TaskDetails] = []
@@ -48,18 +49,16 @@ class TaskManager {
     private init() {
         loadTasks()
 
+        // The shared instance lives as long as the process, so the observer
+        // is never removed.
         dayChangeObserver = NotificationCenter.default.addObserver(
             forName: .NSCalendarDayChanged,
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.refreshForCurrentDay()
-        }
-    }
-
-    deinit {
-        if let dayChangeObserver {
-            NotificationCenter.default.removeObserver(dayChangeObserver)
+            MainActor.assumeIsolated {
+                self?.refreshForCurrentDay()
+            }
         }
     }
 

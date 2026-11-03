@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 @Observable
 final class AppRouter {
     var selectedTab: AppTab = .quran
