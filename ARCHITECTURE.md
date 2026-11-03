@@ -6,6 +6,8 @@
 - MVVM for feature screens.
 - Shared services and UI only when genuinely reusable.
 - No direct construction of networking or persistence clients inside views.
+- Every dependency injectable; shared instances are only defaults.
+- User data is never silently lost or replaced.
 - Widget support without duplicating app-specific UI code.
 
 ## Layers
@@ -17,6 +19,9 @@ simple-quran/
   Features/     Feature screens, view models, and feature components
   Shared/       Cross-feature UI, form controls, modifiers, services
   Resources/    Assets, fonts, localization, constants
+
+simple-quranTests/   Unit tests for the app, mirroring simple-quran/
+app-widgetTests/     Unit tests for the widget, mirroring app-widget/
 ```
 
 Dependency direction:
@@ -46,7 +51,7 @@ App/
     LaunchScreen.storyboard
 ```
 
-- `AppController` is the composition root for services and shared state.
+- `AppController` is the composition root for services and shared state. Its initializer takes the task manager, store, notification scheduler and notification center, defaulting to the shared instances.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
 - `DeeplinkManager` maps URLs to router destinations.
@@ -73,9 +78,12 @@ Core/
   Extensions/
 ```
 
-- `TaskManager` is the tracker domain facade.
-- `HidayahStore` owns SwiftData persistence.
+- `TaskManager` is the tracker domain facade. It takes its store, notification scheduler and clock (`now: () -> Date`) through `init`.
+- `HidayahStore` owns SwiftData persistence, including the schema version and migration plan (see Persistence).
 - `Storage` owns App Group `UserDefaults` access and the widget snapshot.
+- `TrackerNotificationScheduler` posts tracker reminders through the `NotificationScheduling` protocol, which `UNUserNotificationCenter` conforms to.
+- `APIClientService` and `SurahService` are stateless and `Sendable`, and use `async`/`await`. `APIClientService` takes its `URLSession` through `init`.
+- `SurahCatalog` caches the surah list on disk; its cache location is injectable.
 - Models are plain value/reference types with no SwiftUI dependencies.
 
 ## Features
@@ -188,7 +196,9 @@ app-widget/
 
 ### Widget behavior
 
-- **Tracker Widget** — small and medium. Reads the lightweight `WidgetContext` snapshot through `Storage`. Tapping a task invokes `ToggleTaskIntent`, which updates `TaskManager`.
+- **Tracker Widget** — small and medium. Reads the lightweight `WidgetContext` snapshot through `Storage`. Tapping a task invokes `ToggleTaskIntent`, which runs on the main actor and updates `TaskManager`.
+- The snapshot records its `dayKey` and the task list as it will look after a reset (`resetUpcomingTasks`). Each timeline adds an entry at the next midnight, and a snapshot from an earlier day is shown as a fresh day, so the widget rolls over without the app running.
+- `ToggleTaskIntent` throws instead of toggling when the store is not persistent, so a tap can never appear to work and then be lost.
 - **Quick Surahs Widget** — medium only. Uses `AppIntentConfiguration` so users can choose up to three surahs from the native widget configuration UI. Deep links open the selected surah.
 - Quick Surahs Arabic text uses the same Kitab font family as the app.
 - `WidgetFontLoader` registers the widget’s font bundle at runtime.
@@ -196,15 +206,26 @@ app-widget/
 
 ### Target membership
 
-The main app target and widget extension use Xcode synchronized folders.
+All four targets use Xcode synchronized folders.
 
-Some `Core` files are intentionally shared with the widget target to support task toggling and snapshot access. These files appear as shared-target items in Xcode:
+| Target | Folders | Deployment target |
+|---|---|---|
+| `simple-quran` | `simple-quran/` | iOS 17.0 |
+| `app-widgetExtension` | `app-widget/` | iOS 18.4 |
+| `simple-quranTests` | `simple-quranTests/` (hosted by the app) | iOS 17.0 |
+| `app-widgetTests` | `app-widgetTests/` and `app-widget/` (no host) | iOS 18.4 |
 
-- Tracker models and `WidgetContext`
+Some `Core` files are intentionally shared with the widget to support task toggling and snapshot access. These files appear as shared-target items in Xcode:
+
+- Tracker models, `Category`, `TaskDetails`, `SurahBookmark`, `NotificationIdentifier` and `WidgetContext`
 - `TaskManager`, `HidayahStore`, and tracker history/notification services
 - `Storage` and related identifiers
 
-Do not manually add synchronized-folder files to target source phases. Add or remove membership through the widget target’s synchronized-folder exceptions.
+The shared files are listed in **two** exception sets on the `simple-quran` folder: one for `app-widgetExtension` and one for `app-widgetTests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
+
+`app-widgetTests` excludes `appWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `app-widget/` folder.
+
+Do not manually add synchronized-folder files to target source phases. Add or remove membership through the synchronized-folder exceptions.
 
 ## Persistence
 
@@ -214,6 +235,26 @@ Do not manually add synchronized-folder files to target source phases. Add or re
 - No automatic destructive reset is allowed.
 - Clearing tracker data requires an explicit user action.
 
+### Schema versioning
+
+The store opens with `HidayahSchemaV1` and `HidayahMigrationPlan` (both in `HidayahStore.swift`). Before changing any `@Model`:
+
+1. Freeze the current version by nesting copies of the current models inside `HidayahSchemaV1`.
+2. Add `HidayahSchemaV2` with the changed models.
+3. Add a migration stage to `HidayahMigrationPlan`.
+
+Changing a model without a new version makes the on-disk store fail to open.
+
+### When the store cannot open
+
+`HidayahStore` never replaces user data silently. If the on-disk store fails to open (for example a schema mismatch, or a missing App Group):
+
+- The failure is logged and kept in `loadError`; `isPersistent` is `false`.
+- The store runs in memory so the app stays usable, but nothing written survives a relaunch.
+- Shared preferences (`trackerActiveDayKey`, `trackerStartDayKey`) and the widget snapshot are left untouched, so the data on disk stays authoritative.
+- `AppController` reports the error to Crashlytics and shows the user an alert.
+- `TaskManager.loadTasks()` calls `reconnectIfNeeded()`, so a temporary failure recovers on the next load or foreground.
+
 ## Localization
 
 - App UI: `Resources/en.lproj/Localizable.strings`
@@ -221,6 +262,43 @@ Do not manually add synchronized-folder files to target source phases. Add or re
 - Never rely on the app’s localization bundle from inside the widget; each target has its own bundle.
 - Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `widget_`).
 - Arabic Quran/dhikr content, user-created names, and numeric values are data, not UI chrome.
+- Localize default category names when they are shown, not when they are saved. Day records store a copy of each task's category name, and a record saved from the widget holds the raw key; `TrackerDayDetailViewModel.categoryName(for:)` looks default names up from the category ID.
+
+## Concurrency
+
+The project builds in Swift 5 mode with `SWIFT_STRICT_CONCURRENCY = complete` and `SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES`. Production code has no concurrency warnings; keep it that way.
+
+- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model.
+- Networking services are stateless and `Sendable`; requests and JSON decoding run off the main actor.
+- Callbacks the system delivers on the main queue (`NotificationCenter` observers with `queue: .main`) use `MainActor.assumeIsolated`.
+- `nonisolated(unsafe)` is allowed only with a comment explaining why it is safe.
+
+## Dependency injection and testing
+
+Shared instances (`TaskManager.shared`, `HidayahStore.shared`, `SurahCatalog.shared`, `TrackerNotificationScheduler.shared`) are defaults for production wiring only. New types take their dependencies through `init`, defaulting to the shared instance.
+
+When the process hosts unit tests, `AppEnvironment.isRunningUnitTests` switches the shared instances to an in-memory store, a separate preferences suite and a separate catalog cache, so tests never touch real data.
+
+### Test targets
+
+- **`simple-quranTests`** — hosted by the app. Covers Core, navigation, view models and every screen. Screens are rendered with `ViewHost`, which shows a view in a real window and drives its controls through the accessibility tree.
+- **`app-widgetTests`** — no host. Compiles the widget sources and the shared Core files directly, so widget code is in the test module without `@testable import`.
+
+Both run from the `simple-quran` scheme (⌘U) with code coverage enabled.
+
+### Test conventions
+
+- Test files mirror the app's folder structure: the tests for `simple-quran/Core/Tracker/TaskManager.swift` are in `simple-quranTests/Core/Tracker/TaskManagerTests.swift`. Shared fakes and fixtures live in each target's `Support/` folder.
+- XCTest, with names in the form `test_<subject>_should_<expectation>()`.
+- Every test body has `// Arrange`, `// Act` and `// Assert` sections.
+- Each test starts clean: a fresh in-memory store, `resetStorage()`, `StubURLProtocol.reset()` and a `TestClock` where dates matter.
+- Run the suite on more than one iOS version before merging; some UIKit details (tab bars, SF Symbol accessibility labels) differ between releases.
+
+## Privacy
+
+Both the app and the widget ship a `PrivacyInfo.xcprivacy` at the root of their folder. They declare `UserDefaults` access with reason `1C8F.1` (data shared within the App Group), no tracking, and no data collected by the app's own code; Firebase declares its own collection in its SDK manifests.
+
+When code starts using another required-reason API (file timestamps, system boot time, disk space, active keyboards), declare it in both manifests.
 
 ## Synchronized folders
 
@@ -228,7 +306,7 @@ The project uses Xcode synchronized folders.
 
 - New files inside existing folders are picked up automatically.
 - Do not add duplicate source references to `project.pbxproj`; doing so causes duplicate-build warnings.
-- Moving a shared file that belongs to the widget requires updating the widget target’s membership exceptions.
+- Moving a shared file that belongs to the widget requires updating both the `app-widgetExtension` and `app-widgetTests` membership exceptions.
 - Resource bundles and localized files must remain inside the target that uses them.
 
 ## Adding a feature
@@ -240,4 +318,7 @@ The project uses Xcode synchronized folders.
 5. Inject services from the composition root or parent screen.
 6. Add localization keys under the feature prefix.
 7. If the feature has a widget, add a dedicated folder under `app-widget/Widgets`.
-8. Build with a clean derived-data path before merging.
+8. If the feature shares a `Core` file with the widget, add it to both widget exception sets.
+9. Add tests in the matching folder under `simple-quranTests/` (or `app-widgetTests/`).
+10. If the feature uses a new required-reason API, declare it in the privacy manifests.
+11. Build with a clean derived-data path and run the tests before merging.
