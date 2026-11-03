@@ -7,6 +7,37 @@
 
 import Foundation
 import SwiftData
+import OSLog
+
+// MARK: - Schema
+
+/// The current store layout. Before changing any `@Model` below, freeze this
+/// version by nesting copies of the current models inside it, add
+/// `HidayahSchemaV2` with the new models, and add a stage to
+/// `HidayahMigrationPlan`. Changing a model without a new version makes the
+/// on-disk store fail to open.
+enum HidayahSchemaV1: VersionedSchema {
+    static let versionIdentifier = Schema.Version(1, 0, 0)
+
+    static var models: [any PersistentModel.Type] {
+        [
+            StoredTask.self,
+            StoredCategory.self,
+            StoredDay.self,
+            StoredBookmark.self
+        ]
+    }
+}
+
+enum HidayahMigrationPlan: SchemaMigrationPlan {
+    static var schemas: [any VersionedSchema.Type] {
+        [HidayahSchemaV1.self]
+    }
+
+    static var stages: [MigrationStage] {
+        []
+    }
+}
 
 @Model
 final class StoredTask {
@@ -88,55 +119,104 @@ struct TrackerStorageSnapshot {
 final class HidayahStore {
     static let shared = HidayahStore()
 
-    let container: ModelContainer
-    private let context: ModelContext
+    enum StoreError: LocalizedError {
+        case appGroupUnavailable
+
+        var errorDescription: String? {
+            switch self {
+            case .appGroupUnavailable:
+                return "App Group container is unavailable."
+            }
+        }
+    }
+
+    /// Why the on-disk store could not be opened, or nil when it is open.
+    /// While this is set the store runs in memory: nothing written to it
+    /// survives a relaunch, and shared preferences are left untouched so the
+    /// data on disk stays authoritative.
+    private(set) var loadError: Error?
+
+    var isPersistent: Bool {
+        loadError == nil
+    }
+
+    private var context: ModelContext
+
+    private static let logger = Logger(
+        subsystem: "com.hasifofficial.simple-quran",
+        category: "HidayahStore"
+    )
+
+    private static let schema = Schema(
+        versionedSchema: HidayahSchemaV1.self
+    )
 
     private init() {
-        let schema = Schema([
-            StoredTask.self,
-            StoredCategory.self,
-            StoredDay.self,
-            StoredBookmark.self
-        ])
-
-        let created: ModelContainer
-        if let groupURL = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.com.hasifofficial.simple-quran"
-        ) {
-            let storeURL = groupURL.appendingPathComponent("Hidayah.store")
-            let configuration = ModelConfiguration(
-                schema: schema,
-                url: storeURL
+        do {
+            context = ModelContext(try Self.makePersistentContainer())
+        } catch {
+            Self.logger.fault(
+                "Failed to open store: \(String(describing: error), privacy: .public)"
             )
-            do {
-                created = try ModelContainer(
-                    for: schema,
-                    configurations: [configuration]
-                )
-            } catch {
-                let fallback = ModelConfiguration(
-                    schema: schema,
-                    isStoredInMemoryOnly: true
-                )
-                created = try! ModelContainer(
-                    for: schema,
-                    configurations: [fallback]
-                )
-            }
-        } else {
-            let configuration = ModelConfiguration(
-                schema: schema,
-                isStoredInMemoryOnly: false
-            )
-            created = try! ModelContainer(
-                for: schema,
-                configurations: [configuration]
-            )
+            loadError = error
+            context = ModelContext(Self.makeInMemoryContainer())
         }
 
-        container = created
-        context = ModelContext(created)
-        prepareStorageIfNeeded()
+        if isPersistent {
+            prepareStorageIfNeeded()
+        }
+    }
+
+    /// Retries opening the on-disk store after an earlier failure, e.g. one
+    /// caused by the device being locked when the widget started. Anything
+    /// written to the in-memory store in the meantime is discarded.
+    @discardableResult
+    func reconnectIfNeeded() -> Bool {
+        guard !isPersistent else { return true }
+
+        do {
+            context = ModelContext(try Self.makePersistentContainer())
+            loadError = nil
+            prepareStorageIfNeeded()
+            Self.logger.notice("Reconnected to on-disk store")
+            return true
+        } catch {
+            loadError = error
+            return false
+        }
+    }
+
+    private static func makePersistentContainer() throws -> ModelContainer {
+        guard let groupURL = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: "group.com.hasifofficial.simple-quran"
+        ) else {
+            throw StoreError.appGroupUnavailable
+        }
+
+        let configuration = ModelConfiguration(
+            schema: schema,
+            url: groupURL.appendingPathComponent("Hidayah.store")
+        )
+
+        return try ModelContainer(
+            for: schema,
+            migrationPlan: HidayahMigrationPlan.self,
+            configurations: [configuration]
+        )
+    }
+
+    private static func makeInMemoryContainer() -> ModelContainer {
+        let configuration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: true
+        )
+
+        // An in-memory store has no file to fail on, so a throw here means
+        // the schema itself is invalid.
+        return try! ModelContainer(
+            for: schema,
+            configurations: [configuration]
+        )
     }
 
     // MARK: - Tracker
@@ -358,6 +438,8 @@ final class HidayahStore {
     }
 
     func saveActiveState(activeDayKey: String?, startDayKey: String?) {
+        guard isPersistent else { return }
+
         if let activeDayKey {
             Storage.save(.trackerActiveDayKey, activeDayKey)
         }
@@ -370,9 +452,12 @@ final class HidayahStore {
         deleteAll(StoredTask.self)
         deleteAll(StoredCategory.self)
         deleteAll(StoredDay.self)
+        save()
+
+        guard isPersistent else { return }
+
         Storage.delete(.trackerActiveDayKey)
         Storage.delete(.trackerStartDayKey)
-        save()
     }
 
     // MARK: - Bookmarks
@@ -479,6 +564,12 @@ final class HidayahStore {
     }
 
     private func save() {
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            Self.logger.error(
+                "Failed to save store: \(String(describing: error), privacy: .public)"
+            )
+        }
     }
 }

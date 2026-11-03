@@ -64,6 +64,7 @@ class TaskManager {
     }
 
     func loadTasks() {
+        store.reconnectIfNeeded()
         loadSavedData()
 
         if tasks.isEmpty {
@@ -411,6 +412,10 @@ extension TaskManager {
 
 extension TaskManager {
     func updateWidget() {
+        // An in-memory session must not replace the widget's snapshot of
+        // the data that is still on disk.
+        guard store.isPersistent else { return }
+
         let completed = tasks.filter { $0.isCompleted }.count
         let total = tasks.count
         let progress = total > 0

@@ -7,6 +7,7 @@
 */
 
 "common_error_content" = "Something went wrong. Please try again later.";
+"common_error_storage_unavailable" = "Your saved data couldn't be opened. Changes you make now won't be saved. Please restart the app, and contact us if this keeps happening.";
 
 "request_error_decode" = "Data cannot be parsed. Please try again later.";
 "request_error_invalid_url" = "The URL is invalid, Make sure the URL is correct and try again later.";

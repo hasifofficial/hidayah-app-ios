@@ -23,6 +23,13 @@ struct ToggleTaskIntent: AppIntent {
     
     func perform() async throws -> some IntentResult {
         TaskManager.shared.loadTasks()
+
+        // Toggling an in-memory copy would flip the widget for a change that
+        // is never saved.
+        guard HidayahStore.shared.isPersistent else {
+            throw HidayahStore.shared.loadError ?? HidayahStore.StoreError.appGroupUnavailable
+        }
+
         if let task = TaskManager.shared.tasks.first(where: { $0.id.uuidString == id }) {
             TaskManager.shared.toggleTaskCompletion(task: task)
         }

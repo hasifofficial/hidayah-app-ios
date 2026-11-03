@@ -10,6 +10,7 @@ import SwiftUI
 import UIKit
 import UserNotifications
 import FirebaseCore
+import FirebaseCrashlytics
 
 class AppController: NSObject {
     let apiClientService = APIClientService()
@@ -26,6 +27,7 @@ class AppController: NSObject {
         super.init()
 
         FirebaseApp.configure()
+        self.reportStoreFailureIfNeeded()
         self.configureCustomFont()
         self.scheduleKahfNotification()
         TrackerNotificationScheduler.shared.syncDailyCheer()
@@ -74,6 +76,16 @@ class AppController: NSObject {
 }
 
 extension AppController {
+    private func reportStoreFailureIfNeeded() {
+        guard let error = HidayahStore.shared.loadError else { return }
+
+        Crashlytics.crashlytics().record(error: error)
+        router.errorMessage = NSLocalizedString(
+            "common_error_storage_unavailable",
+            comment: ""
+        )
+    }
+
     private func configureCustomFont() {
         Font.loadFontsBundle(bundle: "Fonts", fontExtension: "ttf")
     }
