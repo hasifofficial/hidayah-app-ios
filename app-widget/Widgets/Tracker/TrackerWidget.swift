@@ -14,10 +14,9 @@ struct TrackerWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(
             kind: kind,
-            provider: TrackerProvider()
-        ) { entry in
-            TrackerWidgetEntryView(entry: entry)
-        }
+            provider: TrackerProvider(),
+            content: Self.entryView
+        )
         .configurationDisplayName(
             LocalizedStringResource("widget_configuration_title")
         )
@@ -25,5 +24,9 @@ struct TrackerWidget: Widget {
             LocalizedStringResource("widget_configuration_description")
         )
         .supportedFamilies([.systemSmall, .systemMedium])
+    }
+
+    static func entryView(for entry: TrackerEntry) -> TrackerWidgetEntryView {
+        TrackerWidgetEntryView(entry: entry)
     }
 }

@@ -191,7 +191,9 @@ enum QuickSurahCatalog {
         )
     }
 
-    private static func entity(_ number: Int) -> QuickSurahEntity {
+    /// The catalog's entry for `number`, or a placeholder when the number
+    /// is not a surah.
+    static func entity(_ number: Int) -> QuickSurahEntity {
         guard let surah = all.first(
             where: { $0.number == number }
         ) else {

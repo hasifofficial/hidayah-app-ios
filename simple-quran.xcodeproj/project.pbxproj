@@ -10,6 +10,8 @@
 		149A89557E56E51616EEC678 /* app-widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D69317EB623433755CA5F244 /* app-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1BDCCFA03098BB1E00B0CD26 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */; };
 		1BDCCFA13098BB1E00B0CD26 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C73559E5E9E2E0672C30B0F /* FirebaseCore */; };
+		50CDDFF01489B3A2EE66ACE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93C02A0C01546A1F7E216613 /* Foundation.framework */; };
+		EAB77F17A600AADAAF9E3932 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93C02A0C01546A1F7E216613 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -19,6 +21,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1B791FF62DC1B8D00007CDDF;
 			remoteInfo = "app-widgetExtension";
+		};
+		F147663C33DE14DAFD41B833 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
+			remoteInfo = "simple-quran";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -37,11 +46,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		048C5B019668F736DC7C24D3 /* simple-quranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-widgetExtension.entitlements"; sourceTree = "<group>"; };
 		35019315922F29D19A05C964 /* Hidayah Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hidayah Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		52011893B3B28C5841643AB0 /* simple-quranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2A3DBFF57F3347F61B8E94F /* simple-quranUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93C02A0C01546A1F7E216613 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D69317EB623433755CA5F244 /* app-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "app-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8541C17F08F2EB125D1A663 /* app-widgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "app-widgetTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -79,11 +89,41 @@
 			);
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
 		};
+		7AA9D2BD6C0325B3F93206A9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				appWidgetBundle.swift,
+				Info.plist,
+			);
+			target = CC3CBF9CCAF398625445E69E /* app-widgetTests */;
+		};
+		CC9A33765E6E58BEA8AF96EE /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Core/Models/Category.swift,
+				Core/Models/NotificationIdentifier.swift,
+				Core/Models/Quran/SurahBookmark.swift,
+				Core/Models/TaskDetails.swift,
+				Core/Models/Tracker/TrackerBadge.swift,
+				Core/Models/Tracker/TrackerCheerState.swift,
+				Core/Models/Tracker/TrackerDayRecord.swift,
+				Core/Models/Tracker/TrackerStats.swift,
+				Core/Models/Widget/WidgetContext.swift,
+				Core/Persistence/HidayahStore.swift,
+				Core/Persistence/Storage.swift,
+				Core/Tracker/TaskManager.swift,
+				Core/Tracker/TrackerHistoryEngine.swift,
+				Core/Tracker/TrackerNotificationScheduler.swift,
+			);
+			target = CC3CBF9CCAF398625445E69E /* app-widgetTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
-		1B8DFA0B30963CBD00AFCBFA /* simple-quran */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quran"; sourceTree = "<group>"; };
+		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 7AA9D2BD6C0325B3F93206A9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
+		1B8DFA0B30963CBD00AFCBFA /* simple-quran */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, CC9A33765E6E58BEA8AF96EE /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quran"; sourceTree = "<group>"; };
+		B6F38842886C1E9413958FDC /* simple-quranTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "simple-quranTests"; sourceTree = "<group>"; };
+		D2BEB885B4B00D6775F92B0B /* app-widgetTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "app-widgetTests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +143,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		874D300780507C9598046B4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAB77F17A600AADAAF9E3932 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C266AA2C1BA0B68CCA4AA2B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50CDDFF01489B3A2EE66ACE7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -114,6 +170,8 @@
 				1B791FFC2DC1B8D00007CDDF /* app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
 				57432DF57683D06809F12458 /* Frameworks */,
+				B6F38842886C1E9413958FDC /* simple-quranTests */,
+				D2BEB885B4B00D6775F92B0B /* app-widgetTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,9 +179,9 @@
 			isa = PBXGroup;
 			children = (
 				35019315922F29D19A05C964 /* Hidayah Debug.app */,
-				52011893B3B28C5841643AB0 /* simple-quranTests.xctest */,
-				C2A3DBFF57F3347F61B8E94F /* simple-quranUITests.xctest */,
 				D69317EB623433755CA5F244 /* app-widgetExtension.appex */,
+				048C5B019668F736DC7C24D3 /* simple-quranTests.xctest */,
+				E8541C17F08F2EB125D1A663 /* app-widgetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,8 +189,17 @@
 		57432DF57683D06809F12458 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B8928E6912A71ACD7340199B /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B8928E6912A71ACD7340199B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				93C02A0C01546A1F7E216613 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,6 +252,48 @@
 			productReference = D69317EB623433755CA5F244 /* app-widgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		6C11DA7D4934977777292325 /* simple-quranTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A2CBCEED015A2D3494982DB5 /* Build configuration list for PBXNativeTarget "simple-quranTests" */;
+			buildPhases = (
+				184B8DBB35F52A1E3047A73F /* Sources */,
+				874D300780507C9598046B4B /* Frameworks */,
+				1D51E16F96BF53DA2962D2A6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D95117BF9B484C8BB24D60BF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B6F38842886C1E9413958FDC /* simple-quranTests */,
+			);
+			name = "simple-quranTests";
+			productName = "simple-quranTests";
+			productReference = 048C5B019668F736DC7C24D3 /* simple-quranTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CC3CBF9CCAF398625445E69E /* app-widgetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 57EE487E0A7F5D62971069E2 /* Build configuration list for PBXNativeTarget "app-widgetTests" */;
+			buildPhases = (
+				2B0FB0C5F50207914B826AA5 /* Sources */,
+				C266AA2C1BA0B68CCA4AA2B1 /* Frameworks */,
+				6815BDFF36D9409A4C630DE2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1B791FFC2DC1B8D00007CDDF /* app-widget */,
+				D2BEB885B4B00D6775F92B0B /* app-widgetTests */,
+			);
+			name = "app-widgetTests";
+			productName = "app-widgetTests";
+			productReference = E8541C17F08F2EB125D1A663 /* app-widgetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -230,6 +339,8 @@
 			targets = (
 				1B78EB10260B327E004E07CD /* simple-quran */,
 				1B791FF62DC1B8D00007CDDF /* app-widgetExtension */,
+				6C11DA7D4934977777292325 /* simple-quranTests */,
+				CC3CBF9CCAF398625445E69E /* app-widgetTests */,
 			);
 		};
 /* End PBXProject section */
@@ -243,6 +354,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1B791FF52DC1B8D00007CDDF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D51E16F96BF53DA2962D2A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6815BDFF36D9409A4C630DE2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,6 +401,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		184B8DBB35F52A1E3047A73F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1B78EB0D260B327E004E07CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,6 +422,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B0FB0C5F50207914B826AA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -298,9 +437,55 @@
 			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
 			targetProxy = 1B79200A2DC1B8D10007CDDF /* PBXContainerItemProxy */;
 		};
+		D95117BF9B484C8BB24D60BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "simple-quran";
+			target = 1B78EB10260B327E004E07CD /* simple-quran */;
+			targetProxy = F147663C33DE14DAFD41B833 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		043C85CCB6F0DC4919AB5F33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.app-widgetTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0789BB4A32ACCC29F0F9FD83 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hidayah Debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hidayah Debug";
+			};
+			name = Debug;
+		};
 		1B78EB39260B3284004E07CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -549,6 +734,46 @@
 			};
 			name = Release;
 		};
+		7C9BD6C9EC2F20620B2B85CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quranTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hidayah.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hidayah";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8DCD45B7DE43271CBD81CD0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R53DENZ7QG;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.app-widgetTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -575,6 +800,24 @@
 			buildConfigurations = (
 				1B79200F2DC1B8D10007CDDF /* Debug */,
 				1B7920102DC1B8D10007CDDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		57EE487E0A7F5D62971069E2 /* Build configuration list for PBXNativeTarget "app-widgetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DCD45B7DE43271CBD81CD0E /* Release */,
+				043C85CCB6F0DC4919AB5F33 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A2CBCEED015A2D3494982DB5 /* Build configuration list for PBXNativeTarget "simple-quranTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C9BD6C9EC2F20620B2B85CD /* Release */,
+				0789BB4A32ACCC29F0F9FD83 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -10,9 +10,17 @@ import SwiftUI
 struct TasbihView: View {
     let onOpenSettings: () -> Void
 
-    @Bindable private var viewModel = TasbihViewModel()
+    @Bindable private var viewModel: TasbihViewModel
     @State private var pulse = false
     @State private var isPresented = false
+
+    init(
+        onOpenSettings: @escaping () -> Void,
+        viewModel: TasbihViewModel = TasbihViewModel()
+    ) {
+        self.onOpenSettings = onOpenSettings
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         ZStack {
@@ -286,6 +294,13 @@ struct TasbihView: View {
             )
             .font(.system(size: 15, weight: .medium))
             .foregroundColor(.textGray)
+        }
+        // The counting area is a tap gesture, which VoiceOver cannot reach;
+        // expose the count as a button that adds one.
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction {
+            increment()
         }
     }
 

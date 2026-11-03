@@ -10,23 +10,30 @@ import Foundation
 
 @MainActor
 enum WidgetFontLoader {
-    private static var isRegistered = false
+    /// Set once the first registration ran. Internal so tests can reset it.
+    static var isRegistered = false
 
     static func registerFonts() {
+        registerFonts(in: .main)
+    }
+
+    static func registerFonts(in bundle: Bundle) {
         guard !isRegistered else { return }
         isRegistered = true
 
-        let urls = Bundle.main.urls(
-            forResourcesWithExtension: "ttf",
-            subdirectory: nil
-        ) ?? []
-
-        for url in urls {
+        for url in fontURLs(in: bundle) {
             CTFontManagerRegisterFontsForURL(
                 url as CFURL,
                 .process,
                 nil
             )
         }
+    }
+
+    static func fontURLs(in bundle: Bundle) -> [URL] {
+        bundle.urls(
+            forResourcesWithExtension: "ttf",
+            subdirectory: nil
+        ) ?? []
     }
 }

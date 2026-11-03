@@ -13,6 +13,11 @@ struct ToggleTaskIntent: AppIntent {
     @Parameter(title: LocalizedStringResource("widget_task_id_parameter"))
     var id: String
 
+    /// Stand-ins for the shared tracker, set only by tests. The widget
+    /// leaves them nil and uses the shared instances.
+    @MainActor static var taskManagerOverride: TaskManager?
+    @MainActor static var storeOverride: HidayahStore?
+
     init() {}
 
     init(
@@ -23,16 +28,18 @@ struct ToggleTaskIntent: AppIntent {
     
     @MainActor
     func perform() async throws -> some IntentResult {
-        TaskManager.shared.loadTasks()
+        let taskManager = Self.taskManagerOverride ?? TaskManager.shared
+        let store = Self.storeOverride ?? HidayahStore.shared
+        taskManager.loadTasks()
 
         // Toggling an in-memory copy would flip the widget for a change that
         // is never saved.
-        guard HidayahStore.shared.isPersistent else {
-            throw HidayahStore.shared.loadError ?? HidayahStore.StoreError.appGroupUnavailable
+        guard store.isPersistent else {
+            throw store.loadError ?? HidayahStore.StoreError.appGroupUnavailable
         }
 
-        if let task = TaskManager.shared.tasks.first(where: { $0.id.uuidString == id }) {
-            TaskManager.shared.toggleTaskCompletion(task: task)
+        if let task = taskManager.tasks.first(where: { $0.id.uuidString == id }) {
+            taskManager.toggleTaskCompletion(task: task)
         }
         return .result()
     }

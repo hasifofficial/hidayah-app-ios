@@ -16,32 +16,32 @@ struct TrackerProvider: TimelineProvider {
     ) var widgetContext = Data()
 
     func placeholder(in context: Context) -> TrackerEntry {
-        TrackerEntry(
-            date: Date(),
-            progress: 0.65,
-            completedTasks: 15,
-            totalTasks: 23,
-            upcomingTasks: [
-                TaskDetails(name: "Dawn Alms (Sodaqah)", category: .default(.fajr)),
-                TaskDetails(name: "Solawat 10x", category: .default(.fajr)),
-                TaskDetails(name: "Recitation of Ayatul Qursi 1x", category: .default(.fajr)),
-                TaskDetails(name: "Do'a to parents", category: .default(.fajr)),
-                TaskDetails(name: "Qabliah Fajr", category: .default(.fajr)),
-                TaskDetails(name: "Fajr prayer", category: .default(.fajr)),
-                TaskDetails(name: "Istighfar 3x", category: .default(.fajr)),
-                TaskDetails(name: "Tasbih Subhanallah 33x", category: .default(.fajr)),
-                TaskDetails(name: "Tahmid Alhamdulillah 33x", category: .default(.fajr)),
-                TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
-            ]
-        )
+        Self.sampleEntry(date: Date())
     }
 
     func getSnapshot(
         in context: Context,
         completion: @escaping (TrackerEntry) -> ()
     ) {
-        let entry = TrackerEntry(
-            date: Date(),
+        completion(Self.sampleEntry(date: Date()))
+    }
+
+    func getTimeline(
+        in context: Context,
+        completion: @escaping (Timeline<TrackerEntry>) -> ()
+    ) {
+        completion(
+            Self.timeline(
+                for: Storage.loadObject(key: .widgetContext),
+                now: Date()
+            )
+        )
+    }
+
+    /// The sample shown in the widget gallery and as a placeholder.
+    static func sampleEntry(date: Date) -> TrackerEntry {
+        TrackerEntry(
+            date: date,
             progress: 0.65,
             completedTasks: 15,
             totalTasks: 23,
@@ -58,17 +58,12 @@ struct TrackerProvider: TimelineProvider {
                 TaskDetails(name: "Takbir AllahuAkbar 33x", category: .default(.fajr))
             ]
         )
-        completion(entry)
     }
 
-    func getTimeline(
-        in context: Context,
-        completion: @escaping (Timeline<TrackerEntry>) -> ()
-    ) {
-        let widgetContext: WidgetContext? = Storage.loadObject(
-            key: .widgetContext
-        )
-        let now = Date()
+    static func timeline(
+        for widgetContext: WidgetContext?,
+        now: Date
+    ) -> Timeline<TrackerEntry> {
         var entries = [
             entry(for: widgetContext, on: now)
         ]
@@ -84,14 +79,13 @@ struct TrackerProvider: TimelineProvider {
             )
         }
 
-        let timeline = Timeline(
+        return Timeline(
             entries: entries,
             policy: .after(now.addingTimeInterval(60 * 15))
         )
-        completion(timeline)
     }
 
-    private func entry(
+    static func entry(
         for widgetContext: WidgetContext?,
         on date: Date
     ) -> TrackerEntry {

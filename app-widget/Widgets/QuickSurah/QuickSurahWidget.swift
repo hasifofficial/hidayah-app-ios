@@ -13,10 +13,9 @@ struct QuickSurahWidget: Widget {
         AppIntentConfiguration(
             kind: kind,
             intent: QuickSurahConfigurationIntent.self,
-            provider: QuickSurahProvider()
-        ) { entry in
-            QuickSurahWidgetEntryView(entry: entry)
-        }
+            provider: QuickSurahProvider(),
+            content: Self.entryView
+        )
         .configurationDisplayName(
             LocalizedStringResource("widget_quick_access_display_name")
         )
@@ -24,5 +23,9 @@ struct QuickSurahWidget: Widget {
             LocalizedStringResource("widget_quick_access_description")
         )
         .supportedFamilies([.systemMedium])
+    }
+
+    static func entryView(for entry: QuickSurahEntry) -> QuickSurahWidgetEntryView {
+        QuickSurahWidgetEntryView(entry: entry)
     }
 }

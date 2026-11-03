@@ -23,7 +23,13 @@ class TaskManager {
     private let historyEngine = TrackerHistoryEngine()
 
     @ObservationIgnored
-    private let store = HidayahStore.shared
+    private let store: HidayahStore
+
+    @ObservationIgnored
+    private let scheduler: TrackerNotificationScheduler
+
+    @ObservationIgnored
+    private let now: () -> Date
 
     @ObservationIgnored
     private var dirtyTaskIDs: Set<UUID> = []
@@ -46,7 +52,14 @@ class TaskManager {
     @ObservationIgnored
     private var dayChangeObserver: NSObjectProtocol?
 
-    private init() {
+    init(
+        store: HidayahStore = .shared,
+        scheduler: TrackerNotificationScheduler = .shared,
+        now: @escaping () -> Date = Date.init
+    ) {
+        self.store = store
+        self.scheduler = scheduler
+        self.now = now
         loadTasks()
 
         // The shared instance lives as long as the process, so the observer
@@ -71,7 +84,7 @@ class TaskManager {
         }
 
         if activeDayKey == nil {
-            activeDayKey = TrackerDayKey.today()
+            activeDayKey = todayKey
         }
         if startDayKey == nil {
             startDayKey = activeDayKey
@@ -84,7 +97,7 @@ class TaskManager {
     }
 
     func refreshForCurrentDay() {
-        let today = TrackerDayKey.today()
+        let today = todayKey
 
         guard activeDayKey != today else { return }
 
@@ -101,7 +114,8 @@ class TaskManager {
         activeDayKey = historyEngine.rollover(
             activeDayKey: activeDayKey,
             tasks: &tasks,
-            history: &history
+            history: &history,
+            now: now()
         )
         dirtyTaskIDs.formUnion(tasks.map(\.id))
         invalidateStats()
@@ -117,13 +131,17 @@ class TaskManager {
         if let cachedStats {
             return cachedStats
         }
-        let value = historyEngine.stats(for: history)
+        let value = historyEngine.stats(for: history, now: now())
         cachedStats = value
         return value
     }
 
+    private var todayKey: String {
+        TrackerDayKey.today(now: now())
+    }
+
     var todayRecord: TrackerDayRecord? {
-        record(for: activeDayKey ?? TrackerDayKey.today())
+        record(for: activeDayKey ?? todayKey)
     }
 
     func record(for dayKey: String) -> TrackerDayRecord? {
@@ -164,7 +182,7 @@ class TaskManager {
     }
 
     func upsertTodayRecord() {
-        let dayKey = activeDayKey ?? TrackerDayKey.today()
+        let dayKey = activeDayKey ?? todayKey
         let record = historyEngine.makeRecord(for: tasks, on: dayKey)
         historyEngine.upsert(record, for: dayKey, in: &history)
         invalidateStats()
@@ -261,7 +279,7 @@ class TaskManager {
             tasks[index].isCompleted.toggle()
             dirtyTaskIDs.insert(task.id)
             saveData()
-            TrackerNotificationScheduler.shared.progressDidChange(
+            scheduler.progressDidChange(
                 record: todayRecord,
                 stats: stats
             )
@@ -277,26 +295,26 @@ class TaskManager {
             }
             self.dirtyTaskIDs.formUnion(self.tasks.map(\.id))
 
-            let dayKey = self.activeDayKey ?? TrackerDayKey.today()
+            let dayKey = self.activeDayKey ?? self.todayKey
             self.history.removeAll { $0.dayKey == dayKey }
             self.saveData()
-            TrackerNotificationScheduler.shared.clearMilestones()
+            self.scheduler.clearMilestones()
         }
     }
 
     func resetAll() {
-        HidayahStore.shared.resetTracker()
+        store.resetTracker()
 
         tasks = []
         customCategories = []
         history = []
-        activeDayKey = TrackerDayKey.today()
+        activeDayKey = todayKey
         startDayKey = activeDayKey
         dirtyTaskIDs.removeAll()
         deletedTaskIDs.removeAll()
         invalidateStats()
         saveData()
-        TrackerNotificationScheduler.shared.clearAll()
+        scheduler.clearAll()
         loadTasks()
     }
 
@@ -437,7 +455,7 @@ extension TaskManager {
             completedTasks: completed,
             totalTasks: total,
             upcomingTasks: upcomingTasks,
-            dayKey: activeDayKey ?? TrackerDayKey.today(),
+            dayKey: activeDayKey ?? todayKey,
             resetUpcomingTasks: resetUpcomingTasks
         )
         guard let encoded = try? JSONEncoder().encode(widgetContext),

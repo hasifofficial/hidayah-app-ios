@@ -8,6 +8,12 @@
 import Foundation
 
 final class APIClientService: Sendable {
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
+
     func request<T: Codable>(
         endpoint: Endpoint,
         type: T.Type
@@ -34,7 +40,7 @@ final class APIClientService: Sendable {
             )
         }
 
-        let (data, response) = try await URLSession.shared.data(
+        let (data, response) = try await session.data(
             for: request
         )
 

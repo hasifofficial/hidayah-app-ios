@@ -24,10 +24,17 @@ final class SurahListViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
+    private let catalog: SurahCatalog
+
+    @ObservationIgnored
     private var hasLoaded = false
 
-    init(surahService: SurahService) {
+    init(
+        surahService: SurahService,
+        catalog: SurahCatalog = .shared
+    ) {
         self.surahService = surahService
+        self.catalog = catalog
     }
 
     func loadIfNeeded() {
@@ -35,9 +42,9 @@ final class SurahListViewModel {
 
         hasLoaded = true
 
-        if SurahCatalog.shared.isLoaded,
-           !SurahCatalog.shared.surahs.isEmpty {
-            surahs = SurahCatalog.shared.surahs
+        if catalog.isLoaded,
+           !catalog.surahs.isEmpty {
+            surahs = catalog.surahs
             isLoading = false
             return
         }
@@ -57,12 +64,12 @@ final class SurahListViewModel {
 
             let surahs = list.data ?? []
             self.surahs = surahs
-            SurahCatalog.shared.store(surahs)
+            catalog.store(surahs)
         } catch {
             isLoading = false
 
-            if SurahCatalog.shared.isLoaded {
-                surahs = SurahCatalog.shared.surahs
+            if catalog.isLoaded {
+                surahs = catalog.surahs
             } else {
                 surahs = []
             }

@@ -7,9 +7,20 @@
 
 import Foundation
 
+enum AppEnvironment {
+    /// True when the process hosts unit tests. Shared instances then use
+    /// isolated storage so tests never read or overwrite the user's data.
+    static let isRunningUnitTests = ProcessInfo.processInfo
+        .environment["XCTestConfigurationFilePath"] != nil
+}
+
 class Storage {
     // UserDefaults is documented as thread-safe but is not marked Sendable.
-    nonisolated(unsafe) static let userDefaults = UserDefaults(suiteName: "group.com.hasifofficial.simple-quran")
+    nonisolated(unsafe) static let userDefaults = UserDefaults(
+        suiteName: AppEnvironment.isRunningUnitTests
+            ? "com.hasifofficial.simple-quran.tests"
+            : "group.com.hasifofficial.simple-quran"
+    )
 
     enum StorageKey: String, CaseIterable {
         case selectedRecitation

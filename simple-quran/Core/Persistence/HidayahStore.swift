@@ -118,7 +118,12 @@ struct TrackerStorageSnapshot {
 
 @MainActor
 final class HidayahStore {
-    static let shared = HidayahStore()
+    static let shared = HidayahStore {
+        if AppEnvironment.isRunningUnitTests {
+            return makeInMemoryContainer()
+        }
+        return try makePersistentContainer()
+    }
 
     enum StoreError: LocalizedError {
         case appGroupUnavailable
@@ -141,7 +146,9 @@ final class HidayahStore {
         loadError == nil
     }
 
-    private var context: ModelContext
+    // Readable so tests can seed rows the public API never writes.
+    private(set) var context: ModelContext
+    private let makeContainer: @MainActor () throws -> ModelContainer
 
     private static let logger = Logger(
         subsystem: "com.hasifofficial.simple-quran",
@@ -152,9 +159,11 @@ final class HidayahStore {
         versionedSchema: HidayahSchemaV1.self
     )
 
-    private init() {
+    init(makeContainer: @escaping @MainActor () throws -> ModelContainer) {
+        self.makeContainer = makeContainer
+
         do {
-            context = ModelContext(try Self.makePersistentContainer())
+            context = ModelContext(try makeContainer())
         } catch {
             Self.logger.fault(
                 "Failed to open store: \(String(describing: error), privacy: .public)"
@@ -176,7 +185,7 @@ final class HidayahStore {
         guard !isPersistent else { return true }
 
         do {
-            context = ModelContext(try Self.makePersistentContainer())
+            context = ModelContext(try makeContainer())
             loadError = nil
             prepareStorageIfNeeded()
             Self.logger.notice("Reconnected to on-disk store")
@@ -187,7 +196,7 @@ final class HidayahStore {
         }
     }
 
-    private static func makePersistentContainer() throws -> ModelContainer {
+    static func makePersistentContainer() throws -> ModelContainer {
         guard let groupURL = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: "group.com.hasifofficial.simple-quran"
         ) else {
@@ -206,7 +215,7 @@ final class HidayahStore {
         )
     }
 
-    private static func makeInMemoryContainer() -> ModelContainer {
+    static func makeInMemoryContainer() -> ModelContainer {
         let configuration = ModelConfiguration(
             schema: schema,
             isStoredInMemoryOnly: true

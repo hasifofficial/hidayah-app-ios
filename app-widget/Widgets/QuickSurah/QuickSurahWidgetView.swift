@@ -23,9 +23,7 @@ struct QuickSurahWidgetEntryView: View {
             HStack(spacing: 8) {
                 ForEach(Array(entry.surahs.prefix(3))) { surah in
                     Link(
-                        destination: URL(
-                            string: "hidayahapp://inAppDeeplink/quran/\(surah.number)"
-                        )!
+                        destination: Self.deepLink(for: surah)
                     ) {
                         surahCard(surah)
                     }
@@ -35,12 +33,20 @@ struct QuickSurahWidgetEntryView: View {
             .frame(maxWidth: .infinity)
         }
         .padding(10)
-        .widgetURL(
-            URL(string: "hidayahapp://inAppDeeplink/quran")
-        )
+        .widgetURL(Self.widgetURL)
         .containerBackground(for: .widget) {
             QuickSurahWidgetBackground()
         }
+    }
+
+    /// Opens the Quran tab when the widget is tapped outside a card.
+    static let widgetURL = URL(string: "hidayahapp://inAppDeeplink/quran")
+
+    /// Opens the given surah.
+    static func deepLink(for surah: QuickSurahEntity) -> URL {
+        URL(
+            string: "hidayahapp://inAppDeeplink/quran/\(surah.number)"
+        )!
     }
 
     private var header: some View {

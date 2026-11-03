@@ -54,19 +54,24 @@ final class SurahService: SurahServiceable {
 
 @MainActor
 final class SurahCatalog {
-    static let shared = SurahCatalog()
+    static let shared = SurahCatalog(
+        cacheURL: FileManager.default.urls(
+            for: .cachesDirectory,
+            in: .userDomainMask
+        ).first?.appendingPathComponent(
+            AppEnvironment.isRunningUnitTests
+                ? "surah-catalog-tests.json"
+                : "surah-catalog.json"
+        )
+    )
 
     private(set) var surahs: [SurahListResponse] = []
     private(set) var isLoaded = false
 
     private let cacheURL: URL?
 
-    private init() {
-        let directory = FileManager.default.urls(
-            for: .cachesDirectory,
-            in: .userDomainMask
-        ).first
-        cacheURL = directory?.appendingPathComponent("surah-catalog.json")
+    init(cacheURL: URL?) {
+        self.cacheURL = cacheURL
         loadFromDisk()
     }
 

@@ -15,35 +15,50 @@ struct QuickSurahEntry: TimelineEntry {
 
 struct QuickSurahProvider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> QuickSurahEntry {
-        QuickSurahEntry(date: Date(), surahs: QuickSurahCatalog.quickAccess)
+        Self.placeholderEntry(date: Date())
     }
 
     func snapshot(
         for configuration: QuickSurahConfigurationIntent,
         in context: Context
     ) async -> QuickSurahEntry {
-        QuickSurahEntry(
-            date: Date(),
-            surahs: selectedSurahs(from: configuration)
-        )
+        Self.entry(for: configuration, date: Date())
     }
 
     func timeline(
         for configuration: QuickSurahConfigurationIntent,
         in context: Context
     ) async -> Timeline<QuickSurahEntry> {
+        Self.timeline(for: configuration, date: Date())
+    }
+
+    static func placeholderEntry(date: Date) -> QuickSurahEntry {
+        QuickSurahEntry(date: date, surahs: QuickSurahCatalog.quickAccess)
+    }
+
+    static func entry(
+        for configuration: QuickSurahConfigurationIntent,
+        date: Date
+    ) -> QuickSurahEntry {
+        QuickSurahEntry(
+            date: date,
+            surahs: selectedSurahs(from: configuration)
+        )
+    }
+
+    static func timeline(
+        for configuration: QuickSurahConfigurationIntent,
+        date: Date
+    ) -> Timeline<QuickSurahEntry> {
         Timeline(
             entries: [
-                QuickSurahEntry(
-                    date: Date(),
-                    surahs: selectedSurahs(from: configuration)
-                )
+                entry(for: configuration, date: date)
             ],
             policy: .never
         )
     }
 
-    private func selectedSurahs(
+    static func selectedSurahs(
         from configuration: QuickSurahConfigurationIntent
     ) -> [QuickSurahEntity] {
         let selected = Array((configuration.surahs ?? []).prefix(3))

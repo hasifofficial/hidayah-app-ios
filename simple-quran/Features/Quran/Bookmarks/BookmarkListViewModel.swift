@@ -33,24 +33,36 @@ final class BookmarkListViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
+    private let catalog: SurahCatalog
+
+    @ObservationIgnored
+    private let store: HidayahStore
+
+    @ObservationIgnored
     private var hasLoaded = false
 
-    init(surahService: SurahService) {
+    init(
+        surahService: SurahService,
+        catalog: SurahCatalog = .shared,
+        store: HidayahStore = .shared
+    ) {
         self.surahService = surahService
+        self.catalog = catalog
+        self.store = store
     }
 
     func loadIfNeeded() {
         if hasLoaded {
-            hydrate(with: SurahCatalog.shared.surahs)
+            hydrate(with: catalog.surahs)
             return
         }
 
         hasLoaded = true
 
-        if SurahCatalog.shared.isLoaded,
-           !SurahCatalog.shared.surahs.isEmpty {
+        if catalog.isLoaded,
+           !catalog.surahs.isEmpty {
             isLoading = false
-            hydrate(with: SurahCatalog.shared.surahs)
+            hydrate(with: catalog.surahs)
             return
         }
 
@@ -68,7 +80,7 @@ final class BookmarkListViewModel {
             isLoading = false
 
             let surahs = list.data ?? []
-            SurahCatalog.shared.store(surahs)
+            catalog.store(surahs)
             hydrate(with: surahs)
         } catch {
             isLoading = false
@@ -86,7 +98,7 @@ final class BookmarkListViewModel {
             return
         }
 
-        let storedBookmarks = HidayahStore.shared.bookmarks()
+        let storedBookmarks = store.bookmarks()
         let sortedBookmarks = storedBookmarks.sorted {
             if $0.surahNumber == $1.surahNumber {
                 return $0.numberInSurah < $1.numberInSurah

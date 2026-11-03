@@ -40,10 +40,22 @@ final class SearchViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
+    private let catalog: SurahCatalog
+
+    @ObservationIgnored
+    private let store: HidayahStore
+
+    @ObservationIgnored
     private var hasLoaded = false
 
-    init(surahService: SurahService) {
+    init(
+        surahService: SurahService,
+        catalog: SurahCatalog = .shared,
+        store: HidayahStore = .shared
+    ) {
         self.surahService = surahService
+        self.catalog = catalog
+        self.store = store
     }
 
     func loadIfNeeded() {
@@ -52,9 +64,9 @@ final class SearchViewModel {
             return
         }
 
-        if SurahCatalog.shared.isLoaded,
-           !SurahCatalog.shared.surahs.isEmpty {
-            surahList = SurahCatalog.shared.surahs
+        if catalog.isLoaded,
+           !catalog.surahs.isEmpty {
+            surahList = catalog.surahs
             hasLoaded = true
             refreshBookmarks()
             return
@@ -77,7 +89,7 @@ final class SearchViewModel {
 
                 let surahs = list.data ?? []
                 self.surahList = surahs
-                SurahCatalog.shared.store(surahs)
+                catalog.store(surahs)
                 self.hasLoaded = true
                 self.refreshBookmarks()
             } catch {
@@ -97,7 +109,7 @@ final class SearchViewModel {
             return
         }
 
-        let bookmarks = HidayahStore.shared.bookmarks()
+        let bookmarks = store.bookmarks()
 
         bookmarkedSurahs = bookmarks
             .sorted {

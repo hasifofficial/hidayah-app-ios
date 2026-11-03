@@ -33,13 +33,13 @@ struct HidayahApp: App {
                 guard !hasLoadedTracker else { return }
                 hasLoadedTracker = true
 
-                TaskManager.shared.loadTasks()
+                appDelegate.appController.taskManager.loadTasks()
                 try? await UNUserNotificationCenter.current().setBadgeCount(0)
             }
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active, hasLoadedTracker else { return }
 
-                TaskManager.shared.loadTasks()
+                appDelegate.appController.taskManager.loadTasks()
                 Task {
                     try? await UNUserNotificationCenter.current().setBadgeCount(0)
                 }

@@ -169,7 +169,7 @@ struct TrackerWidgetMediumView: View {
         .frame(width: 90, height: 90)
     }
 
-    private var completionMessage: String {
+    var completionMessage: String {
         let messages = (1...5).map { index in
             NSLocalizedString("widget_completion_\(index)", comment: "")
         }
@@ -221,7 +221,25 @@ struct TrackerWidgetMediumView: View {
 struct TrackerWidgetEntryView: View {
     var entry: TrackerProvider.Entry
 
-    @Environment(\.widgetFamily) private var family: WidgetFamily
+    /// Opens the tracker tab when the widget is tapped.
+    static let widgetURL = URL(string: "hidayahapp://inAppDeeplink/tracker")
+
+    @Environment(\.widgetFamily) private var environmentFamily: WidgetFamily
+
+    /// Overrides the environment's family; the widget leaves it nil.
+    private let familyOverride: WidgetFamily?
+
+    init(
+        entry: TrackerProvider.Entry,
+        family: WidgetFamily? = nil
+    ) {
+        self.entry = entry
+        self.familyOverride = family
+    }
+
+    private var family: WidgetFamily {
+        familyOverride ?? environmentFamily
+    }
 
     @ViewBuilder
     var body: some View {
@@ -232,18 +250,25 @@ struct TrackerWidgetEntryView: View {
                 TrackerWidgetSmallView(entry: entry)
             }
         }
-        .widgetURL(URL(string: "hidayahapp://inAppDeeplink/tracker"))
+        .widgetURL(Self.widgetURL)
         .containerBackground(for: .widget) {
-            TrackerWidgetBackground()
+            TrackerWidgetBackground(family: familyOverride)
         }
     }
 }
 
 struct TrackerWidgetBackground: View {
-    @Environment(\.widgetFamily) private var family
+    @Environment(\.widgetFamily) private var environmentFamily
 
-    private var tintOpacity: Double {
-        family == .systemSmall ? 0.26 : 0.18
+    /// Overrides the environment's family; the widget leaves it nil.
+    private let familyOverride: WidgetFamily?
+
+    init(family: WidgetFamily? = nil) {
+        self.familyOverride = family
+    }
+
+    var tintOpacity: Double {
+        (familyOverride ?? environmentFamily) == .systemSmall ? 0.26 : 0.18
     }
 
     var body: some View {

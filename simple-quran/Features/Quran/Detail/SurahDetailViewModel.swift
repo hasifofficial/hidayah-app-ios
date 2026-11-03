@@ -48,6 +48,9 @@ final class SurahDetailViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
+    private let store: HidayahStore
+
+    @ObservationIgnored
     private let bookmarkedAyah: Int?
 
     @ObservationIgnored
@@ -70,9 +73,11 @@ final class SurahDetailViewModel {
     init(
         surahService: SurahService,
         bookmarkedAyah: Int? = nil,
-        scrollToSpecificAyah: Bool = false
+        scrollToSpecificAyah: Bool = false,
+        store: HidayahStore = .shared
     ) {
         self.surahService = surahService
+        self.store = store
         self.bookmarkedAyah = bookmarkedAyah
         self.scrollToSpecificAyah = scrollToSpecificAyah
     }
@@ -354,7 +359,7 @@ final class SurahDetailViewModel {
             numberInSurah: ayah.numberInSurah
         )
 
-        let bookmarks = HidayahStore.shared.toggleBookmark(bookmark)
+        let bookmarks = store.toggleBookmark(bookmark)
         bookmarkedAyahs = Set(
             bookmarks
                 .filter { $0.surahNumber == selectedSurahNo }
@@ -410,7 +415,7 @@ final class SurahDetailViewModel {
 
     private func bookmarkedNumbers(for surahNumber: Int) -> Set<Int> {
         Set(
-            HidayahStore.shared.bookmarks()
+            store.bookmarks()
                 .filter { $0.surahNumber == surahNumber }
                 .map(\.numberInSurah)
         )

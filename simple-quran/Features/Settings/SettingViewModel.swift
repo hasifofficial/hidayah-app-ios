@@ -49,10 +49,17 @@ final class SettingsViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
+    private let scheduler: TrackerNotificationScheduler
+
+    @ObservationIgnored
     private var hasLoadedEditions = false
 
-    init(surahService: SurahService) {
+    init(
+        surahService: SurahService,
+        scheduler: TrackerNotificationScheduler = .shared
+    ) {
         self.surahService = surahService
+        self.scheduler = scheduler
 
         let recitation: EditionResponse? = Storage.loadObject(
             key: .selectedRecitation
@@ -150,7 +157,7 @@ final class SettingsViewModel {
     func setTrackerCheerleader(_ value: Bool) {
         allowTrackerCheerleader = value
         Storage.save(.allowTrackerCheerleader, value)
-        TrackerNotificationScheduler.shared.syncDailyCheer()
+        scheduler.syncDailyCheer()
     }
 
     private func handleEditionSuccess(_ edition: Edition) {

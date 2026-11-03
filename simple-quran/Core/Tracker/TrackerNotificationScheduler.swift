@@ -8,22 +8,47 @@
 import Foundation
 import UserNotifications
 
+/// The parts of `UNUserNotificationCenter` the tracker uses, so tests can
+/// observe scheduling without posting real notifications.
+@MainActor
+protocol NotificationScheduling: AnyObject {
+    func schedule(_ request: UNNotificationRequest)
+    func removePending(identifiers: [String])
+    func pendingIdentifiers() async -> [String]
+}
+
+extension UNUserNotificationCenter: NotificationScheduling {
+    func schedule(_ request: UNNotificationRequest) {
+        add(request)
+    }
+
+    func removePending(identifiers: [String]) {
+        removePendingNotificationRequests(withIdentifiers: identifiers)
+    }
+
+    func pendingIdentifiers() async -> [String] {
+        await pendingNotificationRequests().map(\.identifier)
+    }
+}
+
 @MainActor
 final class TrackerNotificationScheduler {
     static let shared = TrackerNotificationScheduler()
 
-    private let center = UNUserNotificationCenter.current()
+    private let center: NotificationScheduling
     private let milestones = [25, 50, 75, 100]
 
-    private init() {}
+    init(center: NotificationScheduling = UNUserNotificationCenter.current()) {
+        self.center = center
+    }
 
     private var isEnabled: Bool {
         Storage.load(key: .allowTrackerCheerleader) as? Bool ?? true
     }
 
     func syncDailyCheer() {
-        center.removePendingNotificationRequests(
-            withIdentifiers: [NotificationIdentifier.trackerDailyCheer.rawValue]
+        center.removePending(
+            identifiers: [NotificationIdentifier.trackerDailyCheer.rawValue]
         )
 
         guard isEnabled else {
@@ -58,7 +83,7 @@ final class TrackerNotificationScheduler {
             content: content,
             trigger: trigger
         )
-        center.add(request)
+        center.schedule(request)
     }
 
     func progressDidChange(
@@ -92,19 +117,16 @@ final class TrackerNotificationScheduler {
     func clearMilestones() {
         let prefix = NotificationIdentifier.trackerMilestonePrefix
         Task {
-            let identifiers = await center.pendingNotificationRequests()
-                .map(\.identifier)
+            let identifiers = await center.pendingIdentifiers()
                 .filter { $0.hasPrefix(prefix) }
-            center.removePendingNotificationRequests(
-                withIdentifiers: identifiers
-            )
+            center.removePending(identifiers: identifiers)
         }
         Storage.delete(.trackerCheerState)
     }
 
     func clearAll() {
-        center.removePendingNotificationRequests(
-            withIdentifiers: [NotificationIdentifier.trackerDailyCheer.rawValue]
+        center.removePending(
+            identifiers: [NotificationIdentifier.trackerDailyCheer.rawValue]
         )
         clearMilestones()
     }
@@ -155,7 +177,7 @@ final class TrackerNotificationScheduler {
             content: content,
             trigger: trigger
         )
-        center.add(request)
+        center.schedule(request)
     }
 
     private func loadState() -> TrackerCheerState {

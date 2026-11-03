@@ -22,16 +22,30 @@ class AppController: NSObject {
     lazy var deeplinkManager = DeeplinkManager(
         router: router
     )
-    let taskManager = TaskManager.shared
+    let taskManager: TaskManager
+    private let store: HidayahStore
+    private let notificationCenter: NotificationScheduling
 
-    override init() {
+    init(
+        taskManager: TaskManager = .shared,
+        store: HidayahStore = .shared,
+        scheduler: TrackerNotificationScheduler = .shared,
+        notificationCenter: NotificationScheduling = UNUserNotificationCenter.current()
+    ) {
+        self.taskManager = taskManager
+        self.store = store
+        self.notificationCenter = notificationCenter
+
         super.init()
 
-        FirebaseApp.configure()
+        // Firebase may only be configured once per process.
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
         self.reportStoreFailureIfNeeded()
         self.configureCustomFont()
         self.scheduleKahfNotification()
-        TrackerNotificationScheduler.shared.syncDailyCheer()
+        scheduler.syncDailyCheer()
 
         UNUserNotificationCenter.current().requestAuthorization(options: [
             .alert,
@@ -78,7 +92,7 @@ class AppController: NSObject {
 
 extension AppController {
     private func reportStoreFailureIfNeeded() {
-        guard let error = HidayahStore.shared.loadError else { return }
+        guard let error = store.loadError else { return }
 
         Crashlytics.crashlytics().record(error: error)
         router.errorMessage = NSLocalizedString(
@@ -119,9 +133,9 @@ extension AppController {
 
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
             
-            UNUserNotificationCenter.current().add(request)
+            notificationCenter.schedule(request)
         } else {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+            notificationCenter.removePending(identifiers: [identifier])
         }
     }
 
