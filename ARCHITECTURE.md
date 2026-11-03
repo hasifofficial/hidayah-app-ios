@@ -36,9 +36,10 @@ App/
   Lifecycle/
     AppController.swift
     AppDelegate.swift
-    HidayahApp.swift
+    SceneDelegate.swift
   Navigation/
     AppRouter.swift
+    AppShortcut.swift
     DeeplinkManager.swift
   Root/
     RootView.swift
@@ -46,10 +47,14 @@ App/
     LaunchScreen.storyboard
 ```
 
+- The app uses the UIKit scene lifecycle; `SceneDelegate` hosts the SwiftUI `RootView` inside a `UIHostingController`.
 - `AppController` is the composition root for services and shared state.
+- `SceneDelegate` owns the window, quick-action delivery, URL contexts, and scene activation.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
+- `AppShortcut` defines the Home Screen quick actions for Quran, Tasbih, and Tracker.
 - `DeeplinkManager` maps URLs to router destinations.
+- Quick actions use the same routes as deep links: `hidayahapp://inAppDeeplink/{quran|tasbih|tracker}`.
 
 ## Core
 

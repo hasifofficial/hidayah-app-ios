@@ -20,6 +20,7 @@ class DeeplinkManager: NSObject {
         case quran
         case quranDetail(surahNumber: Int, selectedAyahNumber: Int?)
         case bookmark
+        case tasbih
         case tracker
         
         static func build(from url: URL) -> DeepLink? {
@@ -57,6 +58,8 @@ class DeeplinkManager: NSObject {
                 return .quran
             case "bookmark":
                 return .bookmark
+            case "tasbih":
+                return .tasbih
             case "tracker":
                 return .tracker
             default:
@@ -88,6 +91,8 @@ class DeeplinkManager: NSObject {
         case .bookmark:
             router.selectTab(.quran)
             router.quranPath = [.bookmarkList]
+        case .tasbih:
+            router.selectTab(.tasbih)
         case .tracker:
             router.selectTab(.tracker)
         case .quranDetail(let surahNumber, let selectedAyahNumber):

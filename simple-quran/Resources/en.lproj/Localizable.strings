@@ -215,7 +215,6 @@
 "tracker_share_footer" = "Shared from Hidayah App";
 
 "setting_quran_font_size_title" = "Arabic Font Size";
-"setting_quran_show_translation_title" = "Show Translation";
 "quran_reading_settings_title" = "Quran Reading";
 "quran_reading_preview_title" = "Preview";
 "quran_reading_arabic_size" = "Arabic Text Size";
@@ -298,3 +297,7 @@
 "widget_guide_app_safari" = "Safari";
 "widget_guide_app_camera" = "Camera";
 "widget_guide_app_music" = "Music";
+
+"shortcut_quran_title" = "Quran";
+"shortcut_tasbih_title" = "Tasbih";
+"shortcut_tracker_title" = "Tracker";

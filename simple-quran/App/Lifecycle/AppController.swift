@@ -21,6 +21,7 @@ class AppController: NSObject {
         router: router
     )
     let taskManager = TaskManager.shared
+    private(set) var pendingShortcut: AppShortcut?
 
     override init() {
         super.init()
@@ -42,6 +43,26 @@ class AppController: NSObject {
                 "com.hasifofficial.simple-quran.tracker-progress-reset-notification"
             ]
         )
+    }
+
+    func configureShortcutItems() {
+        UIApplication.shared.shortcutItems = AppShortcut.allCases.map(\.shortcutItem)
+    }
+
+    func handleShortcut(_ shortcutItem: UIApplicationShortcutItem) {
+        guard let shortcut = AppShortcut(rawValue: shortcutItem.type) else {
+            return
+        }
+
+        pendingShortcut = shortcut
+        _ = deeplinkManager.handleDeepLink(url: shortcut.url)
+    }
+
+    func applyPendingShortcutIfNeeded() {
+        guard let pendingShortcut else { return }
+
+        self.pendingShortcut = nil
+        _ = deeplinkManager.handleDeepLink(url: pendingShortcut.url)
     }
 
     func application(
