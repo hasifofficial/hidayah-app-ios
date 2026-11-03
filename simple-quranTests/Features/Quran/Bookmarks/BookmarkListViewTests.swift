@@ -46,6 +46,36 @@ final class BookmarkListViewTests: ViewsTestCase {
         XCTAssertTrue(host.contains("Verse 10"))
     }
 
+    func test_bookmarkListView_should_showRemainingRows_when_bookmarksShrinkDuringRefresh() async throws {
+        // Arrange
+        ViewsFixtures.route()
+        let store = makeInMemoryStore()
+        let bookmarks = [
+            SurahBookmark(surahNumber: 2, numberInSurah: 255),
+            SurahBookmark(surahNumber: 18, numberInSurah: 10),
+            SurahBookmark(surahNumber: 36, numberInSurah: 1)
+        ]
+        bookmarks.forEach { store.toggleBookmark($0) }
+        let viewModel = makeViewModel(store: store)
+        let host = sceneHost(NavigationStack { BookmarkListView(viewModel: viewModel) })
+        host.pump(0.6)
+        store.toggleBookmark(bookmarks[1])
+        store.toggleBookmark(bookmarks[2])
+
+        // Act
+        let refreshControl = try XCTUnwrap(host.window.firstSubview(of: UIRefreshControl.self))
+        refreshControl.beginRefreshing()
+        refreshControl.sendActions(for: .valueChanged)
+        await waitUntil(timeout: 5) { viewModel.bookmarks.count == 1 && !viewModel.isLoading }
+        host.pump(0.6)
+
+        // Assert
+        XCTAssertEqual(viewModel.bookmarks.map(\.id), ["2-255"])
+        XCTAssertTrue(host.contains("Al-Baqara"))
+        XCTAssertFalse(host.contains("Al-Kahf"))
+        XCTAssertFalse(host.contains("Yaseen"))
+    }
+
     func test_bookmarkListView_should_showEmptyStateWithoutBookmarks() {
         // Arrange
         let viewModel = makeViewModel(store: makeInMemoryStore())
@@ -128,5 +158,20 @@ final class BookmarkListViewTests: ViewsTestCase {
         // Assert
         XCTAssertEqual(selected, ["36-12"])
         XCTAssertEqual(settingsOpened, 1)
+    }
+}
+
+private extension UIView {
+    /// The first view of `type` in this view's hierarchy, depth first.
+    func firstSubview<T: UIView>(of type: T.Type) -> T? {
+        if let match = self as? T {
+            return match
+        }
+        for subview in subviews {
+            if let match = subview.firstSubview(of: type) {
+                return match
+            }
+        }
+        return nil
     }
 }

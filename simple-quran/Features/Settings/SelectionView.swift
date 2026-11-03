@@ -45,9 +45,7 @@ struct SelectionView: View {
 
             Divider()
 
-            List(items.indices, id: \.self) { index in
-                let item = items[index]
-
+            List(items, id: \.value) { item in
                 Button {
                     onSelect(item)
                     dismiss()

@@ -30,9 +30,10 @@ struct SurahListView: View {
                             .loadAnimation(delay: 0.05)
                             .padding(.bottom, 6)
 
-                        ForEach(viewModel.surahs.indices, id: \.self) { index in
-                            let surah = viewModel.surahs[index]
-
+                        ForEach(
+                            Array(viewModel.surahs.enumerated()),
+                            id: \.offset
+                        ) { index, surah in
                             Button {
                                 onSelect?(surah)
                             } label: {

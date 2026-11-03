@@ -25,8 +25,10 @@ struct BookmarkListView: View {
                             .loadAnimation()
                             .padding(.bottom, 6)
 
-                        ForEach(viewModel.bookmarks.indices, id: \.self) { index in
-                            let bookmark = viewModel.bookmarks[index]
+                        ForEach(
+                            Array(viewModel.bookmarks.enumerated()),
+                            id: \.element.id
+                        ) { index, bookmark in
                             Button {
                                 onSelect?(bookmark)
                             } label: {
