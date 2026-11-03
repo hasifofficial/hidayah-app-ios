@@ -532,8 +532,7 @@ final class HidayahStore {
         custom: [UUID: CustomCategory]
     ) -> Category? {
         if id.hasPrefix("default_") {
-            let rawValue = String(id.dropFirst("default_".count))
-            guard let value = DefaultCategory(rawValue: rawValue) else {
+            guard let value = DefaultCategory(categoryID: id) else {
                 return nil
             }
             return .default(value)

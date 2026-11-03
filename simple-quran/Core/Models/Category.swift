@@ -21,6 +21,13 @@ enum DefaultCategory: String, CaseIterable, Identifiable, Codable {
 
     var id: String { self.rawValue }
 
+    /// The default category a `Category.id` such as "default_Upon Waking Up"
+    /// refers to, or nil for custom or unknown IDs.
+    init?(categoryID: String) {
+        guard categoryID.hasPrefix("default_") else { return nil }
+        self.init(rawValue: String(categoryID.dropFirst("default_".count)))
+    }
+
     var displayName: String {
         switch self {
         case .morning:

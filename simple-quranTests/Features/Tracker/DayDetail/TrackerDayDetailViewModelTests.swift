@@ -135,4 +135,59 @@ final class TrackerDayDetailViewModelTests: XCTestCase {
         XCTAssertEqual(vm.record, record)
         XCTAssertEqual(vm.dayKey, "2026-11-03")
     }
+
+    func test_categoryName_should_showLocalizedName_when_snapshotHoldsLocalizationKey() throws {
+        // Arrange
+        let snapshot = try savedSnapshot(
+            category: .default(.morning),
+            categoryName: "default_category_morning"
+        )
+        let vm = makeViewModel(tasks: [snapshot])
+        let group = try XCTUnwrap(vm.groupedTasks.first)
+
+        // Act
+        let name = vm.categoryName(for: group)
+
+        // Assert
+        XCTAssertEqual(name, "Upon Waking Up")
+    }
+
+    func test_categoryName_should_keepSavedName_when_categoryIsCustom() throws {
+        // Arrange
+        let custom = simple_quran.Category.custom(CustomCategory(name: "Renamed later"))
+        let snapshot = try savedSnapshot(category: custom, categoryName: "Name on that day")
+        let vm = makeViewModel(tasks: [snapshot])
+        let group = try XCTUnwrap(vm.groupedTasks.first)
+
+        // Act
+        let name = vm.categoryName(for: group)
+
+        // Assert
+        XCTAssertEqual(name, "Name on that day")
+    }
+
+    private func makeViewModel(tasks: [TrackerTaskSnapshot]) -> TrackerDayDetailViewModel {
+        TrackerDayDetailViewModel(
+            taskManager: VMFixtures.makeTaskManager(),
+            dayKey: "2026-11-03",
+            record: TrackerDayRecord(dayKey: "2026-11-03", tasks: tasks)
+        )
+    }
+
+    /// A snapshot as decoded from storage, with whatever category name was
+    /// saved, e.g. the raw key a widget-side save leaves behind.
+    private func savedSnapshot(
+        category: simple_quran.Category,
+        categoryName: String
+    ) throws -> TrackerTaskSnapshot {
+        let original = VMFixtures.snapshot("Task", category: category, isCompleted: true)
+        var json = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: JSONEncoder().encode(original)) as? [String: Any]
+        )
+        json["categoryName"] = categoryName
+        return try JSONDecoder().decode(
+            TrackerTaskSnapshot.self,
+            from: JSONSerialization.data(withJSONObject: json)
+        )
+    }
 }

@@ -49,6 +49,18 @@ final class TrackerDayDetailViewModel {
         return formatter.string(from: date)
     }
 
+    /// Default category names are looked up when shown rather than taken from
+    /// the snapshot: a day saved outside the app, e.g. from the widget, holds
+    /// the untranslated key. Custom categories keep the name they had that day.
+    func categoryName(
+        for group: (categoryID: String, tasks: [TrackerTaskSnapshot])
+    ) -> String {
+        if let category = DefaultCategory(categoryID: group.categoryID) {
+            return category.displayName
+        }
+        return group.tasks.first?.categoryName ?? ""
+    }
+
     var groupedTasks: [(categoryID: String, tasks: [TrackerTaskSnapshot])] {
         guard let record else { return [] }
 

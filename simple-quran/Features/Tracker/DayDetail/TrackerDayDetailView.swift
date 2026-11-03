@@ -220,7 +220,7 @@ struct TrackerDayDetailView: View {
                 .frame(width: 36, height: 36)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(group.tasks.first?.categoryName ?? "")
+                    Text(viewModel.categoryName(for: group))
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(.title)
 

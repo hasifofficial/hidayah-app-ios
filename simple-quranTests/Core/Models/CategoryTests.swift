@@ -20,6 +20,30 @@ final class CategoryTests: XCTestCase {
         XCTAssertEqual(categories.map(\.id), categories.map(\.rawValue))
     }
 
+    func test_defaultCategoryFromID_should_matchEveryDefaultCategoryID() {
+        // Arrange
+        let ids = DefaultCategory.allCases.map { simple_quran.Category.default($0).id }
+
+        // Act
+        let parsed = ids.map(DefaultCategory.init(categoryID:))
+
+        // Assert
+        XCTAssertEqual(parsed, DefaultCategory.allCases)
+    }
+
+    func test_defaultCategoryFromID_should_returnNil_when_idIsCustomOrUnknown() {
+        // Arrange
+        let custom = simple_quran.Category.custom(CustomCategory(name: "Mine")).id
+
+        // Act
+        let fromCustom = DefaultCategory(categoryID: custom)
+        let fromUnknown = DefaultCategory(categoryID: "default_Nope")
+
+        // Assert
+        XCTAssertNil(fromCustom)
+        XCTAssertNil(fromUnknown)
+    }
+
     func test_defaultCategory_should_haveIconForEveryCase() {
         // Arrange
         let categories = DefaultCategory.allCases
