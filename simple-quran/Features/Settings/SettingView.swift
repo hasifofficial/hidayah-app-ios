@@ -23,11 +23,6 @@ struct SettingsView: View {
         store: Storage.userDefaults
     ) private var arabicFontSize = 22.0
 
-    @AppStorage(
-        Storage.StorageKey.quranShowTranslation.rawValue,
-        store: Storage.userDefaults
-    ) private var showTranslation = true
-
     var body: some View {
         List {
             SettingsSectionHeader(
@@ -73,15 +68,6 @@ struct SettingsView: View {
             ) {
                 showingQuranReadingSettings = true
             }
-
-            SettingsToggleRow(
-                icon: "character.book.closed",
-                title: NSLocalizedString(
-                    "setting_quran_show_translation_title",
-                    comment: ""
-                ),
-                isOn: $showTranslation
-            )
 
             SettingsSectionHeader(
                 title: NSLocalizedString(
