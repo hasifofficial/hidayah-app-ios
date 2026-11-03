@@ -7,7 +7,6 @@
 
 import UIKit
 
-@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let appController = AppController()
 
@@ -16,23 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         application.registerForRemoteNotifications()
-        appController.configureShortcutItems()
-
-        if let shortcutItem = launchOptions?[.shortcutItem]
-            as? UIApplicationShortcutItem {
-            appController.handleShortcut(shortcutItem)
-        }
 
         return true
-    }
-
-    func application(
-        _ application: UIApplication,
-        performActionFor shortcutItem: UIApplicationShortcutItem,
-        completionHandler: @escaping (Bool) -> Void
-    ) {
-        appController.handleShortcut(shortcutItem)
-        completionHandler(true)
     }
 
     func application(
