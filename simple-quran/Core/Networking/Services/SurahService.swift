@@ -6,12 +6,11 @@
 //
 
 import Foundation
-import Combine
 
 protocol SurahServiceable {
-    func getSurahEdition() -> Future<Edition, Error>
-    func getSurahList() -> Future<SurahList, Error>
-    func getSurahDetail(surahNo: Int, recitationId: String, translationId: String) -> Future<Surah, Error>
+    func getSurahEdition() async throws -> Edition
+    func getSurahList() async throws -> SurahList
+    func getSurahDetail(surahNo: Int, recitationId: String, translationId: String) async throws -> Surah
 }
 
 class SurahService: SurahServiceable {
@@ -23,15 +22,15 @@ class SurahService: SurahServiceable {
         self.apiClientService = apiClientService
     }
 
-    func getSurahEdition() -> Future<Edition, Error> {
-        apiClientService.request(
+    func getSurahEdition() async throws -> Edition {
+        try await apiClientService.request(
             endpoint: SurahEndpoints.getSurahEdition,
             type: Edition.self
         )
     }
 
-    func getSurahList() -> Future<SurahList, Error> {
-        apiClientService.request(
+    func getSurahList() async throws -> SurahList {
+        try await apiClientService.request(
             endpoint: SurahEndpoints.getSurahList,
             type: SurahList.self
         )
@@ -41,8 +40,8 @@ class SurahService: SurahServiceable {
         surahNo: Int,
         recitationId: String,
         translationId: String
-    ) -> Future<Surah, Error> {
-        apiClientService.request(
+    ) async throws -> Surah {
+        try await apiClientService.request(
             endpoint: SurahEndpoints.getSurahDetail(
                 surahNo: surahNo,
                 recitationId: recitationId,

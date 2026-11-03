@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import Observation
 
 @Observable
@@ -22,9 +21,6 @@ final class SurahListViewModel {
 
     @ObservationIgnored
     private let surahService: SurahService
-
-    @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
 
     @ObservationIgnored
     private var hasLoaded = false
@@ -45,44 +41,38 @@ final class SurahListViewModel {
             return
         }
 
-        load()
+        Task { [weak self] in
+            await self?.load()
+        }
     }
 
-    func load(completion: (() -> Void)? = nil) {
+    @MainActor
+    func load() async {
         isLoading = true
 
-        surahService.getSurahList()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] result in
-                defer { completion?() }
-                guard let self else { return }
+        do {
+            let list = try await surahService.getSurahList()
+            isLoading = false
 
-                self.isLoading = false
+            let surahs = list.data ?? []
+            self.surahs = surahs
+            SurahCatalog.shared.store(surahs)
+        } catch {
+            isLoading = false
 
-                if case .failure(let error) = result {
-                    if SurahCatalog.shared.isLoaded {
-                        self.surahs = SurahCatalog.shared.surahs
-                    } else {
-                        self.surahs = []
-                    }
-                    self.onError?(
-                        (error as? RequestError)?.message
-                            ?? error.localizedDescription
-                    )
-                }
-            } receiveValue: { [weak self] list in
-                let surahs = list.data ?? []
-                self?.surahs = surahs
-                SurahCatalog.shared.store(surahs)
+            if SurahCatalog.shared.isLoaded {
+                surahs = SurahCatalog.shared.surahs
+            } else {
+                surahs = []
             }
-            .store(in: &cancellables)
+            onError?(
+                (error as? RequestError)?.message
+                    ?? error.localizedDescription
+            )
+        }
     }
 
     func refresh() async {
-        await withCheckedContinuation { continuation in
-            load {
-                continuation.resume()
-            }
-        }
+        await load()
     }
 }

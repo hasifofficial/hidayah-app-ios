@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import Observation
 
 struct SearchBookmark: Identifiable {
@@ -40,9 +39,6 @@ final class SearchViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
-
-    @ObservationIgnored
     private var hasLoaded = false
 
     init(surahService: SurahService) {
@@ -71,29 +67,26 @@ final class SearchViewModel {
 
         isLoading = true
 
-        surahService.getSurahList()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                guard let self else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
 
+            do {
+                let list = try await self.surahService.getSurahList()
                 self.isLoading = false
-
-                if case .failure(let error) = completion {
-                    self.onError?(
-                        (error as? RequestError)?.message
-                            ?? error.localizedDescription
-                    )
-                }
-            } receiveValue: { [weak self] list in
-                guard let self else { return }
 
                 let surahs = list.data ?? []
                 self.surahList = surahs
                 SurahCatalog.shared.store(surahs)
                 self.hasLoaded = true
                 self.refreshBookmarks()
+            } catch {
+                self.isLoading = false
+                self.onError?(
+                    (error as? RequestError)?.message
+                        ?? error.localizedDescription
+                )
             }
-            .store(in: &cancellables)
+        }
     }
 
     func refreshBookmarks() {

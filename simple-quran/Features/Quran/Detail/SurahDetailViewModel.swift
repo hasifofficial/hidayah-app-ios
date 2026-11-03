@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import AVFoundation
 import Observation
 
@@ -52,9 +51,6 @@ final class SurahDetailViewModel {
 
     @ObservationIgnored
     private let scrollToSpecificAyah: Bool
-
-    @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
 
     @ObservationIgnored
     private var hasLoaded = false
@@ -114,27 +110,25 @@ final class SurahDetailViewModel {
         )
         let translationId = selectedTranslationData?.identifier ?? "en.asad"
 
-        surahService.getSurahDetail(
-            surahNo: selectedSurahNo,
-            recitationId: recitationId,
-            translationId: translationId
-        )
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] completion in
+        Task { @MainActor [weak self] in
             guard let self else { return }
 
-            self.isLoading = false
-
-            if case .failure(let error) = completion {
+            do {
+                let surah = try await self.surahService.getSurahDetail(
+                    surahNo: selectedSurahNo,
+                    recitationId: recitationId,
+                    translationId: translationId
+                )
+                self.isLoading = false
+                self.handleSurahDetail(surah)
+            } catch {
+                self.isLoading = false
                 self.showError(
                     (error as? RequestError)?.message
                         ?? error.localizedDescription
                 )
             }
-        } receiveValue: { [weak self] surah in
-            self?.handleSurahDetail(surah)
         }
-        .store(in: &cancellables)
     }
 
     private func handleSurahDetail(_ surah: Surah) {
@@ -262,21 +256,19 @@ final class SurahDetailViewModel {
 
         hasLoadedEditions = true
 
-        surahService.getSurahEdition()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                guard let self else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
 
-                if case .failure(let error) = completion {
-                    self.showError(
-                        (error as? RequestError)?.message
-                            ?? error.localizedDescription
-                    )
-                }
-            } receiveValue: { [weak self] edition in
-                self?.handleEditions(edition)
+            do {
+                let edition = try await self.surahService.getSurahEdition()
+                self.handleEditions(edition)
+            } catch {
+                self.showError(
+                    (error as? RequestError)?.message
+                        ?? error.localizedDescription
+                )
             }
-            .store(in: &cancellables)
+        }
     }
 
     private func handleEditions(_ edition: Edition) {

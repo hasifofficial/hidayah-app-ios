@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import Observation
 
 enum SettingsSelection: String, Identifiable {
@@ -47,9 +46,6 @@ final class SettingsViewModel {
 
     @ObservationIgnored
     private let surahService: SurahService
-
-    @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
 
     @ObservationIgnored
     private var hasLoadedEditions = false
@@ -103,21 +99,19 @@ final class SettingsViewModel {
     }
 
     func loadEditions() {
-        surahService.getSurahEdition()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] result in
-                guard let self else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
 
-                if case .failure(let error) = result {
-                    self.onError?(
-                        (error as? RequestError)?.message
-                            ?? error.localizedDescription
-                    )
-                }
-            } receiveValue: { [weak self] edition in
-                self?.handleEditionSuccess(edition)
+            do {
+                let edition = try await self.surahService.getSurahEdition()
+                self.handleEditionSuccess(edition)
+            } catch {
+                self.onError?(
+                    (error as? RequestError)?.message
+                        ?? error.localizedDescription
+                )
             }
-            .store(in: &cancellables)
+        }
     }
 
     func items(for selection: SettingsSelection) -> [ItemSelector] {

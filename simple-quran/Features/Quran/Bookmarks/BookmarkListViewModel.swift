@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import Observation
 
 struct BookmarkedSurah: Identifiable {
@@ -33,9 +32,6 @@ final class BookmarkListViewModel {
     private let surahService: SurahService
 
     @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
-
-    @ObservationIgnored
     private var hasLoaded = false
 
     init(surahService: SurahService) {
@@ -57,35 +53,30 @@ final class BookmarkListViewModel {
             return
         }
 
-        load()
+        Task { [weak self] in
+            await self?.load()
+        }
     }
 
-    func load(completion: (() -> Void)? = nil) {
+    @MainActor
+    func load() async {
         isLoading = true
 
-        surahService.getSurahList()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] result in
-                defer { completion?() }
-                guard let self else { return }
+        do {
+            let list = try await surahService.getSurahList()
+            isLoading = false
 
-                self.isLoading = false
-
-                if case .failure(let error) = result {
-                    self.bookmarks = []
-                    self.onError?(
-                        (error as? RequestError)?.message
-                            ?? error.localizedDescription
-                    )
-                }
-            } receiveValue: { [weak self] list in
-                guard let self else { return }
-
-                let surahs = list.data ?? []
-                SurahCatalog.shared.store(surahs)
-                self.hydrate(with: surahs)
-            }
-            .store(in: &cancellables)
+            let surahs = list.data ?? []
+            SurahCatalog.shared.store(surahs)
+            hydrate(with: surahs)
+        } catch {
+            isLoading = false
+            bookmarks = []
+            onError?(
+                (error as? RequestError)?.message
+                    ?? error.localizedDescription
+            )
+        }
     }
 
     private func hydrate(with surahs: [SurahListResponse]) {
@@ -117,10 +108,6 @@ final class BookmarkListViewModel {
     }
 
     func refresh() async {
-        await withCheckedContinuation { continuation in
-            load {
-                continuation.resume()
-            }
-        }
+        await load()
     }
 }
