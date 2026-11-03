@@ -68,18 +68,54 @@ struct TrackerProvider: TimelineProvider {
         let widgetContext: WidgetContext? = Storage.loadObject(
             key: .widgetContext
         )
-        let entry = TrackerEntry(
-            date: Date(),
+        let now = Date()
+        var entries = [
+            entry(for: widgetContext, on: now)
+        ]
+
+        let calendar = TrackerDayKey.calendar
+        if let nextMidnight = calendar.date(
+            byAdding: .day,
+            value: 1,
+            to: calendar.startOfDay(for: now)
+        ) {
+            entries.append(
+                entry(for: widgetContext, on: nextMidnight)
+            )
+        }
+
+        let timeline = Timeline(
+            entries: entries,
+            policy: .after(now.addingTimeInterval(60 * 15))
+        )
+        completion(timeline)
+    }
+
+    private func entry(
+        for widgetContext: WidgetContext?,
+        on date: Date
+    ) -> TrackerEntry {
+        // The app only rolls the tracker over when it runs, so a snapshot
+        // from an earlier day is shown the way the app will reset it.
+        if let widgetContext,
+           let dayKey = widgetContext.dayKey,
+           dayKey != TrackerDayKey.key(for: date) {
+            return TrackerEntry(
+                date: date,
+                progress: 0,
+                completedTasks: 0,
+                totalTasks: widgetContext.totalTasks,
+                upcomingTasks: widgetContext.resetUpcomingTasks ?? []
+            )
+        }
+
+        return TrackerEntry(
+            date: date,
             progress: widgetContext?.progress ?? 0,
             completedTasks: widgetContext?.completedTasks ?? 0,
             totalTasks: widgetContext?.totalTasks ?? 1,
             upcomingTasks: widgetContext?.upcomingTasks ?? []
         )
-        let timeline = Timeline(
-            entries: [entry],
-            policy: .after(Date().addingTimeInterval(60 * 15))
-        )
-        completion(timeline)
     }
 }
 

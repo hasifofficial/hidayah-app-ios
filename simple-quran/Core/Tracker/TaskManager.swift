@@ -425,11 +425,21 @@ extension TaskManager {
             .filter { !$0.isCompleted }
             .prefix(5)
             .map { $0 }
+        let resetUpcomingTasks = tasks
+            .prefix(5)
+            .map { task in
+                var task = task
+                task.isCompleted = false
+                return task
+            }
+
         let widgetContext = WidgetContext(
             progress: progress,
             completedTasks: completed,
             totalTasks: total,
-            upcomingTasks: upcomingTasks
+            upcomingTasks: upcomingTasks,
+            dayKey: activeDayKey ?? TrackerDayKey.today(),
+            resetUpcomingTasks: resetUpcomingTasks
         )
         guard let encoded = try? JSONEncoder().encode(widgetContext),
               encoded != lastWidgetData else {
