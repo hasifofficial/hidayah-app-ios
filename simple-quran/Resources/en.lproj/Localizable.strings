@@ -223,6 +223,26 @@
 "quran_reading_show_translation" = "Show Translation";
 "quran_reading_reset" = "Reset";
 "quran_reading_done" = "Done";
+"quran_reading_mode_title" = "Reading Mode";
+"quran_reading_mode_list" = "List";
+"quran_reading_mode_mushaf" = "Mushaf";
+"quran_reading_mushaf_note" = "Mushaf pages are shown as printed, so text size and translation apply to List mode only.";
+"quran_mushaf_page_format" = "Page %d";
+"quran_mushaf_spread_format" = "Pages %d–%d";
+"quran_mushaf_wide_title" = "On Wide Screens";
+"quran_mushaf_two_pages" = "Two Pages";
+"quran_mushaf_one_page" = "One Page";
+"quran_mushaf_wide_note" = "For an unfolded iPhone Duo, an iPad or a phone on its side. One page shows larger text.";
+"quran_mushaf_juz_format" = "Juz %d";
+"quran_mushaf_page_accessibility" = "Page %d, %@, Juz %d";
+"quran_mushaf_surah_fallback" = "Surah %d";
+"quran_mushaf_load_error" = "The Mushaf pages couldn't be loaded.";
+"quran_mushaf_retry" = "Try Again";
+"quran_mushaf_add_bookmark" = "Bookmark page";
+"quran_mushaf_remove_bookmark" = "Remove page bookmark";
+"quran_mushaf_add_bookmark_format" = "Bookmark page %d";
+"quran_mushaf_remove_bookmark_format" = "Remove bookmark from page %d";
+"quran_mushaf_bookmarked_suffix" = ", bookmarked";
 
 "add_category_intro_title" = "Create a Category";
 "add_category_intro_subtitle" = "Group related tasks and choose an icon that fits.";

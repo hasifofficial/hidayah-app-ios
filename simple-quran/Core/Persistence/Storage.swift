@@ -31,6 +31,8 @@ class Storage {
         case widgetContext
         case quranArabicFontSize
         case quranShowTranslation
+        case quranReadingMode
+        case mushafShowsSpread
         case trackerActiveDayKey
         case trackerStartDayKey
         case hasMigratedToSwiftData

@@ -103,6 +103,22 @@ extension ViewHost {
         return nil
     }
 
+    /// Every view of type `T` under the window or presented controllers, in
+    /// layout order.
+    func allViews<T: UIView>(of type: T.Type) -> [T] {
+        var roots: [UIView] = [window]
+        var presented = controller.presentedViewController
+        while let next = presented {
+            roots.append(next.view)
+            presented = next.presentedViewController
+        }
+        return roots.flatMap { Self.findAll(T.self, in: $0) }
+    }
+
+    private static func findAll<T: UIView>(_ type: T.Type, in view: UIView) -> [T] {
+        (view as? T).map { [$0] } ?? view.subviews.flatMap { findAll(type, in: $0) }
+    }
+
     private static func find<T: UIView>(_ type: T.Type, in view: UIView) -> T? {
         if let match = view as? T {
             return match

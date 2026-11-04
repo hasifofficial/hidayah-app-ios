@@ -18,7 +18,7 @@ simple-quran/
   Core/         Models, networking, persistence, tracker domain services
   Features/     Feature screens, view models, and feature components
   Shared/       Cross-feature UI, form controls, modifiers, services
-  Resources/    Assets, fonts, localization, constants, bundled Al-Mathurat text
+  Resources/    Assets, fonts, localization, constants, bundled Al-Mathurat text and Mushaf pages
 
 simple-quranTests/   Unit tests for the app, mirroring simple-quran/
 app-widgetTests/     Unit tests for the widget, mirroring app-widget/
@@ -78,6 +78,8 @@ Core/
     TrackerNotificationScheduler.swift
   Mathurat/
     MathuratLibrary.swift
+  Mushaf/
+    MushafLibrary.swift
   Extensions/
 ```
 
@@ -88,6 +90,7 @@ Core/
 - `APIClientService` and `SurahService` are stateless and `Sendable`, and use `async`/`await`. `APIClientService` takes its `URLSession` through `init`.
 - `SurahCatalog` caches the surah list on disk; its cache location is injectable.
 - `BundleMathuratLoader` (behind the `MathuratLoading` protocol) decodes the bundled Al-Mathurat Sughra and returns the entries for the morning or evening session; its directory is injectable.
+- `BundleMushafLoader` (behind `MushafLoading`) decodes the Mushaf page layout (`MushafLayout`: where each surah, ayah and juz falls on the 604 pages) and decodes page images with ImageIO straight to the screen's width; its directory is injectable.
 - Models are plain value/reference types with no SwiftUI dependencies.
 
 ## Features
@@ -97,6 +100,7 @@ Features/
   Quran/
     List/
     Detail/
+    Mushaf/
     Bookmarks/
     Components/
   Search/
@@ -287,7 +291,7 @@ Changing a model without a new version makes the on-disk store fail to open.
 
 The project builds in Swift 5 mode with `SWIFT_STRICT_CONCURRENCY = complete` and `SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES`. Production code has no concurrency warnings; keep it that way.
 
-- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model, including `MathuratViewModel`. `BundleMathuratLoader` is a `Sendable` struct.
+- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model, including `MathuratViewModel` and `MushafViewModel`. `BundleMathuratLoader` and `BundleMushafLoader` are `Sendable` structs; Mushaf pages decode in a detached task and are cached a few at a time.
 - Networking services are stateless and `Sendable`; requests and JSON decoding run off the main actor.
 - Callbacks the system delivers on the main queue (`NotificationCenter` observers with `queue: .main`) use `MainActor.assumeIsolated`.
 - `nonisolated(unsafe)` is allowed only with a comment explaining why it is safe.
@@ -320,6 +324,15 @@ Both run from the `simple-quran` scheme (⌘U) with code coverage enabled.
 - Each entry records whether it is read in the morning, the evening or both, and the reader shows only that session's entries in their `order`.
 - The content tests in `MathuratLibraryTests` check entry counts per session, titles, repeat counts, the morning/evening wording and that no text is empty. They guard against accidental edits, not against errors in the text itself.
 - Edit the file by hand, run the tests, and review the text against a printed Al-Ma'thurat before release.
+
+`Resources/Mushaf.bundle/` holds the 604 Madani Mushaf pages (`page001.png` to `page604.png`, 1920 pixels wide, black text on transparency) and `pages.json`: the first page of each surah, the first ayah of each page and the first ayah of each juz.
+
+- `SurahDetailScreen` is the one way into a surah. It reads `StorageKey.quranReadingMode` and shows `SurahDetailView` (List) or `MushafView` (Mushaf), opening the Mushaf on the bookmarked ayah's page or the surah's first page. The mode is chosen in `ReadingSettingsView` when it is opened with `showsReadingMode: true`.
+- The pages are drawn as template images in the text colour, so they follow dark mode.
+- When the reading area is at least 600 points wide and not much taller than wide (an unfolded iPhone Duo, an iPad, a phone on its side), `MushafView` shows two-page spreads like a printed book: the odd page on the right, the even page after it on the left. The scroll position stays a page number, so folding or rotating keeps the place. Readers who prefer larger text can choose One Page for wide screens (`StorageKey.mushafShowsSpread`).
+- Page bookmarks reuse ayah bookmarks: bookmarking a page in `MushafView` saves its first ayah through `HidayahStore.toggleBookmark`, so it shows in the Bookmarks list and search and opens on the same place in either mode. A page counts as bookmarked when any ayah on it is, and removing its bookmark clears them all.
+- `BundleMushafLoader` trims the same blank border from every page (`BundleMushafLoader.trim`, measured across all 604 pages), so the text fills the space it is given.
+- `MushafLayoutTests` and `MushafLibraryTests` check known pages (Al-Kahf on 293, Ayat al-Kursi on 42), the juz, that every page image exists and that images decode at the requested width.
 
 ## Privacy
 

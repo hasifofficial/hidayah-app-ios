@@ -294,4 +294,50 @@ final class SurahDetailViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(host.contains("Invalid verse number 9. This surah only has 3 verses"))
     }
+
+    // MARK: Reading mode
+
+    func test_surahDetailScreen_should_showAyahList_when_modeIsList() async {
+        // Arrange
+        Storage.save(.quranReadingMode, "list")
+
+        // Act
+        let host = sceneHost(
+            NavigationStack {
+                SurahDetailScreen(
+                    surahService: makeStubbedSurahService(),
+                    surahNumber: 18,
+                    title: "Al-Kahf",
+                    bookmarkedAyah: nil,
+                    mushafLoader: FakeMushafLoader()
+                )
+            }
+        )
+        host.pump(0.6)
+
+        // Assert
+        XCTAssertFalse(host.contains("Page "))
+    }
+
+    func test_surahDetailScreen_should_showMushaf_when_modeIsMushaf() {
+        // Arrange
+        Storage.save(.quranReadingMode, "mushaf")
+
+        // Act
+        let host = sceneHost(
+            NavigationStack {
+                SurahDetailScreen(
+                    surahService: makeStubbedSurahService(),
+                    surahNumber: 2,
+                    title: "Al-Baqara",
+                    bookmarkedAyah: 7,
+                    mushafLoader: FakeMushafLoader()
+                )
+            }
+        )
+        host.pump(0.6)
+
+        // Assert
+        XCTAssertTrue(host.contains("Page 3, "))
+    }
 }

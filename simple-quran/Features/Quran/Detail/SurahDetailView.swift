@@ -102,7 +102,7 @@ struct SurahDetailView: View {
             }
         }
         .sheet(isPresented: $showingReadingSettings) {
-            ReadingSettingsView()
+            ReadingSettingsView(showsReadingMode: true)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
@@ -276,14 +276,23 @@ private enum DetailSelection: String, Identifiable {
     }
 }
 
+/// Every way into a surah lands here; it shows the ayah list or the Mushaf
+/// pages, following the reading mode.
 struct SurahDetailScreen: View {
     @State private var viewModel: SurahDetailViewModel
+    @State private var mushafViewModel: MushafViewModel
+
+    @AppStorage(
+        Storage.StorageKey.quranReadingMode.rawValue,
+        store: Storage.userDefaults
+    ) private var readingMode = QuranReadingMode.list
 
     init(
         surahService: SurahService,
         surahNumber: Int,
         title: String?,
-        bookmarkedAyah: Int?
+        bookmarkedAyah: Int?,
+        mushafLoader: MushafLoading = BundleMushafLoader()
     ) {
         let viewModel = SurahDetailViewModel(
             surahService: surahService,
@@ -293,9 +302,21 @@ struct SurahDetailScreen: View {
         viewModel.selectedSurahNo = surahNumber
         viewModel.title = title ?? ""
         _viewModel = State(initialValue: viewModel)
+        _mushafViewModel = State(
+            initialValue: MushafViewModel(
+                surahNumber: surahNumber,
+                ayahNumber: bookmarkedAyah,
+                loader: mushafLoader
+            )
+        )
     }
 
     var body: some View {
-        SurahDetailView(viewModel: viewModel)
+        switch readingMode {
+        case .list:
+            SurahDetailView(viewModel: viewModel)
+        case .mushaf:
+            MushafView(viewModel: mushafViewModel)
+        }
     }
 }

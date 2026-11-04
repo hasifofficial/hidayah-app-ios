@@ -116,7 +116,7 @@ final class StorageTests: XCTestCase {
         let rawValues = keys.map(\.rawValue)
 
         // Assert
-        XCTAssertEqual(keys.count, 11)
+        XCTAssertEqual(keys.count, 13)
         XCTAssertTrue(rawValues.contains("widgetContext"))
         XCTAssertTrue(rawValues.contains("hasMigratedToSwiftData"))
     }

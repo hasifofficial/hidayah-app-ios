@@ -8,6 +8,20 @@
 import SwiftUI
 
 struct ReadingSettingsView: View {
+    /// Shows the List / Mushaf choice; only the Quran reader and Settings
+    /// offer it.
+    var showsReadingMode = false
+
+    @AppStorage(
+        Storage.StorageKey.quranReadingMode.rawValue,
+        store: Storage.userDefaults
+    ) private var readingMode = QuranReadingMode.list
+
+    @AppStorage(
+        Storage.StorageKey.mushafShowsSpread.rawValue,
+        store: Storage.userDefaults
+    ) private var showsSpread = true
+
     @AppStorage(
         Storage.StorageKey.quranArabicFontSize.rawValue,
         store: Storage.userDefaults
@@ -24,8 +38,22 @@ struct ReadingSettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    previewCard
+                    if showsReadingMode {
+                        readingModeCard
+                    }
+
+                    if isMushaf {
+                        Text(NSLocalizedString("quran_reading_mushaf_note", comment: ""))
+                            .font(.system(size: 13))
+                            .foregroundColor(.textGray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        previewCard
+                    }
+
                     settingsCard
+                        .disabled(isMushaf)
+                        .opacity(isMushaf ? 0.4 : 1)
                 }
                 .padding(16)
             }
@@ -47,6 +75,8 @@ struct ReadingSettingsView: View {
                     ) {
                         arabicFontSize = 22
                         showTranslation = true
+                        readingMode = .list
+                        showsSpread = true
                     }
                     .font(.system(size: 13))
                     .foregroundColor(.primary)
@@ -163,6 +193,59 @@ struct ReadingSettingsView: View {
             .frame(width: 30, height: 30)
             .background(Color.appBackground.opacity(0.7))
             .clipShape(Circle())
+    }
+
+    /// Mushaf pages are images, so the text settings don't apply to them.
+    private var isMushaf: Bool {
+        showsReadingMode && readingMode == .mushaf
+    }
+
+    private var readingModeCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(NSLocalizedString("quran_reading_mode_title", comment: ""))
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.title)
+
+            Picker(
+                NSLocalizedString("quran_reading_mode_title", comment: ""),
+                selection: $readingMode
+            ) {
+                ForEach(QuranReadingMode.allCases, id: \.self) { mode in
+                    Text(NSLocalizedString(mode.titleKey, comment: ""))
+                        .tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            if readingMode == .mushaf {
+                Divider()
+                    .overlay(Color.textGray.opacity(0.08))
+                    .padding(.vertical, 6)
+
+                Text(NSLocalizedString("quran_mushaf_wide_title", comment: ""))
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.title)
+
+                Picker(
+                    NSLocalizedString("quran_mushaf_wide_title", comment: ""),
+                    selection: $showsSpread
+                ) {
+                    Text(NSLocalizedString("quran_mushaf_two_pages", comment: ""))
+                        .tag(true)
+                    Text(NSLocalizedString("quran_mushaf_one_page", comment: ""))
+                        .tag(false)
+                }
+                .pickerStyle(.segmented)
+
+                Text(NSLocalizedString("quran_mushaf_wide_note", comment: ""))
+                    .font(.system(size: 12))
+                    .foregroundColor(.textGray)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(16)
+        .background(Color.backgroundGray)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private var settingsCard: some View {

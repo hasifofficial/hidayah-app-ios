@@ -112,6 +112,98 @@ final class ReadingSettingsViewTests: ViewsTestCase {
         XCTAssertEqual(Storage.load(key: .quranShowTranslation) as? Bool, true)
     }
 
+    func test_quranReadingSettingsView_should_hideReadingMode_byDefault() {
+        // Arrange
+        let state = SheetState()
+
+        // Act
+        let host = present(state) { ReadingSettingsView() }
+
+        // Assert
+        XCTAssertFalse(host.contains("Reading Mode"))
+        XCTAssertTrue(host.contains("Preview"))
+    }
+
+    func test_quranReadingSettingsView_should_saveMushafMode_when_chosen() {
+        // Arrange
+        let state = SheetState()
+        let host = present(state) { ReadingSettingsView(showsReadingMode: true) }
+        let showedPicker = host.contains("Reading Mode")
+
+        // Act
+        // Accessibility activation doesn't pick a segment on every iOS
+        // version, so select it on the control the picker is drawn with.
+        let control = host.firstView(of: UISegmentedControl.self)
+        control?.selectedSegmentIndex = 1
+        control?.sendActions(for: .valueChanged)
+        host.pump(0.3)
+
+        // Assert
+        XCTAssertTrue(showedPicker)
+        XCTAssertEqual(Storage.load(key: .quranReadingMode) as? String, "mushaf")
+        XCTAssertTrue(host.contains("Mushaf pages are shown as printed"))
+        XCTAssertFalse(host.contains("Preview"))
+    }
+
+    func test_quranReadingSettingsView_should_saveOnePage_when_chosenForWideScreens() {
+        // Arrange
+        Storage.save(.quranReadingMode, "mushaf")
+        let state = SheetState()
+        let host = present(state) { ReadingSettingsView(showsReadingMode: true) }
+        let showedChoice = host.contains("On Wide Screens")
+
+        // Act
+        let controls = host.allViews(of: UISegmentedControl.self)
+        controls.last?.selectedSegmentIndex = 1
+        controls.last?.sendActions(for: .valueChanged)
+        host.pump(0.3)
+
+        // Assert
+        XCTAssertTrue(showedChoice)
+        XCTAssertEqual(Storage.load(key: .mushafShowsSpread) as? Bool, false)
+    }
+
+    func test_quranReadingSettingsView_should_hideWideScreenChoice_inListMode() {
+        // Arrange
+        let state = SheetState()
+
+        // Act
+        let host = present(state) { ReadingSettingsView(showsReadingMode: true) }
+
+        // Assert
+        XCTAssertFalse(host.contains("On Wide Screens"))
+    }
+
+    func test_quranReadingSettingsView_should_resetModeToList() {
+        // Arrange
+        Storage.save(.quranReadingMode, "mushaf")
+        Storage.save(.mushafShowsSpread, false)
+        let state = SheetState()
+        let host = present(state) { ReadingSettingsView(showsReadingMode: true) }
+
+        // Act
+        host.tap("Reset")
+        host.pump(0.3)
+
+        // Assert
+        XCTAssertEqual(Storage.load(key: .quranReadingMode) as? String, "list")
+        XCTAssertEqual(Storage.load(key: .mushafShowsSpread) as? Bool, true)
+        XCTAssertTrue(host.contains("Preview"))
+    }
+
+    func test_quranReadingSettingsView_should_ignoreMushafMode_when_pickerIsHidden() {
+        // Arrange
+        Storage.save(.quranReadingMode, "mushaf")
+        let state = SheetState()
+
+        // Act
+        let host = present(state) { ReadingSettingsView() }
+
+        // Assert
+        XCTAssertTrue(host.contains("Preview"))
+        XCTAssertFalse(host.contains("Mushaf pages are shown as printed"))
+    }
+
     func test_quranReadingSettingsView_should_dismissWhenDoneTapped() {
         // Arrange
         let state = SheetState()
