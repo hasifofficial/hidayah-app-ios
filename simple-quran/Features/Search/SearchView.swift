@@ -47,7 +47,8 @@ struct SearchView: View {
                                             ),
                                             String(item.bookmark.numberInSurah)
                                         ),
-                                        arabicTitle: item.surah.name ?? ""
+                                        arabicTitle: item.surah.name ?? "",
+                                        surahNumber: item.surah.number
                                     )
                                 }
                                 .buttonStyle(.plain)
@@ -69,7 +70,8 @@ struct SearchView: View {
                                     SurahListRowView(
                                         title: surah.englishName ?? "",
                                         subtitle: subtitle(for: surah),
-                                        arabicTitle: surah.name ?? ""
+                                        arabicTitle: surah.name ?? "",
+                                        surahNumber: surah.number
                                     )
                                 }
                                 .buttonStyle(.plain)

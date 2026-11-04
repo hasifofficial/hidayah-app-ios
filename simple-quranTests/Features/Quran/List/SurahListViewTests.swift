@@ -44,6 +44,25 @@ final class SurahListViewTests: ViewsTestCase {
         XCTAssertTrue(host.contains("Al-Mulk, "))
     }
 
+    func test_surahListView_should_readArabicNames_when_drawnWithSurahNameFont() async {
+        // Arrange
+        ViewsFixtures.route()
+        let viewModel = makeViewModel()
+
+        // Act
+        let host = sceneHost(NavigationStack { SurahListView(viewModel: viewModel) })
+        await waitUntil(timeout: 5) { !viewModel.isLoading }
+        host.pump(0.6)
+
+        // Assert
+        // SwiftUI wraps the interpolated Arabic in direction isolates, so
+        // check the parts rather than the exact label.
+        let cardLabel = host.labels().first { $0.hasPrefix("Al-Mulk, ") }
+        XCTAssertTrue(cardLabel?.contains("سورة الملك") == true, "\(cardLabel ?? "no card")")
+        XCTAssertTrue(host.contains("Al-Mulk, Makkiyah • 30 verses, سورة الملك"))
+        XCTAssertFalse(host.labels().contains { $0.contains("surah0") || $0.contains("surah1") })
+    }
+
     func test_surahListView_should_showPlaceholdersWhileLoading() async {
         // Arrange
         StubURLProtocol.handler = { _ in

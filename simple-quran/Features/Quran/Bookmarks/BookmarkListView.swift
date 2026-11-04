@@ -36,6 +36,7 @@ struct BookmarkListView: View {
                                     title: bookmark.surah.englishName ?? "",
                                     subtitle: subtitle(for: bookmark),
                                     arabicTitle: bookmark.surah.name ?? "",
+                                    surahNumber: bookmark.surah.number,
                                     badgeIcon: "bookmark.fill"
                                 )
                             }

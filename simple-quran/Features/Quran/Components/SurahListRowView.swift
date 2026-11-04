@@ -10,7 +10,10 @@ import SwiftUI
 struct SurahListRowView: View {
     let title: String
     let subtitle: String
+    /// The Arabic name, read by VoiceOver and shown when there is no surah
+    /// number to draw it with the surah-name font.
     let arabicTitle: String
+    var surahNumber: Int? = nil
     var badgeText: String? = nil
     var badgeIcon: String? = nil
 
@@ -48,13 +51,21 @@ struct SurahListRowView: View {
 
             Spacer(minLength: 8)
 
-            Text(arabicTitle)
-                .font(.kitabBold(size: 20))
-                .foregroundColor(.lightGreen)
-                .multilineTextAlignment(.trailing)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-                .fixedSize(horizontal: false, vertical: true)
+            if let ligature = surahNumber.flatMap(Font.surahNameLigature(for:)) {
+                Text(ligature)
+                    .font(.surahNameFont(size: 50))
+                    .foregroundColor(.lightGreen)
+                    .lineLimit(1)
+                    .accessibilityLabel(arabicTitle)
+            } else {
+                Text(arabicTitle)
+                    .font(.kitabBold(size: 20))
+                    .foregroundColor(.lightGreen)
+                    .multilineTextAlignment(.trailing)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)

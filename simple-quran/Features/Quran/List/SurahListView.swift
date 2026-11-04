@@ -41,6 +41,7 @@ struct SurahListView: View {
                                     title: surah.englishName ?? "",
                                     subtitle: subtitle(for: surah),
                                     arabicTitle: surah.name ?? "",
+                                    surahNumber: surah.number ?? index + 1,
                                     badgeText: String(surah.number ?? index + 1)
                                 )
                             }
@@ -160,11 +161,18 @@ struct SurahListView: View {
                 .foregroundColor(.title)
                 .lineLimit(1)
 
-            Text(surah.name ?? "")
-                .font(.kitabBold(size: 20))
-                .foregroundColor(.lightGreen)
-                .lineLimit(1)
-                .minimumScaleFactor(0.85)
+            if let ligature = surah.number.flatMap(Font.surahNameLigature(for:)) {
+                Text(ligature)
+                    .font(.surahNameFont(size: 44))
+                    .foregroundColor(.lightGreen)
+                    .lineLimit(1)
+            } else {
+                Text(surah.name ?? "")
+                    .font(.kitabBold(size: 20))
+                    .foregroundColor(.lightGreen)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+            }
         }
         .frame(width: 142, alignment: .leading)
         .padding(12)

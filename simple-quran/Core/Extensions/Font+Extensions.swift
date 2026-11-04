@@ -13,8 +13,6 @@ extension Font {
         .custom("Amiri-Bold", size: size)
     }
 
-
-
     static func amiriRegular(size: CGFloat) -> Font {
         .custom("Amiri-Regular", size: size)
     }
@@ -25,6 +23,19 @@ extension Font {
 
     static func kitabBold(size: CGFloat) -> Font {
         .custom("Kitab-Bold", size: size)
+    }
+
+    /// Draws a surah's calligraphic name from its ligature text; see
+    /// `surahNameLigature(for:)`.
+    static func surahNameFont(size: CGFloat) -> Font {
+        .custom("surah-name-v2", size: size)
+    }
+
+    /// The text `surahNameFont` turns into a surah's name: "surah001" to
+    /// "surah114". Nil outside that range.
+    static func surahNameLigature(for number: Int) -> String? {
+        guard (1...114).contains(number) else { return nil }
+        return String(format: "surah%03d", number)
     }
 
     static func loadFontsBundle(bundle: String, fontExtension: String) {
