@@ -40,6 +40,17 @@ final class FontExtensionsTests: XCTestCase {
         XCTAssertEqual(font, .custom("surah-name-v2", size: 50))
     }
 
+    func test_uthmanicDouri_should_usePostScriptName() {
+        // Arrange
+        let size: CGFloat = 22
+
+        // Act
+        let font = Font.uthmanicDouri(size: size)
+
+        // Assert
+        XCTAssertEqual(font, .custom("KFGQPCDouriUthmanicScript-Regul", size: 22))
+    }
+
     func test_surahNameLigature_should_padNumberToThreeDigits() {
         // Arrange
         let numbers = [1, 18, 114]
@@ -62,7 +73,7 @@ final class FontExtensionsTests: XCTestCase {
         XCTAssertEqual(ligatures, [nil, nil, nil])
     }
 
-    func test_loadFontsBundle_should_registerSurahNameFont() {
+    func test_loadFontsBundle_should_registerSurahNameAndDouriFonts() {
         // Arrange
         let bundle = "Fonts"
 
@@ -71,6 +82,7 @@ final class FontExtensionsTests: XCTestCase {
 
         // Assert
         XCTAssertNotNil(UIFont(name: "surah-name-v2", size: 20))
+        XCTAssertNotNil(UIFont(name: "KFGQPCDouriUthmanicScript-Regul", size: 20))
     }
 
     func test_loadFontsBundle_should_ignoreMissingBundle() {

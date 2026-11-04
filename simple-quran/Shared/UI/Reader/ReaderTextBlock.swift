@@ -13,11 +13,13 @@ struct ReaderTextBlock: View {
     var translation: String?
     var translationIsRTL = false
     let arabicFontSize: Double
+    /// When set, ayah numbers in the Arabic (Arabic-Indic digits) use this
+    /// font while the words stay in Kitab.
+    var numberFont: ((CGFloat) -> Font)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(arabic)
-                .font(.kitabRegular(size: CGFloat(arabicFontSize)))
+            arabicText
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -51,6 +53,53 @@ struct ReaderTextBlock: View {
                     .padding(.top, 12)
             }
         }
+    }
+}
+
+extension ReaderTextBlock {
+    @ViewBuilder
+    private var arabicText: some View {
+        let size = CGFloat(arabicFontSize)
+        if let numberFont {
+            Text(Self.styledArabic(arabic, size: size, numberFont: numberFont))
+        } else {
+            Text(arabic)
+                .font(.kitabRegular(size: size))
+        }
+    }
+
+    /// The Arabic in Kitab, with each run of Arabic-Indic digits in
+    /// `numberFont`.
+    nonisolated static func styledArabic(
+        _ arabic: String,
+        size: CGFloat,
+        numberFont: (CGFloat) -> Font
+    ) -> AttributedString {
+        var result = AttributedString()
+        var run = ""
+        var runIsNumber = false
+
+        func flush() {
+            guard !run.isEmpty else { return }
+            var part = AttributedString(run)
+            part.font = runIsNumber ? numberFont(size) : .kitabRegular(size: size)
+            result += part
+            run = ""
+        }
+
+        for character in arabic {
+            let isNumber = character.unicodeScalars.allSatisfy {
+                (0x0660...0x0669).contains($0.value)
+            }
+            if isNumber != runIsNumber {
+                flush()
+                runIsNumber = isNumber
+            }
+            run.append(character)
+        }
+        flush()
+
+        return result
     }
 }
 

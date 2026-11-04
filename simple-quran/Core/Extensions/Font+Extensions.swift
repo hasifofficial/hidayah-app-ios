@@ -25,6 +25,12 @@ extension Font {
         .custom("Kitab-Bold", size: size)
     }
 
+    /// KFGQPC Douri Uthmanic Script, from `uthmanic-douri-v20.ttf`. Custom
+    /// fonts are looked up by PostScript name, not file name.
+    static func uthmanicDouri(size: CGFloat) -> Font {
+        .custom("KFGQPCDouriUthmanicScript-Regul", size: size)
+    }
+
     /// Draws a surah's calligraphic name from its ligature text; see
     /// `surahNameLigature(for:)`.
     static func surahNameFont(size: CGFloat) -> Font {

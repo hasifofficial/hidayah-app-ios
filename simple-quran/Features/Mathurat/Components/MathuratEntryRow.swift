@@ -61,7 +61,8 @@ struct MathuratEntryRow: View {
             ReaderTextBlock(
                 arabic: entry.arabic,
                 translation: showTranslation ? entry.translation : nil,
-                arabicFontSize: arabicFontSize
+                arabicFontSize: arabicFontSize,
+                numberFont: Font.uthmanicDouri(size:)
             )
 
             ReaderRowDivider()
