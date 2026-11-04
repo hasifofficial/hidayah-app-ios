@@ -234,6 +234,52 @@ final class TrackerNotificationSchedulerTests: XCTestCase {
         XCTAssertTrue(center.pending.isEmpty)
     }
 
+    // MARK: Strings bundle
+    //
+    // Ticking a task in the Tracker widget schedules cheers from the widget
+    // extension, whose bundle lacks these strings, so the scheduler reads
+    // them from the containing app.
+
+    func test_appBundleURL_should_resolveContainingApp_when_runningInWidget() {
+        // Arrange
+        let widget = URL(fileURLWithPath: "/Containers/Hidayah.app/PlugIns/app-widgetExtension.appex")
+
+        // Act
+        let app = TrackerNotificationScheduler.appBundleURL(for: widget)
+
+        // Assert
+        XCTAssertEqual(app.path, "/Containers/Hidayah.app")
+    }
+
+    func test_appBundleURL_should_keepURL_when_runningInApp() {
+        // Arrange
+        let appURL = URL(fileURLWithPath: "/Containers/Hidayah.app")
+
+        // Act
+        let resolved = TrackerNotificationScheduler.appBundleURL(for: appURL)
+
+        // Assert
+        XCTAssertEqual(resolved, appURL)
+    }
+
+    func test_stringsBundle_should_holdEveryCheerString() {
+        // Arrange
+        let keys = [
+            "push_notification_tracker_cheer_title",
+            "push_notification_tracker_cheer_body",
+            "push_notification_tracker_cheer_milestone_body",
+            "push_notification_tracker_cheer_complete_body"
+        ]
+
+        // Act
+        let missing = keys.filter {
+            NSLocalizedString($0, bundle: TrackerNotificationScheduler.stringsBundle, comment: "") == $0
+        }
+
+        // Assert
+        XCTAssertTrue(missing.isEmpty, "\(missing)")
+    }
+
     func test_shared_should_exist() {
         // Arrange
         // Nothing to arrange beyond the clean state from setUp.

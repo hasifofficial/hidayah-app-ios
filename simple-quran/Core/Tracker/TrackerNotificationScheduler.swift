@@ -42,6 +42,26 @@ final class TrackerNotificationScheduler {
         self.center = center
     }
 
+    /// The app's own bundle, also when this runs in the widget: ticking a
+    /// task from the Tracker widget schedules cheers from the extension,
+    /// whose bundle has only the widget's strings.
+    static let stringsBundle: Bundle = {
+        Bundle(url: appBundleURL(for: Bundle.main.bundleURL)) ?? .main
+    }()
+
+    /// `App.app/PlugIns/Widget.appex` → `App.app`; any other URL is
+    /// returned unchanged.
+    nonisolated static func appBundleURL(for bundleURL: URL) -> URL {
+        guard bundleURL.pathExtension == "appex" else { return bundleURL }
+        return bundleURL
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+    }
+
+    private static func localized(_ key: String) -> String {
+        NSLocalizedString(key, bundle: stringsBundle, comment: "")
+    }
+
     private var isEnabled: Bool {
         Storage.load(key: .allowTrackerCheerleader) as? Bool ?? true
     }
@@ -57,14 +77,8 @@ final class TrackerNotificationScheduler {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString(
-            "push_notification_tracker_cheer_title",
-            comment: ""
-        )
-        content.body = NSLocalizedString(
-            "push_notification_tracker_cheer_body",
-            comment: ""
-        )
+        content.title = Self.localized("push_notification_tracker_cheer_title")
+        content.body = Self.localized("push_notification_tracker_cheer_body")
         content.sound = .default
         content.userInfo = [
             "url": "hidayahapp://inAppDeeplink/tracker"
@@ -137,26 +151,17 @@ final class TrackerNotificationScheduler {
         stats: TrackerStats
     ) {
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString(
-            "push_notification_tracker_cheer_title",
-            comment: ""
-        )
+        content.title = Self.localized("push_notification_tracker_cheer_title")
 
         if milestone == 100 {
             content.body = String(
-                format: NSLocalizedString(
-                    "push_notification_tracker_cheer_complete_body",
-                    comment: ""
-                ),
+                format: Self.localized("push_notification_tracker_cheer_complete_body"),
                 stats.currentStreak,
                 stats.level
             )
         } else {
             content.body = String(
-                format: NSLocalizedString(
-                    "push_notification_tracker_cheer_milestone_body",
-                    comment: ""
-                ),
+                format: Self.localized("push_notification_tracker_cheer_milestone_body"),
                 milestone
             )
         }
