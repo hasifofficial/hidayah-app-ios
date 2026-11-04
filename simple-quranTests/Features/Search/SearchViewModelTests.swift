@@ -26,11 +26,17 @@ final class SearchViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    private func makeViewModel() -> SearchViewModel {
+    private func makeViewModel(
+        mathurat: FakeMathuratLoader = FakeMathuratLoader(entries: []),
+        clock: TestClock = MathuratFixtures.clock(morning: true)
+    ) -> SearchViewModel {
         SearchViewModel(
             surahService: makeStubbedSurahService(),
             catalog: catalog,
-            store: store
+            store: store,
+            mathuratLoader: mathurat,
+            now: { clock.now },
+            calendar: TrackerDayKey.calendar
         )
     }
 
@@ -279,5 +285,90 @@ final class SearchViewModelTests: XCTestCase {
 
         // Assert
         XCTAssertEqual(item.id, "0-3")
+    }
+
+    // MARK: Al-Mathurat
+
+    /// The fixture entries, with the session-only du'as titled.
+    private var titledMathurat: FakeMathuratLoader {
+        FakeMathuratLoader(entries: [
+            MathuratFixtures.entry(id: 1),
+            MathuratFixtures.entry(id: 2, title: "Al Fatihah (1-7)"),
+            MathuratFixtures.entry(id: 13, title: "Pagi", reading: .morning),
+            MathuratFixtures.entry(id: 14, title: "Petang", reading: .evening)
+        ])
+    }
+
+    func test_updateKeyword_should_matchMathuratTitleIgnoringCase() {
+        // Arrange
+        let vm = makeViewModel(mathurat: titledMathurat)
+
+        // Act
+        vm.updateKeyword("fatihah")
+
+        // Assert
+        XCTAssertEqual(vm.filteredMathurat.map(\.id), [2])
+    }
+
+    func test_updateKeyword_should_notMatchMathuratTranslation() {
+        // Arrange
+        let vm = makeViewModel(mathurat: titledMathurat)
+
+        // Act
+        vm.updateKeyword("berlindung")
+
+        // Assert
+        XCTAssertTrue(vm.filteredMathurat.isEmpty)
+    }
+
+    func test_updateKeyword_should_searchOnlyCurrentMathuratSession() {
+        // Arrange
+        let loader = titledMathurat
+        let vm = makeViewModel(mathurat: loader, clock: MathuratFixtures.clock(morning: false))
+
+        // Act
+        vm.updateKeyword("petang")
+
+        // Assert
+        XCTAssertEqual(vm.filteredMathurat.map(\.id), [14])
+        XCTAssertEqual(loader.requests, [.evening])
+    }
+
+    func test_updateKeyword_should_loadMathuratOncePerSession() {
+        // Arrange
+        let loader = titledMathurat
+        let vm = makeViewModel(mathurat: loader)
+
+        // Act
+        vm.updateKeyword("pagi")
+        vm.updateKeyword("fatihah")
+
+        // Assert
+        XCTAssertEqual(loader.requests, [.morning])
+    }
+
+    func test_updateKeyword_should_clearMathurat_when_keywordIsBlank() {
+        // Arrange
+        let vm = makeViewModel(mathurat: titledMathurat)
+        vm.updateKeyword("fatihah")
+
+        // Act
+        vm.updateKeyword("  ")
+
+        // Assert
+        XCTAssertTrue(vm.filteredMathurat.isEmpty)
+    }
+
+    func test_updateKeyword_should_leaveMathuratEmpty_when_loadFails() {
+        // Arrange
+        let loader = titledMathurat
+        loader.error = MathuratLoadError.corrupt
+        let vm = makeViewModel(mathurat: loader)
+
+        // Act
+        vm.updateKeyword("fatihah")
+
+        // Assert
+        XCTAssertTrue(vm.filteredMathurat.isEmpty)
     }
 }

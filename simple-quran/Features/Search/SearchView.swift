@@ -27,7 +27,8 @@ struct SearchView: View {
             ).isEmpty {
                 emptyState
             } else if viewModel.filteredSurahList.isEmpty
-                        && viewModel.filteredBookmarkedSurahs.isEmpty {
+                        && viewModel.filteredBookmarkedSurahs.isEmpty
+                        && viewModel.filteredMathurat.isEmpty {
                 emptyState
             } else {
                 List {
@@ -80,6 +81,29 @@ struct SearchView: View {
                             sectionHeader("search_surah_section_title")
                         }
                     }
+
+                    if !viewModel.filteredMathurat.isEmpty {
+                        Section {
+                            ForEach(viewModel.filteredMathurat) { entry in
+                                Button {
+                                    viewModel.onSelectMathurat?(entry)
+                                } label: {
+                                    SurahListRowView(
+                                        title: mathuratTitle(for: entry),
+                                        subtitle: entry.translation,
+                                        arabicTitle: "",
+                                        badgeText: String(entry.order)
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                                .listRowInsets(EdgeInsets())
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                            }
+                        } header: {
+                            sectionHeader("search_mathurat_section_title")
+                        }
+                    }
                 }
                 .listStyle(.plain)
             }
@@ -114,6 +138,13 @@ struct SearchView: View {
             .font(.system(size: 16, weight: .bold))
             .foregroundColor(.title)
             .textCase(nil)
+    }
+
+    private func mathuratTitle(for entry: MathuratEntry) -> String {
+        entry.title ?? String(
+            format: NSLocalizedString("mathurat_entry_fallback_title", comment: ""),
+            entry.order
+        )
     }
 
     private func subtitle(for surah: SurahListResponse) -> String {

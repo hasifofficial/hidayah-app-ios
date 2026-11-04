@@ -21,9 +21,10 @@
 
 
 "search_header_title" = "Search";
-"search_textfield_placeholder" = "Search surah";
+"search_textfield_placeholder" = "Search surah or Mathurat";
 "search_bookmarked_surah_section_title" = "Bookmark";
 "search_surah_section_title" = "Surah";
+"search_mathurat_section_title" = "Al-Mathurat";
 
 "surah_list_header_title" = "Quran";
 "surah_list_subtitle" = "%@ • %@ verses";

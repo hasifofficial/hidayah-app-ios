@@ -17,12 +17,17 @@ final class SearchViewTests: ViewsTestCase {
 
     private func makeViewModel(
         catalog: SurahCatalog = ViewsFixtures.loadedCatalog(),
-        store: HidayahStore = makeInMemoryStore()
+        store: HidayahStore = makeInMemoryStore(),
+        mathurat: FakeMathuratLoader = FakeMathuratLoader(entries: [])
     ) -> SearchViewModel {
+        let clock = MathuratFixtures.clock(morning: true)
         let viewModel = SearchViewModel(
             surahService: makeStubbedSurahService(),
             catalog: catalog,
-            store: store
+            store: store,
+            mathuratLoader: mathurat,
+            now: { clock.now },
+            calendar: TrackerDayKey.calendar
         )
         viewModel.loadIfNeeded()
         return viewModel
@@ -126,5 +131,50 @@ final class SearchViewTests: ViewsTestCase {
         // Assert
         XCTAssertEqual(selectedBookmarks, ["18-10"])
         XCTAssertEqual(selectedSurahs, [18])
+    }
+
+    func test_searchView_should_showMathuratSection_when_entryMatches() {
+        // Arrange
+        let viewModel = makeViewModel(mathurat: FakeMathuratLoader())
+        let host = sceneHost(SearchView(viewModel: viewModel))
+
+        // Act
+        viewModel.updateKeyword("fatihah")
+        host.pump(0.2)
+
+        // Assert
+        XCTAssertTrue(host.contains("Al-Mathurat"))
+        XCTAssertTrue(host.contains("Al Fatihah (1-7)"))
+        XCTAssertTrue(host.contains("Aku berlindung 2"))
+        XCTAssertFalse(host.contains("No Search Results"))
+    }
+
+    func test_searchView_should_showEmptyState_when_onlyMathuratTranslationMatches() {
+        // Arrange
+        let viewModel = makeViewModel(mathurat: FakeMathuratLoader())
+        let host = sceneHost(SearchView(viewModel: viewModel))
+
+        // Act
+        viewModel.updateKeyword("berlindung")
+        host.pump(0.2)
+
+        // Assert
+        XCTAssertTrue(host.contains("Please try type another keyword."))
+        XCTAssertFalse(host.contains("Al-Mathurat"))
+    }
+
+    func test_searchView_should_callMathuratHandler_when_entryIsTapped() {
+        // Arrange
+        let viewModel = makeViewModel(mathurat: FakeMathuratLoader())
+        var selected: [Int] = []
+        viewModel.onSelectMathurat = { selected.append($0.order) }
+        viewModel.updateKeyword("fatihah")
+        let host = sceneHost(SearchView(viewModel: viewModel))
+
+        // Act
+        host.tap("Al Fatihah (1-7)")
+
+        // Assert
+        XCTAssertEqual(selected, [2])
     }
 }

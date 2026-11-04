@@ -144,6 +144,7 @@ Examples:
 - `TasbihView` owns animation/gesture presentation; `TasbihViewModel` owns counting, phrase state, and completion flow.
 - `TrackerCalendarViewModel` and `TrackerDayDetailViewModel` own date/record derivation.
 - `MathuratView` lays out the reader and measures the scroll position; `MathuratViewModel` owns the session (morning or evening from the clock), the repeat counts (tapping a finished counter starts it again from zero), the share text with its deep link, and the read progress (how far down the session is scrolled, following the scroll both ways). `RootView` holds it in `@State` so counts and progress survive tab switches.
+- `SearchViewModel` filters surahs and bookmarks by name, and the current Al-Mathurat session's entries by title through the same `MathuratLoading` loader. Picking a Mathurat result switches to the Mathurat tab and scrolls to that entry, as a deep link does.
 
 ## Shared
 

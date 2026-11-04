@@ -26,12 +26,18 @@ final class SearchViewModel {
     var filteredSurahList: [SurahListResponse] = []
     var bookmarkedSurahs: [SearchBookmark] = []
     var filteredBookmarkedSurahs: [SearchBookmark] = []
+    /// Matching entries of the Al-Mathurat session for the current time of
+    /// day, the one the Mathurat tab shows.
+    var filteredMathurat: [MathuratEntry] = []
 
     @ObservationIgnored
     var onSelectSurah: ((SurahListResponse) -> Void)?
 
     @ObservationIgnored
     var onSelectBookmark: ((SearchBookmark) -> Void)?
+
+    @ObservationIgnored
+    var onSelectMathurat: ((MathuratEntry) -> Void)?
 
     @ObservationIgnored
     var onError: ((String) -> Void)?
@@ -46,16 +52,34 @@ final class SearchViewModel {
     private let store: HidayahStore
 
     @ObservationIgnored
+    private let mathuratLoader: MathuratLoading
+
+    @ObservationIgnored
+    private let now: () -> Date
+
+    @ObservationIgnored
+    private let calendar: Calendar
+
+    @ObservationIgnored
+    private var mathuratEntries: [MathuratTime: [MathuratEntry]] = [:]
+
+    @ObservationIgnored
     private var hasLoaded = false
 
     init(
         surahService: SurahService,
         catalog: SurahCatalog = .shared,
-        store: HidayahStore = .shared
+        store: HidayahStore = .shared,
+        mathuratLoader: MathuratLoading = BundleMathuratLoader(),
+        now: @escaping () -> Date = Date.init,
+        calendar: Calendar = .current
     ) {
         self.surahService = surahService
         self.catalog = catalog
         self.store = store
+        self.mathuratLoader = mathuratLoader
+        self.now = now
+        self.calendar = calendar
     }
 
     func loadIfNeeded() {
@@ -145,6 +169,7 @@ final class SearchViewModel {
         guard !query.isEmpty else {
             filteredSurahList = []
             filteredBookmarkedSurahs = []
+            filteredMathurat = []
             return
         }
 
@@ -156,5 +181,21 @@ final class SearchViewModel {
         filteredBookmarkedSurahs = bookmarkedSurahs.filter {
             $0.surah.englishName?.lowercased().contains(lowercasedQuery) ?? false
         }
+        filteredMathurat = currentMathuratEntries().filter {
+            $0.title?.localizedStandardContains(query) ?? false
+        }
+    }
+
+    /// The bundled entries for the current time of day. A load failure is
+    /// logged by the loader and just leaves the section empty.
+    private func currentMathuratEntries() -> [MathuratEntry] {
+        let time = MathuratTime.current(at: now(), calendar: calendar)
+        if let entries = mathuratEntries[time] {
+            return entries
+        }
+
+        let entries = (try? mathuratLoader.entries(for: time)) ?? []
+        mathuratEntries[time] = entries
+        return entries
     }
 }

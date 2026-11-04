@@ -118,7 +118,8 @@ struct RootView: View {
             surahService: surahService
         )
         let searchViewModel = SearchViewModel(
-            surahService: surahService
+            surahService: surahService,
+            mathuratLoader: mathuratLoader
         )
 
         quranViewModel.onError = { [router] message in
@@ -153,6 +154,11 @@ struct RootView: View {
                     bookmarkedAyah: item.bookmark.numberInSurah
                 )
             )
+        }
+
+        searchViewModel.onSelectMathurat = { [router] entry in
+            router.selectTab(.mathurat)
+            router.mathuratFocusOrder = entry.order
         }
 
         _quranViewModel = State(initialValue: quranViewModel)

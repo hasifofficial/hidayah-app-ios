@@ -328,6 +328,23 @@ final class RootViewTests: ViewsTestCase {
         )
     }
 
+    func test_rootView_should_openMathuratEntryFromSearch() {
+        // Arrange
+        router.selectTab(.search)
+        let (host, _) = makeHost()
+        host.pump(0.3)
+        host.search("Seeking Refuge")
+        host.pump(until: { host.contains("Isti'adah (Seeking Refuge)") })
+
+        // Act
+        host.tap("Isti'adah (Seeking Refuge)")
+        host.pump(0.5)
+
+        // Assert
+        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertTrue(router.searchPath.isEmpty)
+    }
+
     func test_rootView_should_pushBookmarkedAyahFromSearch() {
         // Arrange
         addSharedBookmark(SurahBookmark(surahNumber: 18, numberInSurah: 10))
