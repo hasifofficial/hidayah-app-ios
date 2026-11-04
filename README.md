@@ -1,6 +1,6 @@
 # hidayah-app-ios
 
-iOS app for Hidayah (Quran reader, bookmarks, tracker and widget).
+iOS app for Hidayah (Quran reader, bookmarks, Tasbih, Al-Mathurat, tracker and widget).
 
 ## Dependencies
 

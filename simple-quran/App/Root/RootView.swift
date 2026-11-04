@@ -11,6 +11,7 @@ import UIKit
 
 enum AppTab: Int, Hashable, Identifiable, CaseIterable {
     case quran
+    case mathurat
     case tasbih
     case tracker
     case search
@@ -27,6 +28,11 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
         case .tasbih:
             return NSLocalizedString(
                 "tasbih_tab_title",
+                comment: ""
+            )
+        case .mathurat:
+            return NSLocalizedString(
+                "mathurat_tab_title",
                 comment: ""
             )
         case .tracker:
@@ -48,6 +54,8 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
             return "book"
         case .tasbih:
             return "circle.grid.3x3"
+        case .mathurat:
+            return "sun.horizon"
         case .tracker:
             return "checklist.unchecked"
         case .search:
@@ -61,6 +69,8 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
             return "book.fill"
         case .tasbih:
             return "circle.grid.3x3.fill"
+        case .mathurat:
+            return "sun.horizon.fill"
         case .tracker:
             return "checklist.checked"
         case .search:
@@ -89,11 +99,13 @@ struct RootView: View {
     @State private var quranViewModel: SurahListViewModel
     @State private var bookmarkViewModel: BookmarkListViewModel
     @State private var searchViewModel: SearchViewModel
+    @State private var mathuratViewModel: MathuratViewModel
 
     init(
         surahService: SurahService,
         taskManager: TaskManager,
-        router: AppRouter
+        router: AppRouter,
+        mathuratLoader: MathuratLoading = BundleMathuratLoader()
     ) {
         self.surahService = surahService
         self.taskManager = taskManager
@@ -146,6 +158,9 @@ struct RootView: View {
         _quranViewModel = State(initialValue: quranViewModel)
         _bookmarkViewModel = State(initialValue: bookmarkViewModel)
         _searchViewModel = State(initialValue: searchViewModel)
+        _mathuratViewModel = State(
+            initialValue: MathuratViewModel(loader: mathuratLoader)
+        )
     }
 
     var body: some View {
@@ -276,6 +291,8 @@ struct RootView: View {
             quranTab
         case .tasbih:
             tasbihTab
+        case .mathurat:
+            mathuratTab
         case .tracker:
             trackerTab
         case .search:
@@ -290,6 +307,12 @@ struct RootView: View {
                     tabLabel(.quran)
                 }
                 .tag(AppTab.quran)
+
+            mathuratTab
+                .tabItem {
+                    tabLabel(.mathurat)
+                }
+                .tag(AppTab.mathurat)
 
             tasbihTab
                 .tabItem {
@@ -391,6 +414,17 @@ struct RootView: View {
     private var tasbihTab: some View {
         NavigationStack {
             TasbihView(
+                onOpenSettings: {
+                    router.settingsPresented = true
+                }
+            )
+        }
+    }
+
+    private var mathuratTab: some View {
+        NavigationStack {
+            MathuratView(
+                viewModel: mathuratViewModel,
                 onOpenSettings: {
                     router.settingsPresented = true
                 }
@@ -691,33 +725,17 @@ private struct TabBarIconConfigurator: UIViewRepresentable {
                 in: rootViewController
               ),
               let items = tabBarController.tabBar.items,
-              items.count >= 4 else {
+              items.count == AppTab.allCases.count else {
             return
         }
 
-        let icons: [(UIImage?, UIImage?)] = [
-            (
-                UIImage(systemName: "book"),
-                UIImage(systemName: "book.fill")
-            ),
-            (
-                UIImage(named: "TasbihIcon"),
-                UIImage(named: "TasbihIconFill")
-            ),
-            (
-                UIImage(systemName: "checklist.unchecked"),
-                UIImage(systemName: "checklist.checked")
-            ),
-            (
-                UIImage(systemName: "magnifyingglass"),
-                UIImage(systemName: "magnifyingglass")
-            )
-        ]
-
-        for (index, icon) in icons.enumerated() where index < items.count {
-            let item = items[index]
-            item.image = icon.0?.withRenderingMode(.alwaysTemplate)
-            item.selectedImage = icon.1?.withRenderingMode(.alwaysTemplate)
+        for (tab, item) in zip(AppTab.allCases, items) {
+            let image = tab.assetIcon.flatMap { UIImage(named: $0) }
+                ?? UIImage(systemName: tab.icon)
+            let selectedImage = tab.selectedAssetIcon.flatMap { UIImage(named: $0) }
+                ?? UIImage(systemName: tab.selectedIcon)
+            item.image = image?.withRenderingMode(.alwaysTemplate)
+            item.selectedImage = selectedImage?.withRenderingMode(.alwaysTemplate)
         }
     }
 

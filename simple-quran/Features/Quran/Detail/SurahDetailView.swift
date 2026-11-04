@@ -102,7 +102,7 @@ struct SurahDetailView: View {
             }
         }
         .sheet(isPresented: $showingReadingSettings) {
-            QuranReadingSettingsView()
+            ReadingSettingsView()
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
@@ -124,33 +124,12 @@ struct SurahDetailView: View {
     }
 
     private var detailCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .top, spacing: 12) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color.lightGreen.opacity(0.12))
-
-                    Image(systemName: "book.closed.fill")
-                        .font(.system(size: 19, weight: .semibold))
-                        .foregroundColor(.lightGreen)
-                }
-                .frame(width: 42, height: 42)
-
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(NSLocalizedString("surah_detail_heading", comment: ""))
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.textGray)
-                        .textCase(.uppercase)
-
-                    Text(viewModel.surahName)
-                        .font(.system(size: 21, weight: .bold))
-                        .foregroundColor(.title)
-                }
-
-                Spacer(minLength: 0)
-            }
-
-            Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
+        ReaderHeaderCard(
+            icon: "book.closed.fill",
+            label: NSLocalizedString("surah_detail_heading", comment: ""),
+            title: viewModel.surahName
+        ) {
+            Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
                 .font(.amiriRegular(size: 23))
                 .foregroundColor(.lightGreen)
                 .multilineTextAlignment(.leading)
@@ -163,14 +142,14 @@ struct SurahDetailView: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             HStack(spacing: 8) {
-                selectionButton(
+                ReaderSelectionButton(
                     icon: "speaker.wave.2.bubble",
                     title: viewModel.reciterName
                 ) {
                     activeSelection = .recitation
                 }
 
-                selectionButton(
+                ReaderSelectionButton(
                     icon: "globe",
                     title: viewModel.translationName
                 ) {
@@ -178,68 +157,12 @@ struct SurahDetailView: View {
                 }
             }
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.lightGreen.opacity(0.14),
-                            Color.backgroundGray
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(Color.lightGreen.opacity(0.16), lineWidth: 1)
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 16)
-    }
-
-    private func selectionButton(
-        icon: String,
-        title: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            HStack(spacing: 7) {
-                Image(systemName: icon)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.lightGreen)
-
-                Text(title)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.title)
-                    .lineLimit(1)
-
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal, 11)
-            .padding(.vertical, 10)
-            .frame(maxWidth: .infinity)
-            .background(Color.appBackground.opacity(0.45))
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        }
-        .buttonStyle(.plain)
     }
 
     private func ayahView(_ ayah: SurahDetailAyah) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 8) {
-                ZStack {
-                    Image(systemName: "seal.fill")
-                        .font(.system(size: 32))
-                        .foregroundColor(.lightGreen)
-
-                    Text("\(ayah.numberInSurah)")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.white)
-                }
+                NumberSealBadge(number: ayah.numberInSurah)
 
                 Spacer(minLength: 8)
 
@@ -256,19 +179,22 @@ struct SurahDetailView: View {
                     NSLocalizedString("surah_detail_share_ayah", comment: "")
                 )
 
-                ayahActionButton(
+                ReaderCircleButton(
                     icon: viewModel.playingAyahID == ayah.id
                         ? "pause.fill"
                         : "play.fill",
                     isActive: viewModel.playingAyahID == ayah.id,
-                    accessibilityLabel: viewModel.playingAyahID == ayah.id
-                        ? "surah_detail_pause_ayah"
-                        : "surah_detail_play_ayah"
+                    accessibilityLabel: NSLocalizedString(
+                        viewModel.playingAyahID == ayah.id
+                            ? "surah_detail_pause_ayah"
+                            : "surah_detail_play_ayah",
+                        comment: ""
+                    )
                 ) {
                     viewModel.toggleAudio(ayah: ayah)
                 }
 
-                ayahActionButton(
+                ReaderCircleButton(
                     icon: viewModel.bookmarkedAyahs.contains(
                         ayah.numberInSurah
                     )
@@ -277,11 +203,14 @@ struct SurahDetailView: View {
                     isActive: viewModel.bookmarkedAyahs.contains(
                         ayah.numberInSurah
                     ),
-                    accessibilityLabel: viewModel.bookmarkedAyahs.contains(
-                        ayah.numberInSurah
+                    accessibilityLabel: NSLocalizedString(
+                        viewModel.bookmarkedAyahs.contains(
+                            ayah.numberInSurah
+                        )
+                            ? "surah_detail_remove_bookmark_ayah"
+                            : "surah_detail_bookmark_ayah",
+                        comment: ""
                     )
-                        ? "surah_detail_remove_bookmark_ayah"
-                        : "surah_detail_bookmark_ayah"
                 ) {
                     viewModel.toggleBookmark(ayah: ayah)
                 }
@@ -289,55 +218,16 @@ struct SurahDetailView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            Text(ayah.arabic)
-                .font(.kitabRegular(size: CGFloat(arabicFontSize)))
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .lineSpacing(6)
-                .padding(.horizontal, 16)
-                .padding(.top, 10)
+            ReaderTextBlock(
+                arabic: ayah.arabic,
+                translation: showTranslation ? ayah.translation : nil,
+                translationIsRTL: ayah.translationIsRTL,
+                arabicFontSize: arabicFontSize
+            )
 
-            if showTranslation {
-                Text(ayah.translation)
-                    .font(.system(size: 15))
-                    .foregroundColor(.primary)
-                    .lineSpacing(4)
-                    .multilineTextAlignment(
-                        ayah.translationIsRTL ? .trailing : .leading
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        alignment: ayah.translationIsRTL ? .trailing : .leading
-                    )
-                    .padding(.horizontal, 16)
-                    .padding(.top, 12)
-            }
-
-            Divider()
-                .overlay(Color.textGray.opacity(0.12))
-                .padding(.horizontal, 16)
-                .padding(.top, 18)
+            ReaderRowDivider()
         }
         .padding(.top, 8)
-    }
-
-    private func ayahActionButton(
-        icon: String,
-        isActive: Bool,
-        accessibilityLabel: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            Image(systemName: icon)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(isActive ? .white : .lightGreen)
-                .frame(width: 40, height: 40)
-                .background(isActive ? Color.lightGreen : Color.backgroundGray)
-                .clipShape(Circle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(NSLocalizedString(accessibilityLabel, comment: ""))
     }
 
     private var placeholder: some View {

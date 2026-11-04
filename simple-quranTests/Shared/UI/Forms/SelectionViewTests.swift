@@ -2,7 +2,7 @@
 //  SelectionViewTests.swift
 //  simple-quranTests
 //
-//  QuranReadingSettingsView and SelectionView, presented as sheets so
+//  ReadingSettingsView and SelectionView, presented as sheets so
 //  their dismiss actions can be observed.
 //
 

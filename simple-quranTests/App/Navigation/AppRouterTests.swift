@@ -122,6 +122,34 @@ final class AppRouterTests: XCTestCase {
         XCTAssertTrue(sut.savedQuranPath.isEmpty)
     }
 
+    func test_selectTab_should_leaveMathuratWithoutSavingAnything() {
+        // Arrange
+        sut.selectTab(.mathurat)
+        sut.quranPath = [.bookmarkList]
+
+        // Act
+        sut.selectTab(.search)
+
+        // Assert
+        XCTAssertEqual(sut.selectedTab, .search)
+        XCTAssertTrue(sut.quranPath.isEmpty)
+        XCTAssertTrue(sut.savedQuranPath.isEmpty)
+        XCTAssertTrue(sut.savedSearchPath.isEmpty)
+    }
+
+    func test_selectTab_should_restoreQuranPathAfterVisitingMathurat() {
+        // Arrange
+        sut.quranPath = [.bookmarkList]
+        sut.selectTab(.mathurat)
+
+        // Act
+        sut.selectTab(.quran)
+
+        // Assert
+        XCTAssertEqual(sut.quranPath, [.bookmarkList])
+        XCTAssertTrue(sut.savedQuranPath.isEmpty)
+    }
+
     func test_selectTab_should_keepPathsWhenNotClearing() {
         // Arrange
         sut.quranPath = [detail]

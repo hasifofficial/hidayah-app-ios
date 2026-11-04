@@ -1,8 +1,8 @@
 //
-//  QuranReadingSettingsViewTests.swift
+//  ReadingSettingsViewTests.swift
 //  simple-quranTests
 //
-//  QuranReadingSettingsView and SelectionView, presented as sheets so
+//  ReadingSettingsView and SelectionView, presented as sheets so
 //  their dismiss actions can be observed.
 //
 
@@ -28,7 +28,7 @@ private struct SheetHarness<Sheet: View>: View {
 }
 
 @MainActor
-final class QuranReadingSettingsViewTests: ViewsTestCase {
+final class ReadingSettingsViewTests: ViewsTestCase {
     override func setUp() {
         super.setUp()
         resetStorage()
@@ -53,7 +53,7 @@ final class QuranReadingSettingsViewTests: ViewsTestCase {
         let state = SheetState()
 
         // Act
-        let host = present(state) { QuranReadingSettingsView() }
+        let host = present(state) { ReadingSettingsView() }
 
         // Assert
         XCTAssertTrue(host.contains("Quran Reading"))
@@ -68,7 +68,7 @@ final class QuranReadingSettingsViewTests: ViewsTestCase {
     func test_quranReadingSettingsView_should_hidePreviewTranslationWhenToggledOff() {
         // Arrange
         let state = SheetState()
-        let host = present(state) { QuranReadingSettingsView() }
+        let host = present(state) { ReadingSettingsView() }
 
         // Act
         host.toggleSwitch()
@@ -82,7 +82,7 @@ final class QuranReadingSettingsViewTests: ViewsTestCase {
     func test_quranReadingSettingsView_should_changeFontSizeWithSlider() {
         // Arrange
         let state = SheetState()
-        let host = present(state) { QuranReadingSettingsView() }
+        let host = present(state) { ReadingSettingsView() }
 
         // Act
         host.slide(toFraction: 7.0 / 18.0)
@@ -98,7 +98,7 @@ final class QuranReadingSettingsViewTests: ViewsTestCase {
         Storage.save(.quranArabicFontSize, 30.0)
         Storage.save(.quranShowTranslation, false)
         let state = SheetState()
-        let host = present(state) { QuranReadingSettingsView() }
+        let host = present(state) { ReadingSettingsView() }
         let before = host.contains("30 pt")
 
         // Act
@@ -115,7 +115,7 @@ final class QuranReadingSettingsViewTests: ViewsTestCase {
     func test_quranReadingSettingsView_should_dismissWhenDoneTapped() {
         // Arrange
         let state = SheetState()
-        let host = present(state) { QuranReadingSettingsView() }
+        let host = present(state) { ReadingSettingsView() }
 
         // Act
         host.tap("Done")

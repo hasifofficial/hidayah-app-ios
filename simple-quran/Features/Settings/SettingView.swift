@@ -204,7 +204,7 @@ struct SettingsView: View {
             )
         }
         .sheet(isPresented: $showingQuranReadingSettings) {
-            QuranReadingSettingsView()
+            ReadingSettingsView()
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }

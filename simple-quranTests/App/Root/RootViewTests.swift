@@ -80,7 +80,7 @@ final class RootViewTests: ViewsTestCase {
 
     func test_rootView_should_showQuranTabWithTabBar() {
         // Arrange
-        let tabs = ["Tasbih", "Tracker", "Search"]
+        let tabs = ["Al-Mathurat", "Tasbih", "Tracker", "Search"]
 
         // Act
         let (host, _) = makeHost()
@@ -517,7 +517,7 @@ final class RootViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertTrue(host.contains("Hidayah"))
-        for tab in ["Quran", "Tasbih", "Tracker", "Search"] {
+        for tab in ["Quran", "Al-Mathurat", "Tasbih", "Tracker", "Search"] {
             XCTAssertTrue(host.contains(tab), "Missing sidebar item \(tab)")
         }
     }
@@ -571,9 +571,10 @@ final class RootViewTests: ViewsTestCase {
         let tabBar = host.firstView(of: UITabBar.self)
 
         // Assert
-        XCTAssertEqual(tabBar?.items?.count, 4)
+        XCTAssertEqual(tabBar?.items?.count, AppTab.allCases.count)
         XCTAssertNotNil(tabBar?.items?[1].image)
         XCTAssertNotNil(tabBar?.items?[1].selectedImage)
+        XCTAssertNotNil(tabBar?.items?[2].image)
         XCTAssertEqual(tabBar?.items?[0].image?.renderingMode, .alwaysTemplate)
         host.tearDown()
     }
@@ -588,10 +589,11 @@ final class RootViewTests: ViewsTestCase {
         let selectedIcons = tabs.map(\.selectedIcon)
 
         // Assert
-        XCTAssertEqual(titles, ["Quran", "Tasbih", "Tracker", "Search"])
-        XCTAssertEqual(icons, ["book", "circle.grid.3x3", "checklist.unchecked", "magnifyingglass"])
-        XCTAssertEqual(selectedIcons, ["book.fill", "circle.grid.3x3.fill", "checklist.checked", "magnifyingglass"])
-        XCTAssertEqual(tabs.map(\.id), [0, 1, 2, 3])
+        XCTAssertEqual(titles, ["Quran", "Al-Mathurat", "Tasbih", "Tracker", "Search"])
+        XCTAssertEqual(icons, ["book", "sun.horizon", "circle.grid.3x3", "checklist.unchecked", "magnifyingglass"])
+        XCTAssertEqual(selectedIcons, ["book.fill", "sun.horizon.fill", "circle.grid.3x3.fill", "checklist.checked", "magnifyingglass"])
+        XCTAssertEqual(tabs.map(\.id), [0, 1, 2, 3, 4])
+        XCTAssertNil(AppTab.mathurat.assetIcon)
         XCTAssertEqual(AppTab.tasbih.assetIcon, "TasbihIcon")
         XCTAssertEqual(AppTab.tasbih.selectedAssetIcon, "TasbihIconFill")
         XCTAssertNil(AppTab.quran.assetIcon)

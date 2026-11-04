@@ -18,7 +18,7 @@ simple-quran/
   Core/         Models, networking, persistence, tracker domain services
   Features/     Feature screens, view models, and feature components
   Shared/       Cross-feature UI, form controls, modifiers, services
-  Resources/    Assets, fonts, localization, constants
+  Resources/    Assets, fonts, localization, constants, bundled Al-Mathurat text
 
 simple-quranTests/   Unit tests for the app, mirroring simple-quran/
 app-widgetTests/     Unit tests for the widget, mirroring app-widget/
@@ -61,6 +61,7 @@ App/
 ```
 Core/
   Models/
+    Mathurat/
     Quran/
     Tracker/
     Widget/
@@ -75,6 +76,8 @@ Core/
     TaskManager.swift
     TrackerHistoryEngine.swift
     TrackerNotificationScheduler.swift
+  Mathurat/
+    MathuratLibrary.swift
   Extensions/
 ```
 
@@ -84,6 +87,7 @@ Core/
 - `TrackerNotificationScheduler` posts tracker reminders through the `NotificationScheduling` protocol, which `UNUserNotificationCenter` conforms to.
 - `APIClientService` and `SurahService` are stateless and `Sendable`, and use `async`/`await`. `APIClientService` takes its `URLSession` through `init`.
 - `SurahCatalog` caches the surah list on disk; its cache location is injectable.
+- `BundleMathuratLoader` (behind the `MathuratLoading` protocol) decodes the bundled Al-Mathurat Sughra and returns the entries for the morning or evening session; its directory is injectable.
 - Models are plain value/reference types with no SwiftUI dependencies.
 
 ## Features
@@ -94,13 +98,11 @@ Features/
     List/
     Detail/
     Bookmarks/
-    Settings/
     Components/
   Search/
   Settings/
     SettingView.swift
     SettingViewModel.swift
-    SelectionView.swift
     WidgetGuide/
       WidgetGuideView.swift
       WidgetGuideViewModel.swift
@@ -111,6 +113,11 @@ Features/
     TasbihViewModel.swift
     Components/
       TasbihBeadProgressView.swift
+  Mathurat/
+    MathuratView.swift
+    MathuratViewModel.swift
+    Components/
+      MathuratEntryRow.swift
   Tracker/
     Home/
     Calendar/
@@ -136,6 +143,7 @@ Examples:
 - `WidgetGuideView` owns presentation; `WidgetGuideViewModel` owns selection and tracker-derived preview data.
 - `TasbihView` owns animation/gesture presentation; `TasbihViewModel` owns counting, phrase state, and completion flow.
 - `TrackerCalendarViewModel` and `TrackerDayDetailViewModel` own date/record derivation.
+- `MathuratView` lays out the reader and measures the scroll position; `MathuratViewModel` owns the session (morning or evening from the clock), the repeat counts and the read progress (how far down the session is scrolled, following the scroll both ways). `RootView` holds it in `@State` so counts and progress survive tab switches.
 
 ## Shared
 
@@ -150,8 +158,16 @@ Shared/
       SettingsToggleRow.swift
     Forms/
       AppFormComponents.swift
+      ReadingSettingsView.swift
+      SelectionView.swift
     Loading/
     Modifiers/
+    Reader/
+      ReaderHeaderCard.swift
+      ReaderSelectionButton.swift
+      NumberSealBadge.swift
+      ReaderCircleButton.swift
+      ReaderTextBlock.swift
     Representables/
 ```
 
@@ -161,6 +177,8 @@ Shared UI examples:
 - `SettingsActionRow`, `SettingsSectionHeader`, `SettingsToggleRow`
 - `LoadAnimation`, `ShimmerBar`, `ListRowPlaceholder`
 - `MailView`, `SafariView`
+- `SelectionView`, `ReadingSettingsView` (used by the Quran reader, Al-Mathurat and Settings)
+- Reader building blocks shared by the Quran reader and Al-Mathurat, so both look the same: `ReaderHeaderCard`, `ReaderSelectionButton`, `NumberSealBadge`, `ReaderCircleButton`, `ReaderTextBlock`, `ReaderRowDivider`
 
 Naming rule: name components by responsibility, not by the first screen that used them.
 
@@ -260,7 +278,7 @@ Changing a model without a new version makes the on-disk store fail to open.
 - App UI: `Resources/en.lproj/Localizable.strings`
 - Widget UI: `app-widget/Resources/en.lproj/Localizable.strings`
 - Never rely on the app’s localization bundle from inside the widget; each target has its own bundle.
-- Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `widget_`).
+- Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `mathurat_`, `widget_`).
 - Arabic Quran/dhikr content, user-created names, and numeric values are data, not UI chrome.
 - Localize default category names when they are shown, not when they are saved. Day records store a copy of each task's category name, and a record saved from the widget holds the raw key; `TrackerDayDetailViewModel.categoryName(for:)` looks default names up from the category ID.
 
@@ -268,7 +286,7 @@ Changing a model without a new version makes the on-disk store fail to open.
 
 The project builds in Swift 5 mode with `SWIFT_STRICT_CONCURRENCY = complete` and `SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES`. Production code has no concurrency warnings; keep it that way.
 
-- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model.
+- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model, including `MathuratViewModel`. `BundleMathuratLoader` is a `Sendable` struct.
 - Networking services are stateless and `Sendable`; requests and JSON decoding run off the main actor.
 - Callbacks the system delivers on the main queue (`NotificationCenter` observers with `queue: .main`) use `MainActor.assumeIsolated`.
 - `nonisolated(unsafe)` is allowed only with a comment explaining why it is safe.
@@ -293,6 +311,14 @@ Both run from the `simple-quran` scheme (⌘U) with code coverage enabled.
 - Every test body has `// Arrange`, `// Act` and `// Assert` sections.
 - Each test starts clean: a fresh in-memory store, `resetStorage()`, `StubURLProtocol.reset()` and a `TestClock` where dates matter.
 - Run the suite on more than one iOS version before merging; some UIKit details (tab bars, SF Symbol accessibility labels) differ between releases.
+
+## Bundled content
+
+`Resources/Mathurat.bundle/sughra.json` holds Al-Mathurat Sughra (morning and evening): the Arabic text, its Malay translation, a title and a repeat count for each entry.
+
+- Each entry records whether it is read in the morning, the evening or both, and the reader shows only that session's entries in their `order`.
+- The content tests in `MathuratLibraryTests` check entry counts per session, titles, repeat counts, the morning/evening wording and that no text is empty. They guard against accidental edits, not against errors in the text itself.
+- Edit the file by hand, run the tests, and review the text against a printed Al-Ma'thurat before release.
 
 ## Privacy
 

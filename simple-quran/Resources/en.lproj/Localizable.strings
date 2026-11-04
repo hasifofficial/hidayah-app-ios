@@ -298,3 +298,19 @@
 "widget_guide_app_safari" = "Safari";
 "widget_guide_app_camera" = "Camera";
 "widget_guide_app_music" = "Music";
+
+"mathurat_tab_title" = "Al-Mathurat";
+"mathurat_header_title" = "Al-Mathurat";
+"mathurat_time_morning" = "Morning";
+"mathurat_time_evening" = "Evening";
+"mathurat_label_morning" = "Al-Mathurat Sughra · Morning dhikr";
+"mathurat_label_evening" = "Al-Mathurat Sughra · Evening dhikr";
+"mathurat_progress_completed_format" = "%d%% completed";
+"mathurat_banner_accessibility" = "%@ session, %d%% completed";
+"mathurat_about" = "Al-Ma'thurat is a collection of dhikr and wird taken from the Prophet Muhammad SAW. The texts from the Quran and the Sunnah of the Prophet SAW. These dhikr and wird were taught by him to his companions, then to the tabi'in, tabi' at-tabi'in, and as-salaf as-salih.\n\nTime to recite al-Mathurat:\nAl-Mathurat can be recited twice daily:\n• In the morning (usually recited after Fajr prayer)\n• In the evening (usually recited after Asr prayer).";
+"mathurat_banner_hint" = "Scrolls back to the top";
+"mathurat_repeat_format" = "%d of %d";
+"mathurat_count_accessibility" = "Count %@";
+"mathurat_entry_fallback_title" = "Dhikr %d";
+"mathurat_load_error" = "The Al-Mathurat text couldn't be loaded.";
+"mathurat_retry" = "Try Again";
