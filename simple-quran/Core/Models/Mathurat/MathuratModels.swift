@@ -78,6 +78,10 @@ struct MathuratEntry: Identifiable, Equatable, Sendable {
 
     /// The source's row id, stable across morning and evening.
     let id: Int
+    /// The entry's place in the reading order. Morning and evening variants
+    /// of the same dhikr share it, so it is unique only within a session;
+    /// deep links use it.
+    let order: Int
     /// Only Quran passages are named in the source, e.g. "Al Baqarah (255)".
     let title: String?
     let repeatCount: Int
@@ -122,6 +126,7 @@ struct MathuratEntryDTO: Decodable {
     var entry: MathuratEntry {
         MathuratEntry(
             id: id,
+            order: order,
             title: title.isEmpty ? nil : title,
             repeatCount: max(repeatCount, 1),
             reading: time,

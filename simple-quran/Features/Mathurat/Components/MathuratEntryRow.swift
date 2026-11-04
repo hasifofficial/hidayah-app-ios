@@ -14,11 +14,8 @@ struct MathuratEntryRow: View {
     let count: Int
     let arabicFontSize: Double
     let showTranslation: Bool
+    let shareText: String
     let onCount: () -> Void
-
-    private var isComplete: Bool {
-        count >= entry.repeatCount
-    }
 
     private var name: String {
         entry.title ?? String(
@@ -40,6 +37,22 @@ struct MathuratEntryRow: View {
 
                 Spacer(minLength: 8)
 
+                ShareLink(item: shareText) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.lightGreen)
+                        .frame(width: 40, height: 40)
+                        .background(Color.backgroundGray)
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(
+                    String(
+                        format: NSLocalizedString("mathurat_share_accessibility", comment: ""),
+                        name
+                    )
+                )
+
                 counter
             }
             .padding(.horizontal, 16)
@@ -58,7 +71,7 @@ struct MathuratEntryRow: View {
 
     private var counter: some View {
         ReaderCircleButton(
-            isActive: isComplete,
+            isActive: false,
             accessibilityLabel: String(
                 format: NSLocalizedString(
                     "mathurat_count_accessibility",

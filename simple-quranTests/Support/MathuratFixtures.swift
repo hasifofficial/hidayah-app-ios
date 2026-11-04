@@ -29,12 +29,14 @@ final class FakeMathuratLoader: MathuratLoading, @unchecked Sendable {
 enum MathuratFixtures {
     static func entry(
         id: Int,
+        order: Int? = nil,
         title: String? = nil,
         repeatCount: Int = 1,
         reading: MathuratEntry.Reading = .both
     ) -> MathuratEntry {
         MathuratEntry(
             id: id,
+            order: order ?? id,
             title: title,
             repeatCount: repeatCount,
             reading: reading,

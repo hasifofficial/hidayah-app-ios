@@ -29,10 +29,19 @@ final class MathuratViewTests: ViewsTestCase {
 
     /// A phone-height window, so the list is taller than the screen and the
     /// read percentage starts at 0.
-    private func makeHost(_ viewModel: MathuratViewModel) -> ViewHost<some View> {
+    private func makeHost(
+        _ viewModel: MathuratViewModel,
+        focus: FocusBox = FocusBox()
+    ) -> ViewHost<some View> {
         let host = sceneHost(
             NavigationStack {
-                MathuratView(viewModel: viewModel) { [weak self] in
+                MathuratView(
+                    viewModel: viewModel,
+                    focusOrder: Binding(
+                        get: { focus.order },
+                        set: { focus.order = $0 }
+                    )
+                ) { [weak self] in
                     self?.settingsOpened += 1
                 }
             },
@@ -57,6 +66,15 @@ final class MathuratViewTests: ViewsTestCase {
             animated: false
         )
         host.pump(0.4)
+    }
+
+    /// Holds the deep-linked entry the view reads and clears.
+    final class FocusBox {
+        var order: Int?
+
+        init(order: Int? = nil) {
+            self.order = order
+        }
     }
 
     private var manyEntries: FakeMathuratLoader {
@@ -133,7 +151,6 @@ final class MathuratViewTests: ViewsTestCase {
 
         // Act
         host.tap("Count Dhikr 1")
-        host.tap("Count Dhikr 1")
 
         // Assert
         let counter = host.elements().first {
@@ -141,6 +158,82 @@ final class MathuratViewTests: ViewsTestCase {
         }
         XCTAssertTrue(viewModel.isComplete(viewModel.entries[0]))
         XCTAssertEqual(counter?.accessibilityValue, "1 of 1")
+    }
+
+    func test_mathuratView_should_resetCount_when_doneEntryIsTappedAgain() {
+        // Arrange
+        let viewModel = makeViewModel()
+        let host = makeHost(viewModel)
+        host.tap("Count Dhikr 1")
+
+        // Act
+        host.tap("Count Dhikr 1")
+
+        // Assert
+        let counter = host.elements().first {
+            $0.accessibilityLabel == "Count Dhikr 1"
+        }
+        XCTAssertEqual(viewModel.count(for: viewModel.entries[0]), 0)
+        XCTAssertEqual(counter?.accessibilityValue, "0 of 1")
+    }
+
+    func test_mathuratView_should_showShareButtonForEachEntry() {
+        // Arrange
+        let viewModel = makeViewModel()
+
+        // Act
+        let host = makeHost(viewModel)
+
+        // Assert
+        XCTAssertTrue(host.contains("Share Dhikr 1"))
+        XCTAssertTrue(host.contains("Share Al Fatihah (1-7)"))
+    }
+
+    func test_mathuratView_should_scrollToEntry_when_deepLinked() {
+        // Arrange
+        let viewModel = makeViewModel(loader: manyEntries)
+        let focus = FocusBox(order: 10)
+
+        // Act
+        let host = makeHost(viewModel, focus: focus)
+        host.pump(1.0)
+
+        // Assert
+        let offset = host.firstView(of: UIScrollView.self)?.contentOffset.y ?? 0
+        XCTAssertNil(focus.order)
+        XCTAssertGreaterThan(offset, 200)
+    }
+
+    func test_mathuratView_should_scrollByOrder_when_deepLinked() {
+        // Arrange
+        let entries = (1...12).map { MathuratFixtures.entry(id: 100 + $0, order: $0) }
+        let viewModel = makeViewModel(loader: FakeMathuratLoader(entries: entries))
+        let focus = FocusBox(order: 10)
+
+        // Act
+        let host = makeHost(viewModel, focus: focus)
+        host.pump(1.0)
+
+        // Assert
+        let offset = host.firstView(of: UIScrollView.self)?.contentOffset.y ?? 0
+        XCTAssertNil(focus.order)
+        XCTAssertGreaterThan(offset, 200)
+    }
+
+    func test_mathuratView_should_stayAtTop_when_deepLinkedEntryIsNotInSession() {
+        // Arrange
+        let viewModel = makeViewModel()
+        let focus = FocusBox(order: 14)
+
+        // Act
+        let host = makeHost(viewModel, focus: focus)
+        host.pump(1.0)
+
+        // Assert
+        let scrollView = host.firstView(of: UIScrollView.self)
+        let top = -(scrollView?.adjustedContentInset.top ?? 0)
+        XCTAssertNil(focus.order)
+        XCTAssertEqual(scrollView?.contentOffset.y ?? 0, top, accuracy: 1)
     }
 
     func test_mathuratView_should_nameCounterAfterPassage_when_entryHasTitle() {

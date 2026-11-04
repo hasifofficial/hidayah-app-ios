@@ -8,8 +8,13 @@ import SwiftUI
 struct MathuratView: View {
     nonisolated private static let scrollSpace = "mathuratScroll"
     private static let topID = "mathuratTop"
+    /// Leaves room above a deep-linked entry for the progress banner.
+    private static let focusTopMargin: CGFloat = 72
 
     let viewModel: MathuratViewModel
+    /// The order of an entry to scroll to, set by a deep link and cleared
+    /// once handled.
+    var focusOrder: Binding<Int?> = .constant(nil)
     let onOpenSettings: () -> Void
 
     @Environment(\.scenePhase) private var scenePhase
@@ -55,12 +60,18 @@ struct MathuratView: View {
                             Array(viewModel.entries.enumerated()),
                             id: \.element.id
                         ) { index, entry in
+                            // Marks the row's top edge for deep-link scrolling.
+                            Color.clear
+                                .frame(height: 0)
+                                .id(Self.focusID(for: entry.id))
+
                             MathuratEntryRow(
                                 entry: entry,
                                 number: index + 1,
                                 count: viewModel.count(for: entry),
                                 arabicFontSize: arabicFontSize,
-                                showTranslation: showTranslation
+                                showTranslation: showTranslation,
+                                shareText: viewModel.shareText(for: entry)
                             ) {
                                 viewModel.increment(entry)
                             }
@@ -97,6 +108,15 @@ struct MathuratView: View {
                     }
                     .transition(.move(edge: .top).combined(with: .opacity))
                 }
+            }
+            .onAppear {
+                scrollToFocusedEntry(proxy)
+            }
+            .onChange(of: focusOrder.wrappedValue) {
+                scrollToFocusedEntry(proxy)
+            }
+            .onChange(of: viewModel.isLoaded) {
+                scrollToFocusedEntry(proxy)
             }
         }
         .background(.appBackground)
@@ -238,6 +258,35 @@ struct MathuratView: View {
             )
         )
         .accessibilityHint(NSLocalizedString("mathurat_banner_hint", comment: ""))
+    }
+
+    private static func focusID(for entryID: Int) -> String {
+        "mathuratEntry-\(entryID)"
+    }
+
+    /// Scrolls to the deep-linked entry once the session is loaded, looking
+    /// the order up in the current session. An order the session doesn't
+    /// have leaves the list at the top.
+    private func scrollToFocusedEntry(_ proxy: ScrollViewProxy) {
+        guard let order = focusOrder.wrappedValue, viewModel.isLoaded else { return }
+        focusOrder.wrappedValue = nil
+        guard let entryID = viewModel.entries.first(where: { $0.order == order })?.id else { return }
+
+        // Wait a turn so the rows are laid out before scrolling.
+        Task { @MainActor in
+            await Task.yield()
+            // Puts the row's top just below the progress banner rather than
+            // under it.
+            let anchorY = viewportHeight > 0
+                ? min(Self.focusTopMargin / viewportHeight, 1)
+                : 0
+            withAnimation {
+                proxy.scrollTo(
+                    Self.focusID(for: entryID),
+                    anchor: UnitPoint(x: 0.5, y: anchorY)
+                )
+            }
+        }
     }
 
     /// Turns the scroll position into how far the session has been read:

@@ -299,7 +299,7 @@
 "widget_guide_app_camera" = "Camera";
 "widget_guide_app_music" = "Music";
 
-"mathurat_tab_title" = "Al-Mathurat";
+"mathurat_tab_title" = "Mathurat";
 "mathurat_header_title" = "Al-Mathurat";
 "mathurat_time_morning" = "Morning";
 "mathurat_time_evening" = "Evening";
@@ -311,6 +311,7 @@
 "mathurat_banner_hint" = "Scrolls back to the top";
 "mathurat_repeat_format" = "%d of %d";
 "mathurat_count_accessibility" = "Count %@";
+"mathurat_share_accessibility" = "Share %@";
 "mathurat_entry_fallback_title" = "Dhikr %d";
 "mathurat_load_error" = "The Al-Mathurat text couldn't be loaded.";
 "mathurat_retry" = "Try Again";

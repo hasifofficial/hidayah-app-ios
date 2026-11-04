@@ -14,6 +14,8 @@ final class AppRouter {
     var quranPath: [AppRoute] = []
     var searchPath: [AppRoute] = []
     var trackerPath: [AppRoute] = []
+    /// The order of the Al-Mathurat entry a deep link asked to show.
+    var mathuratFocusOrder: Int?
 
     var savedQuranPath: [AppRoute] = []
     var savedSearchPath: [AppRoute] = []

@@ -93,6 +93,8 @@ final class MathuratModelsTests: XCTestCase {
         // Assert
         XCTAssertEqual(morning.map(\.id), [1, 2, 13])
         XCTAssertEqual(evening.map(\.id), [1, 2, 14])
+        XCTAssertEqual(morning.map(\.order), [1, 2, 13])
+        XCTAssertEqual(evening.map(\.order), [1, 2, 13])
         XCTAssertNil(morning[0].title)
         XCTAssertEqual(morning[0].repeatCount, 1)
         XCTAssertEqual(morning[1].title, "Al Fatihah (1-7)")

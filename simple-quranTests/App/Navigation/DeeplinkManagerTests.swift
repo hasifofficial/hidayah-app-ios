@@ -126,6 +126,46 @@ final class DeeplinkManagerTests: XCTestCase {
         XCTAssertEqual(router.selectedTab, .tracker)
     }
 
+    func test_handleDeepLink_should_openMathuratTab() {
+        // Arrange
+        router.settingsPresented = true
+
+        // Act
+        let handled = handle("hidayahapp://inAppDeeplink/mathurat")
+
+        // Assert
+        XCTAssertTrue(handled)
+        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertNil(router.mathuratFocusOrder)
+        XCTAssertFalse(router.settingsPresented)
+    }
+
+    func test_handleDeepLink_should_focusMathuratEntry() {
+        // Arrange
+        let url = "hidayahapp://inAppDeeplink/mathurat/13"
+
+        // Act
+        let handled = handle(url)
+
+        // Assert
+        XCTAssertTrue(handled)
+        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertEqual(router.mathuratFocusOrder, 13)
+    }
+
+    func test_handleDeepLink_should_ignoreNonNumericMathuratOrder() {
+        // Arrange
+        let url = "hidayahapp://inAppDeeplink/mathurat/abc"
+
+        // Act
+        let handled = handle(url)
+
+        // Assert
+        XCTAssertTrue(handled)
+        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertNil(router.mathuratFocusOrder)
+    }
+
     func test_handleDeepLink_should_rejectUnknownHost() {
         // Arrange
         router.settingsPresented = true

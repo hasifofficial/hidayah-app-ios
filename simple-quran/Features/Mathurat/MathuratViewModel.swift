@@ -78,9 +78,15 @@ final class MathuratViewModel {
         count(for: entry) >= entry.repeatCount
     }
 
+    /// Counts one recitation. Tapping a finished entry starts it again from
+    /// zero.
     func increment(_ entry: MathuratEntry) {
         let current = count(for: entry)
-        guard current < entry.repeatCount else { return }
+        guard current < entry.repeatCount else {
+            counts[time, default: [:]][entry.id] = 0
+            AppHaptics.tap()
+            return
+        }
 
         counts[time, default: [:]][entry.id] = current + 1
 
@@ -130,5 +136,11 @@ final class MathuratViewModel {
             isLoaded = false
             loadError = .corrupt
         }
+    }
+
+    func shareText(for entry: MathuratEntry) -> String {
+        let reference = entry.title.map { "Al-Mathurat · \($0)" } ?? "Al-Mathurat"
+
+        return "\(entry.arabic)\n\(entry.translation) [\(reference)]\n\nShared from Hidayah App\nhidayahapp://inAppDeeplink/mathurat/\(entry.order)"
     }
 }

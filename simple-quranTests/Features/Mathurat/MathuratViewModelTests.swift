@@ -185,14 +185,14 @@ final class MathuratViewModelTests: XCTestCase {
 
     // MARK: Counting
 
-    func test_increment_should_stopAtRepeatCount() {
+    func test_increment_should_completeAtRepeatCount() {
         // Arrange
         let viewModel = makeViewModel()
         viewModel.loadIfNeeded()
         let dua = viewModel.entries[2]
 
         // Act
-        for _ in 0..<5 {
+        for _ in 0..<3 {
             viewModel.increment(dua)
         }
 
@@ -200,6 +200,53 @@ final class MathuratViewModelTests: XCTestCase {
         XCTAssertEqual(dua.repeatCount, 3)
         XCTAssertEqual(viewModel.count(for: dua), 3)
         XCTAssertTrue(viewModel.isComplete(dua))
+    }
+
+    func test_increment_should_resetCount_when_entryIsDone() {
+        // Arrange
+        let viewModel = makeViewModel()
+        viewModel.loadIfNeeded()
+        let dua = viewModel.entries[2]
+        for _ in 0..<3 {
+            viewModel.increment(dua)
+        }
+
+        // Act
+        viewModel.increment(dua)
+
+        // Assert
+        XCTAssertEqual(viewModel.count(for: dua), 0)
+        XCTAssertFalse(viewModel.isComplete(dua))
+    }
+
+    // MARK: Sharing
+
+    func test_shareText_should_includeTextTitleAndDeepLinkByOrder() {
+        // Arrange
+        let viewModel = makeViewModel()
+        let entry = MathuratFixtures.entry(id: 40, order: 2, title: "Al Fatihah (1-7)")
+
+        // Act
+        let text = viewModel.shareText(for: entry)
+
+        // Assert
+        XCTAssertEqual(
+            text,
+            "\(entry.arabic)\n\(entry.translation) [Al-Mathurat · Al Fatihah (1-7)]\n\nShared from Hidayah App\nhidayahapp://inAppDeeplink/mathurat/2"
+        )
+    }
+
+    func test_shareText_should_referToMathurat_when_entryHasNoTitle() {
+        // Arrange
+        let viewModel = makeViewModel()
+        let entry = MathuratFixtures.entry(id: 13)
+
+        // Act
+        let text = viewModel.shareText(for: entry)
+
+        // Assert
+        XCTAssertTrue(text.contains("[Al-Mathurat]"))
+        XCTAssertTrue(text.hasSuffix("hidayahapp://inAppDeeplink/mathurat/13"))
     }
 
     func test_updateReadFraction_should_followScrollBothWays() {

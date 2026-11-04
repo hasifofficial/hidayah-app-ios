@@ -425,6 +425,7 @@ struct RootView: View {
         NavigationStack {
             MathuratView(
                 viewModel: mathuratViewModel,
+                focusOrder: $router.mathuratFocusOrder,
                 onOpenSettings: {
                     router.settingsPresented = true
                 }

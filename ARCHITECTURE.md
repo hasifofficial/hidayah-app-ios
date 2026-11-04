@@ -54,7 +54,7 @@ App/
 - `AppController` is the composition root for services and shared state. Its initializer takes the task manager, store, notification scheduler and notification center, defaulting to the shared instances.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
-- `DeeplinkManager` maps URLs to router destinations.
+- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker` or `mathurat[/<order>]`; a Mathurat link sets `AppRouter.mathuratFocusOrder`, and the reader scrolls to the entry with that `order` in the current session (morning and evening variants of a dhikr share an order).
 
 ## Core
 
@@ -143,7 +143,7 @@ Examples:
 - `WidgetGuideView` owns presentation; `WidgetGuideViewModel` owns selection and tracker-derived preview data.
 - `TasbihView` owns animation/gesture presentation; `TasbihViewModel` owns counting, phrase state, and completion flow.
 - `TrackerCalendarViewModel` and `TrackerDayDetailViewModel` own date/record derivation.
-- `MathuratView` lays out the reader and measures the scroll position; `MathuratViewModel` owns the session (morning or evening from the clock), the repeat counts and the read progress (how far down the session is scrolled, following the scroll both ways). `RootView` holds it in `@State` so counts and progress survive tab switches.
+- `MathuratView` lays out the reader and measures the scroll position; `MathuratViewModel` owns the session (morning or evening from the clock), the repeat counts (tapping a finished counter starts it again from zero), the share text with its deep link, and the read progress (how far down the session is scrolled, following the scroll both ways). `RootView` holds it in `@State` so counts and progress survive tab switches.
 
 ## Shared
 

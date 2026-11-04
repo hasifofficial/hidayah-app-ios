@@ -80,7 +80,7 @@ final class RootViewTests: ViewsTestCase {
 
     func test_rootView_should_showQuranTabWithTabBar() {
         // Arrange
-        let tabs = ["Al-Mathurat", "Tasbih", "Tracker", "Search"]
+        let tabs = ["Mathurat", "Tasbih", "Tracker", "Search"]
 
         // Act
         let (host, _) = makeHost()
@@ -517,7 +517,7 @@ final class RootViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertTrue(host.contains("Hidayah"))
-        for tab in ["Quran", "Al-Mathurat", "Tasbih", "Tracker", "Search"] {
+        for tab in ["Quran", "Mathurat", "Tasbih", "Tracker", "Search"] {
             XCTAssertTrue(host.contains(tab), "Missing sidebar item \(tab)")
         }
     }
@@ -589,7 +589,7 @@ final class RootViewTests: ViewsTestCase {
         let selectedIcons = tabs.map(\.selectedIcon)
 
         // Assert
-        XCTAssertEqual(titles, ["Quran", "Al-Mathurat", "Tasbih", "Tracker", "Search"])
+        XCTAssertEqual(titles, ["Quran", "Mathurat", "Tasbih", "Tracker", "Search"])
         XCTAssertEqual(icons, ["book", "sun.horizon", "circle.grid.3x3", "checklist.unchecked", "magnifyingglass"])
         XCTAssertEqual(selectedIcons, ["book.fill", "sun.horizon.fill", "circle.grid.3x3.fill", "checklist.checked", "magnifyingglass"])
         XCTAssertEqual(tabs.map(\.id), [0, 1, 2, 3, 4])
