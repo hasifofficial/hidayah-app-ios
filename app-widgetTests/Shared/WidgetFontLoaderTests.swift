@@ -52,7 +52,7 @@ final class WidgetFontLoaderTests: XCTestCase {
         return code == CTFontManagerError.alreadyRegistered.rawValue
     }
 
-    func test_fontURLs_should_findBothKitabFonts_inFontsBundle() throws {
+    func test_fontURLs_should_findWidgetFonts_inFontsBundle() throws {
         // Arrange
         let bundle = try fontsBundle
 
@@ -62,7 +62,7 @@ final class WidgetFontLoaderTests: XCTestCase {
         // Assert
         XCTAssertEqual(
             urls.map(\.lastPathComponent).sorted(),
-            ["Kitab-Bold.ttf", "Kitab-Regular.ttf"]
+            ["Kitab-Bold.ttf", "Kitab-Regular.ttf", "surah-name-v2.ttf"]
         )
     }
 
@@ -79,6 +79,17 @@ final class WidgetFontLoaderTests: XCTestCase {
         XCTAssertTrue(urls.isEmpty, "\(urls)")
     }
 
+    func test_fontsBundle_should_findTheNestedFontsFolder() throws {
+        // Arrange
+        let bundle = testBundle
+
+        // Act
+        let fonts = WidgetFontLoader.fontsBundle(in: bundle)
+
+        // Assert
+        XCTAssertEqual(fonts?.bundleURL.lastPathComponent, "Fonts.bundle")
+    }
+
     func test_registerFonts_should_registerEveryFont() throws {
         // Arrange
         let bundle = try fontsBundle
@@ -92,6 +103,7 @@ final class WidgetFontLoaderTests: XCTestCase {
             XCTAssertTrue(isRegistered(url), url.lastPathComponent)
         }
         XCTAssertNotNil(UIFont(name: "Kitab-Regular", size: 12))
+        XCTAssertNotNil(UIFont(name: "surah-name-v2", size: 12))
     }
 
     func test_registerFonts_should_doNothing_when_alreadyRegistered() throws {

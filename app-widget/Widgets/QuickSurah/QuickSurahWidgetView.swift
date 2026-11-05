@@ -96,11 +96,7 @@ struct QuickSurahWidgetEntryView: View {
 
             Spacer(minLength: 2)
 
-            Text(surah.arabicName)
-                .font(.custom("Kitab-Regular", size: 22))
-                .foregroundColor(.title)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+            surahName(surah)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(surah.englishName)
@@ -119,6 +115,35 @@ struct QuickSurahWidgetEntryView: View {
         .overlay {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .stroke(Color.lightGreen.opacity(0.14), lineWidth: 1)
+        }
+    }
+}
+
+extension QuickSurahWidgetEntryView {
+    /// "surah001" to "surah114": the text the surah-name font draws as a
+    /// surah's calligraphic name, as in the app. Nil outside that range.
+    static func surahNameLigature(for number: Int) -> String? {
+        guard (1...114).contains(number) else { return nil }
+        return String(format: "surah%03d", number)
+    }
+
+    /// The surah's name in the same calligraphy as the app's Quick Access
+    /// cards, or plain Arabic text when there is no ligature for it.
+    @ViewBuilder
+    func surahName(_ surah: QuickSurahEntity) -> some View {
+        if let ligature = Self.surahNameLigature(for: surah.number) {
+            Text(ligature)
+                .font(.custom("surah-name-v2", size: 34))
+                .foregroundColor(.lightGreen)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .accessibilityLabel(surah.arabicName)
+        } else {
+            Text(surah.arabicName)
+                .font(.custom("Kitab-Bold", size: 20))
+                .foregroundColor(.lightGreen)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
         }
     }
 }

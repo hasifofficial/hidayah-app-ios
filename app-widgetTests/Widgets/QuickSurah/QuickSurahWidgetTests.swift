@@ -58,4 +58,28 @@ final class QuickSurahWidgetTests: XCTestCase {
         XCTAssertEqual(view.entry.surahs, QuickSurahCatalog.quickAccess)
         XCTAssertTrue(host.contains("Yaseen"), "\(host.labels())")
     }
+
+    func test_surahNameLigature_should_matchTheAppsFormat() {
+        // Arrange
+        let numbers = [1, 18, 114, 0, 115]
+
+        // Act
+        let ligatures = numbers.map(QuickSurahWidgetEntryView.surahNameLigature(for:))
+
+        // Assert
+        XCTAssertEqual(ligatures, ["surah001", "surah018", "surah114", nil, nil])
+    }
+
+    func test_entryView_should_labelCalligraphyWithArabicName() {
+        // Arrange
+        let entry = QuickSurahProvider.placeholderEntry(date: Date())
+        let firstName = entry.surahs[0].arabicName
+
+        // Act
+        let host = ViewHost(QuickSurahWidget.entryView(for: entry), size: size)
+
+        // Assert
+        XCTAssertTrue(host.contains(firstName), "\(host.labels())")
+        XCTAssertFalse(host.contains("surah0"), "\(host.labels())")
+    }
 }
