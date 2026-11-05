@@ -101,15 +101,21 @@ struct RootView: View {
     @State private var searchViewModel: SearchViewModel
     @State private var mathuratViewModel: MathuratViewModel
 
+    /// The release whose What's New screen shows on launch until seen;
+    /// nil never shows it.
+    private let whatsNewRelease: WhatsNewRelease?
+
     init(
         surahService: SurahService,
         taskManager: TaskManager,
         router: AppRouter,
-        mathuratLoader: MathuratLoading = BundleMathuratLoader()
+        mathuratLoader: MathuratLoading = BundleMathuratLoader(),
+        whatsNewRelease: WhatsNewRelease? = .current
     ) {
         self.surahService = surahService
         self.taskManager = taskManager
         self.router = router
+        self.whatsNewRelease = whatsNewRelease
 
         let quranViewModel = SurahListViewModel(
             surahService: surahService
@@ -195,6 +201,16 @@ struct RootView: View {
             )
             .presentationBackground(.sheetBackground)
             .environment(taskManager)
+        }
+        .sheet(isPresented: $router.whatsNewPresented) {
+            if let whatsNewRelease {
+                WhatsNewView(release: whatsNewRelease)
+            }
+        }
+        .task {
+            if whatsNewRelease?.isUnseen == true {
+                router.whatsNewPresented = true
+            }
         }
         .alert(
             router.errorMessage ?? "",

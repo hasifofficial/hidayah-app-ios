@@ -56,13 +56,30 @@ final class SettingsViewTests: ViewsTestCase {
         // Assert
         for text in [
             "Quran", "Recitation", "Alafasy", "Translation", "English",
-            "Arabic Font Size", "Istiqamah Tracker", "Tracker Settings",
+            "Reading Settings", "Istiqamah Tracker", "Tracker Settings",
             "Widgets", "Widget Guide", "Notification", "Al-Kahf Reminder",
-            "Istiqamah Reminders", "About Us", "Privacy Policy",
+            "Istiqamah Reminders", "What’s New", "About Us", "Privacy Policy",
             "Terms & Condition", "Support", "Feedback", "Version "
         ] {
             XCTAssertTrue(host.contains(text), "Missing \(text)")
         }
+    }
+
+    func test_settingsView_should_openWhatsNew_when_rowTapped() async {
+        // Arrange
+        ViewsFixtures.route()
+        let viewModel = makeViewModel()
+        let host = makeHost(viewModel)
+        await waitUntil(timeout: 5) { !viewModel.recitationItems.isEmpty }
+        host.pump()
+
+        // Act
+        host.tap("What’s New")
+        host.pump(until: { host.contains("A Fresh New Look") })
+
+        // Assert
+        XCTAssertTrue(host.contains("A Fresh New Look"))
+        XCTAssertTrue(host.contains("Feature 1 of 5"))
     }
 
     func test_settingsView_should_chooseRecitationFromSheet() async {
@@ -129,7 +146,7 @@ final class SettingsViewTests: ViewsTestCase {
         let host = makeHost(makeViewModel())
 
         // Act
-        host.tap("Arabic Font Size")
+        host.tap("Reading Settings")
         host.pump(0.6)
 
         // Assert

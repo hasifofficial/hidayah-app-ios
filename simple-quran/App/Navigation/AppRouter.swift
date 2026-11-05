@@ -21,6 +21,7 @@ final class AppRouter {
     var savedSearchPath: [AppRoute] = []
     var savedTrackerPath: [AppRoute] = []
     var settingsPresented = false
+    var whatsNewPresented = false
     var errorMessage: String?
 
     func selectTab(

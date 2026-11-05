@@ -15,6 +15,18 @@ final class AddCategoryViewTests: XCTestCase {
         return host
     }
 
+    func test_body_should_focusTheNameField_when_shown() {
+        // Arrange
+        let (taskManager, _, _) = makeTrackerFixture()
+
+        // Act
+        let host = makeHost(taskManager)
+        let focused = host.pump(until: { host.textFields().first?.isFirstResponder == true })
+
+        // Assert
+        XCTAssertTrue(focused)
+    }
+
     func test_body_should_showTheFormAndIcons() {
         // Arrange
         let (taskManager, _, _) = makeTrackerFixture()

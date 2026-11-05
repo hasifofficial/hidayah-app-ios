@@ -8,92 +8,128 @@
 import SwiftUI
 
 struct EditTaskView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @Environment(TaskManager.self) private var taskManager
     @State private var taskName: String
-    @State private var selectedCategory: Category
+    @State private var selectedCategory: Category?
     @State private var showingDeleteConfirmation = false
-    
+
     let task: TaskDetails
 
-    init(
-        task: TaskDetails
-    ) {
+    init(task: TaskDetails) {
         self.task = task
         _taskName = State(initialValue: task.name)
         _selectedCategory = State(initialValue: task.category)
     }
-    
+
+    private var trimmedName: String {
+        taskName.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var canSave: Bool {
+        !trimmedName.isEmpty && selectedCategory != nil
+    }
+
     var body: some View {
-        Form {
-            Section(header: Text(NSLocalizedString("edit_task_task_detail_section_title", comment: ""))) {
-                TextField(
-                    "edit_task_task_detail_task_name",
-                    text: $taskName
+        ScrollView {
+            VStack(spacing: 16) {
+                AppFormHeader(
+                    icon: "pencil.circle.fill",
+                    title: NSLocalizedString("edit_task_intro_title", comment: ""),
+                    subtitle: NSLocalizedString("edit_task_intro_subtitle", comment: "")
                 )
-                
-                Picker(
-                    "edit_task_task_detail_category",
-                    selection: $selectedCategory
+
+                AppFormCard(
+                    title: NSLocalizedString(
+                        "edit_task_task_detail_section_title",
+                        comment: ""
+                    )
                 ) {
-                    ForEach(taskManager.allCategories(), id: \.id) { category in
-                        Label(
-                            category.name,
-                            systemImage: category.icon
-                        )
-                        .tag(category)
-                    }
+                    AppTextField(
+                        label: NSLocalizedString(
+                            "edit_task_task_detail_task_name",
+                            comment: ""
+                        ),
+                        placeholder: NSLocalizedString(
+                            "add_task_task_name_placeholder",
+                            comment: ""
+                        ),
+                        text: $taskName,
+                        focusesOnAppear: true
+                    )
+
+                    AppCategoryMenu(
+                        label: NSLocalizedString(
+                            "edit_task_task_detail_category",
+                            comment: ""
+                        ),
+                        placeholder: NSLocalizedString(
+                            "add_task_task_detail_category_placeholder",
+                            comment: ""
+                        ),
+                        categories: taskManager.allCategories(),
+                        selection: $selectedCategory
+                    )
                 }
-            }
-            
-            Section {
-                Button(role: .destructive) {
+
+                AppPrimaryButton(
+                    title: NSLocalizedString("edit_task_save_button", comment: ""),
+                    icon: "checkmark",
+                    isEnabled: canSave
+                ) {
+                    save()
+                }
+
+                AppDestructiveButton(
+                    title: NSLocalizedString("edit_task_delete_task_button", comment: ""),
+                    icon: "trash"
+                ) {
                     showingDeleteConfirmation = true
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text(NSLocalizedString("edit_task_delete_task_button", comment: ""))
-                        Spacer()
-                    }
                 }
             }
+            .padding(16)
         }
+        .scrollDismissesKeyboard(.interactively)
+        .background(.appBackground)
         .navigationTitle(
             NSLocalizedString("edit_task_header_title", comment: "")
         )
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(NSLocalizedString("edit_task_save_button", comment: "")) {
-                    taskManager.updateTask(
-                        task: task,
-                        newName: taskName,
-                        newCategory: selectedCategory
-                    )
-                    presentationMode.wrappedValue.dismiss()
-                }
-                .disabled(taskName.isEmpty)
-                .foregroundColor(.lightGreen)
-            }
-        }
         .confirmationDialog(
-            "edit_task_delete_task_confirmation_dialog_title",
+            NSLocalizedString("edit_task_delete_task_confirmation_dialog_title", comment: ""),
             isPresented: $showingDeleteConfirmation,
             titleVisibility: .visible
         ) {
             Button(
-                "edit_task_delete_task_confirmation_dialog_delete_button",
+                NSLocalizedString(
+                    "edit_task_delete_task_confirmation_dialog_delete_button",
+                    comment: ""
+                ),
                 role: .destructive
             ) {
                 taskManager.deleteTask(task: task)
-                presentationMode.wrappedValue.dismiss()
+                dismiss()
             }
             Button(
-                "edit_task_delete_task_confirmation_dialog_cancel_button",
+                NSLocalizedString(
+                    "edit_task_delete_task_confirmation_dialog_cancel_button",
+                    comment: ""
+                ),
                 role: .cancel
             ) {}
         } message: {
             Text(NSLocalizedString("edit_task_delete_task_confirmation_dialog_subtitle", comment: ""))
         }
+    }
+
+    private func save() {
+        guard canSave, let selectedCategory else { return }
+
+        taskManager.updateTask(
+            task: task,
+            newName: trimmedName,
+            newCategory: selectedCategory
+        )
+        dismiss()
     }
 }

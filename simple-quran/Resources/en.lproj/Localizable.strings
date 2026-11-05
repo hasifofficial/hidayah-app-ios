@@ -101,7 +101,9 @@
 "edit_task_task_detail_section_title" = "Task Details";
 "edit_task_task_detail_task_name" = "Task Name";
 "edit_task_task_detail_category" = "Category";
-"edit_task_save_button" = "Save";
+"edit_task_save_button" = "Save Changes";
+"edit_task_intro_title" = "Edit Your Task";
+"edit_task_intro_subtitle" = "Rename it or move it to another category.";
 "edit_task_delete_task_button" = "Delete Task";
 "edit_task_delete_task_confirmation_dialog_title" = "Delete Task";
 "edit_task_delete_task_confirmation_dialog_subtitle" = "Are you sure you want to delete this task?";
@@ -216,8 +218,8 @@
 
 "tracker_share_footer" = "Shared from Hidayah App";
 
-"setting_quran_font_size_title" = "Arabic Font Size";
-"quran_reading_settings_title" = "Quran Reading";
+"setting_quran_font_size_title" = "Reading Settings";
+"quran_reading_settings_title" = "Reading Settings";
 "quran_reading_preview_title" = "Preview";
 "quran_reading_arabic_size" = "Arabic Text Size";
 "quran_reading_show_translation" = "Show Translation";
@@ -249,13 +251,19 @@
 "quran_mushaf_navigator_title" = "Go To";
 "quran_mushaf_navigator_hint" = "Opens pages, juz, surahs and bookmarks.";
 "quran_mushaf_go_to_page_format" = "Go to page %d";
-"quran_mushaf_choose_surah" = "Surah";
 "quran_mushaf_surah_search" = "Surah name or number";
-"quran_mushaf_page_placeholder" = "Page";
 "quran_mushaf_page_field" = "Page number";
 "quran_mushaf_go" = "Go";
 "quran_mushaf_page_error_format" = "Enter a page from 1 to %d.";
-"quran_mushaf_bookmarks_title" = "Bookmarked Pages";
+"quran_mushaf_tab_surah" = "Surah";
+"quran_mushaf_tab_juz" = "Juz";
+"quran_mushaf_tab_page" = "Page";
+"quran_mushaf_tab_bookmarks" = "Bookmarks";
+"quran_mushaf_reading_now" = "You’re reading";
+"quran_mushaf_page_short_format" = "p. %d";
+"quran_mushaf_page_range_placeholder" = "Page number, 1 to %d";
+"quran_mushaf_nearby_pages" = "Browse pages";
+"quran_mushaf_clear_search" = "Clear search";
 "quran_mushaf_page_turning_title" = "Page Turning";
 "quran_mushaf_swipe" = "Swipe";
 "quran_mushaf_scroll" = "Scroll";
@@ -353,3 +361,21 @@
 "mathurat_entry_fallback_title" = "Dhikr %d";
 "mathurat_load_error" = "The Al-Mathurat text couldn't be loaded.";
 "mathurat_retry" = "Try Again";
+
+/* What's New */
+"whats_new_title" = "What’s New";
+"whats_new_skip" = "Skip";
+"whats_new_next" = "Next";
+"whats_new_done" = "Get Started";
+"whats_new_page_format" = "Feature %d of %d";
+"whats_new_refresh_title" = "A Fresh New Look";
+"whats_new_refresh_body" = "Hidayah has been redesigned from top to bottom, with cleaner screens, calmer colours and easier navigation on iPhone and iPad.";
+"whats_new_mushaf_title" = "Read the Mushaf";
+"whats_new_mushaf_body" = "Turn the pages of a printed-style Mushaf. Now on iPad and iPhone Duo too, where it opens like a book, with juz and hizb markers to guide you.";
+"whats_new_mathurat_title" = "Al-Mathurat, Morning and Evening";
+"whats_new_mathurat_body" = "Recite the morning and evening dhikr with a counter for each one, and share any of them with a tap.";
+"whats_new_tasbih_title" = "A Tasbih in Your Pocket";
+"whats_new_tasbih_body" = "Tap anywhere to count your dhikr. Choose Subhanallah, Alhamdulillah or Allahu Akbar, or count freely.";
+"whats_new_widgets_title" = "Widgets for Your Home Screen";
+"whats_new_widgets_body" = "Keep your Istiqamah Tracker progress and favourite surahs one tap away.";
+"setting_whats_new_title" = "What’s New";

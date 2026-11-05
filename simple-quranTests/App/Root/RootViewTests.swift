@@ -56,22 +56,56 @@ final class RootViewTests: ViewsTestCase {
         sharedBookmarks.append(bookmark)
     }
 
-    private func makeRoot() -> RootView {
+    private func makeRoot(whatsNew: WhatsNewRelease? = nil) -> RootView {
         RootView(
             surahService: makeStubbedSurahService(),
             taskManager: taskManager,
-            router: router
+            router: router,
+            whatsNewRelease: whatsNew
         )
     }
 
     private func makeHost(
         sizeClass: UserInterfaceSizeClass = .compact,
-        size: CGSize = CGSize(width: 402, height: 2400)
+        size: CGSize = CGSize(width: 402, height: 2400),
+        whatsNew: WhatsNewRelease? = nil
     ) -> (ViewHost<RootHarness>, SizeClassModel) {
         let model = SizeClassModel(sizeClass)
-        let host = sceneHost(RootHarness(root: makeRoot(), model: model), size: size)
+        let host = sceneHost(
+            RootHarness(root: makeRoot(whatsNew: whatsNew), model: model),
+            size: size
+        )
         host.pump(0.4)
         return (host, model)
+    }
+
+    // MARK: What's New
+
+    func test_rootView_should_showWhatsNew_when_releaseIsUnseen() {
+        // Arrange
+        let release = WhatsNewRelease.current
+
+        // Act
+        let (host, _) = makeHost(size: CGSize(width: 402, height: 874), whatsNew: release)
+        host.pump(until: { host.contains("What’s New") })
+
+        // Assert
+        XCTAssertTrue(router.whatsNewPresented)
+        XCTAssertTrue(host.contains("A Fresh New Look"))
+    }
+
+    func test_rootView_should_notShowWhatsNew_when_releaseWasSeen() {
+        // Arrange
+        let release = WhatsNewRelease.current
+        release.markSeen()
+
+        // Act
+        let (host, _) = makeHost(size: CGSize(width: 402, height: 874), whatsNew: release)
+        host.pump(0.6)
+
+        // Assert
+        XCTAssertFalse(router.whatsNewPresented)
+        XCTAssertFalse(host.contains("A Fresh New Look"))
     }
 
     // MARK: Compact tabs

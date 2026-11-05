@@ -17,6 +17,7 @@ struct SettingsView: View {
     @State private var safariURL: URL?
     @State private var showingMail = false
     @State private var showingQuranReadingSettings = false
+    @State private var showingWhatsNew = false
 
     @AppStorage(
         Storage.StorageKey.quranArabicFontSize.rawValue,
@@ -56,7 +57,7 @@ struct SettingsView: View {
             }
 
             SettingsActionRow(
-                icon: "textformat.size",
+                icon: "text.book.closed",
                 title: NSLocalizedString(
                     "setting_quran_font_size_title",
                     comment: ""
@@ -138,6 +139,16 @@ struct SettingsView: View {
             )
 
             SettingsActionRow(
+                icon: "sparkles",
+                title: NSLocalizedString(
+                    "setting_whats_new_title",
+                    comment: ""
+                )
+            ) {
+                showingWhatsNew = true
+            }
+
+            SettingsActionRow(
                 icon: "info.circle",
                 title: NSLocalizedString(
                     "setting_about_us_title",
@@ -207,6 +218,9 @@ struct SettingsView: View {
             ReadingSettingsView(showsReadingMode: true)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showingWhatsNew) {
+            WhatsNewView()
         }
         .sheet(isPresented: $showingMail) {
             MailView(

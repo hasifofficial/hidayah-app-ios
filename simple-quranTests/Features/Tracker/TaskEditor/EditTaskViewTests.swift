@@ -24,6 +24,18 @@ final class EditTaskViewTests: XCTestCase {
         return host
     }
 
+    func test_body_should_focusTheNameField_when_shown() {
+        // Arrange
+        let (taskManager, _, _) = makeTrackerFixture()
+
+        // Act
+        let host = makeHost(taskManager, task: taskManager.tasks[0])
+        let focused = host.pump(until: { host.textFields().first?.isFirstResponder == true })
+
+        // Assert
+        XCTAssertTrue(focused)
+    }
+
     func test_body_should_showTheTaskDetails() {
         // Arrange
         let (taskManager, _, _) = makeTrackerFixture()
@@ -34,6 +46,7 @@ final class EditTaskViewTests: XCTestCase {
         // Assert
         XCTAssertTrue(host.contains("Edit Task"))
         XCTAssertTrue(host.contains("Task Details"))
+        XCTAssertTrue(host.contains("Edit Your Task"))
         XCTAssertTrue(host.contains("Fajr (Dawn Prayer)"))
         XCTAssertEqual(host.textFields().first?.text, "Fajr prayer")
     }
@@ -46,7 +59,7 @@ final class EditTaskViewTests: XCTestCase {
 
         // Act
         host.type("Fajr in congregation")
-        host.tapButton("Save")
+        host.tapButton("Save Changes")
 
         // Assert
         XCTAssertEqual(taskManager.tasks.first { $0.id == task.id }?.name, "Fajr in congregation")
@@ -61,7 +74,7 @@ final class EditTaskViewTests: XCTestCase {
 
         // Act
         host.type("")
-        host.tapButton("Save")
+        host.tapButton("Save Changes")
 
         // Assert
         XCTAssertEqual(taskManager.tasks.first { $0.id == task.id }?.name, "Fajr prayer")
