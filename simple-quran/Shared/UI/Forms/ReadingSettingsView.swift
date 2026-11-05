@@ -116,19 +116,12 @@ struct ReadingSettingsView: View {
             .foregroundColor(.textGray)
             .textCase(.uppercase)
 
-            VStack(spacing: 0) {
-                previewAyah(
-                    number: 1,
-                    arabic: "وَٱلْعَصْرِ",
-                    translation: "By time,"
-                )
-
-                previewAyah(
-                    number: 2,
-                    arabic: "إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ",
-                    translation: "Indeed, mankind is in loss."
-                )
-            }
+            // One ayah, long enough to judge the text size.
+            previewAyah(
+                number: 2,
+                arabic: "إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ",
+                translation: "Indeed, mankind is in loss."
+            )
             .background(Color.backgroundGray)
             .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay {
@@ -183,12 +176,8 @@ struct ReadingSettingsView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 12)
             }
-
-            Divider()
-                .overlay(Color.textGray.opacity(0.12))
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
         }
+        .padding(.bottom, 16)
         .padding(.top, 6)
     }
 
