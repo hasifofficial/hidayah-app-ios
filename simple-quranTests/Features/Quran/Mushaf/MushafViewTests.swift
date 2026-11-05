@@ -26,6 +26,27 @@ final class MushafViewTests: ViewsTestCase {
         return host
     }
 
+    /// Picks a navigator tab on the segmented control it is drawn with;
+    /// accessibility activation doesn't pick a segment on every iOS version.
+    private func selectTab(
+        _ title: String,
+        in host: ViewHost<some View>,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        guard
+            let control = host.allViews(of: UISegmentedControl.self).last(where: { control in
+                (0..<control.numberOfSegments).contains { control.titleForSegment(at: $0) == title }
+            }),
+            let index = (0..<control.numberOfSegments).first(where: { control.titleForSegment(at: $0) == title })
+        else {
+            return XCTFail("No \(title) tab", file: file, line: line)
+        }
+        control.selectedSegmentIndex = index
+        control.sendActions(for: .valueChanged)
+        host.pump()
+    }
+
     func test_mushafView_should_openOnSurahPage() {
         // Arrange
         let viewModel = MushafViewModel(surahNumber: 2, loader: FakeMushafLoader())
@@ -249,8 +270,9 @@ final class MushafViewTests: ViewsTestCase {
 
         // Act
         host.tap("Go To")
-        host.pump(0.8)
-        let showedNavigator = host.contains("Go to page 3")
+        let showedNavigator = host.pump(until: { host.contains("You’re reading") })
+        selectTab("Juz", in: host)
+        host.pump(until: { host.contains("Juz 2") })
         host.tap("Juz 2")
         host.pump(0.8)
 
@@ -264,7 +286,9 @@ final class MushafViewTests: ViewsTestCase {
         let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
         let host = makeHost(viewModel)
         host.tap("Go To")
-        host.pump(0.8)
+        host.pump(until: { host.contains("You’re reading") })
+        selectTab("Page", in: host)
+        host.pump(until: { host.contains("Go to page 1") })
 
         // Act
         host.tap("Go to page 4")
@@ -297,11 +321,9 @@ final class MushafViewTests: ViewsTestCase {
         let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader(), catalog: catalog)
         let host = makeHost(viewModel)
         host.tap("Go To")
-        host.pump(0.8)
+        host.pump(until: { host.contains("You’re reading") })
 
         // Act
-        host.tap("Surah")
-        host.pump(0.8)
         let showedRow = host.contains("Al-Baqara, Page 2")
         let showedOrigin = host.contains("Makkiyah")
         // The page behind the sheet is also labelled Al-Baqara.
@@ -312,6 +334,64 @@ final class MushafViewTests: ViewsTestCase {
         XCTAssertTrue(showedRow)
         XCTAssertFalse(showedOrigin)
         XCTAssertEqual(viewModel.currentPage, 2)
+    }
+
+    func test_mushafView_should_jumpToTypedPage_when_goTapped() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+        let host = makeHost(viewModel)
+        host.tap("Go To")
+        host.pump(until: { host.contains("You’re reading") })
+        selectTab("Page", in: host)
+        host.pump(until: { host.contains("Go to page 1") })
+
+        // Act
+        // The Surah tab's search field can linger while the tabs swap,
+        // so type into the newest field: the page number.
+        host.type("4", intoFieldAt: host.textFields().count - 1)
+        host.tapButton("Go")
+        host.pump(until: { viewModel.currentPage == 4 })
+
+        // Assert
+        XCTAssertEqual(viewModel.currentPage, 4)
+    }
+
+    func test_mushafView_should_rejectPageOutOfRange() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+        let host = makeHost(viewModel)
+        host.tap("Go To")
+        host.pump(until: { host.contains("You’re reading") })
+        selectTab("Page", in: host)
+        host.pump(until: { host.contains("Go to page 1") })
+
+        // Act
+        host.type("9", intoFieldAt: host.textFields().count - 1)
+        host.tapButton("Go")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertTrue(host.contains("Enter a page from 1 to 4."))
+        XCTAssertEqual(viewModel.currentPage, 1)
+    }
+
+    func test_mushafView_should_showEmptyBookmarksTab_when_noBookmarks() {
+        // Arrange
+        let viewModel = MushafViewModel(
+            surahNumber: 1,
+            loader: FakeMushafLoader(),
+            store: makeInMemoryStore()
+        )
+        let host = makeHost(viewModel)
+        host.tap("Go To")
+        host.pump(until: { host.contains("You’re reading") })
+
+        // Act
+        selectTab("Bookmarks", in: host)
+        let showedEmpty = host.pump(until: { host.contains("You have no bookmarks") })
+
+        // Assert
+        XCTAssertTrue(showedEmpty)
     }
 
     func test_bookmarkRibbon_should_beRed() {
@@ -336,10 +416,11 @@ final class MushafViewTests: ViewsTestCase {
         let host = makeHost(viewModel)
         viewModel.toggleBookmark(page: 3)
         host.tap("Go To")
-        host.pump(0.8)
+        host.pump(until: { host.contains("You’re reading") })
+        selectTab("Bookmarks", in: host)
 
         // Act
-        let showedRow = host.contains("Al-Baqara, Page 3")
+        let showedRow = host.pump(until: { host.contains("Al-Baqara, Page 3") })
         host.tap("Al-Baqara, Page 3")
         host.pump(0.8)
 

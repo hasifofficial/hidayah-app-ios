@@ -81,7 +81,7 @@ struct MushafView: View {
         }
         .sheet(isPresented: $showingNavigator) {
             MushafNavigatorSheet(viewModel: viewModel)
-                .presentationDetents([.height(340), .large])
+                .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
         .onAppear {

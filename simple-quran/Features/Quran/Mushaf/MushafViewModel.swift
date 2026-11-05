@@ -204,6 +204,11 @@ final class MushafViewModel {
     }
 
     /// Moves to the first page of a juz.
+    /// The page a juz begins on, or 1 before the layout has loaded.
+    func startPage(ofJuz juz: Int) -> Int {
+        layout?.startPage(ofJuz: juz) ?? 1
+    }
+
     func jump(toJuz juz: Int) {
         guard let layout else { return }
         scrolledPage = layout.startPage(ofJuz: juz)
