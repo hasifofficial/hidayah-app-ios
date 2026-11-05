@@ -201,7 +201,7 @@ final class SurahDetailViewTests: ViewsTestCase {
         let host = await loadedHost(viewModel)
 
         // Act
-        host.tap("Quran Reading")
+        host.tap("Reading Settings")
         host.pump(0.6)
 
         // Assert

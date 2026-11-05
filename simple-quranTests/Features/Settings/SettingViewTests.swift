@@ -56,7 +56,7 @@ final class SettingsViewTests: ViewsTestCase {
         // Assert
         for text in [
             "Quran", "Recitation", "Alafasy", "Translation", "English",
-            "Arabic Font Size", "Istiqamah Tracker", "Tracker Settings",
+            "Reading Settings", "Istiqamah Tracker", "Tracker Settings",
             "Widgets", "Widget Guide", "Notification", "Al-Kahf Reminder",
             "Istiqamah Reminders", "What’s New", "About Us", "Privacy Policy",
             "Terms & Condition", "Support", "Feedback", "Version "
@@ -146,7 +146,7 @@ final class SettingsViewTests: ViewsTestCase {
         let host = makeHost(makeViewModel())
 
         // Act
-        host.tap("Arabic Font Size")
+        host.tap("Reading Settings")
         host.pump(0.6)
 
         // Assert

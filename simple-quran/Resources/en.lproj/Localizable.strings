@@ -216,8 +216,8 @@
 
 "tracker_share_footer" = "Shared from Hidayah App";
 
-"setting_quran_font_size_title" = "Arabic Font Size";
-"quran_reading_settings_title" = "Quran Reading";
+"setting_quran_font_size_title" = "Reading Settings";
+"quran_reading_settings_title" = "Reading Settings";
 "quran_reading_preview_title" = "Preview";
 "quran_reading_arabic_size" = "Arabic Text Size";
 "quran_reading_show_translation" = "Show Translation";

@@ -56,7 +56,7 @@ final class ReadingSettingsViewTests: ViewsTestCase {
         let host = present(state) { ReadingSettingsView() }
 
         // Assert
-        XCTAssertTrue(host.contains("Quran Reading"))
+        XCTAssertTrue(host.contains("Reading Settings"))
         XCTAssertTrue(host.contains("Preview"))
         XCTAssertTrue(host.contains("Indeed, mankind is in loss."))
         XCTAssertFalse(host.contains("By time,"))

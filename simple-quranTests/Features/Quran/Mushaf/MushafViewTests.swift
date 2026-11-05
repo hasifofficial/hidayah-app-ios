@@ -92,7 +92,7 @@ final class MushafViewTests: ViewsTestCase {
         let host = makeHost(viewModel)
 
         // Act
-        host.tap("Quran Reading")
+        host.tap("Reading Settings")
         host.pump(0.8)
 
         // Assert

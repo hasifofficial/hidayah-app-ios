@@ -57,7 +57,7 @@ struct SettingsView: View {
             }
 
             SettingsActionRow(
-                icon: "textformat.size",
+                icon: "text.book.closed",
                 title: NSLocalizedString(
                     "setting_quran_font_size_title",
                     comment: ""
