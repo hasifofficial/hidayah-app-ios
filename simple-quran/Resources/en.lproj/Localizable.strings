@@ -6,8 +6,9 @@
   
 */
 
+"common_error_network_not_reachable" = "Network is not reachable.";
+"common_error_connection_time_out" = "Connection timed out.";
 "common_error_content" = "Something went wrong. Please try again later.";
-"common_error_storage_unavailable" = "Your saved data couldn't be opened. Changes you make now won't be saved. Please restart the app, and contact us if this keeps happening.";
 
 "request_error_decode" = "Data cannot be parsed. Please try again later.";
 "request_error_invalid_url" = "The URL is invalid, Make sure the URL is correct and try again later.";
@@ -19,14 +20,11 @@
 "push_notification_kahf_reminder_title" = "Al-Kahf Reminder";
 "push_notification_kahf_reminder_body" = "Jumu'ah Mubarakah. Have you read Al-Kahf today?";
 
-
-"search_header_title" = "Search";
-"search_textfield_placeholder" = "Search surah or Mathurat";
-"search_bookmarked_surah_section_title" = "Bookmark";
-"search_surah_section_title" = "Surah";
-"search_mathurat_section_title" = "Al-Mathurat";
+"push_notification_istiqamah_tracker_daily_reset_title" = "Istiqamah Tracker";
+"push_notification_istiqamah_tracker_daily_reset_body" = "Assalamualaikum! It looks like the day has ended, so we’ll reset your progress for tomorrow. Tap to continue.";
 
 "surah_list_header_title" = "Quran";
+"surah_list_search_placeholder" = "Search surah";
 "surah_list_subtitle" = "%@ • %@ verses";
 "surah_list_search_empty_title" = "No Search Results\n";
 "surah_list_search_empty_subtitle" = "Please try type another keyword.";
@@ -34,7 +32,10 @@
 "surah_list_empty_list_subtitle" = "Something went wrong.\nPlease try again.";
 
 "bookmark_list_header_title" = "Bookmarks";
+"bookmark_list_search_placeholder" = "Search bookmarks";
 "bookmark_list_subtitle" = "Verse %@";
+"bookmark_list_search_empty_title" = "You have no bookmarks\n";
+"bookmark_list_search_empty_subtitle" = "Tap on bookmark icon when reading to add bookmark.";
 "bookmark_list_empty_list_title" = "You have no bookmarks\n";
 "bookmark_list_empty_list_subtitle" = "Tap on bookmark icon when reading to add bookmark";
 
@@ -56,6 +57,7 @@
 "setting_tracker_title" = "Tracker Settings";
 "setting_notification_section_title" = "Notification";
 "setting_notification_alkahf_title" = "Al-Kahf Reminder";
+"setting_notification_section_title" = "Notification";
 "setting_about_section_title" = "About";
 "setting_about_us_title" = "About Us";
 "setting_about_privacy_title" = "Privacy Policy";
@@ -66,6 +68,8 @@
 "setting_app_verison" = "Version %@ (%@)";
 
 "setting_tracker_header_title" = "Tracker Settings";
+"setting_tracker_history_title" = "History";
+"setting_tracker_pass_history_title" = "Previous Tracker History";
 "setting_tracker_category_title" = "Category";
 "setting_tracker_manage_category_title" = "Manage Categories";
 "setting_tracker_reset_daily_progress_title" = "Reset Today's Progress";
@@ -77,6 +81,7 @@
 "setting_tracker_reset_all_alert_title" = "Reset All?";
 "setting_tracker_reset_all_alert_description" = "Reset all will restore everything back to default including remove all custom categories. Are you sure you want to continue?";
 "setting_tracker_reset_all_alert_reset_button" = "Reset";
+"setting_tracker_reset_all_alert_cancel_button" = "Cancel";
 
 "setting_manage_category_header_title" = "Manage Categories";
 "setting_manage_category_footer_title" = "Swipe to delete a category. Please note that all tasks under this category will also be deleted";
@@ -101,281 +106,9 @@
 "edit_task_task_detail_section_title" = "Task Details";
 "edit_task_task_detail_task_name" = "Task Name";
 "edit_task_task_detail_category" = "Category";
-"edit_task_save_button" = "Save Changes";
-"edit_task_intro_title" = "Edit Your Task";
-"edit_task_intro_subtitle" = "Rename it or move it to another category.";
+"edit_task_save_button" = "Save";
 "edit_task_delete_task_button" = "Delete Task";
 "edit_task_delete_task_confirmation_dialog_title" = "Delete Task";
 "edit_task_delete_task_confirmation_dialog_subtitle" = "Are you sure you want to delete this task?";
 "edit_task_delete_task_confirmation_dialog_delete_button" = "Delete";
 "edit_task_delete_task_confirmation_dialog_cancel_button" = "Cancel";
-
-"tracker_calendar_title" = "Tracker Calendar";
-"tracker_calendar_today" = "Today";
-"tracker_calendar_complete" = "Complete";
-"tracker_calendar_partial" = "Partial";
-"tracker_calendar_missed" = "Missed";
-"tracker_calendar_day_accessibility" = "%d %@, %d percent complete";
-"tracker_day_empty_title" = "No activity";
-"tracker_day_empty_subtitle" = "No tasks were completed on this day.";
-"tracker_achievements_title" = "Achievements";
-"tracker_badges_title" = "Badges";
-"tracker_stats_current_streak" = "Current streak";
-"tracker_stats_longest_streak" = "Longest streak";
-"tracker_stats_perfect_days" = "Perfect days";
-"tracker_stats_completed_tasks" = "Completed tasks";
-"tracker_level_format" = "Level %d";
-"tracker_points_format" = "%d pts";
-"tracker_next_level_format" = "%d XP to next level";
-"setting_notification_tracker_cheerleader_title" = "Istiqamah Reminders";
-"push_notification_tracker_cheer_title" = "Istiqamah Reminder";
-"push_notification_tracker_cheer_body" = "You're doing great. A little progress every day adds up — keep going!";
-"push_notification_tracker_cheer_milestone_body" = "You're %d%% through today's tracker. Keep going!";
-"push_notification_tracker_cheer_complete_body" = "Alhamdulillah! You completed everything today. %d-day streak, Level %d.";
-"tracker_badge_firstStep_title" = "First Step";
-"tracker_badge_firstStep_detail" = "Complete your first task.";
-"tracker_badge_streak3_title" = "Three Days";
-"tracker_badge_streak3_detail" = "Keep a 3-day streak.";
-"tracker_badge_streak7_title" = "One Week";
-"tracker_badge_streak7_detail" = "Keep a 7-day streak.";
-"tracker_badge_streak30_title" = "One Month";
-"tracker_badge_streak30_detail" = "Keep a 30-day streak.";
-"tracker_badge_perfectDay_title" = "Perfect Day";
-"tracker_badge_perfectDay_detail" = "Complete every task in a day.";
-"tracker_badge_perfectTen_title" = "Perfect Ten";
-"tracker_badge_perfectTen_detail" = "Complete every task on 10 days.";
-"tracker_badge_century_title" = "Century";
-"tracker_badge_century_detail" = "Complete 100 tasks.";
-"tracker_badge_devoted_title" = "Devoted";
-"tracker_badge_devoted_detail" = "Complete 1,000 tasks.";
-
-"tracker_today_title" = "Today";
-"tracker_streak_label" = "Streak";
-"tracker_level_label" = "Level";
-"tracker_points_label" = "Points";
-"tracker_tasks_completed_format" = "%d of %d completed";
-"tracker_edit" = "Edit";
-"tracker_edit_done" = "Done";
-"tracker_today_tasks_title" = "Today’s Tasks";
-"tracker_empty_title" = "No tracker tasks";
-"tracker_empty_subtitle" = "Add a task or category to start tracking your daily progress.";
-
-"tracker_calendar_active_summary" = "%d active days";
-"tracker_calendar_active_days" = "Active days";
-"tracker_calendar_perfect_days" = "Perfect days";
-"tracker_calendar_tasks_completed" = "Tasks";
-
-"tracker_calendar_choose_month_title" = "Choose Month";
-"tracker_calendar_month_title" = "Month";
-"tracker_calendar_year_title" = "Year";
-"tracker_calendar_cancel" = "Cancel";
-"tracker_calendar_go" = "Go";
-
-"tracker_day_detail_title" = "Daily Progress";
-"tracker_day_perfect_title" = "Perfect day";
-"tracker_day_tasks_label" = "Tasks";
-"tracker_day_points_label" = "Points";
-
-"surah_detail_heading" = "Surah";
-
-"surah_detail_share_ayah" = "Share ayah";
-"surah_detail_play_ayah" = "Play ayah";
-"surah_detail_pause_ayah" = "Pause ayah";
-"surah_detail_bookmark_ayah" = "Bookmark ayah";
-"surah_detail_remove_bookmark_ayah" = "Remove bookmark";
-
-"tracker_levels_title" = "Levels";
-"tracker_levels_current" = "Current";
-"tracker_levels_you_are_here" = "You are here";
-"tracker_levels_reach_points_format" = "Reach %d points to unlock";
-"tracker_levels_points_range_format" = "%d–%d pts";
-"tracker_levels_points_plus_format" = "%d+ pts";
-"tracker_levels_how_to_earn_title" = "How to earn points";
-"tracker_levels_how_to_earn_body" = "Earn 10 points for each completed task. Complete every task in a day for a 50-point bonus.";
-"tracker_level_1_title" = "First Step";
-"tracker_level_2_title" = "Consistent";
-"tracker_level_3_title" = "Steady";
-"tracker_level_4_title" = "Focused";
-"tracker_level_5_title" = "Dedicated";
-"tracker_level_6_title" = "Resilient";
-"tracker_level_7_title" = "Devoted";
-"tracker_level_8_title" = "Exemplary";
-"tracker_level_9_title" = "Istiqamah";
-"tracker_level_10_title" = "Luminous";
-
-"surah_list_all_title" = "All Surahs";
-"surah_list_count_format" = "%d surahs";
-"bookmark_list_saved_title" = "Saved Ayahs";
-"bookmark_list_count_format" = "%d saved ayahs";
-
-"surah_list_quick_access_title" = "Quick Access";
-
-"tracker_badges_unlocked_count" = "%d of %d unlocked";
-"tracker_share_achievements" = "Share achievements";
-"tracker_share_badge" = "Share badge";
-"tracker_share_achievements_format" = "Alhamdulillah, by Allah’s tawfiq I’ve reached Level %d in Hidayah with %d points and %d of %d badges unlocked. Striving for Istiqamah, one day at a time. May Allah keep us steadfast. 🤲";
-"tracker_share_badge_format" = "Alhamdulillah, I’ve unlocked the \"%@\" badge in Hidayah — %@. Striving for Istiqamah, one day at a time. May Allah keep us steadfast. 🤲";
-
-"tracker_share_footer" = "Shared from Hidayah App";
-
-"setting_quran_font_size_title" = "Reading Settings";
-"quran_reading_settings_title" = "Reading Settings";
-"quran_reading_preview_title" = "Preview";
-"quran_reading_arabic_size" = "Arabic Text Size";
-"quran_reading_show_translation" = "Show Translation";
-"quran_reading_reset" = "Reset";
-"quran_reading_done" = "Done";
-"quran_reading_mode_title" = "Reading Mode";
-"quran_reading_mode_list" = "List";
-"quran_reading_mode_mushaf" = "Mushaf";
-"quran_reading_mushaf_note" = "Mushaf pages are shown as printed, so text size and translation apply to List mode only.";
-"quran_mushaf_page_format" = "Page %d";
-"quran_mushaf_spread_format" = "Pages %d–%d";
-"quran_mushaf_wide_title" = "On Wide Screens";
-"quran_mushaf_two_pages" = "Two Pages";
-"quran_mushaf_one_page" = "One Page";
-"quran_mushaf_wide_note" = "For an unfolded iPhone Duo, an iPad or a phone on its side. One page shows larger text.";
-"quran_mushaf_juz_format" = "Juz %d";
-"quran_mushaf_page_accessibility" = "Page %d, %@, Juz %d";
-"quran_mushaf_surah_fallback" = "Surah %d";
-"quran_mushaf_load_error" = "The Mushaf pages couldn't be loaded.";
-"quran_mushaf_retry" = "Try Again";
-"quran_mushaf_add_bookmark" = "Bookmark page";
-"quran_mushaf_remove_bookmark" = "Remove page bookmark";
-"quran_mushaf_add_bookmark_format" = "Bookmark page %d";
-"quran_mushaf_remove_bookmark_format" = "Remove bookmark from page %d";
-"quran_mushaf_bookmarked_suffix" = ", bookmarked";
-"quran_mushaf_juz_hizb_format" = "%@ · Hizb %d";
-"quran_mushaf_page_of_format" = "Page %d of %d";
-"quran_mushaf_back" = "Back";
-"quran_mushaf_navigator_title" = "Go To";
-"quran_mushaf_navigator_hint" = "Opens pages, juz, surahs and bookmarks.";
-"quran_mushaf_go_to_page_format" = "Go to page %d";
-"quran_mushaf_surah_search" = "Surah name or number";
-"quran_mushaf_page_field" = "Page number";
-"quran_mushaf_go" = "Go";
-"quran_mushaf_page_error_format" = "Enter a page from 1 to %d.";
-"quran_mushaf_tab_surah" = "Surah";
-"quran_mushaf_tab_juz" = "Juz";
-"quran_mushaf_tab_page" = "Page";
-"quran_mushaf_tab_bookmarks" = "Bookmarks";
-"quran_mushaf_reading_now" = "You’re reading";
-"quran_mushaf_page_short_format" = "p. %d";
-"quran_mushaf_page_range_placeholder" = "Page number, 1 to %d";
-"quran_mushaf_nearby_pages" = "Browse pages";
-"quran_mushaf_clear_search" = "Clear search";
-"quran_mushaf_page_turning_title" = "Page Turning";
-"quran_mushaf_swipe" = "Swipe";
-"quran_mushaf_scroll" = "Scroll";
-"quran_mushaf_page_turning_note" = "Swipe turns one page at a time, like a printed copy. Scroll runs the pages one under another.";
-
-"add_category_intro_title" = "Create a Category";
-"add_category_intro_subtitle" = "Group related tasks and choose an icon that fits.";
-"add_category_category_name_placeholder" = "e.g. Evening Adhkar";
-"add_task_intro_title" = "Add a New Task";
-"add_task_intro_subtitle" = "Give it a clear name and choose a category.";
-"add_task_task_name_placeholder" = "e.g. Read Quran after Fajr";
-"add_task_task_detail_category_placeholder" = "Select a category";
-
-"setting_manage_category_section_title" = "Custom Categories";
-
-"tasbih_header_title" = "Tasbih";
-"tasbih_free_count" = "Free count";
-"tasbih_free_count_active" = "Free count active";
-"tasbih_count_of_format" = "of %d";
-"tasbih_tap_instruction" = "Tap anywhere to count";
-"tasbih_reset" = "Reset";
-"tasbih_phrase_1_title" = "Subhanallah";
-"tasbih_phrase_2_title" = "Alhamdulillah";
-"tasbih_phrase_3_title" = "Allahu Akbar";
-
-"tasbih_tab_title" = "Tasbih";
-
-"tasbih_completion_title" = "99 Dhikr Complete";
-"tasbih_completion_message" = "Alhamdulillah! You’ve completed 99 dhikr. May Allah accept your remembrance.";
-"tasbih_start_again" = "Start Again";
-
-"common_ok" = "OK";
-"common_delete" = "Delete";
-"common_shared_from_hidayah" = "Shared from Hidayah App";
-"quran_font_size_value_format" = "%d pt";
-"quran_revelation_makkan" = "Makkiyah";
-"quran_revelation_madani" = "Madaniyah";
-"quran_language_unknown" = "Unknown";
-"quran_reading_preview_translation" = "In the name of Allah, the Entirely Merciful, the Especially Merciful.";
-"default_category_morning" = "Upon Waking Up";
-"default_category_tahajjud" = "Tahajjud Companions";
-"default_category_fajr" = "Fajr (Dawn Prayer)";
-"default_category_recitation" = "Recitation";
-"default_category_dhuha" = "Dhuha";
-"default_category_dhuhr" = "Dhuhr (Noon Prayer)";
-"default_category_asr" = "Asr (Afternoon Prayer)";
-"default_category_maghrib" = "Maghrib (Sunset Prayer)";
-"default_category_isha" = "Isha (Night Prayer)";
-"default_category_bedtime" = "Before Sleeping";
-
-"setting_widgets_section_title" = "Widgets";
-"setting_widgets_action_title" = "Widget Guide";
-"widget_guide_tracker_title" = "Istiqamah Tracker";
-"widget_guide_tracker_body" = "Track daily progress and upcoming tasks. Available in small and medium sizes.";
-"widget_guide_quick_title" = "Quick Surahs";
-"widget_guide_quick_body" = "Open your chosen surahs instantly. Medium size.";
-"widget_guide_add_title" = "How to Add a Widget";
-"widget_guide_add_step_1" = "Touch and hold an empty area of the Home Screen.";
-"widget_guide_add_step_2" = "Tap Edit, then Add Widget. On older iOS versions, tap the + button.";
-"widget_guide_add_step_3" = "Search for Hidayah and choose Tracker or Quick Surahs.";
-"widget_guide_add_step_4" = "Choose the widget size, then tap Add Widget.";
-"widget_guide_configure_title" = "Customize Quick Surahs";
-"widget_guide_configure_body" = "After adding Quick Surahs, choose which surahs appear in it.";
-"widget_guide_configure_step_1" = "Touch and hold the Quick Surahs widget.";
-"widget_guide_configure_step_2" = "Tap Edit Widget.";
-"widget_guide_configure_step_3" = "Select Surahs, search for a surah, and choose up to three.";
-"widget_guide_footer" = "Widgets update automatically as your tracker progress and surah preferences change.";
-
-"widget_upcoming_title" = "Upcoming";
-
-"widget_guide_select_title" = "Choose a widget";
-"widget_guide_live_preview" = "Live Preview";
-"widget_guide_no_upcoming" = "No upcoming tasks";
-
-"widget_quick_access_title" = "Quick Access";
-
-"widget_guide_app_messages" = "Messages";
-"widget_guide_app_safari" = "Safari";
-"widget_guide_app_camera" = "Camera";
-"widget_guide_app_music" = "Music";
-
-"mathurat_tab_title" = "Mathurat";
-"mathurat_header_title" = "Al-Mathurat";
-"mathurat_time_morning" = "Morning";
-"mathurat_time_evening" = "Evening";
-"mathurat_label_morning" = "Al-Mathurat Sughra · Morning dhikr";
-"mathurat_label_evening" = "Al-Mathurat Sughra · Evening dhikr";
-"mathurat_progress_completed_format" = "%d%% completed";
-"mathurat_banner_accessibility" = "%@ session, %d%% completed";
-"mathurat_about" = "Al-Ma'thurat is a collection of dhikr and wird taken from the Prophet Muhammad SAW. The texts from the Quran and the Sunnah of the Prophet SAW. These dhikr and wird were taught by him to his companions, then to the tabi'in, tabi' at-tabi'in, and as-salaf as-salih.\n\nTime to recite al-Mathurat:\nAl-Mathurat can be recited twice daily:\n• In the morning (usually recited after Fajr prayer)\n• In the evening (usually recited after Asr prayer).";
-"mathurat_banner_hint" = "Scrolls back to the top";
-"mathurat_repeat_format" = "%d of %d";
-"mathurat_count_accessibility" = "Count %@";
-"mathurat_share_accessibility" = "Share %@";
-"mathurat_entry_fallback_title" = "Dhikr %d";
-"mathurat_load_error" = "The Al-Mathurat text couldn't be loaded.";
-"mathurat_retry" = "Try Again";
-
-/* What's New */
-"whats_new_title" = "What’s New";
-"whats_new_skip" = "Skip";
-"whats_new_next" = "Next";
-"whats_new_done" = "Get Started";
-"whats_new_page_format" = "Feature %d of %d";
-"whats_new_refresh_title" = "A Fresh New Look";
-"whats_new_refresh_body" = "Hidayah has been redesigned from top to bottom, with cleaner screens, calmer colours and easier navigation on iPhone and iPad.";
-"whats_new_mushaf_title" = "Read the Mushaf";
-"whats_new_mushaf_body" = "Turn the pages of a printed-style Mushaf. Now on iPad and iPhone Duo too, where it opens like a book, with juz and hizb markers to guide you.";
-"whats_new_mathurat_title" = "Al-Mathurat, Morning and Evening";
-"whats_new_mathurat_body" = "Recite the morning and evening dhikr with a counter for each one, and share any of them with a tap.";
-"whats_new_tasbih_title" = "A Tasbih in Your Pocket";
-"whats_new_tasbih_body" = "Tap anywhere to count your dhikr. Choose Subhanallah, Alhamdulillah or Allahu Akbar, or count freely.";
-"whats_new_widgets_title" = "Widgets for Your Home Screen";
-"whats_new_widgets_body" = "Keep your Istiqamah Tracker progress and favourite surahs one tap away.";
-"setting_whats_new_title" = "What’s New";
