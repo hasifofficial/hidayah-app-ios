@@ -353,3 +353,21 @@
 "mathurat_entry_fallback_title" = "Dhikr %d";
 "mathurat_load_error" = "The Al-Mathurat text couldn't be loaded.";
 "mathurat_retry" = "Try Again";
+
+/* What's New */
+"whats_new_title" = "What’s New";
+"whats_new_skip" = "Skip";
+"whats_new_next" = "Next";
+"whats_new_done" = "Get Started";
+"whats_new_page_format" = "Feature %d of %d";
+"whats_new_refresh_title" = "A Fresh New Look";
+"whats_new_refresh_body" = "Hidayah has been redesigned from top to bottom, with cleaner screens, calmer colours and easier navigation on iPhone and iPad.";
+"whats_new_mushaf_title" = "Read the Mushaf";
+"whats_new_mushaf_body" = "Turn the pages of a printed-style Mushaf. Now on iPad and iPhone Duo too, where it opens like a book, with juz and hizb markers to guide you.";
+"whats_new_mathurat_title" = "Al-Mathurat, Morning and Evening";
+"whats_new_mathurat_body" = "Recite the morning and evening dhikr with a counter for each one, and share any of them with a tap.";
+"whats_new_tasbih_title" = "A Tasbih in Your Pocket";
+"whats_new_tasbih_body" = "Tap anywhere to count your dhikr. Choose Subhanallah, Alhamdulillah or Allahu Akbar, or count freely.";
+"whats_new_widgets_title" = "Widgets for Your Home Screen";
+"whats_new_widgets_body" = "Keep your Istiqamah Tracker progress and favourite surahs one tap away.";
+"setting_whats_new_title" = "What’s New";
