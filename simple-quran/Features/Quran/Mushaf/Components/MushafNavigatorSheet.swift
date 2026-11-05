@@ -266,48 +266,31 @@ struct MushafNavigatorSheet: View {
                     .foregroundColor(.textGray)
                     .padding(.horizontal, 16)
 
+                // The same rows as the Bookmarks screen. A plain stack:
+                // there are only a few, and they sit below the sheet's
+                // first detent.
                 VStack(spacing: 0) {
                     ForEach(pages, id: \.self) { page in
+                        let surah = viewModel.surahs(onPage: page).first ?? 1
+
                         Button {
                             go { viewModel.jump(toPage: page) }
                         } label: {
-                            HStack {
-                                Image(systemName: "bookmark.fill")
-                                    .foregroundColor(MushafBookmarkRibbon.color)
-
-                                Text(
-                                    viewModel.surahs(onPage: page)
-                                        .map(viewModel.surahName)
-                                        .joined(separator: " · ")
-                                )
-                                .foregroundColor(.title)
-
-                                Spacer()
-
-                                Text(
-                                    String(
-                                        format: NSLocalizedString("quran_mushaf_page_format", comment: ""),
-                                        page
-                                    )
-                                )
-                                .monospacedDigit()
-                                .foregroundColor(.textGray)
-                            }
-                            .font(.system(size: 14))
-                            .padding(.horizontal, 16)
-                            .frame(height: 44)
-                            .contentShape(Rectangle())
+                            SurahListRowView(
+                                title: viewModel.surahName(surah),
+                                subtitle: String(
+                                    format: NSLocalizedString("quran_mushaf_page_format", comment: ""),
+                                    page
+                                ),
+                                arabicTitle: viewModel.surahArabicName(surah),
+                                surahNumber: surah,
+                                badgeIcon: "bookmark.fill"
+                            )
+                            .accessibilityElement(children: .combine)
                         }
                         .buttonStyle(.plain)
-
-                        if page != pages.last {
-                            Divider().padding(.leading, 16)
-                        }
                     }
                 }
-                .background(Color.backgroundGray)
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .padding(.horizontal, 16)
             }
         }
     }

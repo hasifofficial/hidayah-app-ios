@@ -20,8 +20,8 @@ struct MushafView: View {
         size.height > 0 && size.width >= 600 && size.width / size.height >= 0.6
     }
 
-    /// Room kept free above the page for the floating bar, so the page
-    /// doesn't resize when the bar hides.
+    /// Room kept free above the page for the floating bar. When the bar
+    /// hides, the page grows into it.
     static let toolbarReserve: CGFloat = 60
 
     @Bindable var viewModel: MushafViewModel
@@ -51,11 +51,15 @@ struct MushafView: View {
 
             ZStack(alignment: .top) {
                 content(isSpread: isSpread)
-                    .padding(.top, Self.toolbarReserve)
+                    .padding(.top, hidesChrome ? 0 : Self.toolbarReserve)
 
                 if !hidesChrome {
                     toolbar(isSpread: isSpread)
                         .padding(.top, 8)
+                        // Centred over the spread, which ignores side insets:
+                        // the full-width frame lets it reach past them.
+                        .frame(maxWidth: .infinity)
+                        .ignoresSafeArea(.container, edges: isSpread ? .horizontal : [])
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
             }
@@ -103,6 +107,10 @@ struct MushafView: View {
                     pagePager(layout, size: geometry.size)
                 }
             }
+            // A spread spans the whole width, past side insets such as an
+            // unfolded iPhone Duo's camera, so the book sits exactly in the
+            // middle and the next spread doesn't peek in.
+            .ignoresSafeArea(.container, edges: isSpread ? .horizontal : [])
         } else if viewModel.loadError != nil {
             errorState
         } else {
@@ -129,6 +137,9 @@ struct MushafView: View {
         .scrollTargetBehavior(.paging)
         .scrollPosition(id: $viewModel.scrolledPage)
         .scrollIndicators(.hidden)
+        // A scroll view draws into side insets, which let the next page
+        // peek in beside an unfolded iPhone Duo's camera.
+        .clipped()
         // Page 1 on the right, swiping left to read on.
         .environment(\.layoutDirection, .rightToLeft)
     }

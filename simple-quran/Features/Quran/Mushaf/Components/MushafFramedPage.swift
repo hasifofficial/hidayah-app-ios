@@ -65,6 +65,10 @@ struct MushafFramedPage: View {
     let size: CGSize
     let maxPixelWidth: CGFloat
     var spine: Spine = .none
+    /// Stretches the frame to fill `size`, with the page text centred
+    /// inside, rather than hugging the text. Spreads use it so the open
+    /// book fills the screen.
+    var fillsSpace = false
     let viewModel: MushafViewModel
 
     @State private var image: CGImage?
@@ -109,12 +113,17 @@ struct MushafFramedPage: View {
 
             pageImage
                 .frame(width: imageSize.width, height: imageSize.height)
+                .frame(maxWidth: .infinity, maxHeight: fillsSpace ? .infinity : nil)
 
             MushafStarMedallion(text: viewModel.arabicNumber(page))
                 .frame(height: MushafPageMetrics.footHeight)
         }
-        .frame(width: imageSize.width)
+        .frame(width: fillsSpace ? nil : imageSize.width)
         .padding(MushafPageMetrics.frameWidth + MushafPageMetrics.innerPadding)
+        .frame(
+            width: fillsSpace ? max(size.width - 2 * MushafPageMetrics.margin, 0) : nil,
+            height: fillsSpace ? max(size.height - 2 * MushafPageMetrics.margin, 0) : nil
+        )
         .background(MushafFrame())
         .overlay(alignment: markerAlignment) {
             quarterMarkers
@@ -244,18 +253,11 @@ struct MushafSpreadView: View {
     let viewModel: MushafViewModel
 
     var body: some View {
-        let available = CGSize(
-            width: (size.width - 2 * Self.canvasPadding) / 2,
-            height: size.height - 2 * Self.canvasPadding
-        )
-        // The paper hugs the framed pages rather than filling the screen.
-        let imageSize = MushafPageMetrics.imageSize(fitting: available)
+        // The open book fills the screen; each page's text stays at its
+        // printed proportions, centred in its frame.
         let sheetSize = CGSize(
-            width: imageSize.width + 2 * MushafPageMetrics.sideInset,
-            height: imageSize.height
-                + MushafPageMetrics.runningHeadHeight
-                + MushafPageMetrics.footHeight
-                + 2 * MushafPageMetrics.sideInset
+            width: max((size.width - 2 * Self.canvasPadding) / 2, 0),
+            height: max(size.height - 2 * Self.canvasPadding, 0)
         )
 
         // The parent pager is right-to-left, so the first page lands on the
@@ -269,6 +271,7 @@ struct MushafSpreadView: View {
                     size: sheetSize,
                     maxPixelWidth: sheetSize.width * displayScale,
                     spine: pages.count == 2 ? spine : .none,
+                    fillsSpace: true,
                     viewModel: viewModel
                 )
                 .background {

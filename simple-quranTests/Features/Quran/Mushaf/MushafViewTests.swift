@@ -321,4 +321,30 @@ final class MushafViewTests: ViewsTestCase {
         // Assert
         XCTAssertEqual(color, .red)
     }
+
+    func test_mushafView_should_listBookmarkedPagesAsSurahRows() {
+        // Arrange
+        let store = makeInMemoryStore()
+        let catalog = SurahCatalog(cacheURL: nil)
+        catalog.store(VMFixtures.surahs)
+        let viewModel = MushafViewModel(
+            surahNumber: 1,
+            loader: FakeMushafLoader(),
+            catalog: catalog,
+            store: store
+        )
+        let host = makeHost(viewModel)
+        viewModel.toggleBookmark(page: 3)
+        host.tap("Go To")
+        host.pump(0.8)
+
+        // Act
+        let showedRow = host.contains("Al-Baqara, Page 3")
+        host.tap("Al-Baqara, Page 3")
+        host.pump(0.8)
+
+        // Assert
+        XCTAssertTrue(showedRow)
+        XCTAssertEqual(viewModel.currentPage, 3)
+    }
 }
