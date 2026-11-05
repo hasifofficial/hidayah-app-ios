@@ -209,4 +209,116 @@ final class MushafViewTests: ViewsTestCase {
         XCTAssertTrue(host.contains("Remove bookmark from page 2"))
         XCTAssertEqual(store.bookmarks(), [SurahBookmark(surahNumber: 2, numberInSurah: 1)])
     }
+
+    // MARK: Classic page
+
+    func test_mushafView_should_showFloatingBar_withPageAndHizb() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 2, loader: FakeMushafLoader())
+
+        // Act
+        let host = makeHost(viewModel)
+
+        // Assert
+        XCTAssertTrue(host.contains("Page 2 of 4"))
+        XCTAssertTrue(host.contains("Juz 1 · Hizb 1"))
+        XCTAssertTrue(host.contains("Back"))
+        XCTAssertTrue(host.contains("Go To"))
+    }
+
+    func test_mushafView_should_hideBar_when_chromeIsHidden() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 2, loader: FakeMushafLoader())
+        let host = makeHost(viewModel)
+        let showedBar = host.contains("Page 2 of 4")
+
+        // Act
+        viewModel.toggleChrome()
+        host.pump(0.5)
+
+        // Assert
+        XCTAssertTrue(showedBar)
+        XCTAssertFalse(host.contains("Page 2 of 4"))
+        XCTAssertTrue(host.contains("Page 2, "))
+    }
+
+    func test_mushafView_should_openNavigator_andJumpToJuz() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+        let host = makeHost(viewModel)
+
+        // Act
+        host.tap("Go To")
+        host.pump(0.8)
+        let showedNavigator = host.contains("Go to page 3")
+        host.tap("Juz 2")
+        host.pump(0.8)
+
+        // Assert
+        XCTAssertTrue(showedNavigator)
+        XCTAssertEqual(viewModel.currentPage, 3)
+    }
+
+    func test_mushafView_should_jumpToPage_when_thumbnailIsChosen() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+        let host = makeHost(viewModel)
+        host.tap("Go To")
+        host.pump(0.8)
+
+        // Act
+        host.tap("Go to page 4")
+        host.pump(0.8)
+
+        // Assert
+        XCTAssertEqual(viewModel.currentPage, 4)
+    }
+
+    func test_mushafView_should_stackPages_when_scrollingVertically() {
+        // Arrange
+        Storage.save(.mushafScrollsVertically, true)
+        let viewModel = MushafViewModel(surahNumber: 2, loader: FakeMushafLoader())
+
+        // Act
+        let host = makeHost(viewModel, size: CGSize(width: 669, height: 951))
+
+        // Assert
+        let pager = host.firstView(of: UIScrollView.self)
+        let pageHeight = MushafPageMetrics.height(forWidth: 620)
+        XCTAssertEqual(pager?.contentSize.height ?? 0, 4 * pageHeight, accuracy: 1)
+        XCTAssertEqual(viewModel.currentPage, 2)
+        XCTAssertTrue(host.contains("Page 2 of 4"))
+    }
+
+    func test_mushafView_should_listSurahsWithPage_when_choosingSurah() {
+        // Arrange
+        let catalog = SurahCatalog(cacheURL: nil)
+        catalog.store(VMFixtures.surahs)
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader(), catalog: catalog)
+        let host = makeHost(viewModel)
+        host.tap("Go To")
+        host.pump(0.8)
+
+        // Act
+        host.tap("Surah")
+        host.pump(0.8)
+        let showedRow = host.contains("Al-Baqara, Page 2")
+        let showedOrigin = host.contains("Makkiyah")
+        // The page behind the sheet is also labelled Al-Baqara.
+        host.tap("Al-Baqara, Page 2")
+        host.pump(0.8)
+
+        // Assert
+        XCTAssertTrue(showedRow)
+        XCTAssertFalse(showedOrigin)
+        XCTAssertEqual(viewModel.currentPage, 2)
+    }
+
+    func test_bookmarkRibbon_should_beRed() {
+        // Arrange & Act
+        let color = MushafBookmarkRibbon.color
+
+        // Assert
+        XCTAssertEqual(color, .red)
+    }
 }

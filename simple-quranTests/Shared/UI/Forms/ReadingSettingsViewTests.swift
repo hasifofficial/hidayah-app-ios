@@ -163,6 +163,29 @@ final class ReadingSettingsViewTests: ViewsTestCase {
         XCTAssertEqual(Storage.load(key: .mushafShowsSpread) as? Bool, false)
     }
 
+    func test_quranReadingSettingsView_should_saveScroll_when_chosenForPageTurning() {
+        // Arrange
+        Storage.save(.quranReadingMode, "mushaf")
+        let state = SheetState()
+        let host = present(state) { ReadingSettingsView(showsReadingMode: true) }
+        let showedChoice = host.contains("Page Turning")
+
+        // Act
+        let pageTurning = host.allViews(of: UISegmentedControl.self).first {
+            $0.titleForSegment(at: 0) == "Swipe"
+        }
+        guard let pageTurning else {
+            return XCTFail("No page turning picker")
+        }
+        pageTurning.selectedSegmentIndex = 1
+        pageTurning.sendActions(for: .valueChanged)
+        host.pump(0.3)
+
+        // Assert
+        XCTAssertTrue(showedChoice)
+        XCTAssertEqual(Storage.load(key: .mushafScrollsVertically) as? Bool, true)
+    }
+
     func test_quranReadingSettingsView_should_hideWideScreenChoice_inListMode() {
         // Arrange
         let state = SheetState()

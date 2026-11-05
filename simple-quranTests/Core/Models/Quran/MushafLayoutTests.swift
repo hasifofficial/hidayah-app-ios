@@ -146,6 +146,78 @@ final class MushafLayoutTests: XCTestCase {
         XCTAssertThrowsError(try dto.layout())
     }
 
+    // MARK: Hizb
+
+    func test_hizbQuarterStarts_should_coverWholeQuran() throws {
+        // Arrange
+        let layout = try bundledLayout()
+
+        // Act
+        let quarters = layout.hizbQuarterStarts
+
+        // Assert
+        XCTAssertEqual(quarters.count, 240)
+        XCTAssertEqual(quarters.first, MushafLayout.AyahReference(surah: 1, ayah: 1))
+        XCTAssertEqual(quarters, quarters.sorted())
+    }
+
+    func test_hizbQuarterStarts_should_agreeWithJuzStarts() throws {
+        // Arrange
+        let layout = try bundledLayout()
+
+        // Act
+        let everyEighth = stride(from: 0, to: 240, by: 8).map { layout.hizbQuarterStarts[$0] }
+
+        // Assert
+        XCTAssertEqual(everyEighth, layout.juzStarts)
+    }
+
+    func test_hizb_should_followQuarterStarts() throws {
+        // Arrange
+        let layout = try bundledLayout()
+
+        // Act
+        let hizb = [1, 2, 11, 22, 42, 604].map { layout.hizb(onPage: $0) }
+
+        // Assert
+        XCTAssertEqual(hizb, [1, 1, 1, 3, 5, 60])
+    }
+
+    func test_quarterStarts_should_listQuartersBeginningOnPage() throws {
+        // Arrange
+        let layout = try bundledLayout()
+
+        // Act
+        let quarters = [1, 2, 5, 11, 22, 604].map { layout.quarterStarts(onPage: $0) }
+
+        // Assert
+        XCTAssertEqual(quarters, [[1], [], [2], [5], [9], []])
+    }
+
+    func test_hizb_should_beNil_when_layoutHasNoHizbData() {
+        // Arrange
+        let layout = MushafFixtures.layout(withQuarters: false)
+
+        // Act
+        let hizb = layout.hizb(onPage: 2)
+        let quarters = layout.quarterStarts(onPage: 1)
+
+        // Assert
+        XCTAssertNil(hizb)
+        XCTAssertEqual(quarters, [])
+    }
+
+    func test_startPageOfJuz_should_matchPrintedMushaf() throws {
+        // Arrange
+        let layout = try bundledLayout()
+
+        // Act
+        let pages = [0, 1, 2, 30, 31].map(layout.startPage(ofJuz:))
+
+        // Assert
+        XCTAssertEqual(pages, [1, 1, 22, 582, 582])
+    }
+
     func test_readingMode_should_exposeTitleKeys() {
         // Arrange
         let modes = QuranReadingMode.allCases

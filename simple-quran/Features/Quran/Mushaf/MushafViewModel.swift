@@ -16,6 +16,9 @@ final class MushafViewModel {
     var scrolledPage: Int?
     /// Pages holding at least one bookmarked ayah.
     private(set) var bookmarkedPages: Set<Int> = []
+    /// Whether the toolbar and status bar are tucked away so only the page
+    /// shows. Tapping the page toggles it.
+    var isChromeHidden = false
 
     @ObservationIgnored
     private let surahNumber: Int
@@ -37,6 +40,17 @@ final class MushafViewModel {
         cache.countLimit = 8
         return cache
     }()
+
+    /// Small page images for the navigator's filmstrip, kept apart from
+    /// the full pages so they never stand in for one.
+    @ObservationIgnored
+    private let thumbnails: NSCache<NSNumber, CGImage> = {
+        let cache = NSCache<NSNumber, CGImage>()
+        cache.countLimit = 40
+        return cache
+    }()
+
+    static let thumbnailPixelWidth: CGFloat = 180
 
     init(
         surahNumber: Int,
@@ -133,12 +147,100 @@ final class MushafViewModel {
         layout?.juz(onPage: page) ?? 1
     }
 
+    func hizb(onPage page: Int) -> Int? {
+        layout?.hizb(onPage: page)
+    }
+
+    /// The quarters beginning on the page, numbered from 1.
+    func quarterStarts(onPage page: Int) -> [Int] {
+        layout?.quarterStarts(onPage: page) ?? []
+    }
+
+    /// "Juz 2 · Hizb 3", or just the juz when the layout has no hizb data.
+    func juzAndHizbLabel(forPage page: Int) -> String {
+        let juz = String(
+            format: NSLocalizedString("quran_mushaf_juz_format", comment: ""),
+            juz(onPage: page)
+        )
+        guard let hizb = hizb(onPage: page) else { return juz }
+        return String(
+            format: NSLocalizedString("quran_mushaf_juz_hizb_format", comment: ""),
+            juz,
+            hizb
+        )
+    }
+
+    var juzCount: Int {
+        layout?.juzStarts.count ?? 30
+    }
+
+    var pageCount: Int {
+        layout?.pageCount ?? 0
+    }
+
+    func startPage(ofSurah surah: Int) -> Int {
+        layout?.startPage(ofSurah: surah) ?? 1
+    }
+
+    /// The number as printed on the page, in Arabic-Indic digits.
+    /// Mapped digit by digit: the "ar" locale's default numbering differs
+    /// between OS versions, and the page should always match print.
+    func arabicNumber(_ number: Int) -> String {
+        String(String(number).unicodeScalars.map { scalar -> Character in
+            guard let digit = Int(String(scalar)),
+                  let arabic = Unicode.Scalar(0x0660 + digit) else {
+                return Character(scalar)
+            }
+            return Character(arabic)
+        })
+    }
+
+    // MARK: Navigation
+
+    /// Moves to `page`, clamped to the Mushaf.
+    func jump(toPage page: Int) {
+        guard let layout else { return }
+        scrolledPage = layout.clampedPage(page)
+    }
+
+    /// Moves to the first page of a juz.
+    func jump(toJuz juz: Int) {
+        guard let layout else { return }
+        scrolledPage = layout.startPage(ofJuz: juz)
+    }
+
+    func jump(toSurah surah: Int) {
+        guard let layout else { return }
+        scrolledPage = layout.startPage(ofSurah: surah)
+    }
+
+    func toggleChrome() {
+        isChromeHidden.toggle()
+    }
+
+    /// Bookmarked pages in reading order.
+    var sortedBookmarkedPages: [Int] {
+        bookmarkedPages.sorted()
+    }
+
     func surahName(_ number: Int) -> String {
         catalog.surahs.first { $0.number == number }?.englishName
             ?? String(
                 format: NSLocalizedString("quran_mushaf_surah_fallback", comment: ""),
                 number
             )
+    }
+
+    func surahArabicName(_ number: Int) -> String {
+        catalog.surahs.first { $0.number == number }?.name ?? ""
+    }
+
+    /// "Page 2": where the surah starts in the Mushaf.
+    func surahStartPageLabel(_ number: Int) -> String {
+        String(
+            format: NSLocalizedString("quran_mushaf_page_format", comment: ""),
+            startPage(ofSurah: number)
+        )
     }
 
     /// "Page 3, Al-Baqara, Juz 1", with ", bookmarked" when it is.
@@ -168,6 +270,25 @@ final class MushafViewModel {
 
         if let image {
             images.setObject(image, forKey: key)
+        }
+        return image
+    }
+
+    /// A small copy of the page for the navigator.
+    func thumbnail(forPage page: Int) async -> CGImage? {
+        let key = NSNumber(value: page)
+        if let cached = thumbnails.object(forKey: key) {
+            return cached
+        }
+
+        let loader = loader
+        let width = Self.thumbnailPixelWidth
+        let image = await Task.detached(priority: .utility) {
+            loader.pageImage(page, maxPixelWidth: width)
+        }.value
+
+        if let image {
+            thumbnails.setObject(image, forKey: key)
         }
         return image
     }

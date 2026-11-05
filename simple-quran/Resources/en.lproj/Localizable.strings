@@ -243,6 +243,23 @@
 "quran_mushaf_add_bookmark_format" = "Bookmark page %d";
 "quran_mushaf_remove_bookmark_format" = "Remove bookmark from page %d";
 "quran_mushaf_bookmarked_suffix" = ", bookmarked";
+"quran_mushaf_juz_hizb_format" = "%@ · Hizb %d";
+"quran_mushaf_page_of_format" = "Page %d of %d";
+"quran_mushaf_back" = "Back";
+"quran_mushaf_navigator_title" = "Go To";
+"quran_mushaf_navigator_hint" = "Opens pages, juz, surahs and bookmarks.";
+"quran_mushaf_go_to_page_format" = "Go to page %d";
+"quran_mushaf_choose_surah" = "Surah";
+"quran_mushaf_surah_search" = "Surah name or number";
+"quran_mushaf_page_placeholder" = "Page";
+"quran_mushaf_page_field" = "Page number";
+"quran_mushaf_go" = "Go";
+"quran_mushaf_page_error_format" = "Enter a page from 1 to %d.";
+"quran_mushaf_bookmarks_title" = "Bookmarked Pages";
+"quran_mushaf_page_turning_title" = "Page Turning";
+"quran_mushaf_swipe" = "Swipe";
+"quran_mushaf_scroll" = "Scroll";
+"quran_mushaf_page_turning_note" = "Swipe turns one page at a time, like a printed copy. Scroll runs the pages one under another.";
 
 "add_category_intro_title" = "Create a Category";
 "add_category_intro_subtitle" = "Group related tasks and choose an icon that fits.";

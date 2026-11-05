@@ -23,6 +23,11 @@ struct ReadingSettingsView: View {
     ) private var showsSpread = true
 
     @AppStorage(
+        Storage.StorageKey.mushafScrollsVertically.rawValue,
+        store: Storage.userDefaults
+    ) private var scrollsVertically = false
+
+    @AppStorage(
         Storage.StorageKey.quranArabicFontSize.rawValue,
         store: Storage.userDefaults
     ) private var arabicFontSize = 22.0
@@ -77,6 +82,7 @@ struct ReadingSettingsView: View {
                         showTranslation = true
                         readingMode = .list
                         showsSpread = true
+                        scrollsVertically = false
                     }
                     .font(.system(size: 13))
                     .foregroundColor(.primary)
@@ -218,6 +224,30 @@ struct ReadingSettingsView: View {
             .pickerStyle(.segmented)
 
             if readingMode == .mushaf {
+                Divider()
+                    .overlay(Color.textGray.opacity(0.08))
+                    .padding(.vertical, 6)
+
+                Text(NSLocalizedString("quran_mushaf_page_turning_title", comment: ""))
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.title)
+
+                Picker(
+                    NSLocalizedString("quran_mushaf_page_turning_title", comment: ""),
+                    selection: $scrollsVertically
+                ) {
+                    Text(NSLocalizedString("quran_mushaf_swipe", comment: ""))
+                        .tag(false)
+                    Text(NSLocalizedString("quran_mushaf_scroll", comment: ""))
+                        .tag(true)
+                }
+                .pickerStyle(.segmented)
+
+                Text(NSLocalizedString("quran_mushaf_page_turning_note", comment: ""))
+                    .font(.system(size: 12))
+                    .foregroundColor(.textGray)
+                    .fixedSize(horizontal: false, vertical: true)
+
                 Divider()
                     .overlay(Color.textGray.opacity(0.08))
                     .padding(.vertical, 6)
