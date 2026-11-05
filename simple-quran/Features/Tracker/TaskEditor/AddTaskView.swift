@@ -44,7 +44,8 @@ struct AddTaskView: View {
                                 "add_task_task_name_placeholder",
                                 comment: ""
                             ),
-                            text: $viewModel.taskName
+                            text: $viewModel.taskName,
+                            focusesOnAppear: true
                         )
 
                         categoryField
@@ -93,63 +94,17 @@ struct AddTaskView: View {
     }
 
     private var categoryField: some View {
-        VStack(alignment: .leading, spacing: 7) {
-            Text(
-                NSLocalizedString(
-                    "add_task_task_detail_category",
-                    comment: ""
-                )
-            )
-            .font(.system(size: 12, weight: .medium))
-            .foregroundColor(.textGray)
-
-            Menu {
-                ForEach(viewModel.categories, id: \.id) { category in
-                    Button {
-                        viewModel.selectedCategory = category
-                    } label: {
-                        Label(category.name, systemImage: category.icon)
-                    }
-                }
-            } label: {
-                HStack(spacing: 10) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.lightGreen.opacity(0.14))
-
-                        Image(
-                            systemName: viewModel.selectedCategory?.icon ?? "square.grid.2x2"
-                        )
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.lightGreen)
-                    }
-                    .frame(width: 30, height: 30)
-
-                    Text(
-                        viewModel.selectedCategory?.name
-                            ?? NSLocalizedString(
-                                "add_task_task_detail_category_placeholder",
-                                comment: ""
-                            )
-                    )
-                    .font(.system(size: 14))
-                    .foregroundColor(
-                        viewModel.selectedCategory == nil ? .textGray : .title
-                    )
-                    .lineLimit(1)
-
-                    Spacer(minLength: 4)
-
-                    Image(systemName: "chevron.up.chevron.down")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(.textGray)
-                }
-                .padding(.horizontal, 12)
-                .frame(height: 46)
-                .background(Color.appBackground.opacity(0.65))
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-            }
-            .buttonStyle(.plain)
-        }
+        AppCategoryMenu(
+            label: NSLocalizedString(
+                "add_task_task_detail_category",
+                comment: ""
+            ),
+            placeholder: NSLocalizedString(
+                "add_task_task_detail_category_placeholder",
+                comment: ""
+            ),
+            categories: viewModel.categories,
+            selection: $viewModel.selectedCategory
+        )
     }
 }

@@ -44,7 +44,8 @@ struct AddCategoryView: View {
                                 "add_category_category_name_placeholder",
                                 comment: ""
                             ),
-                            text: $viewModel.categoryName
+                            text: $viewModel.categoryName,
+                            focusesOnAppear: true
                         )
 
                         VStack(alignment: .leading, spacing: 8) {

@@ -90,6 +90,10 @@ struct AppTextField: View {
     let label: String
     let placeholder: String
     @Binding var text: String
+    /// Brings up the keyboard once the screen has finished appearing.
+    var focusesOnAppear = false
+
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
@@ -98,6 +102,7 @@ struct AppTextField: View {
                 .foregroundColor(.textGray)
 
             TextField(placeholder, text: $text)
+                .focused($isFocused)
                 .font(.system(size: 15))
                 .foregroundColor(.title)
                 .textInputAutocapitalization(.sentences)
@@ -105,6 +110,74 @@ struct AppTextField: View {
                 .frame(height: 46)
                 .background(Color.appBackground.opacity(0.65))
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+        .task {
+            guard focusesOnAppear else { return }
+
+            // Wait for the push or sheet animation, or the keyboard
+            // won't come up.
+            try? await Task.sleep(for: .seconds(AutoFocus.delay))
+            guard !Task.isCancelled else { return }
+            isFocused = true
+        }
+    }
+}
+
+enum AutoFocus {
+    /// Long enough for a push or sheet presentation to settle.
+    static let delay: TimeInterval = 0.45
+}
+
+/// A labelled field that opens a menu of tracker categories.
+struct AppCategoryMenu: View {
+    let label: String
+    let placeholder: String
+    let categories: [Category]
+    @Binding var selection: Category?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            Text(label)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.textGray)
+
+            Menu {
+                ForEach(categories, id: \.id) { category in
+                    Button {
+                        selection = category
+                    } label: {
+                        Label(category.name, systemImage: category.icon)
+                    }
+                }
+            } label: {
+                HStack(spacing: 10) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.lightGreen.opacity(0.14))
+
+                        Image(systemName: selection?.icon ?? "square.grid.2x2")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(.lightGreen)
+                    }
+                    .frame(width: 30, height: 30)
+
+                    Text(selection?.name ?? placeholder)
+                        .font(.system(size: 14))
+                        .foregroundColor(selection == nil ? .textGray : .title)
+                        .lineLimit(1)
+
+                    Spacer(minLength: 4)
+
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(.textGray)
+                }
+                .padding(.horizontal, 12)
+                .frame(height: 46)
+                .background(Color.appBackground.opacity(0.65))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+            .buttonStyle(.plain)
         }
     }
 }
@@ -189,3 +262,27 @@ struct AppPrimaryButton: View {
     }
 }
 
+/// A full-width button for actions that remove something.
+struct AppDestructiveButton: View {
+    let title: String
+    let icon: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .semibold))
+
+                Text(title)
+                    .font(.system(size: 15, weight: .semibold))
+            }
+            .foregroundColor(.red)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color.red.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+}
