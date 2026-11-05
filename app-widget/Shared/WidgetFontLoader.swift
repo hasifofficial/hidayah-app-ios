@@ -13,8 +13,15 @@ enum WidgetFontLoader {
     /// Set once the first registration ran. Internal so tests can reset it.
     static var isRegistered = false
 
+    /// The widget's fonts sit in `Fonts.bundle`, not at the top of the
+    /// extension, so look there.
     static func registerFonts() {
-        registerFonts(in: .main)
+        registerFonts(in: fontsBundle(in: .main) ?? .main)
+    }
+
+    static func fontsBundle(in bundle: Bundle) -> Bundle? {
+        bundle.url(forResource: "Fonts", withExtension: "bundle")
+            .flatMap(Bundle.init(url:))
     }
 
     static func registerFonts(in bundle: Bundle) {
