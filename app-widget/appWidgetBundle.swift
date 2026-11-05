@@ -11,7 +11,6 @@ import SwiftUI
 @main
 struct appWidgetBundle: WidgetBundle {
     var body: some Widget {
-        TrackerWidget()
-        QuickSurahWidget()
+        appWidget()
     }
 }
