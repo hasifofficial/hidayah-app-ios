@@ -33,6 +33,7 @@ class Storage {
         case quranShowTranslation
         case quranReadingMode
         case mushafShowsSpread
+        case mushafScrollsVertically
         case trackerActiveDayKey
         case trackerStartDayKey
         case hasMigratedToSwiftData

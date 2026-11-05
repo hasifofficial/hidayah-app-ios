@@ -58,9 +58,9 @@ final class ReadingSettingsViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(host.contains("Quran Reading"))
         XCTAssertTrue(host.contains("Preview"))
-        XCTAssertTrue(host.contains("By time,"))
         XCTAssertTrue(host.contains("Indeed, mankind is in loss."))
-        XCTAssertTrue(host.contains("وَٱلْعَصْرِ"))
+        XCTAssertFalse(host.contains("By time,"))
+        XCTAssertFalse(host.contains("وَٱلْعَصْرِ"))
         XCTAssertTrue(host.contains("22 pt"))
         XCTAssertTrue(host.contains("Show Translation"))
     }
@@ -76,7 +76,7 @@ final class ReadingSettingsViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertEqual(Storage.load(key: .quranShowTranslation) as? Bool, false)
-        XCTAssertFalse(host.contains("By time,"))
+        XCTAssertFalse(host.contains("Indeed, mankind is in loss."))
     }
 
     func test_quranReadingSettingsView_should_changeFontSizeWithSlider() {
@@ -108,7 +108,7 @@ final class ReadingSettingsViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(before)
         XCTAssertTrue(host.contains("22 pt"))
-        XCTAssertTrue(host.contains("By time,"))
+        XCTAssertTrue(host.contains("Indeed, mankind is in loss."))
         XCTAssertEqual(Storage.load(key: .quranShowTranslation) as? Bool, true)
     }
 
@@ -161,6 +161,29 @@ final class ReadingSettingsViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(showedChoice)
         XCTAssertEqual(Storage.load(key: .mushafShowsSpread) as? Bool, false)
+    }
+
+    func test_quranReadingSettingsView_should_saveScroll_when_chosenForPageTurning() {
+        // Arrange
+        Storage.save(.quranReadingMode, "mushaf")
+        let state = SheetState()
+        let host = present(state) { ReadingSettingsView(showsReadingMode: true) }
+        let showedChoice = host.contains("Page Turning")
+
+        // Act
+        let pageTurning = host.allViews(of: UISegmentedControl.self).first {
+            $0.titleForSegment(at: 0) == "Swipe"
+        }
+        guard let pageTurning else {
+            return XCTFail("No page turning picker")
+        }
+        pageTurning.selectedSegmentIndex = 1
+        pageTurning.sendActions(for: .valueChanged)
+        host.pump(0.3)
+
+        // Assert
+        XCTAssertTrue(showedChoice)
+        XCTAssertEqual(Storage.load(key: .mushafScrollsVertically) as? Bool, true)
     }
 
     func test_quranReadingSettingsView_should_hideWideScreenChoice_inListMode() {

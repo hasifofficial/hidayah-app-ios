@@ -5,9 +5,13 @@
 
 import SwiftUI
 
-/// The Quran as Mushaf pages, swiped right to left like a printed copy.
-/// On a wide screen, such as an unfolded iPhone Duo or an iPad in landscape,
-/// it shows two pages side by side like an open book.
+/// The Quran as Mushaf pages, framed like a printed copy and swiped right
+/// to left. On a wide screen, such as an unfolded iPhone Duo or an iPad in
+/// landscape, it shows two pages side by side like an open book. Readers
+/// can also scroll the pages one under another.
+///
+/// The page has the screen to itself: a floating bar replaces the
+/// navigation and tab bars, and tapping the page hides it.
 struct MushafView: View {
     /// A spread needs room for two readable pages: at least 600 points
     /// across (an unfolded iPhone Duo is about 700), on a screen not much
@@ -16,51 +20,68 @@ struct MushafView: View {
         size.height > 0 && size.width >= 600 && size.width / size.height >= 0.6
     }
 
+    /// Room kept free above the page for the floating bar. When the bar
+    /// hides, the page grows into it.
+    static let toolbarReserve: CGFloat = 60
+
     @Bindable var viewModel: MushafViewModel
 
     @Environment(\.displayScale) private var displayScale
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
     @State private var showingReadingSettings = false
+    @State private var showingNavigator = false
 
     @AppStorage(
         Storage.StorageKey.mushafShowsSpread.rawValue,
         store: Storage.userDefaults
     ) private var allowsSpread = true
 
+    @AppStorage(
+        Storage.StorageKey.mushafScrollsVertically.rawValue,
+        store: Storage.userDefaults
+    ) private var scrollsVertically = false
+
     var body: some View {
-        Group {
-            if let layout = viewModel.layout {
-                reader(layout)
-            } else if viewModel.loadError != nil {
-                errorState
-            } else {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        GeometryReader { screen in
+            let isSpread = !scrollsVertically
+                && allowsSpread
+                && Self.showsSpread(in: screen.size)
+
+            ZStack(alignment: .top) {
+                content(isSpread: isSpread)
+                    .padding(.top, hidesChrome ? 0 : Self.toolbarReserve)
+
+                if !hidesChrome {
+                    toolbar(isSpread: isSpread)
+                        .padding(.top, 8)
+                        // Centred over the spread, which ignores side insets:
+                        // the full-width frame lets it reach past them.
+                        .frame(maxWidth: .infinity)
+                        .ignoresSafeArea(.container, edges: isSpread ? .horizontal : [])
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
             }
+            .background(isSpread ? MushafSpreadView.canvas : Color.appBackground)
         }
-        .background(.appBackground)
         .navigationTitle(
             viewModel.surahs(onPage: viewModel.currentPage)
                 .map(viewModel.surahName)
                 .joined(separator: " · ")
         )
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showingReadingSettings = true
-                } label: {
-                    Image(systemName: "textformat.size")
-                        .foregroundColor(.primary)
-                }
-                .accessibilityLabel(
-                    NSLocalizedString("quran_reading_settings_title", comment: "")
-                )
-            }
-        }
+        .toolbar(.hidden, for: .navigationBar)
+        .toolbar(.hidden, for: .tabBar)
+        .statusBarHidden(hidesChrome)
         .sheet(isPresented: $showingReadingSettings) {
             ReadingSettingsView(showsReadingMode: true)
                 .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showingNavigator) {
+            MushafNavigatorSheet(viewModel: viewModel)
+                .presentationDetents([.height(340), .large])
                 .presentationDragIndicator(.visible)
         }
         .onAppear {
@@ -69,27 +90,32 @@ struct MushafView: View {
         }
     }
 
-    private func reader(_ layout: MushafLayout) -> some View {
-        GeometryReader { screen in
-            let isSpread = allowsSpread && Self.showsSpread(in: screen.size)
-            let pages = isSpread
-                ? layout.spreadPages(forPage: viewModel.currentPage)
-                : [viewModel.currentPage]
+    /// VoiceOver users keep the bar: there is no page to tap.
+    private var hidesChrome: Bool {
+        viewModel.isChromeHidden && !voiceOverEnabled
+    }
 
-            VStack(spacing: 0) {
-                pageHeader(pages: pages)
-
-                GeometryReader { geometry in
-                    if isSpread {
-                        spreadPager(layout, size: geometry.size)
-                    } else {
-                        pagePager(layout, size: geometry.size)
-                    }
+    @ViewBuilder
+    private func content(isSpread: Bool) -> some View {
+        if let layout = viewModel.layout {
+            GeometryReader { geometry in
+                if scrollsVertically {
+                    verticalPager(layout, size: geometry.size)
+                } else if isSpread {
+                    spreadPager(layout, size: geometry.size)
+                } else {
+                    pagePager(layout, size: geometry.size)
                 }
-
-                pageFooter(pages: pages)
-                    .padding(.bottom, 72)
             }
+            // A spread spans the whole width, past side insets such as an
+            // unfolded iPhone Duo's camera, so the book sits exactly in the
+            // middle and the next spread doesn't peek in.
+            .ignoresSafeArea(.container, edges: isSpread ? .horizontal : [])
+        } else if viewModel.loadError != nil {
+            errorState
+        } else {
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
@@ -97,8 +123,9 @@ struct MushafView: View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 0) {
                 ForEach(1...layout.pageCount, id: \.self) { page in
-                    MushafPageView(
+                    MushafFramedPage(
                         page: page,
+                        size: size,
                         maxPixelWidth: size.width * displayScale,
                         viewModel: viewModel
                     )
@@ -110,6 +137,9 @@ struct MushafView: View {
         .scrollTargetBehavior(.paging)
         .scrollPosition(id: $viewModel.scrolledPage)
         .scrollIndicators(.hidden)
+        // A scroll view draws into side insets, which let the next page
+        // peek in beside an unfolded iPhone Duo's camera.
+        .clipped()
         // Page 1 on the right, swiping left to read on.
         .environment(\.layoutDirection, .rightToLeft)
     }
@@ -121,25 +151,12 @@ struct MushafView: View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 0) {
                 ForEach(layout.spreadStarts, id: \.self) { start in
-                    // Edge to edge with only a hairline spine, since a
-                    // spread is as wide as the screen allows.
-                    HStack(spacing: 0) {
-                        ForEach(layout.spreadPages(forPage: start), id: \.self) { page in
-                            MushafPageView(
-                                page: page,
-                                maxPixelWidth: size.width / 2 * displayScale,
-                                horizontalPadding: 2,
-                                viewModel: viewModel
-                            )
-                            .frame(width: size.width / 2, height: size.height)
-                        }
-                    }
-                    .overlay {
-                        Rectangle()
-                            .fill(Color.textGray.opacity(0.15))
-                            .frame(width: 1)
-                            .padding(.vertical, 24)
-                    }
+                    MushafSpreadView(
+                        pages: layout.spreadPages(forPage: start),
+                        size: size,
+                        displayScale: displayScale,
+                        viewModel: viewModel
+                    )
                     .frame(width: size.width, height: size.height)
                 }
             }
@@ -156,66 +173,56 @@ struct MushafView: View {
         .environment(\.layoutDirection, .rightToLeft)
     }
 
-    /// The page number with a bookmark button for each page shown: one
-    /// beside a single page, or one under each page of a spread, the right
-    /// page's on the right.
-    private func pageFooter(pages: [Int]) -> some View {
-        HStack(spacing: 12) {
-            if pages.count == 2 {
-                bookmarkButton(page: pages[1])
-                Spacer(minLength: 8)
-            }
+    /// Pages one under another, each as wide as the screen allows.
+    private func verticalPager(_ layout: MushafLayout, size: CGSize) -> some View {
+        let width = min(size.width, Self.maxScrollingPageWidth)
+        let pageSize = CGSize(
+            width: width,
+            height: MushafPageMetrics.height(forWidth: width)
+        )
 
-            Text(pageLabel(pages))
-                .font(.system(size: 12, weight: .semibold))
-                .monospacedDigit()
-                .foregroundColor(.lightGreen)
-                .accessibilityHidden(true)
-
-            if pages.count == 2 {
-                Spacer(minLength: 8)
+        return ScrollView(.vertical) {
+            LazyVStack(spacing: 0) {
+                ForEach(1...layout.pageCount, id: \.self) { page in
+                    MushafFramedPage(
+                        page: page,
+                        size: pageSize,
+                        maxPixelWidth: pageSize.width * displayScale,
+                        viewModel: viewModel
+                    )
+                    .frame(width: size.width, height: pageSize.height)
+                }
             }
-
-            if let page = pages.first {
-                bookmarkButton(page: page)
-            }
+            .scrollTargetLayout()
         }
-        .padding(.horizontal, pages.count == 2 ? 24 : 0)
-        .frame(height: 44)
+        .scrollPosition(id: $viewModel.scrolledPage, anchor: .top)
+        .scrollIndicators(.automatic)
     }
 
-    private func bookmarkButton(page: Int) -> some View {
-        let isBookmarked = viewModel.isBookmarked(page: page)
+    /// Wider pages than this are taller than any screen; on an iPad the
+    /// page stays a readable size and centres.
+    static let maxScrollingPageWidth: CGFloat = 620
 
-        return Button {
-            viewModel.toggleBookmark(page: page)
-        } label: {
-            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(.lightGreen)
-                .frame(width: 36, height: 36)
-                .background(Color.backgroundGray)
-                .clipShape(Circle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(
-            String(
-                format: NSLocalizedString(
-                    isBookmarked
-                        ? "quran_mushaf_remove_bookmark_format"
-                        : "quran_mushaf_add_bookmark_format",
-                    comment: ""
-                ),
-                page
-            )
+    private func toolbar(isSpread: Bool) -> some View {
+        let pages = isSpread
+            ? (viewModel.layout?.spreadPages(forPage: viewModel.currentPage) ?? [viewModel.currentPage])
+            : [viewModel.currentPage]
+
+        return MushafToolbar(
+            pageLabel: pageLabel(pages),
+            detailLabel: viewModel.juzAndHizbLabel(forPage: pages.first ?? viewModel.currentPage),
+            onBack: { dismiss() },
+            onOpenNavigator: { showingNavigator = true },
+            onOpenSettings: { showingReadingSettings = true }
         )
     }
 
     private func pageLabel(_ pages: [Int]) -> String {
         guard pages.count == 2 else {
             return String(
-                format: NSLocalizedString("quran_mushaf_page_format", comment: ""),
-                pages.first ?? viewModel.currentPage
+                format: NSLocalizedString("quran_mushaf_page_of_format", comment: ""),
+                pages.first ?? viewModel.currentPage,
+                viewModel.pageCount
             )
         }
         return String(
@@ -225,111 +232,35 @@ struct MushafView: View {
         )
     }
 
-    private func pageHeader(pages: [Int]) -> some View {
-        let surahs = pages
-            .flatMap(viewModel.surahs(onPage:))
-            .reduce(into: [Int]()) { result, surah in
-                if !result.contains(surah) { result.append(surah) }
-            }
-
-        return HStack(spacing: 8) {
-            Text(
-                String(
-                    format: NSLocalizedString("quran_mushaf_juz_format", comment: ""),
-                    viewModel.juz(onPage: pages.first ?? viewModel.currentPage)
-                )
-            )
-            .font(.system(size: 12, weight: .semibold))
-            .foregroundColor(.textGray)
-
-            Spacer(minLength: 8)
-
-            HStack(spacing: 4) {
-                ForEach(surahs, id: \.self) { surah in
-                    if let ligature = Font.surahNameLigature(for: surah) {
-                        Text(ligature)
-                            .font(.surahNameFont(size: 30))
-                            .foregroundColor(.lightGreen)
-                    }
-                }
-            }
-            // The first surah on the right, as Arabic reads.
-            .environment(\.layoutDirection, .rightToLeft)
-            .accessibilityHidden(true)
-        }
-        .padding(.horizontal, 16)
-        .frame(height: 36)
-    }
-
     private var errorState: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 28, weight: .semibold))
-                .foregroundColor(.lightGreen)
+        VStack(spacing: 16) {
+            ZStack {
+                MushafStarShape()
+                    .stroke(Color.lightGreen, lineWidth: 1.5)
+                    .frame(width: 64, height: 64)
+
+                Image(systemName: "book.closed")
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(.lightGreen)
+            }
+            .accessibilityHidden(true)
 
             Text(NSLocalizedString("quran_mushaf_load_error", comment: ""))
                 .font(.system(size: 15))
                 .foregroundColor(.title)
                 .multilineTextAlignment(.center)
 
-            Button(NSLocalizedString("quran_mushaf_retry", comment: "")) {
+            AppPrimaryButton(
+                title: NSLocalizedString("quran_mushaf_retry", comment: ""),
+                icon: "arrow.clockwise",
+                isEnabled: true
+            ) {
                 viewModel.retry()
             }
-            .font(.system(size: 15, weight: .semibold))
-            .foregroundColor(.lightGreen)
+            .frame(maxWidth: 220)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(24)
     }
 }
 
-/// One page, decoded at the screen's width and tinted with the text colour
-/// so it reads in dark mode too.
-struct MushafPageView: View {
-    let page: Int
-    let maxPixelWidth: CGFloat
-    var horizontalPadding: CGFloat = 8
-    let viewModel: MushafViewModel
-
-    @State private var image: CGImage?
-
-    var body: some View {
-        ZStack {
-            if let image {
-                Image(decorative: image, scale: 1)
-                    .renderingMode(.template)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(.primary)
-            } else {
-                VStack(spacing: 14) {
-                    ForEach(0..<8, id: \.self) { _ in
-                        ShimmerBar()
-                            .frame(height: 14)
-                    }
-                }
-                .padding(24)
-            }
-        }
-        .padding(.horizontal, horizontalPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .environment(\.layoutDirection, .leftToRight)
-        .task(id: page) {
-            image = await viewModel.image(forPage: page, maxPixelWidth: maxPixelWidth)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(viewModel.accessibilityLabel(forPage: page))
-        .accessibilityAction(named: bookmarkActionName) {
-            viewModel.toggleBookmark(page: page)
-        }
-    }
-
-    private var bookmarkActionName: String {
-        NSLocalizedString(
-            viewModel.isBookmarked(page: page)
-                ? "quran_mushaf_remove_bookmark"
-                : "quran_mushaf_add_bookmark",
-            comment: ""
-        )
-    }
-}

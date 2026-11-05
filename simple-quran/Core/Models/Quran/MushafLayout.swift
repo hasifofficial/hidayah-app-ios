@@ -40,6 +40,11 @@ struct MushafLayout: Equatable, Sendable {
     let pageStarts: [AyahReference]
     /// The first ayah of each juz, indexed from juz 1.
     let juzStarts: [AyahReference]
+    /// The first ayah of each quarter hizb (rub'), indexed from quarter 1.
+    /// Four quarters make a hizb and two hizb a juz.
+    var hizbQuarterStarts: [AyahReference] = []
+
+    static let quartersPerHizb = 4
 
     func clampedPage(_ page: Int) -> Int {
         min(max(page, 1), pageCount)
@@ -92,6 +97,36 @@ struct MushafLayout: Equatable, Sendable {
         let start = pageStarts[clampedPage(page) - 1]
         return (juzStarts.lastIndex { $0 <= start } ?? 0) + 1
     }
+
+    /// The hizb the page starts in, from 1 to 60, or nil when the layout has
+    /// no hizb data.
+    func hizb(onPage page: Int) -> Int? {
+        guard !hizbQuarterStarts.isEmpty else { return nil }
+        let start = pageStarts[clampedPage(page) - 1]
+        let quarter = hizbQuarterStarts.lastIndex { $0 <= start } ?? 0
+        return quarter / Self.quartersPerHizb + 1
+    }
+
+    /// The quarters, numbered from 1, that begin on `page`. A printed
+    /// Mushaf marks each one in the margin.
+    func quarterStarts(onPage page: Int) -> [Int] {
+        let page = clampedPage(page)
+        let start = pageStarts[page - 1]
+        let next = page < pageCount ? pageStarts[page] : nil
+
+        return hizbQuarterStarts.indices
+            .filter { index in
+                let quarter = hizbQuarterStarts[index]
+                return quarter >= start && (next.map { quarter < $0 } ?? true)
+            }
+            .map { $0 + 1 }
+    }
+
+    /// The first page of a juz, from 1.
+    func startPage(ofJuz juz: Int) -> Int {
+        let start = juzStarts[min(max(juz, 1), juzStarts.count) - 1]
+        return page(forSurah: start.surah, ayah: start.ayah)
+    }
 }
 
 // MARK: - Decoding
@@ -103,6 +138,8 @@ struct MushafLayoutDTO: Decodable {
     let surahStartPages: [Int]
     let pageStarts: [[Int]]
     let juzStarts: [[Int]]
+    /// Optional so older files without it still load.
+    var hizbQuarterStarts: [[Int]]? = nil
 
     enum DecodingError: Error {
         case invalid
@@ -111,6 +148,7 @@ struct MushafLayoutDTO: Decodable {
     func layout() throws -> MushafLayout {
         let pages = try pageStarts.map(Self.reference)
         let juz = try juzStarts.map(Self.reference)
+        let quarters = try (hizbQuarterStarts ?? []).map(Self.reference)
 
         guard pageCount > 0,
               pages.count == pageCount,
@@ -123,7 +161,8 @@ struct MushafLayoutDTO: Decodable {
             pageCount: pageCount,
             surahStartPages: surahStartPages,
             pageStarts: pages,
-            juzStarts: juz
+            juzStarts: juz,
+            hizbQuarterStarts: quarters
         )
     }
 

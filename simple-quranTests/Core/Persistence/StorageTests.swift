@@ -116,7 +116,8 @@ final class StorageTests: XCTestCase {
         let rawValues = keys.map(\.rawValue)
 
         // Assert
-        XCTAssertEqual(keys.count, 13)
+        XCTAssertEqual(keys.count, 14)
+        XCTAssertTrue(rawValues.contains("mushafScrollsVertically"))
         XCTAssertTrue(rawValues.contains("widgetContext"))
         XCTAssertTrue(rawValues.contains("hasMigratedToSwiftData"))
     }
