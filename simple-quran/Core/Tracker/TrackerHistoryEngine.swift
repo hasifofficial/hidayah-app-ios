@@ -43,9 +43,14 @@ struct TrackerHistoryEngine {
         history: inout [TrackerDayRecord],
         now: Date = Date()
     ) -> String {
-        let todayKey = TrackerDayKey.key(for: now, calendar: calendar)
-        guard let activeDayKey, activeDayKey != todayKey else {
+        let todayKey = TrackerDayKey.today(now: now, calendar: calendar)
+        guard let activeDayKey else {
             return todayKey
+        }
+        // A later reset time can put "today" back on the active day's eve;
+        // stay on the active day rather than overwrite a saved one.
+        guard todayKey > activeDayKey else {
+            return activeDayKey
         }
 
         if let record = makeRecord(for: tasks, on: activeDayKey) {

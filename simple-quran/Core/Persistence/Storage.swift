@@ -36,6 +36,7 @@ class Storage {
         case mushafScrollsVertically
         case trackerActiveDayKey
         case trackerStartDayKey
+        case trackerDayStartMinutes
         case hasMigratedToSwiftData
         case whatsNewLastSeenVersion
     }

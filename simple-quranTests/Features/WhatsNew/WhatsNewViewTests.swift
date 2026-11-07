@@ -51,7 +51,7 @@ final class WhatsNewViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(host.contains("What’s New"))
         XCTAssertTrue(host.contains("A Fresh New Look"))
-        XCTAssertTrue(host.contains("Feature 1 of 5"))
+        XCTAssertTrue(host.contains("Feature 1 of 6"))
         XCTAssertTrue(host.contains("Skip"))
     }
 
@@ -76,7 +76,7 @@ final class WhatsNewViewTests: ViewsTestCase {
         host.pump(0.4)
 
         // Assert
-        XCTAssertTrue(host.contains("Feature 2 of 5"))
+        XCTAssertTrue(host.contains("Feature 2 of 6"))
         XCTAssertTrue(state.isPresented)
     }
 
@@ -86,13 +86,13 @@ final class WhatsNewViewTests: ViewsTestCase {
         let host = present(state)
 
         // Act
-        for _ in 0..<4 {
+        for _ in 0..<5 {
             host.tap("Next")
             host.pump(0.4)
         }
 
         // Assert
-        XCTAssertTrue(host.contains("Feature 5 of 5"))
+        XCTAssertTrue(host.contains("Feature 6 of 6"))
         XCTAssertTrue(host.contains("Get Started"))
         XCTAssertFalse(host.contains("Skip"))
     }
@@ -101,7 +101,7 @@ final class WhatsNewViewTests: ViewsTestCase {
         // Arrange
         let state = WhatsNewSheetState()
         let host = present(state)
-        for _ in 0..<4 {
+        for _ in 0..<5 {
             host.tap("Next")
             host.pump(0.4)
         }

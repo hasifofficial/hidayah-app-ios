@@ -126,6 +126,34 @@ final class TrackerProviderTests: XCTestCase {
         XCTAssertEqual(timeline.entries[1].upcomingTasks.map(\.name), ["Dawn Alms", "Fajr prayer"])
     }
 
+    func test_timeline_should_appendResetEntryAtChosenResetTime() {
+        // Arrange
+        TrackerDayKey.dayStartMinutes = 4 * 60
+        let context = makeContext(dayKey: TrackerDayKey.today(now: now))
+        let resetTime = trackerDate(year: 2026, month: 11, day: 4, hour: 4)
+
+        // Act
+        let timeline = TrackerProvider.timeline(for: context, now: now)
+
+        // Assert
+        XCTAssertEqual(timeline.entries.map(\.date), [now, resetTime])
+        XCTAssertEqual(timeline.entries[0].completedTasks, 1)
+        XCTAssertEqual(timeline.entries[1].completedTasks, 0)
+    }
+
+    func test_entry_should_keepSnapshot_when_beforeResetTimeAfterMidnight() {
+        // Arrange
+        TrackerDayKey.dayStartMinutes = 4 * 60
+        let context = makeContext(dayKey: "2026-11-03")
+        let twoAM = trackerDate(year: 2026, month: 11, day: 4, hour: 2)
+
+        // Act
+        let entry = TrackerProvider.entry(for: context, on: twoAM)
+
+        // Assert
+        XCTAssertEqual(entry.completedTasks, 1)
+    }
+
     func test_timeline_should_refreshAfterFifteenMinutes() {
         // Arrange
         let context = makeContext(dayKey: TrackerDayKey.key(for: now))

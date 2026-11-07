@@ -52,6 +52,10 @@ class TaskManager {
     @ObservationIgnored
     private var dayChangeObserver: NSObjectProtocol?
 
+    /// Fires at the next reset time, which need not be midnight.
+    @ObservationIgnored
+    private var dayStartTimer: Timer?
+
     init(
         store: HidayahStore = .shared,
         scheduler: TrackerNotificationScheduler = .shared,
@@ -98,8 +102,11 @@ class TaskManager {
 
     func refreshForCurrentDay() {
         let today = todayKey
+        defer { scheduleDayStartTimer() }
 
-        guard activeDayKey != today else { return }
+        // Only move forward: a later reset time can make "today" earlier
+        // than the day already in progress.
+        if let activeDayKey, today <= activeDayKey { return }
 
         if activeDayKey == nil {
             activeDayKey = today
@@ -125,6 +132,42 @@ class TaskManager {
         }
 
         saveData()
+    }
+
+    /// Minutes after midnight when a new tracker day starts.
+    var dayStartMinutes: Int {
+        TrackerDayKey.dayStartMinutes
+    }
+
+    /// Saves a new reset time and moves to the day it puts the tracker on.
+    func setDayStartMinutes(_ minutes: Int) {
+        guard TrackerDayKey.dayStartChoices.contains(minutes),
+              minutes != TrackerDayKey.dayStartMinutes else { return }
+        TrackerDayKey.dayStartMinutes = minutes
+        refreshForCurrentDay()
+        invalidateStats()
+        // The widget's snapshot may be unchanged, but its timeline was built
+        // around the old reset time, so always ask it to rebuild.
+        lastWidgetData = nil
+        updateWidget()
+    }
+
+    private func scheduleDayStartTimer() {
+        dayStartTimer?.invalidate()
+        let current = now()
+        guard let next = TrackerDayKey.nextDayStart(after: current) else { return }
+
+        // Measured from the injected clock, so a fixed test clock never
+        // schedules a time that has already passed.
+        let delay = max(next.timeIntervalSince(current), 1)
+        let timer = Timer(timeInterval: delay, repeats: false) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.refreshForCurrentDay()
+                self?.updateWidget()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        dayStartTimer = timer
     }
 
     var stats: TrackerStats {
@@ -304,6 +347,7 @@ class TaskManager {
 
     func resetAll() {
         store.resetTracker()
+        Storage.delete(.trackerDayStartMinutes)
 
         tasks = []
         customCategories = []
