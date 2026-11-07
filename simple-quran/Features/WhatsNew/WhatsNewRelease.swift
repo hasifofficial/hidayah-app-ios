@@ -22,7 +22,7 @@ struct WhatsNewRelease: Equatable {
     let features: [WhatsNewFeature]
 
     static let current = WhatsNewRelease(
-        version: "1.2.1",
+        version: "2.0",
         features: [
             WhatsNewFeature(
                 illustration: "WhatsNewRefresh",
