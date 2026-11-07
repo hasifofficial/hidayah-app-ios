@@ -289,6 +289,80 @@ final class TaskManagerTests: XCTestCase {
         XCTAssertNil(sut.todayRecord)
     }
 
+    func test_refreshForCurrentDay_should_waitForResetTime_when_pastMidnight() {
+        // Arrange
+        TrackerDayKey.dayStartMinutes = 4 * 60
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+        sut.toggleTaskCompletion(task: seeded[0])
+        clock.now = TestClock.date(year: 2026, month: 3, day: 11, hour: 2)
+
+        // Act
+        sut.refreshForCurrentDay()
+
+        // Assert
+        XCTAssertEqual(sut.activeDayKey, "2026-03-10")
+        XCTAssertTrue(sut.tasks[0].isCompleted)
+    }
+
+    func test_refreshForCurrentDay_should_rollOver_when_resetTimePasses() {
+        // Arrange
+        TrackerDayKey.dayStartMinutes = 4 * 60
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+        sut.toggleTaskCompletion(task: seeded[0])
+        clock.now = TestClock.date(year: 2026, month: 3, day: 11, hour: 5)
+
+        // Act
+        sut.refreshForCurrentDay()
+
+        // Assert
+        XCTAssertEqual(sut.activeDayKey, "2026-03-11")
+        XCTAssertTrue(sut.tasks.allSatisfy { !$0.isCompleted })
+        XCTAssertEqual(sut.history.map(\.dayKey), ["2026-03-10"])
+    }
+
+    func test_setDayStartMinutes_should_keepTodaysProgress_when_resetMovesLater() {
+        // Arrange
+        clock.now = TestClock.date(year: 2026, month: 3, day: 10, hour: 2)
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+        sut.toggleTaskCompletion(task: seeded[0])
+
+        // Act
+        sut.setDayStartMinutes(4 * 60)
+
+        // Assert
+        XCTAssertEqual(sut.dayStartMinutes, 240)
+        XCTAssertEqual(Storage.load(key: .trackerDayStartMinutes) as? Int, 240)
+        XCTAssertEqual(sut.activeDayKey, "2026-03-10")
+        XCTAssertTrue(sut.tasks[0].isCompleted)
+    }
+
+    func test_setDayStartMinutes_should_ignoreUnsupportedTimes() {
+        // Arrange
+        let sut = makeSUT()
+
+        // Act
+        sut.setDayStartMinutes(15 * 60)
+
+        // Assert
+        XCTAssertEqual(sut.dayStartMinutes, 0)
+        XCTAssertNil(Storage.load(key: .trackerDayStartMinutes))
+    }
+
+    func test_resetAll_should_restoreMidnightReset() {
+        // Arrange
+        let sut = makeSUT()
+        sut.setDayStartMinutes(3 * 60)
+
+        // Act
+        sut.resetAll()
+
+        // Assert
+        XCTAssertEqual(sut.dayStartMinutes, 0)
+    }
+
     func test_refreshForCurrentDay_should_doNothingOnSameDay() {
         // Arrange
         let seeded = seedTwoTasks()

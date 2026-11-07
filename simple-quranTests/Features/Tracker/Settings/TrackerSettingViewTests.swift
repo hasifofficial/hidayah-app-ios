@@ -91,4 +91,66 @@ final class TrackerSettingsViewTests: XCTestCase {
         XCTAssertEqual(fullResets, 0)
         XCTAssertEqual(dailyResets, 0)
     }
+
+    func test_body_should_showDayStartRow_withCurrentTime() {
+        // Arrange
+        let host = ViewHost(
+            NavigationStack {
+                TrackerSettingsView(
+                    onManageCategories: {},
+                    onResetDailyProgress: {},
+                    onResetAll: {},
+                    dayStartMinutes: 4 * 60
+                )
+            }
+        )
+        host.pump(0.5)
+
+        // Act
+        let labels = host.labels()
+
+        // Assert
+        XCTAssertTrue(host.contains("Daily Reset"), "\(labels)")
+        XCTAssertTrue(host.contains("New Day Starts"), "\(labels)")
+        XCTAssertTrue(host.contains(TrackerSettingsView.timeLabel(forMinutes: 240)), "\(labels)")
+    }
+
+    func test_timeLabel_should_formatMinutesAsTimeOfDay() {
+        // Arrange
+        let minutes = [0, 270]
+
+        // Act
+        let labels = minutes.map(TrackerSettingsView.timeLabel(forMinutes:))
+
+        // Assert
+        XCTAssertNotEqual(labels[0], labels[1])
+        XCTAssertTrue(labels[1].contains("4") && labels[1].contains("30"), labels[1])
+    }
+
+    func test_dayStartRow_should_openSelectionList_andSaveChoice() {
+        // Arrange
+        var chosen: Int?
+        let host = ViewHost(
+            NavigationStack {
+                TrackerSettingsView(
+                    onManageCategories: {},
+                    onResetDailyProgress: {},
+                    onResetAll: {},
+                    onChangeDayStart: { chosen = $0 }
+                )
+            }
+        )
+        host.pump(0.5)
+        let fourAM = TrackerSettingsView.timeLabel(forMinutes: 240)
+
+        // Act
+        host.tap("New Day Starts")
+        host.pump(until: { host.contains(fourAM) })
+        host.tap(fourAM)
+        host.pump(0.8)
+
+        // Assert
+        XCTAssertEqual(chosen, 240)
+        XCTAssertTrue(host.contains(fourAM))
+    }
 }

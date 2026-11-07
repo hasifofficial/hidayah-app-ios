@@ -41,11 +41,50 @@ enum TrackerDayKey {
         return calendar.date(from: components)
     }
 
+    /// The day the tracker is on at `now`. A day runs from the reset time
+    /// to the next, so before it the tracker is still on the previous day.
     static func today(
         now: Date = Date(),
-        calendar: Calendar = TrackerDayKey.calendar
+        calendar: Calendar = TrackerDayKey.calendar,
+        dayStartMinutes: Int = TrackerDayKey.dayStartMinutes
     ) -> String {
-        key(for: now, calendar: calendar)
+        let shifted = calendar.date(
+            byAdding: .minute,
+            value: -dayStartMinutes,
+            to: now
+        ) ?? now
+        return key(for: shifted, calendar: calendar)
+    }
+
+    /// When the tracker next starts a new day after `now`.
+    static func nextDayStart(
+        after now: Date,
+        calendar: Calendar = TrackerDayKey.calendar,
+        dayStartMinutes: Int = TrackerDayKey.dayStartMinutes
+    ) -> Date? {
+        let todayKey = today(now: now, calendar: calendar, dayStartMinutes: dayStartMinutes)
+        guard let todayDate = date(from: todayKey, calendar: calendar),
+              let tomorrow = calendar.date(byAdding: .day, value: 1, to: todayDate) else {
+            return nil
+        }
+        return calendar.date(byAdding: .minute, value: dayStartMinutes, to: tomorrow)
+    }
+
+    // MARK: Reset time
+
+    /// The reset times on offer: midnight to 6 AM, every half hour.
+    static let dayStartChoices = Array(stride(from: 0, through: 6 * 60, by: 30))
+
+    /// Minutes after midnight when a new tracker day starts; midnight when
+    /// unset. Shared with the widget through the app group.
+    static var dayStartMinutes: Int {
+        get {
+            let stored = Storage.load(key: .trackerDayStartMinutes) as? Int ?? 0
+            return dayStartChoices.contains(stored) ? stored : 0
+        }
+        set {
+            Storage.save(.trackerDayStartMinutes, newValue)
+        }
     }
 }
 

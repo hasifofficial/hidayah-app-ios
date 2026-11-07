@@ -67,6 +67,9 @@
 
 "setting_tracker_header_title" = "Tracker Settings";
 "setting_tracker_category_title" = "Category";
+"setting_tracker_day_section_title" = "Daily Reset";
+"setting_tracker_day_start_title" = "New Day Starts";
+"setting_tracker_day_start_note" = "Your tasks reset and a new day begins at this time. Pick a later time if you often finish your tasks after midnight.";
 "setting_tracker_manage_category_title" = "Manage Categories";
 "setting_tracker_reset_daily_progress_title" = "Reset Today's Progress";
 "setting_tracker_reset_all_title" = "Reset All";

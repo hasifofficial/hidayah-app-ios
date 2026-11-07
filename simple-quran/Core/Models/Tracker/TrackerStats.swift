@@ -128,11 +128,8 @@ struct TrackerStats {
 
         var cursor = TrackerDayKey.today(now: now, calendar: calendar)
         if !activeDays.contains(cursor),
-           let yesterday = calendar.date(
-               byAdding: .day,
-               value: -1,
-               to: calendar.startOfDay(for: now)
-           ) {
+           let todayDate = TrackerDayKey.date(from: cursor, calendar: calendar),
+           let yesterday = calendar.date(byAdding: .day, value: -1, to: todayDate) {
             cursor = TrackerDayKey.key(for: yesterday, calendar: calendar)
         }
 

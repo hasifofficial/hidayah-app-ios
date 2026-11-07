@@ -11,17 +11,39 @@ struct TrackerSettingsView: View {
     let onManageCategories: () -> Void
     let onResetDailyProgress: () -> Void
     let onResetAll: () -> Void
+    /// Minutes after midnight when a new tracker day starts.
+    var dayStartMinutes: Int = 0
+    var onChangeDayStart: (Int) -> Void = { _ in }
 
     @State private var activeAlert: ResetAlert?
+    @State private var selectedDayStart: Int?
+    @State private var showingDayStartPicker = false
 
     var body: some View {
         List {
             SettingsSectionHeader(
                 title: NSLocalizedString(
-                    "setting_tracker_category_title",
+                    "setting_tracker_day_section_title",
                     comment: ""
                 ),
                 topPadding: 16
+            )
+
+            dayStartRow
+
+            Text(NSLocalizedString("setting_tracker_day_start_note", comment: ""))
+                .font(.system(size: 12))
+                .foregroundColor(.textGray)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 4)
+                .settingsListRow()
+
+            SettingsSectionHeader(
+                title: NSLocalizedString(
+                    "setting_tracker_category_title",
+                    comment: ""
+                )
             )
 
             SettingsActionRow(
@@ -53,6 +75,18 @@ struct TrackerSettingsView: View {
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .background(.sheetBackground)
+        .sheet(isPresented: $showingDayStartPicker) {
+            SelectionView(
+                title: NSLocalizedString("setting_tracker_day_start_title", comment: ""),
+                items: dayStartItems,
+                selectedValue: String(currentDayStart),
+                onSelect: { item in
+                    guard let minutes = item.item as? Int else { return }
+                    selectedDayStart = minutes
+                    onChangeDayStart(minutes)
+                }
+            )
+        }
         .alert(
             activeAlert?.title ?? "",
             isPresented: Binding(
@@ -95,6 +129,47 @@ struct TrackerSettingsView: View {
         } message: {
             Text(activeAlert?.message ?? "")
         }
+    }
+
+    private var currentDayStart: Int {
+        selectedDayStart ?? dayStartMinutes
+    }
+
+    private var dayStartRow: some View {
+        SettingsActionRow(
+            icon: "clock.arrow.circlepath",
+            title: NSLocalizedString("setting_tracker_day_start_title", comment: ""),
+            value: Self.timeLabel(forMinutes: currentDayStart)
+        ) {
+            showingDayStartPicker = true
+        }
+    }
+
+    /// The reset times, in the list the other setting choices use.
+    private var dayStartItems: [ItemSelector] {
+        TrackerDayKey.dayStartChoices.map { minutes in
+            ItemSelector(
+                title: Self.timeLabel(forMinutes: minutes),
+                value: String(minutes),
+                item: minutes
+            )
+        }
+    }
+
+    /// "12:00 AM", "4:30 AM": a time of day in the reader's format.
+    static func timeLabel(forMinutes minutes: Int) -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        let date = calendar.date(
+            from: DateComponents(year: 2000, month: 1, day: 1, hour: minutes / 60, minute: minutes % 60)
+        ) ?? Date()
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+        formatter.locale = .autoupdatingCurrent
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return formatter.string(from: date)
     }
 
     private func resetRow(_ key: String) -> some View {

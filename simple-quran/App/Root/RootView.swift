@@ -664,6 +664,10 @@ private struct SettingsSheet: View {
                         onResetAll: {
                             taskManager.resetAll()
                             popToSettings()
+                        },
+                        dayStartMinutes: taskManager.dayStartMinutes,
+                        onChangeDayStart: { minutes in
+                            taskManager.setDayStartMinutes(minutes)
                         }
                     )
                     .navigationTitle(

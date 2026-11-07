@@ -149,4 +149,27 @@ final class TrackerHistoryEngineTests: XCTestCase {
         XCTAssertEqual(stats.totalPoints, 70)
         XCTAssertEqual(stats.currentStreak, 1)
     }
+
+    func test_rollover_should_keepActiveDay_when_todayIsEarlier() {
+        // Arrange
+        let engine = TrackerHistoryEngine()
+        var tasks = [makeTask("Fajr prayer", isCompleted: true)]
+        var history: [TrackerDayRecord] = []
+        let twoAM = TestClock.date(year: 2026, month: 3, day: 11, hour: 2)
+        TrackerDayKey.dayStartMinutes = 4 * 60
+        defer { resetStorage() }
+
+        // Act
+        let key = engine.rollover(
+            activeDayKey: "2026-03-11",
+            tasks: &tasks,
+            history: &history,
+            now: twoAM
+        )
+
+        // Assert
+        XCTAssertEqual(key, "2026-03-11")
+        XCTAssertTrue(tasks[0].isCompleted)
+        XCTAssertTrue(history.isEmpty)
+    }
 }

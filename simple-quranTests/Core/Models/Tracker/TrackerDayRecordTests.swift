@@ -140,4 +140,82 @@ final class TrackerDayKeyTests: XCTestCase {
         // Assert
         XCTAssertEqual(key, "2025-12-31")
     }
+
+    // MARK: - Reset time
+
+    func test_today_should_stayOnPreviousDay_when_beforeResetTime() {
+        // Arrange
+        let twoAM = TestClock.date(year: 2026, month: 11, day: 7, hour: 2)
+
+        // Act
+        let key = TrackerDayKey.today(now: twoAM, dayStartMinutes: 4 * 60)
+
+        // Assert
+        XCTAssertEqual(key, "2026-11-06")
+    }
+
+    func test_today_should_moveToNewDay_when_afterResetTime() {
+        // Arrange
+        let fiveAM = TestClock.date(year: 2026, month: 11, day: 7, hour: 5)
+
+        // Act
+        let key = TrackerDayKey.today(now: fiveAM, dayStartMinutes: 4 * 60)
+
+        // Assert
+        XCTAssertEqual(key, "2026-11-07")
+    }
+
+    func test_today_should_useMidnight_byDefault() {
+        // Arrange
+        resetStorage()
+        let oneAM = TestClock.date(year: 2026, month: 11, day: 7, hour: 1)
+
+        // Act
+        let key = TrackerDayKey.today(now: oneAM)
+
+        // Assert
+        XCTAssertEqual(TrackerDayKey.dayStartMinutes, 0)
+        XCTAssertEqual(key, "2026-11-07")
+    }
+
+    func test_nextDayStart_should_beTheComingResetTime() {
+        // Arrange
+        let twoAM = TestClock.date(year: 2026, month: 11, day: 7, hour: 2)
+        let fiveAM = TestClock.date(year: 2026, month: 11, day: 7, hour: 5)
+
+        // Act
+        let fromTwo = TrackerDayKey.nextDayStart(after: twoAM, dayStartMinutes: 4 * 60)
+        let fromFive = TrackerDayKey.nextDayStart(after: fiveAM, dayStartMinutes: 4 * 60)
+
+        // Assert
+        XCTAssertEqual(fromTwo, TestClock.date(year: 2026, month: 11, day: 7, hour: 4))
+        XCTAssertEqual(fromFive, TestClock.date(year: 2026, month: 11, day: 8, hour: 4))
+    }
+
+    func test_dayStartMinutes_should_ignoreUnsupportedValues() {
+        // Arrange
+        resetStorage()
+        Storage.save(.trackerDayStartMinutes, 13 * 60)
+
+        // Act
+        let minutes = TrackerDayKey.dayStartMinutes
+
+        // Assert
+        XCTAssertEqual(minutes, 0)
+        resetStorage()
+    }
+
+    func test_key_should_ignoreResetTime_forCalendarDates() {
+        // Arrange
+        resetStorage()
+        TrackerDayKey.dayStartMinutes = 4 * 60
+        let midnight = TestClock.date(year: 2026, month: 11, day: 7, hour: 0)
+
+        // Act
+        let key = TrackerDayKey.key(for: midnight)
+
+        // Assert
+        XCTAssertEqual(key, "2026-11-07")
+        resetStorage()
+    }
 }

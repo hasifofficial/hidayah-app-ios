@@ -68,14 +68,10 @@ struct TrackerProvider: TimelineProvider {
             entry(for: widgetContext, on: now)
         ]
 
-        let calendar = TrackerDayKey.calendar
-        if let nextMidnight = calendar.date(
-            byAdding: .day,
-            value: 1,
-            to: calendar.startOfDay(for: now)
-        ) {
+        // Reset the widget when the tracker starts its next day.
+        if let nextDayStart = TrackerDayKey.nextDayStart(after: now) {
             entries.append(
-                entry(for: widgetContext, on: nextMidnight)
+                entry(for: widgetContext, on: nextDayStart)
             )
         }
 
@@ -93,7 +89,7 @@ struct TrackerProvider: TimelineProvider {
         // from an earlier day is shown the way the app will reset it.
         if let widgetContext,
            let dayKey = widgetContext.dayKey,
-           dayKey != TrackerDayKey.key(for: date) {
+           dayKey < TrackerDayKey.today(now: date) {
             return TrackerEntry(
                 date: date,
                 progress: 0,
