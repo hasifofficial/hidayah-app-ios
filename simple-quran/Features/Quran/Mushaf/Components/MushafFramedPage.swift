@@ -275,7 +275,7 @@ struct MushafSpreadView: View {
                     viewModel: viewModel
                 )
                 .background {
-                    sheet(spine: pages.count == 2 ? spine : .none)
+                    MushafPaperSheet(spine: pages.count == 2 ? spine : .none)
                 }
             }
         }
@@ -292,34 +292,38 @@ struct MushafSpreadView: View {
 
     /// The desk the open book lies on.
     static let canvas = Color(uiColor: .systemGroupedBackground)
+}
 
-    private func sheet(spine: MushafFramedPage.Spine) -> some View {
-        let radius: CGFloat = 12
+/// A sheet of paper with rounded outer corners. A page in a spread gets a
+/// square edge at the binding, darkest there and fading out over about an
+/// eighth of the page, with a hairline seam.
+struct MushafPaperSheet: View {
+    let spine: MushafFramedPage.Spine
+    var cornerRadius: CGFloat = 12
+
+    var body: some View {
         let shape = UnevenRoundedRectangle(
-            topLeadingRadius: spine == .left ? 0 : radius,
-            bottomLeadingRadius: spine == .left ? 0 : radius,
-            bottomTrailingRadius: spine == .right ? 0 : radius,
-            topTrailingRadius: spine == .right ? 0 : radius,
+            topLeadingRadius: spine == .left ? 0 : cornerRadius,
+            bottomLeadingRadius: spine == .left ? 0 : cornerRadius,
+            bottomTrailingRadius: spine == .right ? 0 : cornerRadius,
+            topTrailingRadius: spine == .right ? 0 : cornerRadius,
             style: .continuous
         )
 
-        return shape
-            .fill(Self.paper)
+        shape
+            .fill(MushafSpreadView.paper)
             .overlay {
                 if spine != .none {
-                    spineShadow(spine)
+                    spineShadow
                         .clipShape(shape)
                 }
             }
-            // Pages are laid out left to right inside, so the edges above
-            // are physical.
+            // The edges above are physical.
             .environment(\.layoutDirection, .leftToRight)
             .accessibilityHidden(true)
     }
 
-    /// Darkest at the binding and fading out over about an eighth of the
-    /// page, with a hairline seam.
-    private func spineShadow(_ spine: MushafFramedPage.Spine) -> some View {
+    private var spineShadow: some View {
         GeometryReader { geometry in
             let width = geometry.size.width * 0.12
             let gradient = LinearGradient(

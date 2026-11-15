@@ -141,6 +141,22 @@ final class MushafViewTests: ViewsTestCase {
         XCTAssertEqual(spreads, [false, false, true, true, false, false])
     }
 
+    /// The page-curl book on screen, if any.
+    private func book(in host: ViewHost<some View>) -> UIPageViewController? {
+        func search(_ view: UIView) -> UIPageViewController? {
+            if let book = view.next as? UIPageViewController {
+                return book
+            }
+            return view.subviews.lazy.compactMap(search).first
+        }
+        return search(host.window)
+    }
+
+    /// The pages the book shows, left page first.
+    private func pages(of book: UIPageViewController?) -> [Int] {
+        (book?.viewControllers ?? []).compactMap { ($0 as? MushafBookPager.PageController)?.page }
+    }
+
     func test_mushafView_should_showTwoPages_when_unfolded() {
         // Arrange
         let viewModel = MushafViewModel(surahNumber: 2, loader: FakeMushafLoader())
@@ -149,12 +165,85 @@ final class MushafViewTests: ViewsTestCase {
         let host = makeHost(viewModel, size: CGSize(width: 669, height: 951))
 
         // Assert
-        let pager = host.firstView(of: UIScrollView.self)
+        let book = book(in: host)
         XCTAssertTrue(host.contains("Page 1, "))
         XCTAssertTrue(host.contains("Page 2, "))
         XCTAssertEqual(viewModel.currentPage, 2)
-        // Four pages make two spreads, each one screen wide.
-        XCTAssertEqual(pager?.contentSize.width ?? 0, 2 * 669, accuracy: 1)
+        // Page 1 on the right, page 2 facing it, meeting at the spine.
+        XCTAssertEqual(book?.transitionStyle, .pageCurl)
+        XCTAssertEqual(book?.spineLocation, .mid)
+        XCTAssertEqual(pages(of: book), [2, 1])
+    }
+
+    func test_bookPager_should_turnToNextSpread_when_leafIsTurned() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+        let host = makeHost(viewModel, size: CGSize(width: 669, height: 951))
+        guard let book = book(in: host), let left = book.viewControllers?.first else {
+            return XCTFail("No book")
+        }
+
+        // Act: the left leaf turns over, its back being page 3.
+        let back = book.dataSource?.pageViewController(book, viewControllerBefore: left)
+        let next = back.flatMap { book.dataSource?.pageViewController(book, viewControllerBefore: $0) }
+        book.setViewControllers([next, back].compactMap { $0 }, direction: .forward, animated: false)
+        book.delegate?.pageViewController?(
+            book,
+            didFinishAnimating: true,
+            previousViewControllers: [],
+            transitionCompleted: true
+        )
+        host.pump(0.3)
+
+        // Assert
+        XCTAssertEqual(pages(of: book), [4, 3])
+        XCTAssertEqual(viewModel.currentPage, 3)
+        XCTAssertTrue(host.contains("Page 3, "))
+    }
+
+    func test_bookPager_should_stopAtCovers() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+        let host = makeHost(viewModel, size: CGSize(width: 669, height: 951))
+        guard let book = book(in: host), let shown = book.viewControllers, shown.count == 2 else {
+            return XCTFail("No book")
+        }
+
+        // Act
+        let beforeFirst = book.dataSource?.pageViewController(book, viewControllerAfter: shown[1])
+        viewModel.scrolledPage = 4
+        host.pump(0.3)
+        let afterLast = book.viewControllers?.first.flatMap {
+            book.dataSource?.pageViewController(book, viewControllerBefore: $0)
+        }
+
+        // Assert
+        XCTAssertNil(beforeFirst)
+        XCTAssertNil(afterLast)
+    }
+
+    func test_bookPager_should_leaveTapsToFloatingBar() {
+        // Arrange
+        let viewModel = MushafViewModel(surahNumber: 1, loader: FakeMushafLoader())
+
+        // Act
+        let host = makeHost(viewModel, size: CGSize(width: 669, height: 951))
+
+        // Assert
+        let taps = book(in: host)?.gestureRecognizers.filter { $0 is UITapGestureRecognizer } ?? []
+        XCTAssertFalse(taps.isEmpty)
+        XCTAssertTrue(taps.allSatisfy { !$0.isEnabled })
+    }
+
+    func test_turnsLikeABook_should_slide_when_voiceOverOrReduceMotionIsOn() {
+        // Arrange
+        let settings = [(false, false), (true, false), (false, true), (true, true)]
+
+        // Act
+        let curls = settings.map { MushafView.turnsLikeABook(voiceOverEnabled: $0.0, reduceMotion: $0.1) }
+
+        // Assert
+        XCTAssertEqual(curls, [true, false, false, false])
     }
 
     func test_mushafView_should_moveBySpread_when_scrolled() {
@@ -169,7 +258,8 @@ final class MushafViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(host.contains("Page 3, "))
         XCTAssertTrue(host.contains("Page 4, "))
-        XCTAssertTrue(host.contains("Juz 1"))
+        XCTAssertTrue(host.contains("Juz 2"))
+        XCTAssertEqual(pages(of: book(in: host)), [4, 3])
     }
 
     func test_mushafView_should_showOnePage_when_spreadsAreOff() {

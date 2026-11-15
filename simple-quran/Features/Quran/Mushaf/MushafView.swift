@@ -29,6 +29,7 @@ struct MushafView: View {
     @Environment(\.displayScale) private var displayScale
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showingReadingSettings = false
     @State private var showingNavigator = false
@@ -101,6 +102,8 @@ struct MushafView: View {
             GeometryReader { geometry in
                 if scrollsVertically {
                     verticalPager(layout, size: geometry.size)
+                } else if isSpread && turnsLikeABook {
+                    bookPager(layout, size: geometry.size)
                 } else if isSpread {
                     spreadPager(layout, size: geometry.size)
                 } else {
@@ -142,6 +145,36 @@ struct MushafView: View {
         .clipped()
         // Page 1 on the right, swiping left to read on.
         .environment(\.layoutDirection, .rightToLeft)
+    }
+
+    /// Spreads turn with a page curl, except with VoiceOver, whose
+    /// three-finger swipe moves the sliding pager, and with Reduce Motion.
+    nonisolated static func turnsLikeABook(voiceOverEnabled: Bool, reduceMotion: Bool) -> Bool {
+        !voiceOverEnabled && !reduceMotion
+    }
+
+    private var turnsLikeABook: Bool {
+        Self.turnsLikeABook(voiceOverEnabled: voiceOverEnabled, reduceMotion: reduceMotion)
+    }
+
+    /// The open book on its desk, the leaves turning over the spine.
+    private func bookPager(_ layout: MushafLayout, size: CGSize) -> some View {
+        let padding = MushafSpreadView.canvasPadding
+        let bookSize = CGSize(
+            width: max(size.width - 2 * padding, 0),
+            height: max(size.height - 2 * padding, 0)
+        )
+
+        return MushafBookPager(
+            layout: layout,
+            spreadStart: layout.spreadStart(forPage: viewModel.currentPage),
+            bookSize: bookSize,
+            displayScale: displayScale,
+            viewModel: viewModel
+        )
+        .frame(width: bookSize.width, height: bookSize.height)
+        .frame(width: size.width, height: size.height)
+        .environment(\.layoutDirection, .leftToRight)
     }
 
     /// One spread per screen, the odd page on the right. The scroll position
