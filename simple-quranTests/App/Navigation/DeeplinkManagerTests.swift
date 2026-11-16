@@ -37,8 +37,8 @@ final class DeeplinkManagerTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .quran)
-        XCTAssertTrue(router.quranPath.isEmpty)
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.quranList])
         XCTAssertFalse(router.settingsPresented)
     }
 
@@ -51,10 +51,10 @@ final class DeeplinkManagerTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .quran)
+        XCTAssertEqual(router.selectedTab, .reading)
         XCTAssertEqual(
-            router.quranPath,
-            [.surahDetail(surahNumber: 18, title: nil, bookmarkedAyah: nil)]
+            router.readingPath,
+            [.quranList, .surahDetail(surahNumber: 18, title: nil, bookmarkedAyah: nil)]
         )
     }
 
@@ -68,8 +68,8 @@ final class DeeplinkManagerTests: XCTestCase {
         // Assert
         XCTAssertTrue(handled)
         XCTAssertEqual(
-            router.quranPath,
-            [.surahDetail(surahNumber: 2, title: nil, bookmarkedAyah: 255)]
+            router.readingPath,
+            [.quranList, .surahDetail(surahNumber: 2, title: nil, bookmarkedAyah: 255)]
         )
     }
 
@@ -83,22 +83,22 @@ final class DeeplinkManagerTests: XCTestCase {
         // Assert
         XCTAssertTrue(handled)
         XCTAssertEqual(
-            router.quranPath,
-            [.surahDetail(surahNumber: 2, title: nil, bookmarkedAyah: nil)]
+            router.readingPath,
+            [.quranList, .surahDetail(surahNumber: 2, title: nil, bookmarkedAyah: nil)]
         )
     }
 
     func test_handleDeepLink_should_treatNonNumericSurahAsQuranTab() {
         // Arrange
-        router.quranPath = [.bookmarkList]
+        router.readingPath = [.bookmarkList]
 
         // Act
         let handled = handle("hidayahapp://inAppDeeplink/quran/kahf")
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .quran)
-        XCTAssertEqual(router.quranPath, [.bookmarkList], "the current tab is left as it was")
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.quranList])
     }
 
     func test_handleDeepLink_should_openBookmarkList() {
@@ -110,8 +110,8 @@ final class DeeplinkManagerTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .quran)
-        XCTAssertEqual(router.quranPath, [.bookmarkList])
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.quranList, .bookmarkList])
     }
 
     func test_handleDeepLink_should_openTrackerTab() {
@@ -135,7 +135,8 @@ final class DeeplinkManagerTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.mathurat])
         XCTAssertNil(router.mathuratFocusOrder)
         XCTAssertFalse(router.settingsPresented)
     }
@@ -149,7 +150,8 @@ final class DeeplinkManagerTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.mathurat])
         XCTAssertEqual(router.mathuratFocusOrder, 13)
     }
 
@@ -162,7 +164,8 @@ final class DeeplinkManagerTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(handled)
-        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.mathurat])
         XCTAssertNil(router.mathuratFocusOrder)
     }
 
@@ -176,7 +179,7 @@ final class DeeplinkManagerTests: XCTestCase {
         // Assert
         XCTAssertFalse(handled)
         XCTAssertTrue(router.settingsPresented)
-        XCTAssertEqual(router.selectedTab, .quran)
+        XCTAssertEqual(router.selectedTab, .home)
     }
 
     func test_handleDeepLink_should_rejectMissingPath() {

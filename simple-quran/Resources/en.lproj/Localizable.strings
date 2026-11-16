@@ -348,6 +348,38 @@
 "widget_guide_app_camera" = "Camera";
 "widget_guide_app_music" = "Music";
 
+"home_tab_title" = "Home";
+"home_greeting" = "Assalamualaikum";
+"home_hijri_date_format" = "%@ AH";
+"home_tracker_progress_format" = "%d of %d done";
+"home_bookmarks_empty" = "No saved ayahs yet";
+"home_see_all" = "See all";
+"home_see_more" = "See more";
+"home_see_all_bookmarks_accessibility" = "See all bookmarks";
+"home_see_more_bookmarks_accessibility" = "See more bookmarks";
+"home_tracker_summary_empty" = "Add tasks in Tracker to build your daily routine.";
+"home_tracker_summary_start" = "%d tasks are waiting for you today. Bismillah, let’s begin.";
+"home_tracker_summary_progress" = "%d more to go and you’re %d%% there. Keep going!";
+"home_tracker_summary_one_left" = "Just one more task to go. You’re almost there!";
+"home_tracker_summary_done" = "Alhamdulillah, you’ve completed everything today!";
+"home_tracker_streak_format" = "%d-day streak";
+"home_tracker_level_format" = "Level %d";
+"home_tracker_points_format" = "%d pts";
+
+"home_explore_all" = "All";
+"home_explore_all_accessibility" = "All features";
+
+"explore_header_title" = "Explore";
+"explore_quran_subtitle" = "The Holy Quran";
+"explore_mathurat_subtitle" = "Morning and evening dhikr and wird.";
+"explore_tasbih_subtitle" = "Count your dhikr with a digital tasbih.";
+"explore_tracker_subtitle" = "Build your daily Istiqamah routine.";
+
+"reading_tab_title" = "Reading";
+"reading_header_title" = "Reading";
+"reading_quran_subtitle" = "The Holy Quran";
+"reading_mathurat_subtitle" = "Morning and evening dhikr and wird.";
+
 "mathurat_tab_title" = "Mathurat";
 "mathurat_header_title" = "Al-Mathurat";
 "mathurat_time_morning" = "Morning";

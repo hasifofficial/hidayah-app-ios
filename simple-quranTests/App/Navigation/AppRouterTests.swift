@@ -15,6 +15,8 @@ final class AppRouterTests: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
         sut = AppRouter()
+        // Most tests exercise the Reading stack, so start there.
+        sut.selectTab(.reading)
     }
 
     override func tearDown() async throws {
@@ -22,7 +24,7 @@ final class AppRouterTests: XCTestCase {
         try await super.tearDown()
     }
 
-    func test_init_should_startOnQuranWithEmptyPaths() {
+    func test_init_should_startOnHomeWithEmptyPaths() {
         // Arrange
         // Nothing to arrange beyond the clean state from setUp.
 
@@ -30,8 +32,9 @@ final class AppRouterTests: XCTestCase {
         let router = AppRouter()
 
         // Assert
-        XCTAssertEqual(router.selectedTab, .quran)
-        XCTAssertTrue(router.quranPath.isEmpty)
+        XCTAssertEqual(router.selectedTab, .home)
+        XCTAssertTrue(router.homePath.isEmpty)
+        XCTAssertTrue(router.readingPath.isEmpty)
         XCTAssertTrue(router.searchPath.isEmpty)
         XCTAssertTrue(router.trackerPath.isEmpty)
         XCTAssertFalse(router.settingsPresented)
@@ -40,41 +43,41 @@ final class AppRouterTests: XCTestCase {
 
     func test_selectTab_should_ignoreCurrentTab() {
         // Arrange
-        sut.quranPath = [detail]
+        sut.readingPath = [detail]
 
         // Act
-        sut.selectTab(.quran)
+        sut.selectTab(.reading)
 
         // Assert
-        XCTAssertEqual(sut.quranPath, [detail])
-        XCTAssertTrue(sut.savedQuranPath.isEmpty)
+        XCTAssertEqual(sut.readingPath, [detail])
+        XCTAssertTrue(sut.savedReadingPath.isEmpty)
     }
 
     func test_selectTab_should_saveAndClearPathOfPreviousTab() {
         // Arrange
-        sut.quranPath = [detail]
+        sut.readingPath = [detail]
 
         // Act
         sut.selectTab(.tracker)
 
         // Assert
         XCTAssertEqual(sut.selectedTab, .tracker)
-        XCTAssertTrue(sut.quranPath.isEmpty)
-        XCTAssertEqual(sut.savedQuranPath, [detail])
+        XCTAssertTrue(sut.readingPath.isEmpty)
+        XCTAssertEqual(sut.savedReadingPath, [detail])
     }
 
     func test_selectTab_should_restoreSavedPathWhenReturning() {
         // Arrange
-        sut.quranPath = [detail]
+        sut.readingPath = [detail]
         sut.selectTab(.tracker)
         sut.trackerPath = [.trackerCalendar, .trackerDay(dayKey: "2026-03-10")]
 
         // Act
-        sut.selectTab(.quran)
+        sut.selectTab(.reading)
 
         // Assert
-        XCTAssertEqual(sut.quranPath, [detail])
-        XCTAssertTrue(sut.savedQuranPath.isEmpty)
+        XCTAssertEqual(sut.readingPath, [detail])
+        XCTAssertTrue(sut.savedReadingPath.isEmpty)
         XCTAssertTrue(sut.trackerPath.isEmpty)
         XCTAssertEqual(sut.savedTrackerPath, [.trackerCalendar, .trackerDay(dayKey: "2026-03-10")])
     }
@@ -83,7 +86,7 @@ final class AppRouterTests: XCTestCase {
         // Arrange
         sut.selectTab(.tracker)
         sut.trackerPath = [.trackerAchievements]
-        sut.selectTab(.quran)
+        sut.selectTab(.reading)
 
         // Act
         sut.selectTab(.tracker)
@@ -97,7 +100,7 @@ final class AppRouterTests: XCTestCase {
         // Arrange
         sut.selectTab(.search)
         sut.searchPath = [detail]
-        sut.selectTab(.tasbih)
+        sut.selectTab(.home)
         XCTAssertTrue(sut.searchPath.isEmpty)
 
         // Act
@@ -108,51 +111,86 @@ final class AppRouterTests: XCTestCase {
         XCTAssertTrue(sut.savedSearchPath.isEmpty)
     }
 
-    func test_selectTab_should_leaveTasbihWithoutSavingAnything() {
+    func test_selectTab_should_restoreReadingPathAfterVisitingSearch() {
         // Arrange
-        sut.selectTab(.tasbih)
-        sut.quranPath = [.bookmarkList]
-
-        // Act
-        sut.selectTab(.tracker)
-
-        // Assert
-        XCTAssertEqual(sut.selectedTab, .tracker)
-        XCTAssertTrue(sut.quranPath.isEmpty)
-        XCTAssertTrue(sut.savedQuranPath.isEmpty)
-    }
-
-    func test_selectTab_should_leaveMathuratWithoutSavingAnything() {
-        // Arrange
-        sut.selectTab(.mathurat)
-        sut.quranPath = [.bookmarkList]
-
-        // Act
+        sut.readingPath = [.mathurat]
         sut.selectTab(.search)
 
+        // Act
+        sut.selectTab(.reading)
+
         // Assert
-        XCTAssertEqual(sut.selectedTab, .search)
-        XCTAssertTrue(sut.quranPath.isEmpty)
-        XCTAssertTrue(sut.savedQuranPath.isEmpty)
-        XCTAssertTrue(sut.savedSearchPath.isEmpty)
+        XCTAssertEqual(sut.readingPath, [.mathurat])
+        XCTAssertTrue(sut.savedReadingPath.isEmpty)
     }
 
-    func test_selectTab_should_restoreQuranPathAfterVisitingMathurat() {
+    func test_openReading_should_replaceSavedReadingPath() {
         // Arrange
-        sut.quranPath = [.bookmarkList]
-        sut.selectTab(.mathurat)
+        sut.readingPath = [.quranList, .bookmarkList]
+        sut.selectTab(.tracker)
 
         // Act
-        sut.selectTab(.quran)
+        sut.openReading([.quranList, detail])
 
         // Assert
-        XCTAssertEqual(sut.quranPath, [.bookmarkList])
-        XCTAssertTrue(sut.savedQuranPath.isEmpty)
+        XCTAssertEqual(sut.selectedTab, .reading)
+        XCTAssertEqual(sut.readingPath, [.quranList, detail])
+        XCTAssertTrue(sut.savedReadingPath.isEmpty)
+    }
+
+    func test_openMathurat_should_pushMathuratAndSetFocus() {
+        // Arrange
+        sut.selectTab(.search)
+
+        // Act
+        sut.openMathurat(focusOrder: 7)
+
+        // Assert
+        XCTAssertEqual(sut.selectedTab, .reading)
+        XCTAssertEqual(sut.readingPath, [.mathurat])
+        XCTAssertEqual(sut.mathuratFocusOrder, 7)
+    }
+
+    func test_selectTab_should_saveAndRestoreHomePath() {
+        // Arrange
+        sut.selectTab(.home)
+        sut.homePath = [.mathurat]
+        sut.selectTab(.tracker)
+        let savedWhileAway = sut.savedHomePath
+
+        // Act
+        sut.selectTab(.home)
+
+        // Assert
+        XCTAssertEqual(savedWhileAway, [.mathurat])
+        XCTAssertEqual(sut.homePath, [.mathurat])
+        XCTAssertTrue(sut.savedHomePath.isEmpty)
+    }
+
+    func test_push_should_appendToSelectedTabStack() {
+        // Arrange
+        var pushed: [AppTab: [AppRoute]] = [:]
+
+        // Act
+        for tab in AppTab.allCases {
+            sut.selectTab(tab, clearingPaths: false)
+            sut.push(.bookmarkList)
+        }
+        pushed[.home] = sut.homePath
+        pushed[.reading] = sut.readingPath
+        pushed[.tracker] = sut.trackerPath
+        pushed[.search] = sut.searchPath
+
+        // Assert
+        XCTAssertEqual(pushed[.home], [.bookmarkList])
+        XCTAssertEqual(pushed[.reading], [.bookmarkList])
+        XCTAssertEqual(pushed[.tracker], [.bookmarkList])
+        XCTAssertEqual(pushed[.search], [.bookmarkList])
     }
 
     func test_selectTab_should_keepPathsWhenNotClearing() {
         // Arrange
-        sut.quranPath = [detail]
+        sut.readingPath = [detail]
         sut.trackerPath = [.trackerLevels]
 
         // Act
@@ -160,9 +198,9 @@ final class AppRouterTests: XCTestCase {
 
         // Assert
         XCTAssertEqual(sut.selectedTab, .tracker)
-        XCTAssertEqual(sut.quranPath, [detail])
+        XCTAssertEqual(sut.readingPath, [detail])
         XCTAssertEqual(sut.trackerPath, [.trackerLevels])
-        XCTAssertTrue(sut.savedQuranPath.isEmpty)
+        XCTAssertTrue(sut.savedReadingPath.isEmpty)
     }
 
     func test_settingsRoute_should_distinguishCases() {

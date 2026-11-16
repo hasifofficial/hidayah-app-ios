@@ -1,0 +1,81 @@
+//
+//  AppFeature.swift
+//  simple-quran
+//
+
+import Foundation
+
+/// The main features listed on the Explore page, in display order. To add
+/// a feature, add a case here with its text, icon and destination; Explore
+/// picks it up from `allCases`.
+enum AppFeature: String, CaseIterable, Identifiable {
+    case quran
+    case mathurat
+    case tasbih
+    case tracker
+
+    var id: String { rawValue }
+
+    /// Where a feature opens: pushed onto the current tab's stack, or a tab
+    /// of its own.
+    enum Destination: Equatable {
+        case route(AppRoute)
+        case tab(AppTab)
+    }
+
+    var title: String {
+        switch self {
+        case .quran:
+            return NSLocalizedString("surah_list_header_title", comment: "")
+        case .mathurat:
+            return NSLocalizedString("mathurat_header_title", comment: "")
+        case .tasbih:
+            return NSLocalizedString("tasbih_tab_title", comment: "")
+        case .tracker:
+            return NSLocalizedString("tracker_list_header_title", comment: "")
+        }
+    }
+
+    var subtitle: String {
+        NSLocalizedString("explore_\(rawValue)_subtitle", comment: "")
+    }
+
+    var icon: String {
+        switch self {
+        case .quran:
+            return "book.fill"
+        case .mathurat:
+            return "sun.horizon.fill"
+        case .tasbih:
+            return "circle.grid.3x3.fill"
+        case .tracker:
+            return "checklist.checked"
+        }
+    }
+
+    /// An asset image used instead of `icon`: Tasbih uses its bead icon.
+    var assetIcon: String? {
+        switch self {
+        case .tasbih:
+            return "TasbihIconFill"
+        default:
+            return nil
+        }
+    }
+
+    var destination: Destination {
+        switch self {
+        case .quran:
+            return .route(.quranList)
+        case .mathurat:
+            return .route(.mathurat)
+        case .tasbih:
+            return .route(.tasbih)
+        case .tracker:
+            return .tab(.tracker)
+        }
+    }
+
+    /// The features shown as shortcuts on Home, before the "All" tile.
+    static let homeShortcuts: [AppFeature] = [.quran, .mathurat, .tasbih]
+}

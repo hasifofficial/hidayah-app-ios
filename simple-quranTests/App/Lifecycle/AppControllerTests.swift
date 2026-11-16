@@ -168,10 +168,10 @@ final class AppControllerTests: XCTestCase {
         )
 
         // Assert
-        await waitUntil { !sut.router.quranPath.isEmpty }
+        await waitUntil { !sut.router.readingPath.isEmpty }
         XCTAssertEqual(
-            sut.router.quranPath,
-            [.surahDetail(surahNumber: 18, title: nil, bookmarkedAyah: nil)]
+            sut.router.readingPath,
+            [.quranList, .surahDetail(surahNumber: 18, title: nil, bookmarkedAyah: nil)]
         )
     }
 

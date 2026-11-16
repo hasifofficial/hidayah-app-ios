@@ -10,9 +10,8 @@ import Observation
 import UIKit
 
 enum AppTab: Int, Hashable, Identifiable, CaseIterable {
-    case quran
-    case mathurat
-    case tasbih
+    case home
+    case reading
     case tracker
     case search
 
@@ -20,19 +19,14 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
 
     var title: String {
         switch self {
-        case .quran:
+        case .home:
             return NSLocalizedString(
-                "surah_list_header_title",
+                "home_tab_title",
                 comment: ""
             )
-        case .tasbih:
+        case .reading:
             return NSLocalizedString(
-                "tasbih_tab_title",
-                comment: ""
-            )
-        case .mathurat:
-            return NSLocalizedString(
-                "mathurat_tab_title",
+                "reading_tab_title",
                 comment: ""
             )
         case .tracker:
@@ -50,12 +44,10 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
 
     var icon: String {
         switch self {
-        case .quran:
+        case .home:
+            return "house"
+        case .reading:
             return "book"
-        case .tasbih:
-            return "circle.grid.3x3"
-        case .mathurat:
-            return "sun.horizon"
         case .tracker:
             return "checklist.unchecked"
         case .search:
@@ -65,25 +57,15 @@ enum AppTab: Int, Hashable, Identifiable, CaseIterable {
 
     var selectedIcon: String {
         switch self {
-        case .quran:
+        case .home:
+            return "house.fill"
+        case .reading:
             return "book.fill"
-        case .tasbih:
-            return "circle.grid.3x3.fill"
-        case .mathurat:
-            return "sun.horizon.fill"
         case .tracker:
             return "checklist.checked"
         case .search:
             return "magnifyingglass"
         }
-    }
-
-    var assetIcon: String? {
-        self == .tasbih ? "TasbihIcon" : nil
-    }
-
-    var selectedAssetIcon: String? {
-        self == .tasbih ? "TasbihIconFill" : nil
     }
 }
 
@@ -100,6 +82,9 @@ struct RootView: View {
     @State private var bookmarkViewModel: BookmarkListViewModel
     @State private var searchViewModel: SearchViewModel
     @State private var mathuratViewModel: MathuratViewModel
+    @State private var reflectionModel: HomeReflectionModel
+    /// Shared so the count survives leaving and reopening Tasbih.
+    @State private var tasbihViewModel = TasbihViewModel()
 
     /// The release whose What's New screen shows on launch until seen;
     /// nil never shows it.
@@ -110,6 +95,7 @@ struct RootView: View {
         taskManager: TaskManager,
         router: AppRouter,
         mathuratLoader: MathuratLoading = BundleMathuratLoader(),
+        reflectionGenerator: any TrackerReflectionGenerating = TrackerReflection.makeDefault(),
         whatsNewRelease: WhatsNewRelease? = .current
     ) {
         self.surahService = surahService
@@ -163,8 +149,7 @@ struct RootView: View {
         }
 
         searchViewModel.onSelectMathurat = { [router] entry in
-            router.selectTab(.mathurat)
-            router.mathuratFocusOrder = entry.order
+            router.openMathurat(focusOrder: entry.order)
         }
 
         _quranViewModel = State(initialValue: quranViewModel)
@@ -172,6 +157,9 @@ struct RootView: View {
         _searchViewModel = State(initialValue: searchViewModel)
         _mathuratViewModel = State(
             initialValue: MathuratViewModel(loader: mathuratLoader)
+        )
+        _reflectionModel = State(
+            initialValue: HomeReflectionModel(generator: reflectionGenerator)
         )
     }
 
@@ -230,7 +218,8 @@ struct RootView: View {
     }
 
     private var hasPushedNavigation: Bool {
-        !router.quranPath.isEmpty
+        !router.homePath.isEmpty
+            || !router.readingPath.isEmpty
             || !router.searchPath.isEmpty
             || !router.trackerPath.isEmpty
     }
@@ -309,12 +298,10 @@ struct RootView: View {
     @ViewBuilder
     private var selectedTabContent: some View {
         switch router.selectedTab {
-        case .quran:
-            quranTab
-        case .tasbih:
-            tasbihTab
-        case .mathurat:
-            mathuratTab
+        case .home:
+            homeTab
+        case .reading:
+            readingTab
         case .tracker:
             trackerTab
         case .search:
@@ -324,23 +311,17 @@ struct RootView: View {
 
     private var legacyTabView: some View {
         TabView(selection: tabSelectionBinding) {
-            quranTab
+            homeTab
                 .tabItem {
-                    tabLabel(.quran)
+                    tabLabel(.home)
                 }
-                .tag(AppTab.quran)
+                .tag(AppTab.home)
 
-            mathuratTab
+            readingTab
                 .tabItem {
-                    tabLabel(.mathurat)
+                    tabLabel(.reading)
                 }
-                .tag(AppTab.mathurat)
-
-            tasbihTab
-                .tabItem {
-                    tabLabel(.tasbih)
-                }
-                .tag(AppTab.tasbih)
+                .tag(AppTab.reading)
 
             trackerTab
                 .tabItem {
@@ -365,21 +346,11 @@ struct RootView: View {
         }
     }
 
-    @ViewBuilder
     private func tabIcon(
         _ tab: AppTab,
         selected: Bool
     ) -> some View {
-        if let assetName = selected
-            ? tab.selectedAssetIcon
-            : tab.assetIcon {
-            Image(assetName)
-                .renderingMode(.template)
-        } else {
-            tabImage(
-                selected ? tab.selectedIcon : tab.icon
-            )
-        }
+        tabImage(selected ? tab.selectedIcon : tab.icon)
     }
 
     private func tabImage(_ systemName: String) -> Image {
@@ -405,23 +376,46 @@ struct RootView: View {
         )
     }
 
-    private var quranTab: some View {
-        NavigationStack(path: $router.quranPath) {
-            SurahListView(
-                viewModel: quranViewModel,
-                onSelect: { surah in
+    private var homeTab: some View {
+        NavigationStack(path: $router.homePath) {
+            HomeView(
+                quranViewModel: quranViewModel,
+                bookmarkViewModel: bookmarkViewModel,
+                taskManager: taskManager,
+                reflectionModel: reflectionModel,
+                onOpenFeature: { feature in
+                    router.open(feature)
+                },
+                onOpenExplore: {
+                    router.homePath.append(.explore)
+                },
+                onOpenTracker: {
+                    router.selectTab(.tracker)
+                },
+                onOpenBookmarks: {
+                    router.homePath.append(.bookmarkList)
+                },
+                onSelectBookmark: { item in
+                    guard let surahNumber = item.surah.number else { return }
+
+                    router.homePath.append(
+                        .surahDetail(
+                            surahNumber: surahNumber,
+                            title: item.surah.englishName,
+                            bookmarkedAyah: item.bookmark.numberInSurah
+                        )
+                    )
+                },
+                onSelectSurah: { surah in
                     guard let surahNumber = surah.number else { return }
 
-                    router.quranPath.append(
+                    router.homePath.append(
                         .surahDetail(
                             surahNumber: surahNumber,
                             title: surah.englishName,
                             bookmarkedAyah: nil
                         )
                     )
-                },
-                onOpenBookmarks: {
-                    router.quranPath.append(.bookmarkList)
                 },
                 onOpenSettings: {
                     router.settingsPresented = true
@@ -433,26 +427,65 @@ struct RootView: View {
         }
     }
 
-    private var tasbihTab: some View {
-        NavigationStack {
-            TasbihView(
+    private var readingTab: some View {
+        NavigationStack(path: $router.readingPath) {
+            ReadingView(
+                onOpenQuran: {
+                    router.readingPath.append(.quranList)
+                },
+                onOpenMathurat: {
+                    router.readingPath.append(.mathurat)
+                },
                 onOpenSettings: {
                     router.settingsPresented = true
                 }
             )
+            .navigationDestination(for: AppRoute.self) { route in
+                destination(for: route)
+            }
         }
     }
 
-    private var mathuratTab: some View {
-        NavigationStack {
-            MathuratView(
-                viewModel: mathuratViewModel,
-                focusOrder: $router.mathuratFocusOrder,
-                onOpenSettings: {
-                    router.settingsPresented = true
-                }
-            )
-        }
+    private var quranListDestination: some View {
+        SurahListView(
+            viewModel: quranViewModel,
+            onSelect: { surah in
+                guard let surahNumber = surah.number else { return }
+
+                router.push(
+                    .surahDetail(
+                        surahNumber: surahNumber,
+                        title: surah.englishName,
+                        bookmarkedAyah: nil
+                    )
+                )
+            },
+            onOpenBookmarks: {
+                router.push(.bookmarkList)
+            },
+            onOpenSettings: {
+                router.settingsPresented = true
+            }
+        )
+    }
+
+    private var mathuratDestination: some View {
+        MathuratView(
+            viewModel: mathuratViewModel,
+            focusOrder: $router.mathuratFocusOrder,
+            onOpenSettings: {
+                router.settingsPresented = true
+            }
+        )
+    }
+
+    private var tasbihDestination: some View {
+        TasbihView(
+            onOpenSettings: {
+                router.settingsPresented = true
+            },
+            viewModel: tasbihViewModel
+        )
     }
 
     private var trackerTab: some View {
@@ -473,35 +506,7 @@ struct RootView: View {
                 }
             )
             .navigationDestination(for: AppRoute.self) { route in
-                switch route {
-                case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
-                    SurahDetailScreen(
-                        surahService: surahService,
-                        surahNumber: surahNumber,
-                        title: title,
-                        bookmarkedAyah: bookmarkedAyah
-                    )
-                case .trackerCalendar:
-                    TrackerCalendarView(
-                        taskManager: taskManager,
-                        onSelectDay: { dayKey in
-                            router.trackerPath.append(.trackerDay(dayKey: dayKey))
-                        }
-                    )
-                    .environment(taskManager)
-                case .trackerAchievements:
-                    TrackerAchievementsView(taskManager: taskManager)
-                case .trackerLevels:
-                    TrackerLevelsView(taskManager: taskManager)
-                case .trackerDay(let dayKey):
-                    TrackerDayDetailView(
-                        taskManager: taskManager,
-                        dayKey: dayKey,
-                        record: taskManager.record(for: dayKey)
-                    )
-                case .bookmarkList:
-                    bookmarkListDestination
-                }
+                destination(for: route)
             }
         }
     }
@@ -551,6 +556,16 @@ struct RootView: View {
     @ViewBuilder
     private func destination(for route: AppRoute) -> some View {
         switch route {
+        case .explore:
+            ExploreView { feature in
+                router.open(feature)
+            }
+        case .quranList:
+            quranListDestination
+        case .mathurat:
+            mathuratDestination
+        case .tasbih:
+            tasbihDestination
         case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
             SurahDetailScreen(
                 surahService: surahService,
@@ -587,7 +602,7 @@ struct RootView: View {
             onSelect: { bookmark in
                 guard let surahNumber = bookmark.surah.number else { return }
 
-                router.quranPath.append(
+                router.push(
                     .surahDetail(
                         surahNumber: surahNumber,
                         title: bookmark.surah.englishName,
@@ -757,10 +772,8 @@ private struct TabBarIconConfigurator: UIViewRepresentable {
         }
 
         for (tab, item) in zip(AppTab.allCases, items) {
-            let image = tab.assetIcon.flatMap { UIImage(named: $0) }
-                ?? UIImage(systemName: tab.icon)
-            let selectedImage = tab.selectedAssetIcon.flatMap { UIImage(named: $0) }
-                ?? UIImage(systemName: tab.selectedIcon)
+            let image = UIImage(systemName: tab.icon)
+            let selectedImage = UIImage(systemName: tab.selectedIcon)
             item.image = image?.withRenderingMode(.alwaysTemplate)
             item.selectedImage = selectedImage?.withRenderingMode(.alwaysTemplate)
         }
