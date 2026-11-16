@@ -12,8 +12,8 @@ enum MushafPageMetrics {
     static let pageAspect: CGFloat = 1920.0 / 3106.0
     /// Space around the frame.
     static let margin: CGFloat = 10
-    /// The double rule's width, up to the inner hairline.
-    static let frameWidth: CGFloat = 6
+    /// The decorated border's width, up to the inner hairline.
+    static let frameWidth: CGFloat = 16
     /// Space between the inner hairline and the text.
     static let innerPadding: CGFloat = 8
     static let runningHeadHeight: CGFloat = 26
@@ -130,8 +130,8 @@ struct MushafFramedPage: View {
         }
     }
 
-    /// "Juz N" on the left and the calligraphic surah names on the right, as
-    /// in the head of a printed page.
+    /// "Juz N" on the left in green and the calligraphic surah names on the
+    /// right in gold, as in the head of a printed page.
     private var runningHead: some View {
         VStack(spacing: 0) {
             HStack(spacing: 8) {
@@ -151,7 +151,7 @@ struct MushafFramedPage: View {
                         if let ligature = Font.surahNameLigature(for: surah) {
                             Text(ligature)
                                 .font(.surahNameFont(size: 24))
-                                .foregroundColor(.lightGreen)
+                                .foregroundColor(.mushafGold)
                         }
                     }
                 }
@@ -163,7 +163,7 @@ struct MushafFramedPage: View {
             .frame(maxHeight: .infinity)
 
             Rectangle()
-                .fill(Color.lightGreen.opacity(0.45))
+                .fill(Color.mushafGold.opacity(0.45))
                 .frame(height: 0.5)
         }
     }
