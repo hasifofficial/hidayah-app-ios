@@ -30,9 +30,7 @@ struct ExploreView: View {
             .padding(.top, 8)
             .padding(.bottom, 100)
         }
-        .background {
-            AppGradientBackground()
-        }
+        .background(.appBackground)
         .navigationTitle(NSLocalizedString("explore_header_title", comment: ""))
         .navigationBarTitleDisplayMode(.large)
     }

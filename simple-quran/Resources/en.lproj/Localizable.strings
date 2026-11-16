@@ -364,7 +364,6 @@
 "home_tracker_summary_done" = "Alhamdulillah, you’ve completed everything today!";
 "home_tracker_streak_format" = "%d-day streak";
 "home_tracker_level_format" = "Level %d";
-"home_tracker_points_format" = "%d pts";
 
 "home_explore_all" = "All";
 "home_explore_all_accessibility" = "All features";

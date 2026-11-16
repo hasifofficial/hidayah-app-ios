@@ -473,6 +473,21 @@ final class RootViewTests: ViewsTestCase {
         XCTAssertEqual(afterAchievements, [.trackerAchievements])
     }
 
+    func test_rootView_should_pushLevelsFromAchievementsLevelCard() {
+        // Arrange
+        router.selectTab(.tracker)
+        router.trackerPath = [.trackerAchievements]
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Current streak") })
+
+        // Act
+        host.tap("pts")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(router.trackerPath, [.trackerAchievements, .trackerLevels])
+    }
+
     func test_rootView_should_pushLevelsFromTrackerSummary() {
         // Arrange
         router.selectTab(.tracker)
@@ -755,6 +770,24 @@ final class RootViewTests: ViewsTestCase {
         for tab in ["Home", "Reading", "Tracker", "Search"] {
             XCTAssertTrue(host.contains(tab), "Missing sidebar item \(tab)")
         }
+    }
+
+    func test_rootView_should_hideHomeLogo_when_splitView() {
+        // Arrange
+        let size = CGSize(width: 1024, height: 1366)
+        let (host, _) = makeHost(sizeClass: .regular, size: size)
+        host.pump(until: { host.contains("Assalamualaikum") })
+        let logosOnHome = host.labels().filter { $0 == "Hidayah" }.count
+
+        // Act
+        host.selectListRow("Search")
+        host.pump(0.5)
+        let logosOnSearch = host.labels().filter { $0 == "Hidayah" }.count
+
+        // Assert
+        // Search has only the sidebar logo, so Home must have no extra one.
+        XCTAssertGreaterThan(logosOnSearch, 0)
+        XCTAssertEqual(logosOnHome, logosOnSearch)
     }
 
     func test_rootView_should_switchDetailFromSidebar() {

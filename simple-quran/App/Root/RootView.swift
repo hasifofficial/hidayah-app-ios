@@ -383,6 +383,7 @@ struct RootView: View {
                 bookmarkViewModel: bookmarkViewModel,
                 taskManager: taskManager,
                 reflectionModel: reflectionModel,
+                showsLogo: !useSplitView,
                 onOpenFeature: { feature in
                     router.open(feature)
                 },
@@ -582,7 +583,9 @@ struct RootView: View {
             )
             .environment(taskManager)
         case .trackerAchievements:
-            TrackerAchievementsView(taskManager: taskManager)
+            TrackerAchievementsView(taskManager: taskManager) {
+                router.push(.trackerLevels)
+            }
         case .trackerLevels:
             TrackerLevelsView(taskManager: taskManager)
         case .trackerDay(let dayKey):

@@ -10,7 +10,11 @@ import SwiftUI
 struct TrackerAchievementsView: View {
     @State private var viewModel: TrackerAchievementsViewModel
 
-    init(taskManager: TaskManager) {
+    /// Opens the Levels screen when the level card is tapped.
+    var onOpenLevels: () -> Void = {}
+
+    init(taskManager: TaskManager, onOpenLevels: @escaping () -> Void = {}) {
+        self.onOpenLevels = onOpenLevels
         _viewModel = State(
             initialValue: TrackerAchievementsViewModel(
                 taskManager: taskManager
@@ -30,8 +34,12 @@ struct TrackerAchievementsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
-                levelCard
-                    .loadAnimation(offset: 14)
+                Button(action: onOpenLevels) {
+                    levelCard
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint(NSLocalizedString("tracker_levels_title", comment: ""))
+                .loadAnimation(offset: 14)
 
                 summaryGrid
                     .loadAnimation(delay: 0.05)
@@ -62,6 +70,11 @@ struct TrackerAchievementsView: View {
                 )
             }
         }
+    }
+
+    /// The current level's colour, as on the Levels screen.
+    private var levelColor: Color {
+        TrackerLevel.color(forLevel: stats.level)
     }
 
     private var levelCard: some View {
@@ -97,21 +110,25 @@ struct TrackerAchievementsView: View {
 
                 ZStack {
                     Circle()
-                        .fill(Color.lightGreen.opacity(0.16))
+                        .fill(levelColor.opacity(0.22))
                         .frame(width: 64, height: 64)
                         .blur(radius: 12)
 
                     BadgeMedalView(
                         icon: "trophy.fill",
-                        colors: [Color.orange, Color.yellow],
+                        colors: [levelColor, levelColor.opacity(0.7)],
                         unlocked: true,
                         size: 62
                     )
                 }
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.textGray)
             }
 
             ProgressView(value: stats.progressToNextLevel)
-                .tint(.lightGreen)
+                .tint(levelColor)
 
             if let nextLevel = stats.nextLevelPoints {
                 Text(
@@ -134,7 +151,7 @@ struct TrackerAchievementsView: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.lightGreen.opacity(0.14),
+                            levelColor.opacity(0.14),
                             Color.backgroundGray
                         ],
                         startPoint: .topLeading,
@@ -144,8 +161,9 @@ struct TrackerAchievementsView: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(Color.lightGreen.opacity(0.16), lineWidth: 1)
+                .stroke(levelColor.opacity(0.2), lineWidth: 1)
         }
+        .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 
     private var summaryGrid: some View {
@@ -154,7 +172,7 @@ struct TrackerAchievementsView: View {
                 title: "tracker_stats_current_streak",
                 value: "\(stats.currentStreak)",
                 icon: "flame.fill",
-                color: .lightGreen
+                color: .orange
             )
             summaryCard(
                 title: "tracker_stats_longest_streak",

@@ -13,6 +13,8 @@ struct HomeView: View {
     let taskManager: TaskManager
     let reflectionModel: HomeReflectionModel
     var now: () -> Date = Date.init
+    /// False in split view, where the sidebar already shows the logo.
+    var showsLogo = true
 
     let onOpenFeature: (AppFeature) -> Void
     let onOpenExplore: () -> Void
@@ -24,17 +26,26 @@ struct HomeView: View {
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var today = Date()
+    @State private var containerWidth: CGFloat = 0
+
+    /// The widest the readable column gets on iPad and other wide screens.
+    static let columnWidth: CGFloat = 700
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 dateHeader
+                    .readableColumn()
+                    .padding(.bottom, 10)
                     .loadAnimation(offset: 12)
 
                 exploreShortcuts
+                    .readableColumn()
+                    .padding(.bottom, 10)
                     .loadAnimation(delay: 0.04, offset: 12)
 
                 trackerCard
+                    .readableColumn()
                     .loadAnimation(delay: 0.08, offset: 12)
 
                 quickAccess
@@ -43,10 +54,13 @@ struct HomeView: View {
                 bookmarksSection
                     .loadAnimation(delay: 0.16, offset: 12)
             }
-            .frame(maxWidth: 700)
-            .frame(maxWidth: .infinity)
             .padding(.top, 4)
             .padding(.bottom, 100)
+        }
+        .onGeometryChange(for: CGFloat.self) { geometry in
+            geometry.size.width
+        } action: { width in
+            containerWidth = width
         }
         .background {
             AppGradientBackground()
@@ -54,7 +68,9 @@ struct HomeView: View {
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            logo
+            if showsLogo {
+                logo
+            }
 
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: onOpenSettings) {
@@ -185,51 +201,85 @@ struct HomeView: View {
         let completed = taskManager.tasks.filter(\.isCompleted).count
         let stats = taskManager.stats
 
-        return HomeCard(
-            icon: "checklist.checked",
-            label: NSLocalizedString("tracker_today_tasks_title", comment: ""),
-            title: String(
-                format: NSLocalizedString("home_tracker_progress_format", comment: ""),
-                completed,
-                total
-            ),
-            action: onOpenTracker
-        ) {
-            VStack(alignment: .leading, spacing: 10) {
-                summaryText(
-                    fallback: HomeTrackerSummary.message(completed: completed, total: total)
-                )
+        return Button(action: onOpenTracker) {
+            HStack(spacing: 14) {
+                TrackerProgressRing(completed: completed, total: total)
 
-                HStack(spacing: 8) {
-                    statChip(
-                        icon: "flame.fill",
-                        text: String(
-                            format: NSLocalizedString("home_tracker_streak_format", comment: ""),
-                            stats.currentStreak
-                        ),
-                        color: .lightGreen
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(NSLocalizedString("tracker_today_tasks_title", comment: ""))
+                        .font(.system(size: 17, weight: .bold))
+                        .foregroundColor(.title)
+
+                    summaryText(
+                        fallback: HomeTrackerSummary.message(completed: completed, total: total)
                     )
 
-                    statChip(
-                        icon: "star.circle.fill",
-                        text: String(
-                            format: NSLocalizedString("home_tracker_level_format", comment: ""),
-                            stats.level
-                        ),
-                        color: .orange
-                    )
+                    HStack(spacing: 8) {
+                        (
+                            Text(Image(systemName: "flame.fill"))
+                                .foregroundColor(.orange)
+                            + Text(" ")
+                            + Text(
+                                String(
+                                    format: NSLocalizedString("home_tracker_streak_format", comment: ""),
+                                    stats.currentStreak
+                                )
+                            )
+                        )
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.textGray)
+                        .lineLimit(1)
 
-                    statChip(
-                        icon: "bolt.fill",
-                        text: String(
-                            format: NSLocalizedString("home_tracker_points_format", comment: ""),
-                            stats.totalPoints
-                        ),
-                        color: .yellow
-                    )
+                        levelPill(stats.level)
+                    }
                 }
+                // Takes exactly the room between the ring and the arrow, so
+                // wrapped text can't push the card wider than the screen.
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.textGray)
             }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color.backgroundGray)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(Color.lightGreen.opacity(0.08), lineWidth: 1)
+            }
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 16)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+    }
+
+    /// The level in a pill, in that level's colour from the Levels screen.
+    private func levelPill(_ level: Int) -> some View {
+        let color = TrackerLevel.color(forLevel: level)
+
+        return HStack(spacing: 3) {
+            Image(systemName: "star.circle.fill")
+                .font(.system(size: 10, weight: .semibold))
+
+            Text(
+                String(
+                    format: NSLocalizedString("home_tracker_level_format", comment: ""),
+                    level
+                )
+            )
+            .font(.system(size: 11, weight: .bold))
+            .lineLimit(1)
+        }
+        .foregroundColor(color)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 3)
+        .background(color.opacity(0.14), in: Capsule())
     }
 
     private var trackerSnapshot: TrackerSnapshot {
@@ -265,31 +315,13 @@ struct HomeView: View {
                     .transition(.opacity)
             }
         }
-        .font(.system(size: 14))
+        .font(.system(size: 13))
         .foregroundColor(.title)
         .fixedSize(horizontal: false, vertical: true)
         .animation(.easeInOut(duration: 0.25), value: reflectionModel.message)
         .task(id: trackerSnapshot) {
             await reflectionModel.generate(for: trackerSnapshot)
         }
-    }
-
-    private func statChip(icon: String, text: String, color: Color) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: icon)
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(color)
-
-            Text(text)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(.title)
-                .monospacedDigit()
-                .lineLimit(1)
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(Color.appBackground.opacity(0.8))
-        .clipShape(Capsule())
     }
 
     // MARK: Quick access
@@ -301,6 +333,7 @@ struct HomeView: View {
         if !surahs.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
                 sectionHeader(NSLocalizedString("surah_list_quick_access_title", comment: ""))
+                    .readableColumn()
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
@@ -313,8 +346,8 @@ struct HomeView: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 16)
                 }
+                .contentMargins(.horizontal, rowInset, for: .scrollContent)
                 .defaultScrollAnchor(.leading)
             }
         }
@@ -335,9 +368,11 @@ struct HomeView: View {
                 seeAllLabel: NSLocalizedString("home_see_all_bookmarks_accessibility", comment: ""),
                 onSeeAll: bookmarks.isEmpty ? nil : onOpenBookmarks
             )
+            .readableColumn()
 
             if bookmarks.isEmpty {
                 bookmarksEmptyState
+                    .readableColumn()
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .top, spacing: 10) {
@@ -362,8 +397,8 @@ struct HomeView: View {
                         }
                     }
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 16)
                 }
+                .contentMargins(.horizontal, rowInset, for: .scrollContent)
                 .defaultScrollAnchor(.leading)
             }
         }
@@ -436,6 +471,12 @@ struct HomeView: View {
         .accessibilityElement(children: .combine)
     }
 
+    /// Side space for the sideways rows, so they run to the screen edges
+    /// while their first card lines up with the readable column.
+    private var rowInset: CGFloat {
+        max(16, (containerWidth - Self.columnWidth) / 2 + 16)
+    }
+
     // MARK: Section header
 
     /// A section title with an optional "See all" button on the right.
@@ -464,6 +505,14 @@ struct HomeView: View {
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
+    }
+}
+
+private extension View {
+    /// Keeps a Home section to the readable column, centred on wide screens.
+    func readableColumn() -> some View {
+        frame(maxWidth: HomeView.columnWidth, alignment: .leading)
+            .frame(maxWidth: .infinity)
     }
 }
 
@@ -533,106 +582,45 @@ enum HomeDateFormatter {
     }
 }
 
-private struct HomeCard<Footer: View>: View {
-    let icon: String
-    let label: String
-    let title: String
-    var trailing: String? = nil
-    var isHighlighted = false
-    let action: () -> Void
-    @ViewBuilder var footer: Footer
+/// Today's progress as a ring with "done/total" in the middle.
+private struct TrackerProgressRing: View {
+    let completed: Int
+    let total: Int
+
+    private var progress: Double {
+        total > 0 ? Double(completed) / Double(total) : 0
+    }
 
     var body: some View {
-        Button(action: action) {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack(spacing: 12) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.lightGreen.opacity(0.12))
+        ZStack {
+            Circle()
+                .stroke(Color.lightGreen.opacity(0.16), lineWidth: 6)
 
-                        Image(systemName: icon)
-                            .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.lightGreen)
-                    }
-                    .frame(width: 42, height: 42)
+            Circle()
+                .trim(from: 0, to: CGFloat(min(progress, 1)))
+                .stroke(
+                    Color.lightGreen,
+                    style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                )
+                .rotationEffect(.degrees(-90))
+                .animation(.easeOut(duration: 0.4), value: progress)
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(label)
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.textGray)
-
-                        Text(title)
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundColor(.title)
-                            .monospacedDigit()
-                    }
-
-                    Spacer(minLength: 8)
-
-                    if let trailing {
-                        Text(trailing)
-                            .font(.system(size: 14, weight: .bold))
-                            .monospacedDigit()
-                            .foregroundColor(.lightGreen)
-                    }
-
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.textGray)
-                }
-
-                footer
-            }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(
-                        isHighlighted
-                            ? AnyShapeStyle(
-                                LinearGradient(
-                                    colors: [
-                                        Color.lightGreen.opacity(0.14),
-                                        Color.backgroundGray
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            : AnyShapeStyle(Color.backgroundGray)
-                    )
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(Color.lightGreen.opacity(isHighlighted ? 0.16 : 0.08), lineWidth: 1)
-            }
-            .contentShape(Rectangle())
+            Text("\(completed)/\(total)")
+                .font(.system(size: 12, weight: .bold))
+                .monospacedDigit()
+                .foregroundColor(.title)
+                .minimumScaleFactor(0.6)
+                .lineLimit(1)
+                .padding(9)
         }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
-    }
-}
-
-extension HomeCard where Footer == EmptyView {
-    init(
-        icon: String,
-        label: String,
-        title: String,
-        trailing: String? = nil,
-        isHighlighted: Bool = false,
-        action: @escaping () -> Void
-    ) {
-        self.init(
-            icon: icon,
-            label: label,
-            title: title,
-            trailing: trailing,
-            isHighlighted: isHighlighted,
-            action: action
-        ) {
-            EmptyView()
-        }
+        .frame(width: 58, height: 58)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            String(
+                format: NSLocalizedString("home_tracker_progress_format", comment: ""),
+                completed,
+                total
+            )
+        )
     }
 }

@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-/// The soft green full-screen gradient behind Home, Explore and Tasbih.
+/// The soft green full-screen gradient behind Home and Tasbih.
 struct AppGradientBackground: View {
     var body: some View {
         ZStack {

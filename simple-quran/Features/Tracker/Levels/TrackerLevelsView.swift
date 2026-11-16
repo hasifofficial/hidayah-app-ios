@@ -46,6 +46,10 @@ struct TrackerLevelsView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    private var currentColor: Color {
+        TrackerLevel.color(forLevel: stats.level)
+    }
+
     private var summaryCard: some View {
         VStack(spacing: 12) {
             HStack {
@@ -79,12 +83,12 @@ struct TrackerLevelsView: View {
 
                 ZStack {
                     Circle()
-                        .stroke(Color.lightGreen.opacity(0.16), lineWidth: 7)
+                        .stroke(currentColor.opacity(0.18), lineWidth: 7)
 
                     Circle()
                         .trim(from: 0, to: CGFloat(stats.progressToNextLevel))
                         .stroke(
-                            Color.lightGreen,
+                            currentColor,
                             style: StrokeStyle(
                                 lineWidth: 7,
                                 lineCap: .round,
@@ -121,7 +125,7 @@ struct TrackerLevelsView: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.lightGreen.opacity(0.14),
+                            currentColor.opacity(0.16),
                             Color.backgroundGray
                         ],
                         startPoint: .topLeading,
@@ -131,7 +135,7 @@ struct TrackerLevelsView: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(Color.lightGreen.opacity(0.16), lineWidth: 1)
+                .stroke(currentColor.opacity(0.2), lineWidth: 1)
         }
     }
 
@@ -139,11 +143,11 @@ struct TrackerLevelsView: View {
         HStack(alignment: .top, spacing: 12) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(Color.lightGreen.opacity(0.12))
+                    .fill(Color.yellow.opacity(0.16))
 
                 Image(systemName: "bolt.fill")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.lightGreen)
+                    .foregroundColor(.yellow)
             }
             .frame(width: 36, height: 36)
 
@@ -193,16 +197,13 @@ struct TrackerLevelsView: View {
     private func levelRow(_ level: TrackerLevel, isLast: Bool) -> some View {
         let isUnlocked = stats.level >= level.number
         let isCurrent = stats.level == level.number
+        let color = level.color
 
         return HStack(alignment: .top, spacing: 12) {
             VStack(spacing: 0) {
                 ZStack {
                     Circle()
-                        .fill(
-                            isUnlocked
-                                ? Color.lightGreen
-                                : Color.textGray.opacity(0.18)
-                        )
+                        .fill(isUnlocked ? color : color.opacity(0.16))
 
                     if isUnlocked {
                         Text("\(level.number)")
@@ -211,14 +212,14 @@ struct TrackerLevelsView: View {
                     } else {
                         Image(systemName: "lock.fill")
                             .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(.textGray)
+                            .foregroundColor(color)
                     }
                 }
                 .frame(width: 32, height: 32)
                 .overlay {
                     if isCurrent {
                         Circle()
-                            .stroke(Color.lightGreen.opacity(0.3), lineWidth: 5)
+                            .stroke(color.opacity(0.3), lineWidth: 5)
                             .scaleEffect(1.18)
                     }
                 }
@@ -227,8 +228,8 @@ struct TrackerLevelsView: View {
                     Rectangle()
                         .fill(
                             isUnlocked
-                                ? Color.lightGreen.opacity(0.28)
-                                : Color.textGray.opacity(0.12)
+                                ? color.opacity(0.35)
+                                : color.opacity(0.12)
                         )
                         .frame(width: 2)
                         .frame(maxHeight: .infinity)
@@ -253,10 +254,10 @@ struct TrackerLevelsView: View {
                             )
                         )
                         .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.lightGreen)
+                        .foregroundColor(color)
                         .padding(.horizontal, 7)
                         .padding(.vertical, 3)
-                        .background(Color.lightGreen.opacity(0.12))
+                        .background(color.opacity(0.14))
                         .clipShape(Capsule())
                     }
 
@@ -265,7 +266,7 @@ struct TrackerLevelsView: View {
                     if isUnlocked && !isCurrent {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 14))
-                            .foregroundColor(.lightGreen)
+                            .foregroundColor(color)
                     }
                 }
 
@@ -281,7 +282,7 @@ struct TrackerLevelsView: View {
                         )
                     )
                     .font(.system(size: 11))
-                    .foregroundColor(.lightGreen)
+                    .foregroundColor(color)
                 } else if !isUnlocked {
                     Text(level.unlockText)
                         .font(.system(size: 11))
@@ -290,13 +291,22 @@ struct TrackerLevelsView: View {
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.backgroundGray)
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                color.opacity(isUnlocked ? 0.14 : 0.06),
+                                Color.backgroundGray
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+            }
             .overlay {
-                if isCurrent {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Color.lightGreen.opacity(0.25), lineWidth: 1)
-                }
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(color.opacity(isCurrent ? 0.45 : 0.12), lineWidth: 1)
             }
             .opacity(isUnlocked ? 1 : 0.55)
         }
