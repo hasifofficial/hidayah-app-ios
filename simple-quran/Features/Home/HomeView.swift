@@ -5,8 +5,8 @@
 
 import SwiftUI
 
-/// The first tab: today's date, tracker progress, bookmarks and the quick
-/// access surahs at a glance.
+/// The first tab: today's date, the Today section with tracker progress,
+/// bookmarks and the quick access surahs at a glance.
 struct HomeView: View {
     let quranViewModel: SurahListViewModel
     let bookmarkViewModel: BookmarkListViewModel
@@ -50,8 +50,7 @@ struct HomeView: View {
                     .padding(.bottom, 10)
                     .loadAnimation(delay: 0.04, offset: 12)
 
-                trackerCard
-                    .readableColumn()
+                todaySection
                     .loadAnimation(delay: 0.08, offset: 12)
 
                 quickAccess
@@ -155,7 +154,16 @@ struct HomeView: View {
         .padding(.horizontal, 16)
     }
 
-    // MARK: Cards
+    // MARK: Today
+
+    private var todaySection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionHeader(NSLocalizedString("home_today_title", comment: ""))
+
+            trackerCard
+        }
+        .readableColumn()
+    }
 
     private var trackerCard: some View {
         let total = taskManager.tasks.count
@@ -167,7 +175,7 @@ struct HomeView: View {
                 TrackerProgressRing(completed: completed, total: total)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(NSLocalizedString("tracker_today_tasks_title", comment: ""))
+                    Text(NSLocalizedString("tracker_list_header_title", comment: ""))
                         .font(.system(size: 17, weight: .bold))
                         .foregroundColor(.title)
 

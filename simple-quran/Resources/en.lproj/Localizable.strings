@@ -367,6 +367,8 @@
 "home_tracker_streak_format" = "%d-day streak";
 "home_tracker_level_format" = "Level %d";
 
+"home_today_title" = "Today";
+
 "home_explore_all" = "All";
 "home_shortcuts_preview_title" = "Preview";
 "home_shortcuts_selected_title" = "On Home";
