@@ -67,7 +67,7 @@ struct TrackerSummaryCardView: View {
                     icon: "flame.fill",
                     value: "\(stats.currentStreak)",
                     label: "tracker_streak_label",
-                    color: .lightGreen
+                    color: .orange
                 )
 
                 Button(action: onSelectLevel) {
@@ -75,7 +75,8 @@ struct TrackerSummaryCardView: View {
                         icon: "star.circle.fill",
                         value: "\(stats.level)",
                         label: "tracker_level_label",
-                        color: .orange
+                        // The current level's colour, as on the Levels screen.
+                        color: TrackerLevel.color(forLevel: stats.level)
                     )
                 }
                 .buttonStyle(.plain)

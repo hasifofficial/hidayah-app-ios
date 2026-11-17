@@ -97,10 +97,7 @@ struct SurahListView: View {
     }
 
     private var quickSurahs: [SurahListResponse] {
-        let numbers = [18, 32, 36, 56, 67]
-        return numbers.compactMap { number in
-            viewModel.surahs.first { $0.number == number }
-        }
+        viewModel.surahs.quickAccessSurahs
     }
 
     private var quickAccess: some View {
@@ -125,7 +122,7 @@ struct SurahListView: View {
                         Button {
                             onSelect?(surah)
                         } label: {
-                            quickAccessCard(surah)
+                            QuickAccessSurahCard(surah: surah)
                         }
                         .buttonStyle(.plain)
                     }
@@ -134,69 +131,6 @@ struct SurahListView: View {
             }
             .defaultScrollAnchor(.leading)
         }
-    }
-
-    private func quickAccessCard(_ surah: SurahListResponse) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                ZStack {
-                    Circle()
-                        .fill(Color.lightGreen.opacity(0.14))
-
-                    Text("\(surah.number ?? 0)")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.lightGreen)
-                }
-                .frame(width: 28, height: 28)
-
-                Spacer()
-
-                Image(systemName: "book.fill")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.lightGreen.opacity(0.75))
-            }
-
-            Text(surah.englishName ?? "")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(.title)
-                .lineLimit(1)
-
-            if let ligature = surah.number.flatMap(Font.surahNameLigature(for:)) {
-                Text(ligature)
-                    .font(.surahNameFont(size: 44))
-                    .foregroundColor(.lightGreen)
-                    .lineLimit(1)
-            } else {
-                Text(surah.name ?? "")
-                    .font(.kitabBold(size: 20))
-                    .foregroundColor(.lightGreen)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.85)
-            }
-        }
-        .frame(width: 142, alignment: .leading)
-        .padding(12)
-        .background {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.lightGreen.opacity(0.14),
-                            Color.backgroundGray
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(Color.lightGreen.opacity(0.14), lineWidth: 1)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(
-            "\(surah.englishName ?? ""), \(surah.name ?? "")"
-        )
     }
 
     private var listHeader: some View {

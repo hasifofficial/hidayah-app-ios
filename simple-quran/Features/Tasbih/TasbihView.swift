@@ -209,27 +209,7 @@ struct TasbihView: View {
     }
 
     private var background: some View {
-        ZStack {
-            Color.appBackground
-
-            LinearGradient(
-                colors: [
-                    Color.lightGreen.opacity(0.18),
-                    Color.lightGreen.opacity(0.06),
-                    Color.appBackground,
-                    Color.backgroundGray.opacity(0.7)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-
-            Circle()
-                .fill(Color.lightGreen.opacity(0.13))
-                .frame(width: 320, height: 320)
-                .blur(radius: 45)
-                .offset(y: -120)
-        }
-        .ignoresSafeArea()
+        AppGradientBackground()
     }
 
     private var dhikr: some View {

@@ -194,7 +194,7 @@ struct TrackerCalendarView: View {
                     value: "\(perfectDayCount)",
                     label: "tracker_calendar_perfect_days",
                     icon: "star.circle.fill",
-                    color: .orange
+                    color: .yellow
                 )
                 metricTile(
                     value: "\(completedTaskCount)",

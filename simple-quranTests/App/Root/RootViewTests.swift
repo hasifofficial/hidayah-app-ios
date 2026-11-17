@@ -61,6 +61,7 @@ final class RootViewTests: ViewsTestCase {
             surahService: makeStubbedSurahService(),
             taskManager: taskManager,
             router: router,
+            reflectionGenerator: UnavailableReflectionGenerator(),
             whatsNewRelease: whatsNew
         )
     }
@@ -110,23 +111,194 @@ final class RootViewTests: ViewsTestCase {
 
     // MARK: Compact tabs
 
-
-
-    func test_rootView_should_showQuranTabWithTabBar() {
+    func test_rootView_should_showHomeTabWithTabBar() {
         // Arrange
-        let tabs = ["Mathurat", "Tasbih", "Tracker", "Search"]
+        let tabs = ["Home", "Reading", "Tracker", "Search"]
 
         // Act
         let (host, _) = makeHost()
-        host.pump(until: { host.contains("All Surahs") })
+        host.pump(until: { host.contains("Al-Kahf") })
 
         // Assert
-        XCTAssertEqual(router.selectedTab, .quran)
-        XCTAssertTrue(host.contains("All Surahs"))
-        XCTAssertTrue(host.contains("Al-Kahf"))
+        XCTAssertEqual(router.selectedTab, .home)
+        XCTAssertTrue(host.contains("Assalamualaikum"))
+        XCTAssertTrue(host.contains("Hidayah"))
+        XCTAssertTrue(host.contains("tasks are waiting for you today"))
+        XCTAssertTrue(host.contains("Today’s Tasks"))
+        XCTAssertTrue(host.contains("No saved ayahs yet"))
         for tab in tabs {
             XCTAssertTrue(host.labels().contains { $0.hasPrefix(tab) }, "Missing tab \(tab)")
         }
+    }
+
+    func test_rootView_should_openBookmarkListFromHomeSeeAll() {
+        // Arrange
+        addSharedBookmark(SurahBookmark(surahNumber: 2, numberInSurah: 255))
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Verse 255") })
+
+        // Act
+        host.tap("See all bookmarks")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(router.homePath, [.bookmarkList])
+    }
+
+    func test_rootView_should_hideSeeMore_when_fiveOrFewerBookmarks() {
+        // Arrange
+        for ayah in 1...5 {
+            addSharedBookmark(SurahBookmark(surahNumber: 18, numberInSurah: ayah))
+        }
+
+        // Act
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Verse 5") })
+
+        // Assert
+        XCTAssertFalse(host.contains("See more bookmarks"))
+        XCTAssertTrue(host.contains("See all bookmarks"))
+    }
+
+    func test_rootView_should_openBookmarkListFromSeeMore() {
+        // Arrange
+        for ayah in 1...6 {
+            addSharedBookmark(SurahBookmark(surahNumber: 18, numberInSurah: ayah))
+        }
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("See more bookmarks") })
+
+        // Act
+        host.tap("See more bookmarks")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(router.homePath, [.bookmarkList])
+    }
+
+    func test_rootView_should_pushBookmarkedAyahFromHomeCard() {
+        // Arrange
+        addSharedBookmark(SurahBookmark(surahNumber: 2, numberInSurah: 255))
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Verse 255") })
+
+        // Act
+        host.tap("Al-Baqara, Verse 255")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(
+            router.homePath,
+            [.surahDetail(surahNumber: 2, title: "Al-Baqara", bookmarkedAyah: 255)]
+        )
+    }
+
+    func test_rootView_should_showAtMostFiveBookmarksOnHome() {
+        // Arrange
+        for ayah in 1...6 {
+            addSharedBookmark(SurahBookmark(surahNumber: 18, numberInSurah: ayah))
+        }
+
+        // Act
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Verse 1") })
+
+        // Assert
+        XCTAssertTrue(host.contains("Verse 5"))
+        XCTAssertFalse(host.contains("Verse 6"))
+        XCTAssertTrue(host.contains("See more bookmarks"))
+    }
+
+    func test_rootView_should_hideSeeAll_when_noBookmarks() {
+        // Arrange
+        let (host, _) = makeHost()
+
+        // Act
+        host.pump(until: { host.contains("No saved ayahs yet") })
+
+        // Assert
+        XCTAssertFalse(host.contains("See all bookmarks"))
+    }
+
+    func test_rootView_should_pushQuickAccessSurahOnHomeStack() {
+        // Arrange
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Al-Kahf") })
+
+        // Act
+        host.tap("Al-Kahf")
+        host.pump(until: { host.contains("Arabic 1") })
+
+        // Assert
+        XCTAssertEqual(
+            router.homePath,
+            [.surahDetail(surahNumber: 18, title: "Al-Kahf", bookmarkedAyah: nil)]
+        )
+    }
+
+    func test_rootView_should_openExploreAndFeatureFromHome() {
+        // Arrange
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("All features") })
+
+        // Act
+        host.tap("All features")
+        host.pump(until: { host.contains("The Holy Quran") })
+        let afterExplore = router.homePath
+        host.tap("The Holy Quran")
+        host.pump(until: { host.contains("All Surahs") })
+
+        // Assert
+        XCTAssertEqual(afterExplore, [.explore])
+        XCTAssertEqual(router.homePath, [.explore, .quranList])
+        XCTAssertTrue(host.contains("Istiqamah Tracker"))
+    }
+
+    func test_rootView_should_pushTasbihFromHomeShortcut() {
+        // Arrange
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("All features") })
+
+        // Act
+        host.tap("Tasbih")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(router.selectedTab, .home)
+        XCTAssertEqual(router.homePath, [.tasbih])
+    }
+
+    func test_rootView_should_openTrackerTabFromHome() {
+        // Arrange
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Today’s Tasks") })
+
+        // Act
+        host.tap("Today’s Tasks")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(router.selectedTab, .tracker)
+    }
+
+    func test_rootView_should_openQuranAndMathuratFromReading() {
+        // Arrange
+        router.selectTab(.reading)
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("The Holy Quran") })
+
+        // Act
+        host.tap("The Holy Quran")
+        host.pump(until: { host.contains("All Surahs") })
+        let afterQuran = router.readingPath
+        router.readingPath = []
+        host.pump(0.4)
+        host.tap("Morning and evening")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(afterQuran, [.quranList])
+        XCTAssertEqual(router.readingPath, [.mathurat])
     }
 
     func test_rootView_should_selectTabFromTabBar() {
@@ -136,15 +308,17 @@ final class RootViewTests: ViewsTestCase {
         // Act
         host.selectTabBarItem("Search")
         let afterSearch = router.selectedTab
-        host.selectTabBarItem("Tasbih")
+        host.selectTabBarItem("Tracker")
 
         // Assert
         XCTAssertEqual(afterSearch, .search)
-        XCTAssertEqual(router.selectedTab, .tasbih)
+        XCTAssertEqual(router.selectedTab, .tracker)
     }
 
     func test_rootView_should_pushSurahDetailWhenSurahTapped() {
         // Arrange
+        router.selectTab(.reading)
+        router.readingPath = [.quranList]
         let (host, _) = makeHost()
         host.pump(until: { host.contains("Al-Kahf") })
 
@@ -154,8 +328,8 @@ final class RootViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertEqual(
-            router.quranPath,
-            [.surahDetail(surahNumber: 18, title: "Al-Kahf", bookmarkedAyah: nil)]
+            router.readingPath,
+            [.quranList, .surahDetail(surahNumber: 18, title: "Al-Kahf", bookmarkedAyah: nil)]
         )
         XCTAssertTrue(host.contains("Arabic 1"))
     }
@@ -163,6 +337,8 @@ final class RootViewTests: ViewsTestCase {
     func test_rootView_should_openBookmarksAndPushBookmarkedAyah() {
         // Arrange
         addSharedBookmark(SurahBookmark(surahNumber: 2, numberInSurah: 255))
+        router.selectTab(.reading)
+        router.readingPath = [.quranList]
         let (host, _) = makeHost()
         host.pump(until: { host.contains("All Surahs") })
 
@@ -174,8 +350,9 @@ final class RootViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertEqual(
-            router.quranPath,
+            router.readingPath,
             [
+                .quranList,
                 .bookmarkList,
                 .surahDetail(surahNumber: 2, title: "Al-Baqara", bookmarkedAyah: 255)
             ]
@@ -201,7 +378,8 @@ final class RootViewTests: ViewsTestCase {
 
     func test_rootView_should_openSettingsFromBookmarkList() {
         // Arrange
-        router.quranPath = [.bookmarkList]
+        router.selectTab(.reading)
+        router.readingPath = [.bookmarkList]
         let (host, _) = makeHost()
 
         // Act
@@ -213,6 +391,9 @@ final class RootViewTests: ViewsTestCase {
     }
 
     private let destinationChecks: [(AppRoute, String)] = [
+        (.explore, "Build your daily Istiqamah routine."),
+        (.tasbih, "Tap anywhere to count"),
+        (.quranList, "All Surahs"),
         (.surahDetail(surahNumber: 18, title: "Al-Kahf", bookmarkedAyah: nil), "Arabic 1"),
         (.bookmarkList, "You have no bookmarks"),
         (.trackerCalendar, "Tracker Calendar"),
@@ -221,18 +402,19 @@ final class RootViewTests: ViewsTestCase {
         (.trackerDay(dayKey: "2026-11-03"), "Daily Progress")
     ]
 
-    func test_rootView_should_renderEveryQuranDestination() {
+    func test_rootView_should_renderEveryReadingDestination() {
         // Arrange
+        router.selectTab(.reading)
         let (host, _) = makeHost()
         var missing: [String] = []
 
         for (route, text) in destinationChecks {
             // Act
-            router.quranPath = [route]
+            router.readingPath = [route]
             if !host.pump(until: { host.contains(text) }) {
                 missing.append(text)
             }
-            router.quranPath = []
+            router.readingPath = []
             host.pump(0.4)
         }
 
@@ -291,6 +473,21 @@ final class RootViewTests: ViewsTestCase {
         XCTAssertEqual(afterAchievements, [.trackerAchievements])
     }
 
+    func test_rootView_should_pushLevelsFromAchievementsLevelCard() {
+        // Arrange
+        router.selectTab(.tracker)
+        router.trackerPath = [.trackerAchievements]
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Current streak") })
+
+        // Act
+        host.tap("pts")
+        host.pump(0.4)
+
+        // Assert
+        XCTAssertEqual(router.trackerPath, [.trackerAchievements, .trackerLevels])
+    }
+
     func test_rootView_should_pushLevelsFromTrackerSummary() {
         // Arrange
         router.selectTab(.tracker)
@@ -326,8 +523,9 @@ final class RootViewTests: ViewsTestCase {
 
     func test_rootView_should_pushDayDetailFromCalendarOnQuranStack() {
         // Arrange
+        router.selectTab(.reading)
         let (host, _) = makeHost()
-        router.quranPath = [.trackerCalendar]
+        router.readingPath = [.trackerCalendar]
         host.pump(until: { host.contains("1 November 2026") })
 
         // Act
@@ -375,7 +573,8 @@ final class RootViewTests: ViewsTestCase {
         host.pump(0.5)
 
         // Assert
-        XCTAssertEqual(router.selectedTab, .mathurat)
+        XCTAssertEqual(router.selectedTab, .reading)
+        XCTAssertEqual(router.readingPath, [.mathurat])
         XCTAssertTrue(router.searchPath.isEmpty)
     }
 
@@ -421,14 +620,14 @@ final class RootViewTests: ViewsTestCase {
     }
 
     func test_rootView_should_reportListErrorsThroughRouter() {
-        for tab in [AppTab.quran, .search] {
+        for tab in [AppTab.reading, .search] {
             // Arrange
             SurahCatalog.shared.store([])
             ViewsFixtures.route(list: nil)
             router = AppRouter()
             router.selectTab(tab)
-            if tab == .quran {
-                router.quranPath = [.bookmarkList]
+            if tab == .reading {
+                router.readingPath = [.bookmarkList]
             }
 
             // Act
@@ -568,14 +767,33 @@ final class RootViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertTrue(host.contains("Hidayah"))
-        for tab in ["Quran", "Mathurat", "Tasbih", "Tracker", "Search"] {
+        for tab in ["Home", "Reading", "Tracker", "Search"] {
             XCTAssertTrue(host.contains(tab), "Missing sidebar item \(tab)")
         }
     }
 
+    func test_rootView_should_hideHomeLogo_when_splitView() {
+        // Arrange
+        let size = CGSize(width: 1024, height: 1366)
+        let (host, _) = makeHost(sizeClass: .regular, size: size)
+        host.pump(until: { host.contains("Assalamualaikum") })
+        let logosOnHome = host.labels().filter { $0 == "Hidayah" }.count
+
+        // Act
+        host.selectListRow("Search")
+        host.pump(0.5)
+        let logosOnSearch = host.labels().filter { $0 == "Hidayah" }.count
+
+        // Assert
+        // Search has only the sidebar logo, so Home must have no extra one.
+        XCTAssertGreaterThan(logosOnSearch, 0)
+        XCTAssertEqual(logosOnHome, logosOnSearch)
+    }
+
     func test_rootView_should_switchDetailFromSidebar() {
         // Arrange
-        router.quranPath = [.bookmarkList]
+        router.selectTab(.reading)
+        router.readingPath = [.bookmarkList]
         let (host, _) = makeHost(
             sizeClass: .regular,
             size: CGSize(width: 1024, height: 1366)
@@ -584,19 +802,21 @@ final class RootViewTests: ViewsTestCase {
         // Act
         host.selectListRow("Tracker")
         let afterTracker = router.selectedTab
-        host.selectListRow("Tasbih")
-        let afterTasbih = router.selectedTab
+        host.selectListRow("Home")
+        let afterHome = router.selectedTab
         host.selectListRow("Search")
 
         // Assert
         XCTAssertEqual(afterTracker, .tracker)
-        XCTAssertEqual(afterTasbih, .tasbih)
+        XCTAssertEqual(afterHome, .home)
         XCTAssertEqual(router.selectedTab, .search)
-        XCTAssertEqual(router.savedQuranPath, [.bookmarkList])
+        XCTAssertEqual(router.savedReadingPath, [.bookmarkList])
     }
 
     func test_rootView_should_switchLayoutWhenSizeClassChanges() {
         // Arrange
+        // Home shows the logo in compact width too, so start on a tab that doesn't.
+        router.selectTab(.reading)
         let (host, model) = makeHost(size: CGSize(width: 1024, height: 1366))
         let compactHasSidebarLogo = host.contains("Hidayah")
 
@@ -604,7 +824,7 @@ final class RootViewTests: ViewsTestCase {
         model.sizeClass = .regular
         host.pump(0.6)
         let regularHasSidebarLogo = host.contains("Hidayah")
-        router.quranPath = [.bookmarkList]
+        router.readingPath = [.bookmarkList]
         host.pump(0.4)
 
         // Assert
@@ -640,13 +860,9 @@ final class RootViewTests: ViewsTestCase {
         let selectedIcons = tabs.map(\.selectedIcon)
 
         // Assert
-        XCTAssertEqual(titles, ["Quran", "Mathurat", "Tasbih", "Tracker", "Search"])
-        XCTAssertEqual(icons, ["book", "sun.horizon", "circle.grid.3x3", "checklist.unchecked", "magnifyingglass"])
-        XCTAssertEqual(selectedIcons, ["book.fill", "sun.horizon.fill", "circle.grid.3x3.fill", "checklist.checked", "magnifyingglass"])
-        XCTAssertEqual(tabs.map(\.id), [0, 1, 2, 3, 4])
-        XCTAssertNil(AppTab.mathurat.assetIcon)
-        XCTAssertEqual(AppTab.tasbih.assetIcon, "TasbihIcon")
-        XCTAssertEqual(AppTab.tasbih.selectedAssetIcon, "TasbihIconFill")
-        XCTAssertNil(AppTab.quran.assetIcon)
+        XCTAssertEqual(titles, ["Home", "Reading", "Tracker", "Search"])
+        XCTAssertEqual(icons, ["house", "book", "checklist.unchecked", "magnifyingglass"])
+        XCTAssertEqual(selectedIcons, ["house.fill", "book.fill", "checklist.checked", "magnifyingglass"])
+        XCTAssertEqual(tabs.map(\.id), [0, 1, 2, 3])
     }
 }

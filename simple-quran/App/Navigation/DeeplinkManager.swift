@@ -88,24 +88,22 @@ class DeeplinkManager: NSObject {
 
         switch deepLink {
         case .quran:
-            router.selectTab(.quran)
+            router.openReading([.quranList])
         case .bookmark:
-            router.selectTab(.quran)
-            router.quranPath = [.bookmarkList]
+            router.openReading([.quranList, .bookmarkList])
         case .tracker:
             router.selectTab(.tracker)
         case .mathurat(let order):
-            router.selectTab(.mathurat)
-            router.mathuratFocusOrder = order
+            router.openMathurat(focusOrder: order)
         case .quranDetail(let surahNumber, let selectedAyahNumber):
-            router.selectTab(.quran)
-            router.quranPath = [
+            router.openReading([
+                .quranList,
                 .surahDetail(
                     surahNumber: surahNumber,
                     title: nil,
                     bookmarkedAyah: selectedAyahNumber
                 )
-            ]
+            ])
         }
 
         #if DEBUG
