@@ -85,6 +85,7 @@ struct RootView: View {
     @State private var reflectionModel: HomeReflectionModel
     /// Shared so the count survives leaving and reopening Tasbih.
     @State private var tasbihViewModel = TasbihViewModel()
+    @State private var qiblaViewModel: QiblaViewModel
 
     /// The release whose What's New screen shows on launch until seen;
     /// nil never shows it.
@@ -96,9 +97,13 @@ struct RootView: View {
         router: AppRouter,
         mathuratLoader: MathuratLoading = BundleMathuratLoader(),
         reflectionGenerator: any TrackerReflectionGenerating = TrackerReflection.makeDefault(),
-        whatsNewRelease: WhatsNewRelease? = .current
+        whatsNewRelease: WhatsNewRelease? = .current,
+        qiblaSensor: QiblaSensing? = nil
     ) {
         self.surahService = surahService
+        _qiblaViewModel = State(
+            initialValue: QiblaViewModel(sensor: qiblaSensor ?? CoreLocationQiblaSensor())
+        )
         self.taskManager = taskManager
         self.router = router
         self.whatsNewRelease = whatsNewRelease
@@ -567,6 +572,8 @@ struct RootView: View {
             mathuratDestination
         case .tasbih:
             tasbihDestination
+        case .qibla:
+            QiblaView(viewModel: qiblaViewModel)
         case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
             SurahDetailScreen(
                 surahService: surahService,

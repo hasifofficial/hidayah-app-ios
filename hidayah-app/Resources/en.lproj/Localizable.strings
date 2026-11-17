@@ -1,6 +1,6 @@
 /* 
   Localizable.strings
-  simple-quran
+  hidayah-app
 
   Created by Mohammad Hasif Afiq on 3/24/21.
   
@@ -383,6 +383,7 @@
 "explore_quran_subtitle" = "The Holy Quran";
 "explore_mathurat_subtitle" = "Morning and evening dhikr and wird.";
 "explore_tasbih_subtitle" = "Count your dhikr with a digital tasbih.";
+"explore_qibla_subtitle" = "Find the direction of the Kaaba wherever you are.";
 "explore_tracker_subtitle" = "Build your daily Istiqamah routine.";
 
 "reading_tab_title" = "Reading";
@@ -426,3 +427,22 @@
 "whats_new_widgets_title" = "Widgets for Your Home Screen";
 "whats_new_widgets_body" = "Keep your Istiqamah Tracker progress and favourite surahs one tap away.";
 "setting_whats_new_title" = "What’s New";
+
+"qibla_header_title" = "Qibla";
+"qibla_distance_format" = "%@ to Makkah";
+"qibla_bearing_format" = "Qibla is %d° from true north";
+"qibla_guidance_left" = "to your left";
+"qibla_guidance_right" = "to your right";
+"qibla_guidance_aligned" = "the Qibla";
+"qibla_aligned_title" = "Facing";
+"qibla_calibration_hint" = "Move your iPhone in a figure 8 to calibrate";
+"qibla_locating_title" = "Finding Qibla";
+"qibla_locating_message" = "Hold your iPhone flat in front of you.";
+"qibla_permission_title" = "Find the Qibla";
+"qibla_permission_message" = "Allow location access so Hidayah can work out the direction of the Kaaba from where you are.";
+"qibla_permission_action" = "Allow Location";
+"qibla_denied_title" = "Location Is Off";
+"qibla_denied_message" = "Turn on location access for Hidayah in Settings to use the Qibla compass.";
+"qibla_denied_action" = "Open Settings";
+"qibla_unavailable_title" = "No Compass";
+"qibla_unavailable_message" = "This device doesn’t have a compass, so the Qibla direction can’t be shown.";

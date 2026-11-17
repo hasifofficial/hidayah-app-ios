@@ -17,6 +17,13 @@ enum AppHaptics {
         impact.impactOccurred(intensity: 0.8)
     }
 
+    /// A firm tap whose strength follows `intensity` (0...1).
+    static func impact(intensity: Double) {
+        let generator = UIImpactFeedbackGenerator(style: .rigid)
+        generator.prepare()
+        generator.impactOccurred(intensity: CGFloat(min(max(intensity, 0), 1)))
+    }
+
     static func selection() {
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()

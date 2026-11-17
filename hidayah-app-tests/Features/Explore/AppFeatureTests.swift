@@ -10,7 +10,7 @@ import XCTest
 final class AppFeatureTests: XCTestCase {
     func test_allCases_should_listMainFeaturesInOrder() {
         // Arrange
-        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .tracker]
+        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .qibla, .tracker]
 
         // Act
         let features = AppFeature.allCases
@@ -71,5 +71,18 @@ final class AppFeatureTests: XCTestCase {
         // Assert
         XCTAssertEqual(router.selectedTab, .tracker)
         XCTAssertEqual(router.savedHomePath, [.explore])
+    }
+
+    func test_open_should_pushQibla() {
+        // Arrange
+        let router = AppRouter()
+        router.homePath = [.explore]
+
+        // Act
+        router.open(.qibla)
+
+        // Assert
+        XCTAssertEqual(router.homePath, [.explore, .qibla])
+        XCTAssertEqual(AppFeature.qibla.title, "Qibla")
     }
 }

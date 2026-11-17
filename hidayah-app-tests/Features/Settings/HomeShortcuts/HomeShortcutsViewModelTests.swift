@@ -29,7 +29,7 @@ final class HomeShortcutsViewModelTests: XCTestCase {
 
         // Assert
         XCTAssertEqual(vm.selected, [.quran, .mathurat, .tasbih])
-        XCTAssertEqual(vm.available, [.tracker])
+        XCTAssertEqual(vm.available, [.qibla, .tracker])
         XCTAssertFalse(vm.canAdd)
         XCTAssertTrue(vm.isDefault)
     }
