@@ -12,6 +12,7 @@ struct SettingsView: View {
     let viewModel: SettingsViewModel
     var onOpenTrackerSettings: (() -> Void)? = nil
     var onOpenWidgetGuide: (() -> Void)? = nil
+    var onOpenHomeShortcuts: (() -> Void)? = nil
 
     @State private var activeSelection: SettingsSelection?
     @State private var safariURL: URL?
@@ -28,10 +29,27 @@ struct SettingsView: View {
         List {
             SettingsSectionHeader(
                 title: NSLocalizedString(
-                    "setting_quran_section_title",
+                    "setting_home_section_title",
                     comment: ""
                 ),
                 topPadding: 16
+            )
+
+            SettingsActionRow(
+                icon: "house",
+                title: NSLocalizedString(
+                    "setting_home_shortcuts_title",
+                    comment: ""
+                )
+            ) {
+                onOpenHomeShortcuts?()
+            }
+
+            SettingsSectionHeader(
+                title: NSLocalizedString(
+                    "setting_quran_section_title",
+                    comment: ""
+                )
             )
 
             SettingsActionRow(

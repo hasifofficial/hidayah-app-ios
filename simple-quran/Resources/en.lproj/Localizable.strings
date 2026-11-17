@@ -49,6 +49,8 @@
 "surah_scroll_to_ayah_out_of_range_error" = "Invalid verse number %@. This surah only has %@ verses";
 
 "setting_header_title" = "Settings";
+"setting_home_section_title" = "Home";
+"setting_home_shortcuts_title" = "Home Shortcuts";
 "setting_quran_section_title" = "Quran";
 "setting_quran_recitation_title" = "Recitation";
 "setting_quran_translation_title" = "Translation";
@@ -366,6 +368,13 @@
 "home_tracker_level_format" = "Level %d";
 
 "home_explore_all" = "All";
+"home_shortcuts_preview_title" = "Preview";
+"home_shortcuts_selected_title" = "On Home";
+"home_shortcuts_available_title" = "More Features";
+"home_shortcuts_footer" = "Choose up to %d shortcuts. Drag to reorder. All always comes last.";
+"home_shortcuts_full_footer" = "Remove a shortcut to add another.";
+"home_shortcuts_reset" = "Reset to Default";
+"home_shortcuts_add_accessibility" = "Add %@";
 "home_explore_all_accessibility" = "All features";
 
 "explore_header_title" = "Explore";

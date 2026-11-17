@@ -36,6 +36,16 @@ enum AppFeature: String, CaseIterable, Identifiable {
         }
     }
 
+    /// A shorter name for tight spaces such as the Home shortcut tiles.
+    var shortTitle: String {
+        switch self {
+        case .tracker:
+            return NSLocalizedString("tracker_list_tab_bar_title", comment: "")
+        default:
+            return title
+        }
+    }
+
     var subtitle: String {
         NSLocalizedString("explore_\(rawValue)_subtitle", comment: "")
     }
@@ -75,7 +85,4 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return .tab(.tracker)
         }
     }
-
-    /// The features shown as shortcuts on Home, before the "All" tile.
-    static let homeShortcuts: [AppFeature] = [.quran, .mathurat, .tasbih]
 }

@@ -649,6 +649,9 @@ private struct SettingsSheet: View {
                 },
                 onOpenWidgetGuide: {
                     path.append(.widgetGuide)
+                },
+                onOpenHomeShortcuts: {
+                    path.append(.homeShortcuts)
                 }
             )
             .navigationTitle(
@@ -670,6 +673,8 @@ private struct SettingsSheet: View {
             }
             .navigationDestination(for: SettingsRoute.self) { route in
                 switch route {
+                case .homeShortcuts:
+                    HomeShortcutsView()
                 case .trackerSettings:
                     TrackerSettingsView(
                         onManageCategories: {

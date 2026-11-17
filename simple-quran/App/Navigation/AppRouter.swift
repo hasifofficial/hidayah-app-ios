@@ -137,6 +137,7 @@ enum AppRoute: Hashable {
 }
 
 enum SettingsRoute: Hashable {
+    case homeShortcuts
     case trackerSettings
     case manageCategories
     case widgetGuide

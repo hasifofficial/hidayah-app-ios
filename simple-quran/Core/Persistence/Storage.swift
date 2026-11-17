@@ -39,6 +39,7 @@ class Storage {
         case trackerDayStartMinutes
         case hasMigratedToSwiftData
         case whatsNewLastSeenVersion
+        case homeShortcuts
     }
 
     static func save(_ key: StorageKey, _ value: Any) {
