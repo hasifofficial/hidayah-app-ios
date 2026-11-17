@@ -13,8 +13,6 @@ struct QiblaView: View {
     let viewModel: QiblaViewModel
     @Environment(\.openURL) private var openURL
 
-    static let alignedGreen = Color(red: 0.18, green: 0.78, blue: 0.36)
-
     var body: some View {
         ZStack {
             background
@@ -72,7 +70,7 @@ struct QiblaView: View {
     // MARK: Pieces
 
     private var background: some View {
-        (viewModel.isAligned ? Self.alignedGreen : Color.black)
+        (viewModel.isAligned ? Color.lightGreen : Color.black)
             .ignoresSafeArea()
             .animation(.easeInOut(duration: 0.35), value: viewModel.isAligned)
     }
