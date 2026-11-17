@@ -27,6 +27,12 @@ struct HomeView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var today = Date()
     @State private var containerWidth: CGFloat = 0
+    /// The user's chosen shortcuts, watched so Home updates as soon as
+    /// they change in Settings.
+    @AppStorage(
+        Storage.StorageKey.homeShortcuts.rawValue,
+        store: Storage.userDefaults
+    ) private var shortcutsSetting = ""
 
     /// The widest the readable column gets on iPad and other wide screens.
     static let columnWidth: CGFloat = 700
@@ -141,57 +147,12 @@ struct HomeView: View {
     // MARK: Explore
 
     private var exploreShortcuts: some View {
-        HStack(alignment: .top, spacing: 10) {
-            ForEach(AppFeature.homeShortcuts) { feature in
-                shortcutTile(icon: feature.icon, assetIcon: feature.assetIcon, title: feature.title) {
-                    onOpenFeature(feature)
-                }
-            }
-
-            shortcutTile(
-                icon: "square.grid.2x2.fill",
-                title: NSLocalizedString("home_explore_all", comment: ""),
-                accessibilityLabel: NSLocalizedString("home_explore_all_accessibility", comment: ""),
-                action: onOpenExplore
-            )
-        }
+        HomeShortcutRow(
+            features: HomeShortcuts.decode(shortcutsSetting),
+            onOpen: onOpenFeature,
+            onOpenAll: onOpenExplore
+        )
         .padding(.horizontal, 16)
-    }
-
-    private func shortcutTile(
-        icon: String,
-        assetIcon: String? = nil,
-        title: String,
-        accessibilityLabel: String? = nil,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            VStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.backgroundGray)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(Color.lightGreen.opacity(0.12), lineWidth: 1)
-                        }
-
-                    FeatureIcon(systemName: icon, assetName: assetIcon, size: 20)
-                }
-                .frame(height: 58)
-
-                Text(title)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.title)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-            }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityLabel ?? title)
-        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Cards

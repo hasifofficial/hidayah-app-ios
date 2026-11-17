@@ -673,6 +673,35 @@ final class RootViewTests: ViewsTestCase {
         XCTAssertTrue(host.contains("How to Add a Widget"))
     }
 
+    func test_settingsSheet_should_pushHomeShortcuts() {
+        // Arrange
+        let (host, _) = makeHost()
+        router.settingsPresented = true
+        host.pump(0.8)
+        host.pump(until: { host.contains("Home Shortcuts") })
+
+        // Act
+        host.tapLast("Home Shortcuts")
+        host.pump(until: { host.contains("More Features") })
+
+        // Assert
+        XCTAssertTrue(host.contains("On Home"))
+        XCTAssertTrue(host.contains("Add Istiqamah Tracker"))
+    }
+
+    func test_rootView_should_showChosenHomeShortcuts() {
+        // Arrange
+        HomeShortcuts.save([.tracker, .tasbih])
+
+        // Act
+        let (host, _) = makeHost()
+        host.pump(until: { host.contains("Tasbih") })
+
+        // Assert
+        XCTAssertTrue(host.labels().contains("Istiqamah Tracker"))
+        XCTAssertFalse(host.labels().contains("Al-Mathurat"))
+    }
+
     func test_settingsSheet_should_pushTrackerSettingsAndManageCategories() {
         // Arrange
         let (host, _) = makeHost()
