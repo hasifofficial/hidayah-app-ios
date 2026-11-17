@@ -138,6 +138,19 @@ final class AppRouterTests: XCTestCase {
         XCTAssertTrue(sut.savedReadingPath.isEmpty)
     }
 
+    func test_openHome_should_replacePath_when_alreadyOnHome() {
+        // Arrange
+        sut.homePath = [.quranList, detail]
+
+        // Act
+        sut.openHome([.explore, .qibla])
+
+        // Assert
+        XCTAssertEqual(sut.selectedTab, .home)
+        XCTAssertEqual(sut.homePath, [.explore, .qibla])
+        XCTAssertTrue(sut.savedHomePath.isEmpty)
+    }
+
     func test_openMathurat_should_pushMathuratAndSetFocus() {
         // Arrange
         sut.selectTab(.search)

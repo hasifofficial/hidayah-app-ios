@@ -48,7 +48,7 @@ App/
 - `AppController` is the composition root for services and shared state. Its initializer takes the task manager, store, notification scheduler and notification center, defaulting to the shared instances.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
-- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker` or `mathurat[/<order>]`.
+- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker`, `mathurat[/<order>]` or `qibla` (opens Home › Explore › Qibla).
 
 ## Core
 

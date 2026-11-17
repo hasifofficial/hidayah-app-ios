@@ -103,6 +103,14 @@ final class AppRouter {
         }
     }
 
+    /// Switches to the Home tab showing `path` on top of Home, replacing
+    /// whatever that tab had open.
+    func openHome(_ path: [AppRoute]) {
+        selectTab(.home)
+        savedHomePath = []
+        homePath = path
+    }
+
     /// Switches to the Reading tab showing `path` on top of the Reading
     /// landing page, replacing whatever that tab had open.
     func openReading(_ path: [AppRoute]) {
