@@ -124,7 +124,8 @@ final class RootViewTests: ViewsTestCase {
         XCTAssertTrue(host.contains("Assalamualaikum"))
         XCTAssertTrue(host.contains("Hidayah"))
         XCTAssertTrue(host.contains("tasks are waiting for you today"))
-        XCTAssertTrue(host.contains("Today’s Tasks"))
+        XCTAssertTrue(host.labels().contains("Today"))
+        XCTAssertTrue(host.contains("Istiqamah Tracker"))
         XCTAssertTrue(host.contains("No saved ayahs yet"))
         for tab in tabs {
             XCTAssertTrue(host.labels().contains { $0.hasPrefix(tab) }, "Missing tab \(tab)")
@@ -271,10 +272,10 @@ final class RootViewTests: ViewsTestCase {
     func test_rootView_should_openTrackerTabFromHome() {
         // Arrange
         let (host, _) = makeHost()
-        host.pump(until: { host.contains("Today’s Tasks") })
+        host.pump(until: { host.contains("Istiqamah Tracker") })
 
         // Act
-        host.tap("Today’s Tasks")
+        host.tap("Istiqamah Tracker")
         host.pump(0.4)
 
         // Assert
