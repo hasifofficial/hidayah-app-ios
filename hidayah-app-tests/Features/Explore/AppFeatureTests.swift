@@ -3,6 +3,7 @@
 //  hidayah-app-tests
 //
 
+import UIKit
 import XCTest
 @testable import hidayah_app
 
@@ -45,6 +46,25 @@ final class AppFeatureTests: XCTestCase {
         // Assert
         XCTAssertEqual(assetIcon, "TasbihIconFill")
         XCTAssertNil(AppFeature.quran.assetIcon)
+    }
+
+    func test_illustrations_should_existInAssetCatalog() {
+        // Arrange
+        let names = AppFeature.allCases.map(\.illustration)
+            + MathuratTime.allCases.map(\.illustration)
+            + [
+                AppFeature.allIllustration,
+                Illustration.quranClosed,
+                Illustration.bookmark,
+                Illustration.mathuratEvening
+            ]
+
+        // Act
+        let missing = names.filter { UIImage(named: $0) == nil }
+
+        // Assert
+        XCTAssertEqual(missing, [])
+        XCTAssertEqual(AppFeature.mathurat.illustration, "IllustrationMathurat")
     }
 
     func test_open_should_pushRouteFeatureOnCurrentStack() {

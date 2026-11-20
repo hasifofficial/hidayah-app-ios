@@ -80,15 +80,7 @@ struct BookmarkListView: View {
 
     private var bookmarkSummary: some View {
         HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.lightGreen.opacity(0.14))
-
-                Image(systemName: "bookmark.fill")
-                    .font(.system(size: 19, weight: .semibold))
-                    .foregroundColor(.lightGreen)
-            }
-            .frame(width: 44, height: 44)
+            IllustrationImage(name: Illustration.bookmark, size: 48)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(
@@ -164,7 +156,7 @@ struct BookmarkListView: View {
                     )
                 )
             } icon: {
-                Image(systemName: "bookmark")
+                IllustrationImage(name: Illustration.bookmark, size: 72)
             }
         } description: {
             Text(

@@ -55,6 +55,16 @@ enum MathuratTime: String, CaseIterable, Sendable {
             return "moon.stars.fill"
         }
     }
+
+    /// The illustration on the reading screen's header card.
+    var illustration: String {
+        switch self {
+        case .morning:
+            return "IllustrationMathurat"
+        case .evening:
+            return Illustration.mathuratEvening
+        }
+    }
 }
 
 /// One dhikr, du'a or Quran passage of Al-Mathurat Sughra.

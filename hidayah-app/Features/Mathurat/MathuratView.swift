@@ -164,6 +164,7 @@ struct MathuratView: View {
     private var header: some View {
         ReaderHeaderCard(
             icon: viewModel.time.icon,
+            illustration: viewModel.time.illustration,
             label: NSLocalizedString(viewModel.time.labelKey, comment: ""),
             title: NSLocalizedString(viewModel.time.titleKey, comment: "")
         ) {

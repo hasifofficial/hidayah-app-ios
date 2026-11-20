@@ -78,6 +78,14 @@ enum AppFeature: String, CaseIterable, Identifiable {
         }
     }
 
+    /// A 3D-style illustration drawn for this feature.
+    var illustration: String {
+        "Illustration\(rawValue.prefix(1).uppercased())\(rawValue.dropFirst())"
+    }
+
+    /// The illustration for the "All" tile that opens Explore.
+    static let allIllustration = "IllustrationAll"
+
     var destination: Destination {
         switch self {
         case .quran:

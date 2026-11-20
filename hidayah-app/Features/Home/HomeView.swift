@@ -355,7 +355,7 @@ struct HomeView: View {
                                         format: NSLocalizedString("bookmark_list_subtitle", comment: ""),
                                         "\(item.bookmark.numberInSurah)"
                                     ),
-                                    icon: "bookmark.fill"
+                                    illustration: Illustration.bookmark
                                 )
                             }
                             .buttonStyle(.plain)
@@ -408,15 +408,7 @@ struct HomeView: View {
 
     private var bookmarksEmptyState: some View {
         HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.lightGreen.opacity(0.12))
-
-                Image(systemName: "bookmark")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.lightGreen)
-            }
-            .frame(width: 42, height: 42)
+            IllustrationImage(name: Illustration.bookmark, size: 46)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(NSLocalizedString("home_bookmarks_empty", comment: ""))
