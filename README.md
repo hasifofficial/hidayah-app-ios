@@ -5,9 +5,9 @@ iOS app for Hidayah (Quran reader, bookmarks, Tasbih, Al-Mathurat, tracker and w
 ## Dependencies
 
 Dependencies are managed with Swift Package Manager. Open
-`simple-quran.xcodeproj` in Xcode; packages are resolved automatically and the
+`hidayah-app.xcodeproj` in Xcode; packages are resolved automatically and the
 resolved versions are committed in
-`simple-quran.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`.
+`hidayah-app.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`.
 
 Remote packages:
 
@@ -22,8 +22,8 @@ Remote packages:
 
 ```sh
 xcodebuild \
-  -project simple-quran.xcodeproj \
-  -scheme simple-quran \
+  -project hidayah-app.xcodeproj \
+  -scheme hidayah-app \
   -destination 'generic/platform=iOS Simulator' \
   build
 ```
