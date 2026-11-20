@@ -34,8 +34,10 @@ struct HomeView: View {
         store: Storage.userDefaults
     ) private var shortcutsSetting = ""
 
-    /// The widest the readable column gets on iPad and other wide screens.
-    static let columnWidth: CGFloat = 700
+    /// The widest the readable column gets on iPad and other wide screens:
+    /// 700pt of cards plus their 16pt side margins, so cards line up with
+    /// Explore's, which caps at 700 and pads outside that.
+    static let columnWidth: CGFloat = 700 + 2 * 16
 
     var body: some View {
         ScrollView {
@@ -70,8 +72,11 @@ struct HomeView: View {
         .background {
             AppGradientBackground()
         }
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
+        // With the sidebar there's no logo, so the greeting becomes a large
+        // title beside the sidebar button, as on Explore, instead of sitting
+        // under an empty bar.
+        .navigationTitle(showsLogo ? "" : NSLocalizedString("home_greeting", comment: ""))
+        .navigationBarTitleDisplayMode(showsLogo ? .inline : .large)
         .toolbar {
             if showsLogo {
                 logo
@@ -122,10 +127,12 @@ struct HomeView: View {
 
     private var dateHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(NSLocalizedString("home_greeting", comment: ""))
-                .font(.system(size: 26, weight: .bold))
-                .foregroundColor(.title)
-                .accessibilityAddTraits(.isHeader)
+            if showsLogo {
+                Text(NSLocalizedString("home_greeting", comment: ""))
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundColor(.title)
+                    .accessibilityAddTraits(.isHeader)
+            }
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(HomeDateFormatter.gregorian(today))
