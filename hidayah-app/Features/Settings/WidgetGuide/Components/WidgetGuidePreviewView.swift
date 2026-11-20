@@ -183,58 +183,98 @@ struct WidgetGuidePreviewView: View {
         .shadow(color: .black.opacity(0.28), radius: 12, y: 6)
     }
 
+    /// A copy of `QuickSurahWidgetEntryView` (the widget target can't be
+    /// shared with the app): laid out at the real medium widget size, then
+    /// scaled to fit the mock phone. Keep the two in step.
     private var quickSurahWidgetPreview: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             HStack(spacing: 6) {
                 Image("hidayah_logo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 52, height: 26)
+                    .frame(width: 58, height: 29)
 
                 Text(NSLocalizedString("widget_quick_access_title", comment: ""))
-                    .font(.system(size: 11, weight: .bold))
+                    .font(.system(size: 12, weight: .bold))
                     .foregroundColor(.title)
 
                 Spacer(minLength: 4)
 
-                Image(systemName: "book.closed.fill")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.lightGreen)
+                IllustrationImage(name: Illustration.quranClosed, size: 26)
             }
+            .frame(height: 29)
 
-            HStack(spacing: 6) {
+            HStack(spacing: 8) {
                 ForEach(quickSurahs) { surah in
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("\(surah.number)")
-                            .font(.system(size: 8, weight: .bold))
-                            .foregroundColor(.lightGreen)
-
-                        Spacer(minLength: 0)
-
-                        Text(surah.arabic)
-                            .font(.kitabRegular(size: 18))
-                            .foregroundColor(.title)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
-
-                        Text(surah.name)
-                            .font(.system(size: 8, weight: .semibold))
-                            .foregroundColor(.textGray)
-                            .lineLimit(1)
-                    }
-                    .padding(7)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 78)
-                    .background(Color.lightGreen.opacity(0.08))
-                    .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+                    quickSurahCard(surah)
                 }
             }
+            .frame(maxWidth: .infinity)
         }
-        .padding(12)
-        .frame(width: 304, height: 140, alignment: .topLeading)
+        .padding(10)
+        .frame(width: 338, height: 158)
         .background(widgetSurface)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .scaleEffect(304 / 338)
+        .frame(width: 304, height: 158 * 304 / 338)
         .shadow(color: .black.opacity(0.28), radius: 12, y: 6)
+    }
+
+    private func quickSurahCard(_ surah: WidgetGuideSurah) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 4) {
+                ZStack {
+                    Circle()
+                        .fill(Color.lightGreen.opacity(0.16))
+
+                    Text("\(surah.number)")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundColor(.lightGreen)
+                }
+                .frame(width: 20, height: 20)
+
+                Spacer(minLength: 2)
+
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 8, weight: .bold))
+                    .foregroundColor(.textGray.opacity(0.65))
+            }
+
+            Spacer(minLength: 2)
+
+            Group {
+                if let ligature = Font.surahNameLigature(for: surah.number) {
+                    Text(ligature)
+                        .font(.surahNameFont(size: 34))
+                        .minimumScaleFactor(0.6)
+                        .accessibilityLabel(surah.arabic)
+                } else {
+                    Text(surah.arabic)
+                        .font(.kitabRegular(size: 20))
+                        .minimumScaleFactor(0.7)
+                }
+            }
+            .foregroundColor(.lightGreen)
+            .lineLimit(1)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(surah.name)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundColor(.textGray)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .padding(.top, 3)
+        }
+        .padding(8)
+        .frame(width: 96, height: 96)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(Color.lightGreen.opacity(0.08))
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(Color.lightGreen.opacity(0.14), lineWidth: 1)
+        }
     }
 
     private var widgetSurface: some View {
