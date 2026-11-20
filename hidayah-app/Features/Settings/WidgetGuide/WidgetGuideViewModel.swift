@@ -30,12 +30,12 @@ enum WidgetGuideKind: String, CaseIterable, Identifiable {
         }
     }
 
-    var icon: String {
+    var illustration: String {
         switch self {
         case .tracker:
-            return "chart.pie.fill"
+            return AppFeature.tracker.illustration
         case .quickSurahs:
-            return "book.closed.fill"
+            return Illustration.quranClosed
         }
     }
 }

@@ -112,17 +112,17 @@ final class WidgetGuideViewModelTests: XCTestCase {
         XCTAssertFalse(vm.upcomingTasks.contains { $0.id == first.id })
     }
 
-    func test_widgetGuideKind_should_exposeKeysAndIcons() {
+    func test_widgetGuideKind_should_exposeKeysAndIllustrations() {
         // Arrange
         let kinds = WidgetGuideKind.allCases
 
         // Act
-        let summary = kinds.map { [$0.id, $0.titleKey, $0.bodyKey, $0.icon] }
+        let summary = kinds.map { [$0.id, $0.titleKey, $0.bodyKey, $0.illustration] }
 
         // Assert
         XCTAssertEqual(summary, [
-            ["tracker", "widget_guide_tracker_title", "widget_guide_tracker_body", "chart.pie.fill"],
-            ["quickSurahs", "widget_guide_quick_title", "widget_guide_quick_body", "book.closed.fill"]
+            ["tracker", "widget_guide_tracker_title", "widget_guide_tracker_body", "IllustrationTracker"],
+            ["quickSurahs", "widget_guide_quick_title", "widget_guide_quick_body", "IllustrationQuranClosed"]
         ])
     }
 }
