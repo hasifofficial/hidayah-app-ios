@@ -420,8 +420,10 @@ struct HomeView: View {
                     .foregroundColor(.textGray)
                     .fixedSize(horizontal: false, vertical: true)
             }
-
-            Spacer(minLength: 0)
+            // Takes exactly the room beside the illustration, so wrapped
+            // text can't push the card wider than the screen and let Home
+            // scroll sideways (as the tracker card once did).
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
         .background {
