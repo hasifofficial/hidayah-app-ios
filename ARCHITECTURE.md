@@ -213,7 +213,7 @@ hidayah-app-widget/
       Kitab-Bold.ttf
     en.lproj/
       Localizable.strings
-  appWidgetBundle.swift
+  HidayahAppWidgetBundle.swift
   Info.plist
 ```
 
@@ -250,7 +250,7 @@ Some `Core` files are intentionally shared with the widget to support task toggl
 
 The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `hidayah-app-widget` and one for `hidayah-app-widget-tests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
 
-`hidayah-app-widget-tests` excludes `appWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
+`hidayah-app-widget-tests` excludes `HidayahAppWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
 
 Do not manually add synchronized-folder files to target source phases. Add or remove membership through the synchronized-folder exceptions.
 
