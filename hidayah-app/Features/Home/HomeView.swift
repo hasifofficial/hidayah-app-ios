@@ -63,6 +63,7 @@ struct HomeView: View {
             }
             .padding(.top, 4)
             .padding(.bottom, 100)
+            .modifier(ExactProposedWidth())
         }
         .onGeometryChange(for: CGFloat.self) { geometry in
             geometry.size.width
@@ -591,6 +592,44 @@ private struct TrackerProgressRing: View {
                 completed,
                 total
             )
+        )
+    }
+}
+
+
+/// Makes the content report exactly the width it's offered.
+///
+/// Home's sections can measure a hair wider than offered (402.00000000000006
+/// on a 402pt screen, from fractional text and padding maths). The scroll
+/// view then offers that width back, the content grows by another hair, and
+/// once the excess rounds to a visible fraction Home scrolls sideways. This
+/// stops the ratchet at the first step. It uses the offered width rather
+/// than the container's, so it still follows the sidebar on iPad and the Duo.
+private struct ExactProposedWidth: ViewModifier {
+    func body(content: Content) -> some View {
+        ExactProposedWidthLayout { content }
+    }
+}
+
+private struct ExactProposedWidthLayout: Layout {
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        let size = subviews.first?.sizeThatFits(proposal) ?? .zero
+        return CGSize(width: proposal.width ?? size.width, height: size.height)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        subviews.first?.place(
+            at: bounds.origin,
+            proposal: ProposedViewSize(width: bounds.width, height: proposal.height)
         )
     }
 }
