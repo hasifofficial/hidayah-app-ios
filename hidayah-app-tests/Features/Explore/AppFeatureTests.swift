@@ -56,7 +56,9 @@ final class AppFeatureTests: XCTestCase {
                 AppFeature.allIllustration,
                 Illustration.quranClosed,
                 Illustration.bookmark,
-                Illustration.mathuratEvening
+                Illustration.mathuratEvening,
+                Illustration.calendar,
+                Illustration.search
             ]
 
         // Act

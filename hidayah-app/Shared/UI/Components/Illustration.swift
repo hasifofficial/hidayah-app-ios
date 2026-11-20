@@ -14,6 +14,11 @@ enum Illustration {
     static let quranClosed = "IllustrationQuranClosed"
     static let bookmark = "IllustrationBookmark"
     static let mathuratEvening = "IllustrationMathuratEvening"
+    static let calendar = "IllustrationCalendar"
+    static let search = "IllustrationSearch"
+
+    /// The size of an illustration in an empty state.
+    static let emptyStateSize: CGFloat = 96
 }
 
 /// An illustration from the asset catalogue at a square `size`. It is

@@ -37,7 +37,7 @@ struct BookmarkListView: View {
                                     subtitle: subtitle(for: bookmark),
                                     arabicTitle: bookmark.surah.name ?? "",
                                     surahNumber: bookmark.surah.number,
-                                    badgeIcon: "bookmark.fill"
+                                    badgeIllustration: Illustration.bookmark
                                 )
                             }
                             .buttonStyle(.plain)
@@ -156,7 +156,7 @@ struct BookmarkListView: View {
                     )
                 )
             } icon: {
-                IllustrationImage(name: Illustration.bookmark, size: 72)
+                IllustrationImage(name: Illustration.bookmark, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(

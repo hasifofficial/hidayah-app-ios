@@ -159,5 +159,33 @@ body += '<path d="M6 88 Q36 70 66 84 Q90 96 114 82 L114 100 Q60 112 6 100 Z" fil
 body += '<path d="M10 86 Q36 72 62 82" stroke="#fff" stroke-opacity="0.3" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
 out['MathuratEvening'] = svg(defs, body)
 
+
+# Calendar: a desk calendar with gold rings and a ticked day
+sd, se = shadow(60, 110, 36, 5)
+defs = sd + lg('calh', '#45C98A', '#167049') + lg('calb', '#FFFFFF', '#E9EEF2') + lg('gold', '#F6D77A', '#C08A1E') + lg('ok', '#5ADB98', '#139454')
+body = se
+body += '<rect x="18" y="26" width="84" height="80" rx="13" fill="#B9C3CC"/><rect x="18" y="22" width="84" height="80" rx="13" fill="url(#calb)"/>'
+body += '<path d="M18 35 Q18 22 31 22 L89 22 Q102 22 102 35 L102 44 L18 44 Z" fill="url(#calh)"/>'
+for x in (40, 80):
+    body += f'<rect x="{x-3.5}" y="12" width="7" height="18" rx="3.5" fill="url(#gold)"/>'
+for r in range(3):
+    for c in range(4):
+        x, y = 32 + c*19, 56 + r*15
+        if (r, c) == (1, 2):
+            body += f'<circle cx="{x}" cy="{y}" r="7.5" fill="url(#ok)"/><path d="M{x-3.5} {y} l2.5 2.6 l4.5 -5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+        else:
+            body += f'<rect x="{x-5}" y="{y-3.5}" width="10" height="7" rx="3" fill="#D3DAE1"/>'
+body += '<path d="M24 32 Q24 27 30 27 L60 27" stroke="#fff" stroke-opacity="0.4" stroke-width="2" fill="none" stroke-linecap="round"/>'
+out['Calendar'] = svg(defs, body)
+
+# Search: a magnifying glass with a gold rim
+sd, se = shadow(62, 110, 34, 5)
+defs = sd + lg('rimg', '#F8DC86', '#B47C14', 0, 0, 1, 1) + '<radialGradient id="lens" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#E8FFF4"/><stop offset="1" stop-color="#8FD9B5"/></radialGradient>' + lg('hdl', '#2FA36C', '#0F5537', 0, 0, 1, 1)
+body = se
+body += '<g transform="rotate(45 50 50)"><rect x="86" y="41" width="30" height="18" rx="8" fill="url(#hdl)"/><rect x="78" y="43.5" width="12" height="13" rx="3" fill="url(#rimg)"/><rect x="92" y="44" width="20" height="3" rx="1.5" fill="#fff" fill-opacity="0.3"/></g>'
+body += '<circle cx="50" cy="50" r="32" fill="url(#rimg)"/><circle cx="50" cy="50" r="25" fill="url(#lens)"/>'
+body += '<path d="M33 44 A18 18 0 0 1 46 31" stroke="#fff" stroke-opacity="0.9" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="31" cy="53" r="2.4" fill="#fff" fill-opacity="0.8"/>'
+out['Search'] = svg(defs, body)
+
 for k, v in out.items():
     open(f'{k}.svg', 'w').write(v)

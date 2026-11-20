@@ -155,7 +155,7 @@ struct TrackerListContentView: View {
                     )
                 )
             } icon: {
-                Image(systemName: "checklist")
+                IllustrationImage(name: AppFeature.tracker.illustration, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(

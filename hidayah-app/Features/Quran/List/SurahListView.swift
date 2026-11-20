@@ -185,7 +185,7 @@ struct SurahListView: View {
                     )
                 )
             } icon: {
-                Image(systemName: "book.closed")
+                IllustrationImage(name: Illustration.quranClosed, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(

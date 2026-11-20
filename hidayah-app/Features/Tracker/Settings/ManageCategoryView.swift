@@ -99,7 +99,7 @@ struct ManageCategoryContentView: View {
                     )
                 )
             } icon: {
-                Image(systemName: "square.grid.2x2")
+                IllustrationImage(name: AppFeature.allIllustration, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(
