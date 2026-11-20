@@ -1,6 +1,6 @@
 //
 //  WidgetTestSupport.swift
-//  app-widgetTests
+//  hidayah-app-widget-tests
 //
 
 import Foundation

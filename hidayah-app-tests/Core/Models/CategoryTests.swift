@@ -1,11 +1,11 @@
 //
 //  CategoryTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class CategoryTests: XCTestCase {
     func test_defaultCategory_should_localiseDisplayNameForEveryCase() {
@@ -22,7 +22,7 @@ final class CategoryTests: XCTestCase {
 
     func test_defaultCategoryFromID_should_matchEveryDefaultCategoryID() {
         // Arrange
-        let ids = DefaultCategory.allCases.map { simple_quran.Category.default($0).id }
+        let ids = DefaultCategory.allCases.map { hidayah_app.Category.default($0).id }
 
         // Act
         let parsed = ids.map(DefaultCategory.init(categoryID:))
@@ -33,7 +33,7 @@ final class CategoryTests: XCTestCase {
 
     func test_defaultCategoryFromID_should_returnNil_when_idIsCustomOrUnknown() {
         // Arrange
-        let custom = simple_quran.Category.custom(CustomCategory(name: "Mine")).id
+        let custom = hidayah_app.Category.custom(CustomCategory(name: "Mine")).id
 
         // Act
         let fromCustom = DefaultCategory(categoryID: custom)
@@ -60,7 +60,7 @@ final class CategoryTests: XCTestCase {
 
     func test_category_should_prefixDefaultIDAndUseDefaultDetails() {
         // Arrange
-        let category = simple_quran.Category.default(.fajr)
+        let category = hidayah_app.Category.default(.fajr)
 
         // Act
         let id = category.id
@@ -74,7 +74,7 @@ final class CategoryTests: XCTestCase {
     func test_category_should_prefixCustomIDAndUseCustomDetails() {
         // Arrange
         let custom = CustomCategory(name: "Charity", icon: "heart")
-        let category = simple_quran.Category.custom(custom)
+        let category = hidayah_app.Category.custom(custom)
 
         // Act
         let id = category.id
@@ -98,11 +98,11 @@ final class CategoryTests: XCTestCase {
 
     func test_category_should_roundTripThroughJSON() throws {
         // Arrange
-        let categories: [simple_quran.Category] = [.default(.isha), .custom(CustomCategory(name: "Mine"))]
+        let categories: [hidayah_app.Category] = [.default(.isha), .custom(CustomCategory(name: "Mine"))]
 
         // Act
         let decoded = try JSONDecoder().decode(
-            [simple_quran.Category].self,
+            [hidayah_app.Category].self,
             from: JSONEncoder().encode(categories)
         )
 

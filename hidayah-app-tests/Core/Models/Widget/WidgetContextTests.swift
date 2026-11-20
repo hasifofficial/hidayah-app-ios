@@ -1,11 +1,11 @@
 //
 //  WidgetContextTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class WidgetContextTests: XCTestCase {
     func test_widgetContext_should_decodeSnapshotFromOlderBuild() throws {

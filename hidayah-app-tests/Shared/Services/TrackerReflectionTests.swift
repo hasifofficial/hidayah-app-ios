@@ -1,10 +1,10 @@
 //
 //  TrackerReflectionTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 private final class FakeReflectionGenerator: TrackerReflectionGenerating, @unchecked Sendable {
     var isAvailable = true

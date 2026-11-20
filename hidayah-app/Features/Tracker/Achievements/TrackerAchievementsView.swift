@@ -1,6 +1,6 @@
 //
 //  TrackerAchievementsView.swift
-//  simple-quran
+//  hidayah-app
 //
 //  Created by Mohammad Hasif Afiq on 02/11/2026.
 //

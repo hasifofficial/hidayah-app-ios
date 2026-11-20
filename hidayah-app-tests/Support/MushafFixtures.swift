@@ -1,11 +1,11 @@
 //
 //  MushafFixtures.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import CoreGraphics
 import Foundation
-@testable import simple_quran
+@testable import hidayah_app
 
 /// A loader serving a small made-up layout and blank page images, so tests
 /// don't decode the bundled pages. Pages decode on background tasks (the

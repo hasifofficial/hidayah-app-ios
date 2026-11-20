@@ -1,6 +1,6 @@
 //
 //  ReadingSettingsViewTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 //  ReadingSettingsView and SelectionView, presented as sheets so
 //  their dismiss actions can be observed.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 private final class SheetState: ObservableObject {

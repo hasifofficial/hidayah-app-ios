@@ -1,6 +1,6 @@
 //
 //  FoundationModelsReflectionGenerator.swift
-//  simple-quran
+//  hidayah-app
 //
 
 #if canImport(FoundationModels)

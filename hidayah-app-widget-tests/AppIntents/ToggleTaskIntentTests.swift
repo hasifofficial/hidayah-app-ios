@@ -1,6 +1,6 @@
 //
 //  ToggleTaskIntentTests.swift
-//  app-widgetTests
+//  hidayah-app-widget-tests
 //
 
 import XCTest

@@ -1,13 +1,13 @@
 //
 //  VMFixtures.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 //  Fixtures and helpers shared by the view model tests.
 //
 
 import AVFoundation
 import Foundation
-@testable import simple_quran
+@testable import hidayah_app
 
 enum VMFixtures {
     // MARK: - Routing
@@ -287,7 +287,7 @@ enum VMFixtures {
 
     static func snapshot(
         _ name: String,
-        category: simple_quran.Category,
+        category: hidayah_app.Category,
         isCompleted: Bool
     ) -> TrackerTaskSnapshot {
         TrackerTaskSnapshot(

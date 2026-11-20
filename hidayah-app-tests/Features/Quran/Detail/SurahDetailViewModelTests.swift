@@ -1,11 +1,11 @@
 //
 //  SurahDetailViewModelTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import AVFoundation
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class SurahDetailViewModelTests: XCTestCase {

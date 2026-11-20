@@ -1,10 +1,10 @@
 //
 //  TasbihViewModelTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class TasbihViewModelTests: XCTestCase {

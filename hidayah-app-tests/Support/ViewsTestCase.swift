@@ -1,6 +1,6 @@
 //
 //  ViewsTestCase.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 //  Base class for view tests: hosts views in the app's window scene (so
 //  navigation pushes, sheets and list updates animate to completion) and

@@ -1,10 +1,10 @@
 //
 //  TrackerStatsTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class TrackerStatsTests: XCTestCase {
     private let now = TestClock.date(year: 2026, month: 3, day: 10)

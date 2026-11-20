@@ -1,10 +1,10 @@
 //
 //  MathuratModelsTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class MathuratModelsTests: XCTestCase {
     private let calendar = TrackerDayKey.calendar

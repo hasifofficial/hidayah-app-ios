@@ -1,6 +1,6 @@
 //
 //  MathuratLibrary.swift
-//  simple-quran
+//  hidayah-app
 //
 
 import Foundation

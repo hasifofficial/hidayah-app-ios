@@ -1,11 +1,11 @@
 //
 //  TaskDetailsTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class TaskDetailsTests: XCTestCase {
     func test_taskDetails_should_defaultToIncomplete() {

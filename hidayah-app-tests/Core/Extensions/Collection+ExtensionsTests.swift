@@ -1,11 +1,11 @@
 //
 //  Collection+ExtensionsTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class CollectionExtensionsTests: XCTestCase {
     func test_safeSubscript_should_returnElementInsideBounds() {

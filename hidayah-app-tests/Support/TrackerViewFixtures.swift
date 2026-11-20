@@ -1,10 +1,10 @@
 //
 //  TrackerViewFixtures.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import Foundation
-@testable import simple_quran
+@testable import hidayah_app
 
 /// Builds tracker history through the real rollover path: for each day,
 /// completes `completed` of the manager's tasks, then moves the clock to the
@@ -17,7 +17,7 @@ struct TrackerHistoryBuilder {
     /// Replaces the default task list with `names` in one category, through
     /// the manager's own API so the store matches, and days can be
     /// completed quickly.
-    func useTasks(_ names: [String], category: simple_quran.Category = .default(.fajr)) {
+    func useTasks(_ names: [String], category: hidayah_app.Category = .default(.fajr)) {
         for task in taskManager.tasks {
             taskManager.deleteTask(task: task)
         }

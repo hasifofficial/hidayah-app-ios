@@ -1,11 +1,11 @@
 //
 //  AddTaskViewTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class AddTaskViewTests: XCTestCase {
@@ -54,7 +54,7 @@ final class AddTaskViewTests: XCTestCase {
         let added = taskManager.tasks.last
         XCTAssertEqual(taskManager.tasks.count, 4)
         XCTAssertEqual(added?.name, "Read Quran after Fajr")
-        XCTAssertEqual(added?.category.id, simple_quran.Category.default(.morning).id)
+        XCTAssertEqual(added?.category.id, hidayah_app.Category.default(.morning).id)
     }
 
     func test_addTask_should_doNothingWithoutAName() {

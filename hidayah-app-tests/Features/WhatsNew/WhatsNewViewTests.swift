@@ -1,13 +1,13 @@
 //
 //  WhatsNewViewTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 //  WhatsNewView, presented as a sheet so its dismiss can be observed.
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 private final class WhatsNewSheetState: ObservableObject {

@@ -1,13 +1,13 @@
 //
 //  CoreFixtures.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import Foundation
 import SwiftData
 import UserNotifications
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 // MARK: - Store
 
@@ -59,7 +59,7 @@ func makeTaskManager(
 
 func makeTask(
     _ name: String,
-    category: simple_quran.Category = .default(.fajr),
+    category: hidayah_app.Category = .default(.fajr),
     isCompleted: Bool = false
 ) -> TaskDetails {
     TaskDetails(name: name, category: category, isCompleted: isCompleted)

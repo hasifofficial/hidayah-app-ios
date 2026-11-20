@@ -1,6 +1,6 @@
 //
 //  HomeShortcuts.swift
-//  simple-quran
+//  hidayah-app
 //
 
 import Foundation

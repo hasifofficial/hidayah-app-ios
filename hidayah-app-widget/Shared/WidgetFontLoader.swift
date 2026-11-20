@@ -1,6 +1,6 @@
 //
 //  WidgetFontLoader.swift
-//  app-widget
+//  hidayah-app-widget
 //
 
 import CoreText

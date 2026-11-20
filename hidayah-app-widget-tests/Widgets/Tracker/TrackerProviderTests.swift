@@ -1,6 +1,6 @@
 //
 //  TrackerProviderTests.swift
-//  app-widgetTests
+//  hidayah-app-widget-tests
 //
 
 import WidgetKit

@@ -20,14 +20,14 @@
 			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1B791FF62DC1B8D00007CDDF;
-			remoteInfo = "app-widgetExtension";
+			remoteInfo = "hidayah-app-widget";
 		};
 		F147663C33DE14DAFD41B833 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B78EB09260B327E004E07CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1B78EB10260B327E004E07CD;
-			remoteInfo = "simple-quran";
+			remoteInfo = "hidayah-app";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -46,12 +46,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		048C5B019668F736DC7C24D3 /* simple-quranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simple-quranTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-widgetExtension.entitlements"; sourceTree = "<group>"; };
+		048C5B019668F736DC7C24D3 /* hidayah-app-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "hidayah-app-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B7920122DC1B8F60007CDDF /* hidayah-app-widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "hidayah-app-widget.entitlements"; sourceTree = "<group>"; };
 		35019315922F29D19A05C964 /* Hidayah Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hidayah Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C02A0C01546A1F7E216613 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D69317EB623433755CA5F244 /* app-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "app-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8541C17F08F2EB125D1A663 /* app-widgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "app-widgetTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8541C17F08F2EB125D1A663 /* hidayah-app-widget-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "hidayah-app-widget-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -60,14 +60,14 @@
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
+			target = 1B791FF62DC1B8D00007CDDF /* hidayah-app-widget */;
 		};
 		1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 1B78EB10260B327E004E07CD /* simple-quran */;
+			target = 1B78EB10260B327E004E07CD /* hidayah-app */;
 		};
 		1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -87,7 +87,7 @@
 				Core/Tracker/TrackerHistoryEngine.swift,
 				Core/Tracker/TrackerNotificationScheduler.swift,
 			);
-			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
+			target = 1B791FF62DC1B8D00007CDDF /* hidayah-app-widget */;
 		};
 		7AA9D2BD6C0325B3F93206A9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -95,7 +95,7 @@
 				appWidgetBundle.swift,
 				Info.plist,
 			);
-			target = CC3CBF9CCAF398625445E69E /* app-widgetTests */;
+			target = CC3CBF9CCAF398625445E69E /* hidayah-app-widget-tests */;
 		};
 		CC9A33765E6E58BEA8AF96EE /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -115,7 +115,7 @@
 				Core/Tracker/TrackerHistoryEngine.swift,
 				Core/Tracker/TrackerNotificationScheduler.swift,
 			);
-			target = CC3CBF9CCAF398625445E69E /* app-widgetTests */;
+			target = CC3CBF9CCAF398625445E69E /* hidayah-app-widget-tests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -165,7 +165,7 @@
 		1B78EB08260B327E004E07CD = {
 			isa = PBXGroup;
 			children = (
-				1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */,
+				1B7920122DC1B8F60007CDDF /* hidayah-app-widget.entitlements */,
 				1B8DFA0B30963CBD00AFCBFA /* hidayah-app */,
 				1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
@@ -180,8 +180,8 @@
 			children = (
 				35019315922F29D19A05C964 /* Hidayah Debug.app */,
 				D69317EB623433755CA5F244 /* app-widgetExtension.appex */,
-				048C5B019668F736DC7C24D3 /* simple-quranTests.xctest */,
-				E8541C17F08F2EB125D1A663 /* app-widgetTests.xctest */,
+				048C5B019668F736DC7C24D3 /* hidayah-app-tests.xctest */,
+				E8541C17F08F2EB125D1A663 /* hidayah-app-widget-tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -205,9 +205,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1B78EB10260B327E004E07CD /* simple-quran */ = {
+		1B78EB10260B327E004E07CD /* hidayah-app */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quran" */;
+			buildConfigurationList = 1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "hidayah-app" */;
 			buildPhases = (
 				1B78EB0D260B327E004E07CD /* Sources */,
 				1B78EB0E260B327E004E07CD /* Frameworks */,
@@ -223,18 +223,18 @@
 			fileSystemSynchronizedGroups = (
 				1B8DFA0B30963CBD00AFCBFA /* hidayah-app */,
 			);
-			name = "simple-quran";
+			name = "hidayah-app";
 			packageProductDependencies = (
 				B5E5A8C139B80D8A78957B1C /* FirebaseCrashlytics */,
 				4C73559E5E9E2E0672C30B0F /* FirebaseCore */,
 			);
-			productName = "simple-quran";
+			productName = "hidayah-app";
 			productReference = 35019315922F29D19A05C964 /* Hidayah Debug.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1B791FF62DC1B8D00007CDDF /* app-widgetExtension */ = {
+		1B791FF62DC1B8D00007CDDF /* hidayah-app-widget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "app-widgetExtension" */;
+			buildConfigurationList = 1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "hidayah-app-widget" */;
 			buildPhases = (
 				1B791FF32DC1B8D00007CDDF /* Sources */,
 				1B791FF42DC1B8D00007CDDF /* Frameworks */,
@@ -247,14 +247,14 @@
 			fileSystemSynchronizedGroups = (
 				1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */,
 			);
-			name = "app-widgetExtension";
-			productName = "app-widgetExtension";
+			name = "hidayah-app-widget";
+			productName = "hidayah-app-widget";
 			productReference = D69317EB623433755CA5F244 /* app-widgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		6C11DA7D4934977777292325 /* simple-quranTests */ = {
+		6C11DA7D4934977777292325 /* hidayah-app-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A2CBCEED015A2D3494982DB5 /* Build configuration list for PBXNativeTarget "simple-quranTests" */;
+			buildConfigurationList = A2CBCEED015A2D3494982DB5 /* Build configuration list for PBXNativeTarget "hidayah-app-tests" */;
 			buildPhases = (
 				184B8DBB35F52A1E3047A73F /* Sources */,
 				874D300780507C9598046B4B /* Frameworks */,
@@ -268,14 +268,14 @@
 			fileSystemSynchronizedGroups = (
 				B6F38842886C1E9413958FDC /* hidayah-app-tests */,
 			);
-			name = "simple-quranTests";
-			productName = "simple-quranTests";
-			productReference = 048C5B019668F736DC7C24D3 /* simple-quranTests.xctest */;
+			name = "hidayah-app-tests";
+			productName = "hidayah-app-tests";
+			productReference = 048C5B019668F736DC7C24D3 /* hidayah-app-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CC3CBF9CCAF398625445E69E /* app-widgetTests */ = {
+		CC3CBF9CCAF398625445E69E /* hidayah-app-widget-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57EE487E0A7F5D62971069E2 /* Build configuration list for PBXNativeTarget "app-widgetTests" */;
+			buildConfigurationList = 57EE487E0A7F5D62971069E2 /* Build configuration list for PBXNativeTarget "hidayah-app-widget-tests" */;
 			buildPhases = (
 				2B0FB0C5F50207914B826AA5 /* Sources */,
 				C266AA2C1BA0B68CCA4AA2B1 /* Frameworks */,
@@ -289,9 +289,9 @@
 				1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */,
 				D2BEB885B4B00D6775F92B0B /* hidayah-app-widget-tests */,
 			);
-			name = "app-widgetTests";
-			productName = "app-widgetTests";
-			productReference = E8541C17F08F2EB125D1A663 /* app-widgetTests.xctest */;
+			name = "hidayah-app-widget-tests";
+			productName = "hidayah-app-widget-tests";
+			productReference = E8541C17F08F2EB125D1A663 /* hidayah-app-widget-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -321,7 +321,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1B78EB0C260B327E004E07CD /* Build configuration list for PBXProject "simple-quran" */;
+			buildConfigurationList = 1B78EB0C260B327E004E07CD /* Build configuration list for PBXProject "hidayah-app" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -337,10 +337,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1B78EB10260B327E004E07CD /* simple-quran */,
-				1B791FF62DC1B8D00007CDDF /* app-widgetExtension */,
-				6C11DA7D4934977777292325 /* simple-quranTests */,
-				CC3CBF9CCAF398625445E69E /* app-widgetTests */,
+				1B78EB10260B327E004E07CD /* hidayah-app */,
+				1B791FF62DC1B8D00007CDDF /* hidayah-app-widget */,
+				6C11DA7D4934977777292325 /* hidayah-app-tests */,
+				CC3CBF9CCAF398625445E69E /* hidayah-app-widget-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -434,13 +434,13 @@
 /* Begin PBXTargetDependency section */
 		1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1B791FF62DC1B8D00007CDDF /* app-widgetExtension */;
+			target = 1B791FF62DC1B8D00007CDDF /* hidayah-app-widget */;
 			targetProxy = 1B79200A2DC1B8D10007CDDF /* PBXContainerItemProxy */;
 		};
 		D95117BF9B484C8BB24D60BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "simple-quran";
-			target = 1B78EB10260B327E004E07CD /* simple-quran */;
+			name = "hidayah-app";
+			target = 1B78EB10260B327E004E07CD /* hidayah-app */;
 			targetProxy = F147663C33DE14DAFD41B833 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -629,7 +629,7 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
-				PRODUCT_MODULE_NAME = simple_quran;
+				PRODUCT_MODULE_NAME = hidayah_app;
 				PRODUCT_NAME = "Hidayah Debug";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -658,7 +658,7 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran";
-				PRODUCT_MODULE_NAME = simple_quran;
+				PRODUCT_MODULE_NAME = hidayah_app;
 				PRODUCT_NAME = Hidayah;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -672,7 +672,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "app-widgetExtension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "hidayah-app-widget.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
@@ -691,7 +691,8 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran.app-widget";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = app_widgetExtension;
+				PRODUCT_NAME = "app-widgetExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -707,7 +708,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "app-widgetExtension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "hidayah-app-widget.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
@@ -726,7 +727,8 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hasifofficial.simple-quran.app-widget";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = app_widgetExtension;
+				PRODUCT_NAME = "app-widgetExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -777,7 +779,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1B78EB0C260B327E004E07CD /* Build configuration list for PBXProject "simple-quran" */ = {
+		1B78EB0C260B327E004E07CD /* Build configuration list for PBXProject "hidayah-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B78EB39260B3284004E07CD /* Debug */,
@@ -786,7 +788,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "simple-quran" */ = {
+		1B78EB3B260B3284004E07CD /* Build configuration list for PBXNativeTarget "hidayah-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B78EB3C260B3284004E07CD /* Debug */,
@@ -795,7 +797,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "app-widgetExtension" */ = {
+		1B79200E2DC1B8D10007CDDF /* Build configuration list for PBXNativeTarget "hidayah-app-widget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B79200F2DC1B8D10007CDDF /* Debug */,
@@ -804,7 +806,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		57EE487E0A7F5D62971069E2 /* Build configuration list for PBXNativeTarget "app-widgetTests" */ = {
+		57EE487E0A7F5D62971069E2 /* Build configuration list for PBXNativeTarget "hidayah-app-widget-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8DCD45B7DE43271CBD81CD0E /* Release */,
@@ -813,7 +815,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A2CBCEED015A2D3494982DB5 /* Build configuration list for PBXNativeTarget "simple-quranTests" */ = {
+		A2CBCEED015A2D3494982DB5 /* Build configuration list for PBXNativeTarget "hidayah-app-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7C9BD6C9EC2F20620B2B85CD /* Release */,

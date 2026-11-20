@@ -1,10 +1,10 @@
 //
 //  HomeTrackerSummaryTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class HomeTrackerSummaryTests: XCTestCase {
     func test_message_should_inviteToAddTasks_when_noTasks() {

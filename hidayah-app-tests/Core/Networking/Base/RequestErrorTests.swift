@@ -1,11 +1,11 @@
 //
 //  RequestErrorTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class RequestErrorTests: XCTestCase {
     func test_requestErrorMessage_should_localiseEveryCase() {

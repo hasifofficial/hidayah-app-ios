@@ -17,7 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1B791FF62DC1B8D00007CDDF"
                BuildableName = "app-widgetExtension.appex"
-               ReferencedContainer = "container:simple-quran.xcodeproj">
+               ReferencedContainer = "container:hidayah-app.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -52,7 +52,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1B791FF62DC1B8D00007CDDF"
             BuildableName = "app-widgetExtension.appex"
-            ReferencedContainer = "container:simple-quran.xcodeproj">
+            ReferencedContainer = "container:hidayah-app.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -1,10 +1,10 @@
 //
 //  TrackerBadgeTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class TrackerBadgeTests: XCTestCase {
     func test_badge_should_exposeIconAndTargetForEveryCase() {

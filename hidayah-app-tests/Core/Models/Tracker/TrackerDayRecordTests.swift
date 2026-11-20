@@ -1,10 +1,10 @@
 //
 //  TrackerDayRecordTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class TrackerDayRecordTests: XCTestCase {
     func test_dayRecord_should_deriveCountsAndPointsFromTasks() {

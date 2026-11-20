@@ -1,11 +1,11 @@
 //
 //  TrackerLevelColorTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class TrackerLevelColorTests: XCTestCase {
     func test_palette_should_giveEveryLevelItsOwnColour() {

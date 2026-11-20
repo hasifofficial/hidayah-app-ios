@@ -1,12 +1,12 @@
 //
 //  RootViewTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import UIKit
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 private final class SizeClassModel: ObservableObject {

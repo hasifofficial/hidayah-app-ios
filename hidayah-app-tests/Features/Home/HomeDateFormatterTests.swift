@@ -1,10 +1,10 @@
 //
 //  HomeDateFormatterTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class HomeDateFormatterTests: XCTestCase {
     private let utc = TimeZone(identifier: "UTC")!

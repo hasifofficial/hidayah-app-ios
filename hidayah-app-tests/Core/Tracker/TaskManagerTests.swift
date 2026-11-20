@@ -1,10 +1,10 @@
 //
 //  TaskManagerTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class TaskManagerTests: XCTestCase {
@@ -135,7 +135,7 @@ final class TaskManagerTests: XCTestCase {
         let stored = store.loadTrackerData().tasks[0]
         XCTAssertEqual(sut.tasks[0].name, "Subuh")
         XCTAssertEqual(stored.name, "Subuh")
-        XCTAssertEqual(stored.category.id, simple_quran.Category.default(.morning).id)
+        XCTAssertEqual(stored.category.id, hidayah_app.Category.default(.morning).id)
     }
 
     func test_updateTask_should_ignoreUnknownTask() {

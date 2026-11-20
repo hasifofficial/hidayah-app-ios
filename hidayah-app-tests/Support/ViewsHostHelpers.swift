@@ -1,6 +1,6 @@
 //
 //  ViewsHostHelpers.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 //  Extra lookups on top of ViewHost for view tests.
 //

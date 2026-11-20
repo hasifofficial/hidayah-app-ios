@@ -233,10 +233,14 @@ All four targets use Xcode synchronized folders.
 
 | Target | Folders | Deployment target |
 |---|---|---|
-| `simple-quran` | `hidayah-app/` | iOS 17.0 |
-| `app-widgetExtension` | `hidayah-app-widget/` | iOS 18.4 |
-| `simple-quranTests` | `hidayah-app-tests/` (hosted by the app) | iOS 17.0 |
-| `app-widgetTests` | `hidayah-app-widget-tests/` and `hidayah-app-widget/` (no host) | iOS 18.4 |
+| `hidayah-app` | `hidayah-app/` | iOS 17.0 |
+| `hidayah-app-widget` | `hidayah-app-widget/` | iOS 18.4 |
+| `hidayah-app-tests` | `hidayah-app-tests/` (hosted by the app) | iOS 17.0 |
+| `hidayah-app-widget-tests` | `hidayah-app-widget-tests/` and `hidayah-app-widget/` (no host) | iOS 18.4 |
+
+Targets, folders and schemes share the `hidayah-app` names, and the project is `hidayah-app.xcodeproj`. The app's Swift module is `hidayah_app` (`@testable import hidayah_app`). Bundle IDs, the App Group and notification identifiers keep their original `simple-quran` form, because they identify the app to the App Store and on users' devices.
+
+The widget target keeps its original product and module name, `app-widgetExtension` (`PRODUCT_NAME` and `PRODUCT_MODULE_NAME` are set explicitly). Users' configured Quick Surahs widgets store an App Intent that may be identified by that module, so renaming it could reset their choices. Leave both alone.
 
 Some `Core` files are intentionally shared with the widget to support task toggling and snapshot access. These files appear as shared-target items in Xcode:
 
@@ -244,9 +248,9 @@ Some `Core` files are intentionally shared with the widget to support task toggl
 - `TaskManager`, `HidayahStore`, and tracker history/notification services
 - `Storage` and related identifiers
 
-The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `app-widgetExtension` and one for `app-widgetTests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
+The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `hidayah-app-widget` and one for `hidayah-app-widget-tests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
 
-`app-widgetTests` excludes `appWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
+`hidayah-app-widget-tests` excludes `appWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
 
 Do not manually add synchronized-folder files to target source phases. Add or remove membership through the synchronized-folder exceptions.
 
@@ -304,10 +308,10 @@ When the process hosts unit tests, `AppEnvironment.isRunningUnitTests` switches 
 
 ### Test targets
 
-- **`simple-quranTests`** — hosted by the app. Covers Core, navigation, view models and every screen. Screens are rendered with `ViewHost`, which shows a view in a real window and drives its controls through the accessibility tree.
-- **`app-widgetTests`** — no host. Compiles the widget sources and the shared Core files directly, so widget code is in the test module without `@testable import`.
+- **`hidayah-app-tests`** — hosted by the app. Covers Core, navigation, view models and every screen. Screens are rendered with `ViewHost`, which shows a view in a real window and drives its controls through the accessibility tree.
+- **`hidayah-app-widget-tests`** — no host. Compiles the widget sources and the shared Core files directly, so widget code is in the test module without `@testable import`.
 
-Both run from the `simple-quran` scheme (⌘U) with code coverage enabled.
+Both run from the `hidayah-app` scheme (⌘U) with code coverage enabled.
 
 ### Test conventions
 
@@ -350,7 +354,7 @@ The project uses Xcode synchronized folders.
 
 - New files inside existing folders are picked up automatically.
 - Do not add duplicate source references to `project.pbxproj`; doing so causes duplicate-build warnings.
-- Moving a shared file that belongs to the widget requires updating both the `app-widgetExtension` and `app-widgetTests` membership exceptions.
+- Moving a shared file that belongs to the widget requires updating both the `hidayah-app-widget` and `hidayah-app-widget-tests` membership exceptions.
 - Resource bundles and localized files must remain inside the target that uses them.
 
 ## Adding a feature

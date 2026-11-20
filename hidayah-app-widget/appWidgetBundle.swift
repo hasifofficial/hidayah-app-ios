@@ -1,6 +1,6 @@
 //
 //  appWidgetBundle.swift
-//  app-widget
+//  hidayah-app-widget
 //
 //  Created by Mohammad Hasif Afiq on 4/30/25.
 //

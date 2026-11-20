@@ -1,13 +1,13 @@
 //
 //  TestSupport.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import Foundation
 import SwiftData
 import UserNotifications
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 // MARK: - Store and preferences
 

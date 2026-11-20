@@ -1,6 +1,6 @@
 //
 //  WhatsNewRelease.swift
-//  simple-quran
+//  hidayah-app
 //
 //  The features a release introduces, and whether the reader has seen them.
 //

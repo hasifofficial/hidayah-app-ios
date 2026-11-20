@@ -1,6 +1,6 @@
 //
 //  QuickSurahWidgetView.swift
-//  app-widget
+//  hidayah-app-widget
 //
 
 import SwiftUI

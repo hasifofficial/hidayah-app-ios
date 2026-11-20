@@ -1,11 +1,11 @@
 //
 //  TrackerNotificationSchedulerTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import UserNotifications
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class TrackerNotificationSchedulerTests: XCTestCase {

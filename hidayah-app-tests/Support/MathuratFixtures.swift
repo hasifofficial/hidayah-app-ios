@@ -1,10 +1,10 @@
 //
 //  MathuratFixtures.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import Foundation
-@testable import simple_quran
+@testable import hidayah_app
 
 /// A loader serving in-memory entries, so tests don't depend on the bundled
 /// text. Used only from the main actor.

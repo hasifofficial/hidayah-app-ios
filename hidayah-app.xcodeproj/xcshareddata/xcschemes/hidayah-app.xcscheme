@@ -17,7 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1B78EB10260B327E004E07CD"
                BuildableName = "Hidayah.app"
-               ReferencedContainer = "container:simple-quran.xcodeproj">
+               ReferencedContainer = "container:hidayah-app.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,9 +35,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6C11DA7D4934977777292325"
-               BuildableName = "simple-quranTests.xctest"
-               BlueprintName = "simple-quranTests"
-               ReferencedContainer = "container:simple-quran.xcodeproj">
+               BuildableName = "hidayah-app-tests.xctest"
+               BlueprintName = "hidayah-app-tests"
+               ReferencedContainer = "container:hidayah-app.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -46,9 +46,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CC3CBF9CCAF398625445E69E"
-               BuildableName = "app-widgetTests.xctest"
-               BlueprintName = "app-widgetTests"
-               ReferencedContainer = "container:simple-quran.xcodeproj">
+               BuildableName = "hidayah-app-widget-tests.xctest"
+               BlueprintName = "hidayah-app-widget-tests"
+               ReferencedContainer = "container:hidayah-app.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -70,7 +70,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1B78EB10260B327E004E07CD"
             BuildableName = "Hidayah.app"
-            ReferencedContainer = "container:simple-quran.xcodeproj">
+            ReferencedContainer = "container:hidayah-app.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1B78EB10260B327E004E07CD"
             BuildableName = "Hidayah.app"
-            ReferencedContainer = "container:simple-quran.xcodeproj">
+            ReferencedContainer = "container:hidayah-app.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

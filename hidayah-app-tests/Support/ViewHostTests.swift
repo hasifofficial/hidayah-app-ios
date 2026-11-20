@@ -1,6 +1,6 @@
 //
 //  ViewHostTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI

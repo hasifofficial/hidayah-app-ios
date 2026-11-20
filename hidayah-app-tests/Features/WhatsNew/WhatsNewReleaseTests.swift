@@ -1,11 +1,11 @@
 //
 //  WhatsNewReleaseTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import UIKit
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 final class WhatsNewReleaseTests: XCTestCase {
     override func setUp() {

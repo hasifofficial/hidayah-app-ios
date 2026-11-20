@@ -1,6 +1,6 @@
 //
 //  ReaderHeaderCard.swift
-//  simple-quran
+//  hidayah-app
 //
 
 import SwiftUI

@@ -1,10 +1,10 @@
 //
 //  TrackerDayDetailViewModelTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class TrackerDayDetailViewModelTests: XCTestCase {
@@ -100,9 +100,9 @@ final class TrackerDayDetailViewModelTests: XCTestCase {
         // Arrange
         let taskManager = VMFixtures.makeTaskManager()
         taskManager.addCustomCategory(name: "Mine", icon: "star")
-        let mine = simple_quran.Category.custom(taskManager.customCategories[0])
-        let zeta = simple_quran.Category.custom(CustomCategory(name: "Zeta"))
-        let alpha = simple_quran.Category.custom(CustomCategory(name: "Alpha"))
+        let mine = hidayah_app.Category.custom(taskManager.customCategories[0])
+        let zeta = hidayah_app.Category.custom(CustomCategory(name: "Zeta"))
+        let alpha = hidayah_app.Category.custom(CustomCategory(name: "Alpha"))
         let record = TrackerDayRecord(
             dayKey: "2026-11-03",
             tasks: [
@@ -125,8 +125,8 @@ final class TrackerDayDetailViewModelTests: XCTestCase {
 
         // Assert
         XCTAssertEqual(groups.map(\.categoryID), [
-            simple_quran.Category.default(.morning).id,
-            simple_quran.Category.default(.fajr).id,
+            hidayah_app.Category.default(.morning).id,
+            hidayah_app.Category.default(.fajr).id,
             mine.id,
             alpha.id,
             zeta.id
@@ -154,7 +154,7 @@ final class TrackerDayDetailViewModelTests: XCTestCase {
 
     func test_categoryName_should_keepSavedName_when_categoryIsCustom() throws {
         // Arrange
-        let custom = simple_quran.Category.custom(CustomCategory(name: "Renamed later"))
+        let custom = hidayah_app.Category.custom(CustomCategory(name: "Renamed later"))
         let snapshot = try savedSnapshot(category: custom, categoryName: "Name on that day")
         let vm = makeViewModel(tasks: [snapshot])
         let group = try XCTUnwrap(vm.groupedTasks.first)
@@ -177,7 +177,7 @@ final class TrackerDayDetailViewModelTests: XCTestCase {
     /// A snapshot as decoded from storage, with whatever category name was
     /// saved, e.g. the raw key a widget-side save leaves behind.
     private func savedSnapshot(
-        category: simple_quran.Category,
+        category: hidayah_app.Category,
         categoryName: String
     ) throws -> TrackerTaskSnapshot {
         let original = VMFixtures.snapshot("Task", category: category, isCompleted: true)

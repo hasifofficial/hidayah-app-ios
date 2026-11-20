@@ -1,6 +1,6 @@
 //
 //  ViewsFixtures.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 //  JSON fixtures in api.alquran.cloud shapes and a path-based stub router
 //  for view tests.
@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 enum ViewsFixtures {
     struct SurahRow {

@@ -1,11 +1,11 @@
 //
 //  TrackerCalendarViewTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 private extension Calendar {
     func startOfMonth(_ date: Date) -> Date {

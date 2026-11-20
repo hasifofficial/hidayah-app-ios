@@ -1,11 +1,11 @@
 //
 //  MushafViewTests.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 @MainActor
 final class MushafViewTests: ViewsTestCase {

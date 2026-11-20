@@ -1,6 +1,6 @@
 //
 //  QuickSurahProvider.swift
-//  app-widget
+//  hidayah-app-widget
 //
 
 import AppIntents

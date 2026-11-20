@@ -1,6 +1,6 @@
 //
 //  WhatsNewView.swift
-//  simple-quran
+//  hidayah-app
 //
 //  An illustrated page for each new feature, shown once after an update
 //  and again from Settings.

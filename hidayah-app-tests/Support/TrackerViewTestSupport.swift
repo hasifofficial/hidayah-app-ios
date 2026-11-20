@@ -1,12 +1,12 @@
 //
 //  TrackerViewTestSupport.swift
-//  simple-quranTests
+//  hidayah-app-tests
 //
 
 import SwiftUI
 import UIKit
 import XCTest
-@testable import simple_quran
+@testable import hidayah_app
 
 /// A task manager backed by an in-memory store and a fake notification
 /// center, reading the time from `clock`.
