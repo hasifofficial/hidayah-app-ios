@@ -21,6 +21,7 @@ hidayah-app/
   Resources/    Assets, fonts, localization, constants, bundled Al-Mathurat text and Mushaf pages
 
 hidayah-app-widget/         Widget extension
+hidayah-app-watch/          Apple Watch app
 hidayah-app-tests/          Unit tests for the app, mirroring hidayah-app/
 hidayah-app-widget-tests/   Unit tests for the widget, mirroring hidayah-app-widget/
 ```
@@ -48,7 +49,7 @@ App/
 - `AppController` is the composition root for services and shared state. Its initializer takes the task manager, store, notification scheduler and notification center, defaulting to the shared instances.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
-- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker` or `mathurat[/<order>]`.
+- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker`, `mathurat[/<order>]` or `qibla` (opens Home › Explore › Qibla).
 
 ## Core
 
@@ -74,7 +75,7 @@ Core/
 
 ## Features
 
-One folder per feature: `Home`, `Explore`, `Quran`, `Reading`, `Mathurat`, `Tasbih`, `Tracker`, `Search`, `Settings` and `WhatsNew`. Larger features split into sub-folders by screen (for example `Quran/List`, `Quran/Mushaf`, `Tracker/Calendar`), each with its own `Components/` where needed.
+One folder per feature: `Home`, `Explore`, `Quran`, `Reading`, `Mathurat`, `Tasbih`, `Qibla`, `Tracker`, `Search`, `Settings` and `WhatsNew`. Larger features split into sub-folders by screen (for example `Quran/List`, `Quran/Mushaf`, `Tracker/Calendar`), each with its own `Components/` where needed.
 
 ### MVVM rules
 
@@ -129,9 +130,42 @@ hidayah-app-widget/
 - **Quick Surahs widget** uses `AppIntentConfiguration` so users choose surahs in the system's widget configuration UI.
 - `WidgetFontLoader` registers the widget’s own font bundle at runtime.
 
+## Watch app
+
+```
+hidayah-app-watch/
+  Sync/        WatchTrackerModel (WatchConnectivity on the Watch)
+  Tracker/     Today's tasks
+  Tasbih/      Counter with tap and Digital Crown
+  Qibla/       Compass
+  Resources/   Assets, en.lproj/Localizable.strings
+  HidayahWatchApp.swift
+  WatchRootView.swift
+  PrivacyInfo.xcprivacy
+```
+
+A companion watchOS app (`com.hasifofficial.simple-quran.watchkitapp`) embedded in the iPhone app by the **Embed Watch Content** phase. It needs the iPhone app (`WKRunsIndependentlyOfCompanionApp = NO`) and has three screens: Istiqamah tracker, Tasbih and Qibla.
+
+### Tracker sync
+
+The iPhone owns the tracker. The Watch has no store; it shows a snapshot and asks the iPhone for changes over WatchConnectivity.
+
+- **`WatchTrackerSnapshot`** (`Core/Watch/`) — today's day key and tasks, the current streak and level, and when the next tracker day starts and ends, so the Watch can show a fresh day before it hears from the iPhone. Past the end of the following day the Watch is *stale*: it shows the tasks but disables them until the iPhone sends a new snapshot.
+- **`WatchTaskCompletion`** — a request to set (not toggle) one task's completion for a given day key, so a request delivered twice changes nothing.
+- **`WatchSyncService`** (`Core/Watch/`, iPhone only) — `AppController` starts it with the `TaskManager`. It sets `TaskManager.onTrackerChange`, which runs on every widget refresh, and sends the snapshot with `updateApplicationContext` (plus a live message when the Watch is reachable). Completions from the Watch go through `TaskManager.setTaskCompletion(taskID:isCompleted:dayKey:)`, which ignores another day or a missing task; a request that changes nothing is answered with a fresh snapshot so the Watch drops it. In unit tests the shared instance has no session.
+- **`WatchTrackerState`** (`Core/Watch/`) — plain value logic for what the Watch shows: the snapshot with unanswered taps laid on top. Each tap records when it was sent, and each snapshot when it was made (`generatedAt`). A snapshot settles a tap when it already reflects it, was made after the tap was sent (the iPhone has seen it, whether or not it applied it), or has moved past the tap's day, so a tap the iPhone rejected never lingers. It takes `now` as a parameter and is tested in `hidayah-app-tests`.
+- **`WatchTrackerModel`** (Watch only) — keeps the `WatchTrackerState` in the Watch's `UserDefaults` so it shows on launch, and asks for a snapshot when the app becomes active. When the iPhone is reachable it sends a tap with `sendMessage` and a reply handler; the iPhone answers with the new snapshot, which settles the tap at once, and any send error falls back to `transferUserInfo`. Otherwise it uses `transferUserInfo` straight away (queued until the iPhone app runs).
+- `WatchSyncService` implements both `session(_:didReceiveMessage:)` variants. A message sent without a reply handler only reaches the variant without one, and WatchConnectivity drops it silently when that method is missing.
+
+Adding and editing tasks stays on the iPhone.
+
+### Tasbih and Qibla
+
+Both reuse the iPhone view models: `TasbihViewModel` (tap anywhere or turn the Digital Crown; turning back undoes) and `QiblaViewModel` with `CoreLocationQiblaSensor`. Only the views are Watch-specific. `AppHaptics` plays `WKHapticType`s on watchOS, and `QiblaSensor` leaves out the iOS-only heading orientation and calibration callback. Watches without a compass get the "No Compass" screen.
+
 ### Target membership
 
-All four targets use Xcode synchronized folders.
+All five targets use Xcode synchronized folders.
 
 | Target | Folders | Deployment target |
 |---|---|---|
@@ -139,6 +173,7 @@ All four targets use Xcode synchronized folders.
 | `hidayah-app-widget` | `hidayah-app-widget/` | iOS 18.4 |
 | `hidayah-app-tests` | `hidayah-app-tests/` (hosted by the app) | iOS 17.0 |
 | `hidayah-app-widget-tests` | `hidayah-app-widget-tests/` and `hidayah-app-widget/` (no host) | iOS 18.4 |
+| `hidayah-app-watch` | `hidayah-app-watch/` | watchOS 10.0 |
 
 Targets, folders and schemes share the `hidayah-app` names, and the project is `hidayah-app.xcodeproj`. The app's Swift module is `hidayah_app` (`@testable import hidayah_app`). Bundle IDs, the App Group and notification identifiers keep their original `simple-quran` form, because they identify the app to the App Store and on users' devices.
 
@@ -151,6 +186,8 @@ Some `Core` files are shared with the widget to support task toggling and snapsh
 - `Storage` and related identifiers
 
 The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `hidayah-app-widget` and one for `hidayah-app-widget-tests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
+
+`hidayah-app-watch` has its own exception set on the `hidayah-app` folder listing the files it compiles: `Category`, `TaskDetails`, `QiblaMath`, `QiblaSensor`, `WatchTrackerSnapshot`, `WatchTrackerState`, `QiblaViewModel`, `TasbihViewModel`, `AppHaptics` and `LevelColor`. Anything added to that list must build for watchOS (no UIKit, SwiftData or WidgetKit). `WatchSyncService` is iPhone only and stays out of it.
 
 `hidayah-app-widget-tests` excludes `HidayahAppWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
 
@@ -191,8 +228,9 @@ Changing a model without a new version makes the on-disk store fail to open.
 
 - App UI: `hidayah-app/Resources/en.lproj/Localizable.strings`
 - Widget UI: `hidayah-app-widget/Resources/en.lproj/Localizable.strings`
-- Never rely on the app’s localization bundle from inside the widget; each target has its own bundle.
-- Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `mathurat_`, `widget_`).
+- Watch UI: `hidayah-app-watch/Resources/en.lproj/Localizable.strings`. It repeats the keys the shared view models and default category names use (`tasbih_`, `qibla_`, `default_category_`); keep their text the same as the app's.
+- Never rely on the app’s localization bundle from inside the widget or the Watch app; each target has its own bundle.
+- Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `mathurat_`, `widget_`, `watch_`).
 - Arabic Quran/dhikr content, user-created names, and numeric values are data, not UI chrome.
 - Localize default category names when they are shown, not when they are saved. Day records keep the category name as it was saved (a record saved from the widget holds the raw key), so look default names up from the category ID.
 
@@ -215,6 +253,7 @@ When the process hosts unit tests, `AppEnvironment.isRunningUnitTests` switches 
 
 - **`hidayah-app-tests`** — hosted by the app. Covers Core, navigation, view models and every screen. Screens are rendered with `ViewHost`, which shows a view in a real window and drives its controls through the accessibility tree.
 - **`hidayah-app-widget-tests`** — no host. Compiles the widget sources and the shared Core files directly, so widget code is in the test module without `@testable import`.
+- The Watch app has no test target. Its logic lives in shared `Core/Watch` files tested in `hidayah-app-tests/Core/Watch/`; keep Watch-only files to views and WatchConnectivity plumbing.
 
 Both run from the `hidayah-app` scheme (⌘U) with code coverage enabled.
 
@@ -228,9 +267,9 @@ Both run from the `hidayah-app` scheme (⌘U) with code coverage enabled.
 
 ## Privacy
 
-Both the app and the widget ship a `PrivacyInfo.xcprivacy` at the root of their folder. They declare `UserDefaults` access with reason `1C8F.1` (data shared within the App Group), no tracking, and no data collected by the app's own code; Firebase declares its own collection in its SDK manifests.
+The app, the widget and the Watch app each ship a `PrivacyInfo.xcprivacy` at the root of their folder. The app and widget declare `UserDefaults` access with reason `1C8F.1` (data shared within the App Group); the Watch app uses its own defaults and declares `CA92.1`. None track or collect data in their own code; Firebase declares its own collection in its SDK manifests.
 
-When code starts using another required-reason API (file timestamps, system boot time, disk space, active keyboards), declare it in both manifests.
+When code starts using another required-reason API (file timestamps, system boot time, disk space, active keyboards), declare it in every manifest whose target uses it.
 
 ## Synchronized folders
 
@@ -248,7 +287,7 @@ When code starts using another required-reason API (file timestamps, system boot
 5. Inject services from the composition root or parent screen.
 6. Add localization keys under the feature prefix.
 7. If the feature has a widget, add a dedicated folder under `hidayah-app-widget/Widgets`.
-8. If the feature shares a `Core` file with the widget, add it to both widget exception sets.
+8. If the feature shares a `Core` file with the widget, add it to both widget exception sets. If it comes to the Watch, add the shared files to the `hidayah-app-watch` exception set and the Watch view under `hidayah-app-watch/`.
 9. Add tests in the matching folder under `hidayah-app-tests/` (or `hidayah-app-widget-tests/`).
 10. If the feature uses a new required-reason API, declare it in the privacy manifests.
 11. Build with a clean derived-data path and run the tests before merging.

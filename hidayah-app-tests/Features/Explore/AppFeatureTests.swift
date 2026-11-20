@@ -3,6 +3,7 @@
 //  hidayah-app-tests
 //
 
+import UIKit
 import XCTest
 @testable import hidayah_app
 
@@ -10,7 +11,7 @@ import XCTest
 final class AppFeatureTests: XCTestCase {
     func test_allCases_should_listMainFeaturesInOrder() {
         // Arrange
-        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .tracker]
+        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .qibla, .tracker]
 
         // Act
         let features = AppFeature.allCases
@@ -47,6 +48,27 @@ final class AppFeatureTests: XCTestCase {
         XCTAssertNil(AppFeature.quran.assetIcon)
     }
 
+    func test_illustrations_should_existInAssetCatalog() {
+        // Arrange
+        let names = AppFeature.allCases.map(\.illustration)
+            + MathuratTime.allCases.map(\.illustration)
+            + [
+                AppFeature.allIllustration,
+                Illustration.quranClosed,
+                Illustration.bookmark,
+                Illustration.mathuratEvening,
+                Illustration.calendar,
+                Illustration.search
+            ]
+
+        // Act
+        let missing = names.filter { UIImage(named: $0) == nil }
+
+        // Assert
+        XCTAssertEqual(missing, [])
+        XCTAssertEqual(AppFeature.mathurat.illustration, "IllustrationMathurat")
+    }
+
     func test_open_should_pushRouteFeatureOnCurrentStack() {
         // Arrange
         let router = AppRouter()
@@ -71,5 +93,18 @@ final class AppFeatureTests: XCTestCase {
         // Assert
         XCTAssertEqual(router.selectedTab, .tracker)
         XCTAssertEqual(router.savedHomePath, [.explore])
+    }
+
+    func test_open_should_pushQibla() {
+        // Arrange
+        let router = AppRouter()
+        router.homePath = [.explore]
+
+        // Act
+        router.open(.qibla)
+
+        // Assert
+        XCTAssertEqual(router.homePath, [.explore, .qibla])
+        XCTAssertEqual(AppFeature.qibla.title, "Qibla")
     }
 }

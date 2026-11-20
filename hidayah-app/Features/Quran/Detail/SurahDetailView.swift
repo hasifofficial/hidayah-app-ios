@@ -126,6 +126,7 @@ struct SurahDetailView: View {
     private var detailCard: some View {
         ReaderHeaderCard(
             icon: "book.closed.fill",
+            illustration: AppFeature.quran.illustration,
             label: NSLocalizedString("surah_detail_heading", comment: ""),
             title: viewModel.surahName
         ) {

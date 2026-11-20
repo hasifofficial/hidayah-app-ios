@@ -5,10 +5,13 @@
 
 import SwiftUI
 
-/// The green-tinted card at the top of a reading screen: an icon tile, a
+/// The green-tinted card at the top of a reading screen: an icon tile (or
+/// an illustration), a
 /// small uppercase label and a bold title, followed by `content`.
 struct ReaderHeaderCard<Content: View>: View {
     let icon: String
+    /// An illustration shown in place of the icon tile.
+    var illustration: String? = nil
     let label: String
     let title: String
     @ViewBuilder let content: Content
@@ -16,15 +19,19 @@ struct ReaderHeaderCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color.lightGreen.opacity(0.12))
+                if let illustration {
+                    IllustrationImage(name: illustration, size: 48)
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color.lightGreen.opacity(0.12))
 
-                    Image(systemName: icon)
-                        .font(.system(size: 19, weight: .semibold))
-                        .foregroundColor(.lightGreen)
+                        Image(systemName: icon)
+                            .font(.system(size: 19, weight: .semibold))
+                            .foregroundColor(.lightGreen)
+                    }
+                    .frame(width: 42, height: 42)
                 }
-                .frame(width: 42, height: 42)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(label)

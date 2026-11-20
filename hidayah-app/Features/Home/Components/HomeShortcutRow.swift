@@ -18,6 +18,7 @@ struct HomeShortcutRow: View {
                 HomeShortcutTile(
                     icon: feature.icon,
                     assetIcon: feature.assetIcon,
+                    illustration: feature.illustration,
                     title: feature.shortTitle,
                     accessibilityLabel: feature.title
                 ) {
@@ -27,6 +28,7 @@ struct HomeShortcutRow: View {
 
             HomeShortcutTile(
                 icon: "square.grid.2x2.fill",
+                illustration: AppFeature.allIllustration,
                 title: NSLocalizedString("home_explore_all", comment: ""),
                 accessibilityLabel: NSLocalizedString("home_explore_all_accessibility", comment: ""),
                 action: onOpenAll
@@ -38,6 +40,7 @@ struct HomeShortcutRow: View {
 struct HomeShortcutTile: View {
     let icon: String
     var assetIcon: String? = nil
+    var illustration: String? = nil
     let title: String
     var accessibilityLabel: String? = nil
     let action: () -> Void
@@ -53,7 +56,15 @@ struct HomeShortcutTile: View {
                                 .stroke(Color.lightGreen.opacity(0.12), lineWidth: 1)
                         }
 
-                    FeatureIcon(systemName: icon, assetName: assetIcon, size: 20)
+                    if let illustration {
+                        Image(illustration)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 46, height: 46)
+                            .accessibilityHidden(true)
+                    } else {
+                        FeatureIcon(systemName: icon, assetName: assetIcon, size: 20)
+                    }
                 }
                 .frame(height: 58)
 

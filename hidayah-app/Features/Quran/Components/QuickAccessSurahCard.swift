@@ -14,7 +14,8 @@ struct QuickAccessSurahCard: View {
     let surah: SurahListResponse
     /// An extra line under the name, such as the bookmarked verse.
     var detail: String? = nil
-    var icon = "book.fill"
+    /// The illustration in the top corner: a mushaf, or a bookmark.
+    var illustration = Illustration.quranClosed
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -31,9 +32,7 @@ struct QuickAccessSurahCard: View {
 
                 Spacer()
 
-                Image(systemName: icon)
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.lightGreen.opacity(0.75))
+                IllustrationImage(name: illustration, size: 28)
             }
 
             VStack(alignment: .leading, spacing: 2) {

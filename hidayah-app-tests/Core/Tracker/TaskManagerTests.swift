@@ -268,6 +268,112 @@ final class TaskManagerTests: XCTestCase {
         XCTAssertEqual(sut.history.map(\.dayKey), ["2026-03-10", "2026-03-11"])
     }
 
+    // MARK: - Completion from the Watch
+
+    func test_setTaskCompletion_should_setValueForActiveDay() {
+        // Arrange
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+
+        // Act
+        let changed = sut.setTaskCompletion(
+            taskID: seeded[1].id,
+            isCompleted: true,
+            dayKey: "2026-03-10"
+        )
+
+        // Assert
+        XCTAssertTrue(changed)
+        XCTAssertTrue(sut.tasks[1].isCompleted)
+        XCTAssertTrue(store.loadTrackerData().tasks[1].isCompleted)
+        XCTAssertEqual(sut.todayRecord?.completedCount, 1)
+    }
+
+    func test_setTaskCompletion_should_changeNothingWhenAppliedTwice() {
+        // Arrange
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+        sut.setTaskCompletion(taskID: seeded[0].id, isCompleted: true, dayKey: "2026-03-10")
+
+        // Act
+        let changed = sut.setTaskCompletion(
+            taskID: seeded[0].id,
+            isCompleted: true,
+            dayKey: "2026-03-10"
+        )
+
+        // Assert
+        XCTAssertFalse(changed)
+        XCTAssertTrue(sut.tasks[0].isCompleted)
+    }
+
+    func test_setTaskCompletion_should_ignoreAnotherDay() {
+        // Arrange
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+
+        // Act
+        let changed = sut.setTaskCompletion(
+            taskID: seeded[0].id,
+            isCompleted: true,
+            dayKey: "2026-03-09"
+        )
+
+        // Assert
+        XCTAssertFalse(changed)
+        XCTAssertFalse(sut.tasks[0].isCompleted)
+    }
+
+    func test_setTaskCompletion_should_ignoreUnknownTask() {
+        // Arrange
+        seedTwoTasks()
+        let sut = makeSUT()
+
+        // Act
+        let changed = sut.setTaskCompletion(
+            taskID: UUID(),
+            isCompleted: true,
+            dayKey: "2026-03-10"
+        )
+
+        // Assert
+        XCTAssertFalse(changed)
+        XCTAssertEqual(sut.tasks.filter(\.isCompleted).count, 0)
+    }
+
+    func test_setTaskCompletion_should_rejectYesterdayAfterRollover() {
+        // Arrange
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+        clock.now = TestClock.date(year: 2026, month: 3, day: 11)
+
+        // Act
+        let changed = sut.setTaskCompletion(
+            taskID: seeded[0].id,
+            isCompleted: true,
+            dayKey: "2026-03-10"
+        )
+
+        // Assert
+        XCTAssertFalse(changed)
+        XCTAssertEqual(sut.activeDayKey, "2026-03-11")
+        XCTAssertFalse(sut.tasks[0].isCompleted)
+    }
+
+    func test_onTrackerChange_should_runWhenTrackerIsSaved() {
+        // Arrange
+        let seeded = seedTwoTasks()
+        let sut = makeSUT()
+        var calls = 0
+        sut.onTrackerChange = { calls += 1 }
+
+        // Act
+        sut.toggleTaskCompletion(task: seeded[0])
+
+        // Assert
+        XCTAssertGreaterThan(calls, 0)
+    }
+
     // MARK: - Day rollover
 
     func test_refreshForCurrentDay_should_archiveYesterdayAndResetTasks() {

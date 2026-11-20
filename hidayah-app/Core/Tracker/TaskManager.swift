@@ -56,6 +56,11 @@ class TaskManager {
     @ObservationIgnored
     private var dayStartTimer: Timer?
 
+    /// Called whenever the persisted tracker may have changed, alongside the
+    /// widget refresh. The app uses it to keep the Watch in step.
+    @ObservationIgnored
+    var onTrackerChange: (() -> Void)?
+
     init(
         store: HidayahStore = .shared,
         scheduler: TrackerNotificationScheduler = .shared,
@@ -329,6 +334,33 @@ class TaskManager {
         }
     }
 
+    /// Sets a task's completion for `dayKey`, as asked by another device.
+    /// Ignored when the tracker has moved on to a different day or the task
+    /// no longer exists. Returns whether anything changed.
+    @discardableResult
+    func setTaskCompletion(
+        taskID: UUID,
+        isCompleted: Bool,
+        dayKey: String
+    ) -> Bool {
+        refreshForCurrentDay()
+
+        guard activeDayKey == dayKey,
+              let index = tasks.firstIndex(where: { $0.id == taskID }),
+              tasks[index].isCompleted != isCompleted else {
+            return false
+        }
+
+        tasks[index].isCompleted = isCompleted
+        dirtyTaskIDs.insert(taskID)
+        saveData()
+        scheduler.progressDidChange(
+            record: todayRecord,
+            stats: stats
+        )
+        return true
+    }
+
     func resetDailyTasks() {
         DispatchQueue.main.async {
             self.refreshForCurrentDay()
@@ -476,6 +508,8 @@ extension TaskManager {
         // An in-memory session must not replace the widget's snapshot of
         // the data that is still on disk.
         guard store.isPersistent else { return }
+
+        onTrackerChange?()
 
         let completed = tasks.filter { $0.isCompleted }.count
         let total = tasks.count

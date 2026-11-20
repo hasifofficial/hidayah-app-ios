@@ -62,7 +62,8 @@ final class RootViewTests: ViewsTestCase {
             taskManager: taskManager,
             router: router,
             reflectionGenerator: UnavailableReflectionGenerator(),
-            whatsNewRelease: whatsNew
+            whatsNewRelease: whatsNew,
+            qiblaSensor: FakeQiblaSensor(authorization: .notDetermined)
         )
     }
 
@@ -394,6 +395,7 @@ final class RootViewTests: ViewsTestCase {
     private let destinationChecks: [(AppRoute, String)] = [
         (.explore, "Build your daily Istiqamah routine."),
         (.tasbih, "Tap anywhere to count"),
+        (.qibla, "Allow Location"),
         (.quranList, "All Surahs"),
         (.surahDetail(surahNumber: 18, title: "Al-Kahf", bookmarkedAyah: nil), "Arabic 1"),
         (.bookmarkList, "You have no bookmarks"),

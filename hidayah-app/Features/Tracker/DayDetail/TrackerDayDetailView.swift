@@ -299,7 +299,7 @@ struct TrackerDayDetailView: View {
                     )
                 )
             } icon: {
-                Image(systemName: "calendar")
+                IllustrationImage(name: Illustration.calendar, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(

@@ -65,8 +65,7 @@ struct WidgetGuideView: View {
                         }
                     } label: {
                         HStack(spacing: 6) {
-                            Image(systemName: kind.icon)
-                                .font(.system(size: 11, weight: .semibold))
+                            IllustrationImage(name: kind.illustration, size: 20)
 
                             Text(NSLocalizedString(kind.titleKey, comment: ""))
                                 .font(.system(size: 12, weight: .semibold))
@@ -91,12 +90,7 @@ struct WidgetGuideView: View {
 
     private var selectedWidgetInfo: some View {
         HStack(alignment: .top, spacing: 10) {
-            Image(systemName: viewModel.selectedWidget.icon)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.lightGreen)
-                .frame(width: 36, height: 36)
-                .background(Color.lightGreen.opacity(0.12))
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            IllustrationImage(name: viewModel.selectedWidget.illustration, size: 40)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(

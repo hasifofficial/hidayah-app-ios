@@ -34,8 +34,10 @@ struct HomeView: View {
         store: Storage.userDefaults
     ) private var shortcutsSetting = ""
 
-    /// The widest the readable column gets on iPad and other wide screens.
-    static let columnWidth: CGFloat = 700
+    /// The widest the readable column gets on iPad and other wide screens:
+    /// 700pt of cards plus their 16pt side margins, so cards line up with
+    /// Explore's, which caps at 700 and pads outside that.
+    static let columnWidth: CGFloat = 700 + 2 * 16
 
     var body: some View {
         ScrollView {
@@ -61,6 +63,7 @@ struct HomeView: View {
             }
             .padding(.top, 4)
             .padding(.bottom, 100)
+            .modifier(ExactProposedWidth())
         }
         .onGeometryChange(for: CGFloat.self) { geometry in
             geometry.size.width
@@ -70,8 +73,11 @@ struct HomeView: View {
         .background {
             AppGradientBackground()
         }
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
+        // With the sidebar there's no logo, so the greeting becomes a large
+        // title beside the sidebar button, as on Explore, instead of sitting
+        // under an empty bar.
+        .navigationTitle(showsLogo ? "" : NSLocalizedString("home_greeting", comment: ""))
+        .navigationBarTitleDisplayMode(showsLogo ? .inline : .large)
         .toolbar {
             if showsLogo {
                 logo
@@ -122,10 +128,12 @@ struct HomeView: View {
 
     private var dateHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(NSLocalizedString("home_greeting", comment: ""))
-                .font(.system(size: 26, weight: .bold))
-                .foregroundColor(.title)
-                .accessibilityAddTraits(.isHeader)
+            if showsLogo {
+                Text(NSLocalizedString("home_greeting", comment: ""))
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundColor(.title)
+                    .accessibilityAddTraits(.isHeader)
+            }
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(HomeDateFormatter.gregorian(today))
@@ -355,7 +363,7 @@ struct HomeView: View {
                                         format: NSLocalizedString("bookmark_list_subtitle", comment: ""),
                                         "\(item.bookmark.numberInSurah)"
                                     ),
-                                    icon: "bookmark.fill"
+                                    illustration: Illustration.bookmark
                                 )
                             }
                             .buttonStyle(.plain)
@@ -408,15 +416,7 @@ struct HomeView: View {
 
     private var bookmarksEmptyState: some View {
         HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.lightGreen.opacity(0.12))
-
-                Image(systemName: "bookmark")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.lightGreen)
-            }
-            .frame(width: 42, height: 42)
+            IllustrationImage(name: Illustration.bookmark, size: 46)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(NSLocalizedString("home_bookmarks_empty", comment: ""))
@@ -428,8 +428,10 @@ struct HomeView: View {
                     .foregroundColor(.textGray)
                     .fixedSize(horizontal: false, vertical: true)
             }
-
-            Spacer(minLength: 0)
+            // Takes exactly the room beside the illustration, so wrapped
+            // text can't push the card wider than the screen and let Home
+            // scroll sideways (as the tracker card once did).
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
         .background {
@@ -590,6 +592,44 @@ private struct TrackerProgressRing: View {
                 completed,
                 total
             )
+        )
+    }
+}
+
+
+/// Makes the content report exactly the width it's offered.
+///
+/// Home's sections can measure a hair wider than offered (402.00000000000006
+/// on a 402pt screen, from fractional text and padding maths). The scroll
+/// view then offers that width back, the content grows by another hair, and
+/// once the excess rounds to a visible fraction Home scrolls sideways. This
+/// stops the ratchet at the first step. It uses the offered width rather
+/// than the container's, so it still follows the sidebar on iPad and the Duo.
+private struct ExactProposedWidth: ViewModifier {
+    func body(content: Content) -> some View {
+        ExactProposedWidthLayout { content }
+    }
+}
+
+private struct ExactProposedWidthLayout: Layout {
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        let size = subviews.first?.sizeThatFits(proposal) ?? .zero
+        return CGSize(width: proposal.width ?? size.width, height: size.height)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        subviews.first?.place(
+            at: bounds.origin,
+            proposal: ProposedViewSize(width: bounds.width, height: proposal.height)
         )
     }
 }

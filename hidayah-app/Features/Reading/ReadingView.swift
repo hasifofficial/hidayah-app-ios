@@ -17,6 +17,7 @@ struct ReadingView: View {
             VStack(spacing: 12) {
                 FeatureCard(
                     icon: "book.fill",
+                    illustration: AppFeature.quran.illustration,
                     title: NSLocalizedString("surah_list_header_title", comment: ""),
                     subtitle: NSLocalizedString("reading_quran_subtitle", comment: ""),
                     action: onOpenQuran
@@ -25,6 +26,7 @@ struct ReadingView: View {
 
                 FeatureCard(
                     icon: "sun.horizon.fill",
+                    illustration: AppFeature.mathurat.illustration,
                     title: NSLocalizedString("mathurat_header_title", comment: ""),
                     subtitle: NSLocalizedString("reading_mathurat_subtitle", comment: ""),
                     action: onOpenMathurat

@@ -16,6 +16,7 @@ struct ExploreView: View {
                     FeatureCard(
                         icon: feature.icon,
                         assetIcon: feature.assetIcon,
+                        illustration: feature.illustration,
                         title: feature.title,
                         subtitle: feature.subtitle
                     ) {

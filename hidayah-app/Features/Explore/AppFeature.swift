@@ -12,6 +12,7 @@ enum AppFeature: String, CaseIterable, Identifiable {
     case quran
     case mathurat
     case tasbih
+    case qibla
     case tracker
 
     var id: String { rawValue }
@@ -31,6 +32,8 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return NSLocalizedString("mathurat_header_title", comment: "")
         case .tasbih:
             return NSLocalizedString("tasbih_tab_title", comment: "")
+        case .qibla:
+            return NSLocalizedString("qibla_header_title", comment: "")
         case .tracker:
             return NSLocalizedString("tracker_list_header_title", comment: "")
         }
@@ -58,6 +61,8 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return "sun.horizon.fill"
         case .tasbih:
             return "circle.grid.3x3.fill"
+        case .qibla:
+            return "location.north.circle.fill"
         case .tracker:
             return "checklist.checked"
         }
@@ -73,6 +78,14 @@ enum AppFeature: String, CaseIterable, Identifiable {
         }
     }
 
+    /// A 3D-style illustration drawn for this feature.
+    var illustration: String {
+        "Illustration\(rawValue.prefix(1).uppercased())\(rawValue.dropFirst())"
+    }
+
+    /// The illustration for the "All" tile that opens Explore.
+    static let allIllustration = "IllustrationAll"
+
     var destination: Destination {
         switch self {
         case .quran:
@@ -81,6 +94,8 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return .route(.mathurat)
         case .tasbih:
             return .route(.tasbih)
+        case .qibla:
+            return .route(.qibla)
         case .tracker:
             return .tab(.tracker)
         }

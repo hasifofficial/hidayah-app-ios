@@ -169,6 +169,24 @@ final class DeeplinkManagerTests: XCTestCase {
         XCTAssertNil(router.mathuratFocusOrder)
     }
 
+    func test_handleDeepLink_should_openQiblaFromExplore() {
+        // Arrange
+        router.selectTab(.tracker)
+        router.homePath = []
+        router.savedHomePath = [.quranList]
+        router.settingsPresented = true
+
+        // Act
+        let handled = handle("hidayahapp://inAppDeeplink/qibla")
+
+        // Assert
+        XCTAssertTrue(handled)
+        XCTAssertEqual(router.selectedTab, .home)
+        XCTAssertEqual(router.homePath, [.explore, .qibla])
+        XCTAssertTrue(router.savedHomePath.isEmpty)
+        XCTAssertFalse(router.settingsPresented)
+    }
+
     func test_handleDeepLink_should_rejectUnknownHost() {
         // Arrange
         router.settingsPresented = true

@@ -15,24 +15,21 @@ struct SurahListRowView: View {
     let arabicTitle: String
     var surahNumber: Int? = nil
     var badgeText: String? = nil
-    var badgeIcon: String? = nil
+    /// An illustration in place of the badge tile, such as a bookmark.
+    var badgeIllustration: String? = nil
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
-            if badgeText != nil || badgeIcon != nil {
+            if let badgeIllustration {
+                IllustrationImage(name: badgeIllustration, size: 40)
+            } else if let badgeText {
                 ZStack {
                     RoundedRectangle(cornerRadius: 11, style: .continuous)
                         .fill(Color.lightGreen.opacity(0.12))
 
-                    if let badgeText {
-                        Text(badgeText)
-                            .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(.lightGreen)
-                    } else if let badgeIcon {
-                        Image(systemName: badgeIcon)
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.lightGreen)
-                    }
+                    Text(badgeText)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.lightGreen)
                 }
                 .frame(width: 40, height: 40)
             }

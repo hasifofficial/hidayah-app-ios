@@ -116,15 +116,12 @@ struct HomeShortcutsView: View {
             .settingsListRow()
     }
 
+    /// Just the name: the preview above already shows each feature's
+    /// illustration.
     private func featureLabel(_ feature: AppFeature) -> some View {
-        HStack(spacing: 8) {
-            FeatureIcon(systemName: feature.icon, assetName: feature.assetIcon, size: 16)
-                .frame(width: 32, height: 32)
-
-            Text(feature.title)
-                .font(.system(size: 14))
-                .foregroundColor(.primary)
-        }
+        Text(feature.title)
+            .font(.system(size: 14))
+            .foregroundColor(.primary)
     }
 
     private func addRow(_ feature: AppFeature) -> some View {
@@ -133,7 +130,9 @@ struct HomeShortcutsView: View {
                 viewModel.add(feature)
             }
         } label: {
-            HStack(spacing: 12) {
+            // Matches the gap after the system delete button, so names in
+            // both sections line up.
+            HStack(spacing: 16) {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 20))
                     .foregroundStyle(.white, viewModel.canAdd ? Color.lightGreen : Color.gray.opacity(0.5))

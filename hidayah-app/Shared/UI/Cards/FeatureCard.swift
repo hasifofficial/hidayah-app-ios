@@ -10,6 +10,7 @@ import SwiftUI
 struct FeatureCard: View {
     let icon: String
     var assetIcon: String? = nil
+    var illustration: String? = nil
     let title: String
     let subtitle: String
     let action: () -> Void
@@ -17,13 +18,21 @@ struct FeatureCard: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color.lightGreen.opacity(0.12))
+                if let illustration {
+                    Image(illustration)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 56, height: 56)
+                        .accessibilityHidden(true)
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color.lightGreen.opacity(0.12))
 
-                    FeatureIcon(systemName: icon, assetName: assetIcon, size: 19)
+                        FeatureIcon(systemName: icon, assetName: assetIcon, size: 19)
+                    }
+                    .frame(width: 46, height: 46)
                 }
-                .frame(width: 46, height: 46)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)

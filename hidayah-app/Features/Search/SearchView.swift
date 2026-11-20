@@ -122,7 +122,7 @@ struct SearchView: View {
                     )
                 )
             } icon: {
-                Image(systemName: "magnifyingglass")
+                IllustrationImage(name: Illustration.search, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(

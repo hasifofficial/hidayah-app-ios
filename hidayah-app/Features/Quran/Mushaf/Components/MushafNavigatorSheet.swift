@@ -402,7 +402,7 @@ struct MushafBookmarkedPages: View {
             Label {
                 Text(NSLocalizedString("bookmark_list_empty_list_title", comment: ""))
             } icon: {
-                Image(systemName: "bookmark")
+                IllustrationImage(name: Illustration.bookmark, size: Illustration.emptyStateSize)
             }
         } description: {
             Text(NSLocalizedString("bookmark_list_empty_list_subtitle", comment: ""))
@@ -427,7 +427,7 @@ struct MushafBookmarkedPages: View {
                             ),
                             arabicTitle: viewModel.surahArabicName(surah),
                             surahNumber: surah,
-                            badgeIcon: "bookmark.fill"
+                            badgeIllustration: Illustration.bookmark
                         )
                         .accessibilityElement(children: .combine)
                     }

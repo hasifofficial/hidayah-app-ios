@@ -67,9 +67,13 @@ struct QuickSurahWidgetEntryView: View {
 
             Spacer(minLength: 4)
 
-            Image(systemName: "book.closed.fill")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(.lightGreen)
+            // The app's closed-Quran illustration, also in the widget's
+            // own asset catalogue.
+            Image("IllustrationQuranClosed")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 26, height: 26)
+                .accessibilityHidden(true)
         }
         .frame(height: 29)
     }
