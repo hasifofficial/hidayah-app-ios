@@ -150,6 +150,7 @@
 				Features/Qibla/QiblaViewModel.swift,
 				Features/Tasbih/TasbihViewModel.swift,
 				Shared/Services/AppHaptics.swift,
+				Shared/UI/Components/LevelColor.swift,
 			);
 			target = 853B26A895C64D481F47659F /* hidayah-app-watch */;
 		};

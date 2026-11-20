@@ -48,6 +48,7 @@ final class WatchSyncServiceTests: XCTestCase {
         XCTAssertEqual(snapshot.currentStreak, 1)
         XCTAssertEqual(snapshot.nextDayKey, "2026-03-11")
         XCTAssertEqual(snapshot.generatedAt, clock.now)
+        XCTAssertEqual(snapshot.level, manager.stats.level)
         XCTAssertEqual(snapshot.nextDayStart, TrackerDayKey.nextDayStart(after: clock.now))
         XCTAssertEqual(
             snapshot.nextDayEnd,
@@ -177,6 +178,21 @@ final class WatchSyncServiceTests: XCTestCase {
 
         // Assert
         XCTAssertEqual(decoded, completion)
+    }
+
+    func test_snapshot_should_decodeWithoutLevel() throws {
+        // Arrange
+        // A snapshot saved by a build from before the level was sent.
+        let json = """
+        {"dayKey":"2026-03-10","tasks":[],"currentStreak":2,"nextDayStart":null,"nextDayKey":null,"nextDayEnd":null}
+        """
+
+        // Act
+        let snapshot = try JSONDecoder().decode(WatchTrackerSnapshot.self, from: Data(json.utf8))
+
+        // Assert
+        XCTAssertNil(snapshot.level)
+        XCTAssertEqual(snapshot.currentStreak, 2)
     }
 
     func test_completion_should_ignoreUnrelatedPayload() {

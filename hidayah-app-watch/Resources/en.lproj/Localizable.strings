@@ -15,6 +15,8 @@
 "watch_tracker_empty_message" = "Open Hidayah on your iPhone to bring your tracker to your Watch.";
 "watch_tracker_stale_message" = "Open Hidayah on your iPhone to start today’s tracker.";
 "watch_tracker_all_done" = "All done for today. Alhamdulillah!";
+"watch_tracker_tasks_hint" = "Swipe up for tasks";
+"watch_tracker_level_format" = "Level %d";
 
 /* Tasbih */
 "tasbih_header_title" = "Tasbih";

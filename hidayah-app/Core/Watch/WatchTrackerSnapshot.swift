@@ -22,6 +22,9 @@ struct WatchTrackerSnapshot: Codable, Equatable {
     /// When the iPhone made this snapshot. A tap the Watch sent before this
     /// has been seen by the iPhone, so the snapshot settles it either way.
     var generatedAt: Date? = nil
+    /// The tracker level, as on the iPhone's Home screen. Optional so
+    /// snapshots saved by earlier builds still decode.
+    var level: Int? = nil
 }
 
 extension WatchTrackerSnapshot {

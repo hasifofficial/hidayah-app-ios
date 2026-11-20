@@ -73,7 +73,8 @@ final class WatchSyncService: NSObject {
             nextDayStart: nextDayStart,
             nextDayKey: nextDayStart.map { TrackerDayKey.today(now: $0) },
             nextDayEnd: nextDayStart.flatMap { TrackerDayKey.nextDayStart(after: $0) },
-            generatedAt: now
+            generatedAt: now,
+            level: taskManager.stats.level
         )
     }
 
