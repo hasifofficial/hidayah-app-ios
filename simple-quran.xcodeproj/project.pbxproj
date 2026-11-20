@@ -120,10 +120,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1B791FFC2DC1B8D00007CDDF /* app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 7AA9D2BD6C0325B3F93206A9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "app-widget"; sourceTree = "<group>"; };
-		1B8DFA0B30963CBD00AFCBFA /* simple-quran */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, CC9A33765E6E58BEA8AF96EE /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "simple-quran"; sourceTree = "<group>"; };
-		B6F38842886C1E9413958FDC /* simple-quranTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "simple-quranTests"; sourceTree = "<group>"; };
-		D2BEB885B4B00D6775F92B0B /* app-widgetTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "app-widgetTests"; sourceTree = "<group>"; };
+		1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B79200D2DC1B8D10007CDDF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 7AA9D2BD6C0325B3F93206A9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "hidayah-app-widget"; sourceTree = "<group>"; };
+		1B8DFA0B30963CBD00AFCBFA /* hidayah-app */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1B8DFA4830963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 1B8DFA4930963CBE00AFCBFA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, CC9A33765E6E58BEA8AF96EE /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "hidayah-app"; sourceTree = "<group>"; };
+		B6F38842886C1E9413958FDC /* hidayah-app-tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "hidayah-app-tests"; sourceTree = "<group>"; };
+		D2BEB885B4B00D6775F92B0B /* hidayah-app-widget-tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "hidayah-app-widget-tests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,12 +166,12 @@
 			isa = PBXGroup;
 			children = (
 				1B7920122DC1B8F60007CDDF /* app-widgetExtension.entitlements */,
-				1B8DFA0B30963CBD00AFCBFA /* simple-quran */,
-				1B791FFC2DC1B8D00007CDDF /* app-widget */,
+				1B8DFA0B30963CBD00AFCBFA /* hidayah-app */,
+				1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */,
 				1B78EB12260B327E004E07CD /* Products */,
 				57432DF57683D06809F12458 /* Frameworks */,
-				B6F38842886C1E9413958FDC /* simple-quranTests */,
-				D2BEB885B4B00D6775F92B0B /* app-widgetTests */,
+				B6F38842886C1E9413958FDC /* hidayah-app-tests */,
+				D2BEB885B4B00D6775F92B0B /* hidayah-app-widget-tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,7 +221,7 @@
 				1B79200B2DC1B8D10007CDDF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				1B8DFA0B30963CBD00AFCBFA /* simple-quran */,
+				1B8DFA0B30963CBD00AFCBFA /* hidayah-app */,
 			);
 			name = "simple-quran";
 			packageProductDependencies = (
@@ -245,7 +245,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				1B791FFC2DC1B8D00007CDDF /* app-widget */,
+				1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */,
 			);
 			name = "app-widgetExtension";
 			productName = "app-widgetExtension";
@@ -266,7 +266,7 @@
 				D95117BF9B484C8BB24D60BF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				B6F38842886C1E9413958FDC /* simple-quranTests */,
+				B6F38842886C1E9413958FDC /* hidayah-app-tests */,
 			);
 			name = "simple-quranTests";
 			productName = "simple-quranTests";
@@ -286,8 +286,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				1B791FFC2DC1B8D00007CDDF /* app-widget */,
-				D2BEB885B4B00D6775F92B0B /* app-widgetTests */,
+				1B791FFC2DC1B8D00007CDDF /* hidayah-app-widget */,
+				D2BEB885B4B00D6775F92B0B /* hidayah-app-widget-tests */,
 			);
 			name = "app-widgetTests";
 			productName = "app-widgetTests";
@@ -612,12 +612,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "hidayah-app/Hidayah.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = R53DENZ7QG;
-				INFOPLIST_FILE = "simple-quran/Info.plist";
+				INFOPLIST_FILE = "hidayah-app/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -642,11 +642,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "simple-quran/Hidayah.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "hidayah-app/Hidayah.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = R53DENZ7QG;
-				INFOPLIST_FILE = "simple-quran/Info.plist";
+				INFOPLIST_FILE = "hidayah-app/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -679,7 +679,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "app-widget/Info.plist";
+				INFOPLIST_FILE = "hidayah-app-widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "app-widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
@@ -714,7 +714,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "app-widget/Info.plist";
+				INFOPLIST_FILE = "hidayah-app-widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "app-widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;

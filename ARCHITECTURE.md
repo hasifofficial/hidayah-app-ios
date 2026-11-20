@@ -13,15 +13,15 @@
 ## Layers
 
 ```
-simple-quran/
+hidayah-app/
   App/          Lifecycle, composition root, navigation, deep links
   Core/         Models, networking, persistence, tracker domain services
   Features/     Feature screens, view models, and feature components
   Shared/       Cross-feature UI, form controls, modifiers, services
   Resources/    Assets, fonts, localization, constants, bundled Al-Mathurat text and Mushaf pages
 
-simple-quranTests/   Unit tests for the app, mirroring simple-quran/
-app-widgetTests/     Unit tests for the widget, mirroring app-widget/
+hidayah-app-tests/          Unit tests for the app, mirroring hidayah-app/
+hidayah-app-widget-tests/   Unit tests for the widget, mirroring hidayah-app-widget/
 ```
 
 Dependency direction:
@@ -190,7 +190,7 @@ Naming rule: name components by responsibility, not by the first screen that use
 ## Widget extension
 
 ```
-app-widget/
+hidayah-app-widget/
   AppIntents/
     ToggleTaskIntent.swift
   Widgets/
@@ -233,10 +233,10 @@ All four targets use Xcode synchronized folders.
 
 | Target | Folders | Deployment target |
 |---|---|---|
-| `simple-quran` | `simple-quran/` | iOS 17.0 |
-| `app-widgetExtension` | `app-widget/` | iOS 18.4 |
-| `simple-quranTests` | `simple-quranTests/` (hosted by the app) | iOS 17.0 |
-| `app-widgetTests` | `app-widgetTests/` and `app-widget/` (no host) | iOS 18.4 |
+| `simple-quran` | `hidayah-app/` | iOS 17.0 |
+| `app-widgetExtension` | `hidayah-app-widget/` | iOS 18.4 |
+| `simple-quranTests` | `hidayah-app-tests/` (hosted by the app) | iOS 17.0 |
+| `app-widgetTests` | `hidayah-app-widget-tests/` and `hidayah-app-widget/` (no host) | iOS 18.4 |
 
 Some `Core` files are intentionally shared with the widget to support task toggling and snapshot access. These files appear as shared-target items in Xcode:
 
@@ -244,9 +244,9 @@ Some `Core` files are intentionally shared with the widget to support task toggl
 - `TaskManager`, `HidayahStore`, and tracker history/notification services
 - `Storage` and related identifiers
 
-The shared files are listed in **two** exception sets on the `simple-quran` folder: one for `app-widgetExtension` and one for `app-widgetTests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
+The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `app-widgetExtension` and one for `app-widgetTests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
 
-`app-widgetTests` excludes `appWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `app-widget/` folder.
+`app-widgetTests` excludes `appWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
 
 Do not manually add synchronized-folder files to target source phases. Add or remove membership through the synchronized-folder exceptions.
 
@@ -281,7 +281,7 @@ Changing a model without a new version makes the on-disk store fail to open.
 ## Localization
 
 - App UI: `Resources/en.lproj/Localizable.strings`
-- Widget UI: `app-widget/Resources/en.lproj/Localizable.strings`
+- Widget UI: `hidayah-app-widget/Resources/en.lproj/Localizable.strings`
 - Never rely on the app’s localization bundle from inside the widget; each target has its own bundle.
 - Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `mathurat_`, `widget_`).
 - Arabic Quran/dhikr content, user-created names, and numeric values are data, not UI chrome.
@@ -311,7 +311,7 @@ Both run from the `simple-quran` scheme (⌘U) with code coverage enabled.
 
 ### Test conventions
 
-- Test files mirror the app's folder structure: the tests for `simple-quran/Core/Tracker/TaskManager.swift` are in `simple-quranTests/Core/Tracker/TaskManagerTests.swift`. Shared fakes and fixtures live in each target's `Support/` folder.
+- Test files mirror the app's folder structure: the tests for `hidayah-app/Core/Tracker/TaskManager.swift` are in `hidayah-app-tests/Core/Tracker/TaskManagerTests.swift`. Shared fakes and fixtures live in each target's `Support/` folder.
 - XCTest, with names in the form `test_<subject>_should_<expectation>()`.
 - Every test body has `// Arrange`, `// Act` and `// Assert` sections.
 - Each test starts clean: a fresh in-memory store, `resetStorage()`, `StubURLProtocol.reset()` and a `TestClock` where dates matter.
@@ -361,8 +361,8 @@ The project uses Xcode synchronized folders.
 4. Put cross-feature UI in `Shared/UI`.
 5. Inject services from the composition root or parent screen.
 6. Add localization keys under the feature prefix.
-7. If the feature has a widget, add a dedicated folder under `app-widget/Widgets`.
+7. If the feature has a widget, add a dedicated folder under `hidayah-app-widget/Widgets`.
 8. If the feature shares a `Core` file with the widget, add it to both widget exception sets.
-9. Add tests in the matching folder under `simple-quranTests/` (or `app-widgetTests/`).
+9. Add tests in the matching folder under `hidayah-app-tests/` (or `hidayah-app-widget-tests/`).
 10. If the feature uses a new required-reason API, declare it in the privacy manifests.
 11. Build with a clean derived-data path and run the tests before merging.
