@@ -46,7 +46,9 @@ final class CoreLocationQiblaSensor: NSObject, QiblaSensing {
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyKilometer
         manager.headingFilter = 1
+        #if os(iOS)
         manager.headingOrientation = .portrait
+        #endif
     }
 
     var authorization: QiblaAuthorization {
@@ -138,9 +140,11 @@ extension CoreLocationQiblaSensor: CLLocationManagerDelegate {
         // Transient failures (no fix yet) are retried by Core Location.
     }
 
+    #if os(iOS)
     nonisolated func locationManagerShouldDisplayHeadingCalibration(
         _ manager: CLLocationManager
     ) -> Bool {
         true
     }
+    #endif
 }

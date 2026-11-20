@@ -25,18 +25,23 @@ class AppController: NSObject {
     let taskManager: TaskManager
     private let store: HidayahStore
     private let notificationCenter: NotificationScheduling
+    private let watchSync: WatchSyncService
 
     init(
         taskManager: TaskManager = .shared,
         store: HidayahStore = .shared,
         scheduler: TrackerNotificationScheduler = .shared,
-        notificationCenter: NotificationScheduling = UNUserNotificationCenter.current()
+        notificationCenter: NotificationScheduling = UNUserNotificationCenter.current(),
+        watchSync: WatchSyncService = .shared
     ) {
         self.taskManager = taskManager
         self.store = store
         self.notificationCenter = notificationCenter
+        self.watchSync = watchSync
 
         super.init()
+
+        watchSync.start(taskManager: taskManager)
 
         // Firebase may only be configured once per process.
         if FirebaseApp.app() == nil {

@@ -1,0 +1,60 @@
+/* Hidayah Watch app. Keys shared with the iPhone app keep the same text. */
+
+/* Home */
+"watch_home_tracker" = "Istiqamah";
+"watch_home_tasbih" = "Tasbih";
+"watch_home_qibla" = "Qibla";
+"watch_home_tracker_progress_format" = "%1$d of %2$d today";
+"watch_home_tracker_not_synced" = "Not synced yet";
+
+/* Tracker */
+"watch_tracker_title" = "Istiqamah";
+"watch_tracker_progress_format" = "%1$d of %2$d";
+"watch_tracker_streak_format" = "%d-day streak";
+"watch_tracker_empty_title" = "Waiting for iPhone";
+"watch_tracker_empty_message" = "Open Hidayah on your iPhone to bring your tracker to your Watch.";
+"watch_tracker_stale_message" = "Open Hidayah on your iPhone to start today’s tracker.";
+"watch_tracker_all_done" = "All done for today. Alhamdulillah!";
+
+/* Tasbih */
+"tasbih_header_title" = "Tasbih";
+"tasbih_free_count" = "Free count";
+"tasbih_count_of_format" = "of %d";
+"tasbih_reset" = "Reset";
+"tasbih_phrase_1_title" = "Subhanallah";
+"tasbih_phrase_2_title" = "Alhamdulillah";
+"tasbih_phrase_3_title" = "Allahu Akbar";
+"tasbih_completion_title" = "99 Dhikr Complete";
+"tasbih_start_again" = "Start Again";
+"watch_tasbih_hint" = "Tap or turn the Crown";
+
+/* Qibla */
+"qibla_header_title" = "Qibla";
+"qibla_distance_format" = "%@ to Makkah";
+"qibla_bearing_format" = "Qibla is %d° from true north";
+"qibla_guidance_left" = "to your left";
+"qibla_guidance_right" = "to your right";
+"qibla_guidance_aligned" = "the Qibla";
+"qibla_aligned_title" = "Facing";
+"watch_qibla_calibration_hint" = "Move your wrist in a figure 8 to calibrate";
+"qibla_locating_title" = "Finding Qibla";
+"watch_qibla_locating_message" = "Hold your wrist flat in front of you.";
+"qibla_permission_title" = "Find the Qibla";
+"watch_qibla_permission_message" = "Allow location access to find the direction of the Kaaba.";
+"qibla_permission_action" = "Allow Location";
+"qibla_denied_title" = "Location Is Off";
+"watch_qibla_denied_message" = "Turn on location for Hidayah in the Settings app on your Watch.";
+"qibla_unavailable_title" = "No Compass";
+"watch_qibla_unavailable_message" = "This Apple Watch doesn’t have a compass. Use Qibla in Hidayah on your iPhone instead.";
+
+/* Tracker categories */
+"default_category_morning" = "Upon Waking Up";
+"default_category_tahajjud" = "Tahajjud Companions";
+"default_category_fajr" = "Fajr (Dawn Prayer)";
+"default_category_recitation" = "Recitation";
+"default_category_dhuha" = "Dhuha";
+"default_category_dhuhr" = "Dhuhr (Noon Prayer)";
+"default_category_asr" = "Asr (Afternoon Prayer)";
+"default_category_maghrib" = "Maghrib (Sunset Prayer)";
+"default_category_isha" = "Isha (Night Prayer)";
+"default_category_bedtime" = "Before Sleeping";

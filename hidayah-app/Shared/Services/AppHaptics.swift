@@ -5,10 +5,37 @@
 //  Created by Mohammad Hasif Afiq on 02/11/2026.
 //
 
+#if os(watchOS)
+import WatchKit
+#else
 import UIKit
+#endif
 
 @MainActor
 enum AppHaptics {
+    #if os(watchOS)
+    private static func play(_ type: WKHapticType) {
+        WKInterfaceDevice.current().play(type)
+    }
+
+    static func tap() {
+        play(.click)
+    }
+
+    /// The Watch has no adjustable strength, so stronger taps play a
+    /// firmer pattern.
+    static func impact(intensity: Double) {
+        play(intensity > 0.7 ? .directionUp : .click)
+    }
+
+    static func selection() {
+        play(.click)
+    }
+
+    static func success() {
+        play(.success)
+    }
+    #else
     private static let impact = UIImpactFeedbackGenerator(style: .light)
     private static let notification = UINotificationFeedbackGenerator()
 
@@ -34,4 +61,5 @@ enum AppHaptics {
         notification.prepare()
         notification.notificationOccurred(.success)
     }
+    #endif
 }

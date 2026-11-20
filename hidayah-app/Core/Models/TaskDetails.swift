@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TaskDetails: Identifiable, Codable {
+struct TaskDetails: Identifiable, Codable, Equatable {
     let id: UUID
     var name: String
     var isCompleted: Bool
