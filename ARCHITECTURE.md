@@ -20,6 +20,7 @@ hidayah-app/
   Shared/       Cross-feature UI, form controls, modifiers, services
   Resources/    Assets, fonts, localization, constants, bundled Al-Mathurat text and Mushaf pages
 
+hidayah-app-widget/         Widget extension
 hidayah-app-tests/          Unit tests for the app, mirroring hidayah-app/
 hidayah-app-widget-tests/   Unit tests for the widget, mirroring hidayah-app-widget/
 ```
@@ -38,48 +39,27 @@ App ──► Features ──► Core
 
 ```
 App/
-  Lifecycle/
-    AppController.swift
-    AppDelegate.swift
-    HidayahApp.swift
-  Navigation/
-    AppRouter.swift
-    DeeplinkManager.swift
-  Root/
-    RootView.swift
-  Base.lproj/
-    LaunchScreen.storyboard
+  Lifecycle/    AppController, AppDelegate, HidayahApp
+  Navigation/   AppRouter, DeeplinkManager
+  Root/         RootView
+  Base.lproj/   LaunchScreen.storyboard
 ```
 
 - `AppController` is the composition root for services and shared state. Its initializer takes the task manager, store, notification scheduler and notification center, defaulting to the shared instances.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
-- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker` or `mathurat[/<order>]`; a Mathurat link sets `AppRouter.mathuratFocusOrder`, and the reader scrolls to the entry with that `order` in the current session (morning and evening variants of a dhikr share an order).
+- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker` or `mathurat[/<order>]`.
 
 ## Core
 
 ```
 Core/
-  Models/
-    Mathurat/
-    Quran/
-    Tracker/
-    Widget/
-  Networking/
-    Base/
-    Endpoints/
-    Services/
-  Persistence/
-    HidayahStore.swift
-    Storage.swift
-  Tracker/
-    TaskManager.swift
-    TrackerHistoryEngine.swift
-    TrackerNotificationScheduler.swift
-  Mathurat/
-    MathuratLibrary.swift
-  Mushaf/
-    MushafLibrary.swift
+  Models/        Mathurat, Quran, Tracker and Widget models
+  Networking/    Base, Endpoints, Services
+  Persistence/   HidayahStore, Storage
+  Tracker/       TaskManager, TrackerHistoryEngine, TrackerNotificationScheduler
+  Mathurat/      MathuratLibrary
+  Mushaf/        MushafLibrary
   Extensions/
 ```
 
@@ -89,49 +69,12 @@ Core/
 - `TrackerNotificationScheduler` posts tracker reminders through the `NotificationScheduling` protocol, which `UNUserNotificationCenter` conforms to.
 - `APIClientService` and `SurahService` are stateless and `Sendable`, and use `async`/`await`. `APIClientService` takes its `URLSession` through `init`.
 - `SurahCatalog` caches the surah list on disk; its cache location is injectable.
-- `BundleMathuratLoader` (behind the `MathuratLoading` protocol) decodes the bundled Al-Mathurat Sughra and returns the entries for the morning or evening session; its directory is injectable.
-- `BundleMushafLoader` (behind `MushafLoading`) decodes the Mushaf page layout (`MushafLayout`: where each surah, ayah and juz falls on the 604 pages) and decodes page images with ImageIO straight to the screen's width; its directory is injectable.
+- `BundleMathuratLoader` (behind `MathuratLoading`) and `BundleMushafLoader` (behind `MushafLoading`) read the bundled content; their directories are injectable.
 - Models are plain value/reference types with no SwiftUI dependencies.
 
 ## Features
 
-```
-Features/
-  Quran/
-    List/
-    Detail/
-    Mushaf/
-    Bookmarks/
-    Components/
-  Search/
-  Settings/
-    SettingView.swift
-    SettingViewModel.swift
-    WidgetGuide/
-      WidgetGuideView.swift
-      WidgetGuideViewModel.swift
-      Components/
-        WidgetGuidePreviewView.swift
-  Tasbih/
-    TasbihView.swift
-    TasbihViewModel.swift
-    Components/
-      TasbihBeadProgressView.swift
-  Mathurat/
-    MathuratView.swift
-    MathuratViewModel.swift
-    Components/
-      MathuratEntryRow.swift
-  Tracker/
-    Home/
-    Calendar/
-    DayDetail/
-    Levels/
-    Achievements/
-    TaskEditor/
-    Settings/
-    Components/
-```
+One folder per feature: `Home`, `Explore`, `Quran`, `Reading`, `Mathurat`, `Tasbih`, `Tracker`, `Search`, `Settings` and `WhatsNew`. Larger features split into sub-folders by screen (for example `Quran/List`, `Quran/Mushaf`, `Tracker/Calendar`), each with its own `Components/` where needed.
 
 ### MVVM rules
 
@@ -144,46 +87,25 @@ Features/
 
 Examples:
 
-- `WidgetGuideView` owns presentation; `WidgetGuideViewModel` owns selection and tracker-derived preview data.
 - `TasbihView` owns animation/gesture presentation; `TasbihViewModel` owns counting, phrase state, and completion flow.
-- `TrackerCalendarViewModel` and `TrackerDayDetailViewModel` own date/record derivation.
-- `MathuratView` lays out the reader and measures the scroll position; `MathuratViewModel` owns the session (morning or evening from the clock), the repeat counts (tapping a finished counter starts it again from zero), the share text with its deep link, and the read progress (how far down the session is scrolled, following the scroll both ways). `RootView` holds it in `@State` so counts and progress survive tab switches.
-- `SearchViewModel` filters surahs and bookmarks by name, and the current Al-Mathurat session's entries by title through the same `MathuratLoading` loader. Picking a Mathurat result switches to the Mathurat tab and scrolls to that entry, as a deep link does.
+- `WidgetGuideView` owns presentation; `WidgetGuideViewModel` owns selection and tracker-derived preview data.
+- State that must survive tab switches (for example `MathuratViewModel`) is held in `@State` by `RootView`.
 
 ## Shared
 
 ```
 Shared/
-  Services/
-    AppHaptics.swift
+  Services/          AppHaptics, Reflection
   UI/
-    Components/
-      SettingsActionRow.swift
-      SettingsSectionHeader.swift
-      SettingsToggleRow.swift
-    Forms/
-      AppFormComponents.swift
-      ReadingSettingsView.swift
-      SelectionView.swift
-    Loading/
-    Modifiers/
-    Reader/
-      ReaderHeaderCard.swift
-      ReaderSelectionButton.swift
-      NumberSealBadge.swift
-      ReaderCircleButton.swift
-      ReaderTextBlock.swift
-    Representables/
+    Background/      App background gradient
+    Cards/           Feature cards and icons
+    Components/      Settings rows and headers
+    Forms/           Form controls, SelectionView, ReadingSettingsView
+    Loading/         Loading placeholders
+    Modifiers/       View modifiers, such as the load animation
+    Reader/          Building blocks shared by the Quran reader and Al-Mathurat
+    Representables/  UIKit wrappers (MailView, SafariView)
 ```
-
-Shared UI examples:
-
-- `AppFormHeader`, `AppFormCard`, `AppTextField`, `AppIconPicker`, `AppPrimaryButton`
-- `SettingsActionRow`, `SettingsSectionHeader`, `SettingsToggleRow`
-- `LoadAnimation`, `ShimmerBar`, `ListRowPlaceholder`
-- `MailView`, `SafariView`
-- `SelectionView`, `ReadingSettingsView` (used by the Quran reader, Al-Mathurat and Settings)
-- Reader building blocks shared by the Quran reader and Al-Mathurat, so both look the same: `ReaderHeaderCard`, `ReaderSelectionButton`, `NumberSealBadge`, `ReaderCircleButton`, `ReaderTextBlock`, `ReaderRowDivider`
 
 Naming rule: name components by responsibility, not by the first screen that used them.
 
@@ -191,41 +113,21 @@ Naming rule: name components by responsibility, not by the first screen that use
 
 ```
 hidayah-app-widget/
-  AppIntents/
-    ToggleTaskIntent.swift
+  AppIntents/      ToggleTaskIntent
   Widgets/
-    Tracker/
-      TrackerWidget.swift
-      TrackerProvider.swift
-      TrackerWidgetView.swift
-    QuickSurah/
-      QuickSurahWidget.swift
-      QuickSurahConfigurationIntent.swift
-      QuickSurahProvider.swift
-      QuickSurahWidgetView.swift
-      QuickSurahCatalog.swift
-  Shared/
-    WidgetFontLoader.swift
-  Resources/
-    Assets.xcassets
-    Fonts.bundle/
-      Kitab-Regular.ttf
-      Kitab-Bold.ttf
-    en.lproj/
-      Localizable.strings
+    Tracker/       Tracker widget, provider and view
+    QuickSurah/    Quick Surahs widget, configuration intent, provider and view
+  Shared/          WidgetFontLoader
+  Resources/       Assets, Fonts.bundle, en.lproj/Localizable.strings
   HidayahAppWidgetBundle.swift
   Info.plist
 ```
 
-### Widget behavior
-
-- **Tracker Widget** — small and medium. Reads the lightweight `WidgetContext` snapshot through `Storage`. Tapping a task invokes `ToggleTaskIntent`, which runs on the main actor and updates `TaskManager`.
-- The snapshot records its `dayKey` and the task list as it will look after a reset (`resetUpcomingTasks`). Each timeline adds an entry at the next midnight, and a snapshot from an earlier day is shown as a fresh day, so the widget rolls over without the app running.
+- **Tracker widget** reads the lightweight `WidgetContext` snapshot through `Storage`. Tapping a task invokes `ToggleTaskIntent`, which runs on the main actor and updates `TaskManager`.
+- The snapshot records its `dayKey` and the task list as it will look after a reset (`resetUpcomingTasks`). Each timeline adds an entry at the next tracker day start, and a snapshot from an earlier day is shown as a fresh day, so the widget rolls over without the app running.
 - `ToggleTaskIntent` throws instead of toggling when the store is not persistent, so a tap can never appear to work and then be lost.
-- **Quick Surahs Widget** — medium only. Uses `AppIntentConfiguration` so users can choose up to three surahs from the native widget configuration UI. Deep links open the selected surah.
-- Quick Surahs Arabic text uses the same Kitab font family as the app.
-- `WidgetFontLoader` registers the widget’s font bundle at runtime.
-- Widget gallery names, task counts, and configuration strings are localized in the widget’s own `Localizable.strings`.
+- **Quick Surahs widget** uses `AppIntentConfiguration` so users choose surahs in the system's widget configuration UI.
+- `WidgetFontLoader` registers the widget’s own font bundle at runtime.
 
 ### Target membership
 
@@ -242,7 +144,7 @@ Targets, folders and schemes share the `hidayah-app` names, and the project is `
 
 The widget target keeps its original product and module name, `app-widgetExtension` (`PRODUCT_NAME` and `PRODUCT_MODULE_NAME` are set explicitly). Users' configured Quick Surahs widgets store an App Intent that may be identified by that module, so renaming it could reset their choices. Leave both alone.
 
-Some `Core` files are intentionally shared with the widget to support task toggling and snapshot access. These files appear as shared-target items in Xcode:
+Some `Core` files are shared with the widget to support task toggling and snapshot access:
 
 - Tracker models, `Category`, `TaskDetails`, `SurahBookmark`, `NotificationIdentifier` and `WidgetContext`
 - `TaskManager`, `HidayahStore`, and tracker history/notification services
@@ -251,8 +153,6 @@ Some `Core` files are intentionally shared with the widget to support task toggl
 The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `hidayah-app-widget` and one for `hidayah-app-widget-tests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
 
 `hidayah-app-widget-tests` excludes `HidayahAppWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
-
-Do not manually add synchronized-folder files to target source phases. Add or remove membership through the synchronized-folder exceptions.
 
 ## Persistence
 
@@ -282,21 +182,26 @@ Changing a model without a new version makes the on-disk store fail to open.
 - `AppController` reports the error to Crashlytics and shows the user an alert.
 - `TaskManager.loadTasks()` calls `reconnectIfNeeded()`, so a temporary failure recovers on the next load or foreground.
 
+## Bundled content
+
+- `Resources/Mathurat.bundle/sughra.json` — Al-Mathurat Sughra: Arabic text, Malay translation, title, repeat count, and whether each entry is read in the morning, evening or both. Edit it by hand and run `MathuratLibraryTests`, which guard against accidental edits.
+- `Resources/Mushaf.bundle/` — the 604 Madani Mushaf page images and `pages.json`, which maps surahs, ayahs, juz and quarter hizb to pages. `MushafLayoutTests` and `MushafLibraryTests` check the layout against known pages.
+
 ## Localization
 
-- App UI: `Resources/en.lproj/Localizable.strings`
+- App UI: `hidayah-app/Resources/en.lproj/Localizable.strings`
 - Widget UI: `hidayah-app-widget/Resources/en.lproj/Localizable.strings`
 - Never rely on the app’s localization bundle from inside the widget; each target has its own bundle.
 - Use feature-prefixed keys (`setting_`, `tracker_`, `tasbih_`, `mathurat_`, `widget_`).
 - Arabic Quran/dhikr content, user-created names, and numeric values are data, not UI chrome.
-- Localize default category names when they are shown, not when they are saved. Day records store a copy of each task's category name, and a record saved from the widget holds the raw key; `TrackerDayDetailViewModel.categoryName(for:)` looks default names up from the category ID.
+- Localize default category names when they are shown, not when they are saved. Day records keep the category name as it was saved (a record saved from the widget holds the raw key), so look default names up from the category ID.
 
 ## Concurrency
 
 The project builds in Swift 5 mode with `SWIFT_STRICT_CONCURRENCY = complete` and `SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES`. Production code has no concurrency warnings; keep it that way.
 
-- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model, including `MathuratViewModel` and `MushafViewModel`. `BundleMathuratLoader` and `BundleMushafLoader` are `Sendable` structs; Mushaf pages decode in a detached task and are cached a few at a time.
-- Networking services are stateless and `Sendable`; requests and JSON decoding run off the main actor.
+- UI state, the tracker domain and persistence are `@MainActor`: `TaskManager`, `HidayahStore`, `TrackerNotificationScheduler`, `SurahCatalog`, `AppController`, `AppRouter`, `DeeplinkManager` and every `@Observable` view model.
+- Content loaders and networking services are `Sendable`; requests, JSON decoding and image decoding run off the main actor.
 - Callbacks the system delivers on the main queue (`NotificationCenter` observers with `queue: .main`) use `MainActor.assumeIsolated`.
 - `nonisolated(unsafe)` is allowed only with a comment explaining why it is safe.
 
@@ -321,27 +226,6 @@ Both run from the `hidayah-app` scheme (⌘U) with code coverage enabled.
 - Each test starts clean: a fresh in-memory store, `resetStorage()`, `StubURLProtocol.reset()` and a `TestClock` where dates matter.
 - Run the suite on more than one iOS version before merging; some UIKit details (tab bars, SF Symbol accessibility labels) differ between releases.
 
-## Bundled content
-
-`Resources/Mathurat.bundle/sughra.json` holds Al-Mathurat Sughra (morning and evening): the Arabic text, its Malay translation, a title and a repeat count for each entry.
-
-- Each entry records whether it is read in the morning, the evening or both, and the reader shows only that session's entries in their `order`.
-- The content tests in `MathuratLibraryTests` check entry counts per session, titles, repeat counts, the morning/evening wording and that no text is empty. They guard against accidental edits, not against errors in the text itself.
-- Edit the file by hand, run the tests, and review the text against a printed Al-Ma'thurat before release.
-
-`Resources/Mushaf.bundle/` holds the 604 Madani Mushaf pages (`page001.png` to `page604.png`, 1920 pixels wide, black text on transparency) and `pages.json`: the first page of each surah, the first ayah of each page, the first ayah of each juz and the first ayah of each of the 240 quarter hizb (`hizbQuarterStarts`, from the Tanzil Quran metadata; every eighth quarter is a juz start, which `MushafLayoutTests` checks).
-
-- `SurahDetailScreen` is the one way into a surah. It reads `StorageKey.quranReadingMode` and shows `SurahDetailView` (List) or `MushafView` (Mushaf), opening the Mushaf on the bookmarked ayah's page or the surah's first page. The mode is chosen in `ReadingSettingsView` when it is opened with `showsReadingMode: true`.
-- The pages are drawn as template images in the text colour, so they follow dark mode.
-- When the reading area is at least 600 points wide and not much taller than wide (an unfolded iPhone Duo, an iPad, a phone on its side), `MushafView` shows two-page spreads like a printed book: the odd page on the right, the even page after it on the left. The scroll position stays a page number, so folding or rotating keeps the place. Readers who prefer larger text can choose One Page for wide screens (`StorageKey.mushafShowsSpread`).
-- Page bookmarks reuse ayah bookmarks: bookmarking a page in `MushafView` saves its first ayah through `HidayahStore.toggleBookmark`, so it shows in the Bookmarks list and search and opens on the same place in either mode. A page counts as bookmarked when any ayah on it is, and removing its bookmark clears them all.
-- `MushafView` looks like a printed Mushaf. Each page is a `MushafFramedPage` (`Features/Quran/Mushaf/Components/`): the page image inside a green double-ruled frame, with a running head (juz and calligraphic surah name), the page number in Arabic-Indic digits in an eight-pointed star, a star in the outer margin where a quarter hizb begins (¼, ½, ¾ or the hizb number), and a bookmark ribbon. Spreads (`MushafSpreadView`) put the two pages on one sheet with a soft spine shadow.
-- The navigation and tab bars are hidden in Mushaf mode; `MushafToolbar` floats above the page with back, the page and juz/hizb, the navigator and reading settings. Tapping the page hides the toolbar and status bar (`MushafViewModel.isChromeHidden`), except under VoiceOver.
-- `MushafNavigatorSheet` moves around the Mushaf: a filmstrip of page thumbnails (decoded small and cached apart from full pages), the thirty juz as a bar, a searchable surah list, a page number field and the bookmarked pages.
-- Readers can turn pages by swiping (default) or scroll them one under another (`StorageKey.mushafScrollsVertically`, chosen in `ReadingSettingsView`).
-- `BundleMushafLoader` trims the same blank border from every page (`BundleMushafLoader.trim`, measured across all 604 pages), so the text fills the space it is given.
-- `MushafLayoutTests` and `MushafLibraryTests` check known pages (Al-Kahf on 293, Ayat al-Kursi on 42), the juz, that every page image exists and that images decode at the requested width.
-
 ## Privacy
 
 Both the app and the widget ship a `PrivacyInfo.xcprivacy` at the root of their folder. They declare `UserDefaults` access with reason `1C8F.1` (data shared within the App Group), no tracking, and no data collected by the app's own code; Firebase declares its own collection in its SDK manifests.
@@ -350,10 +234,8 @@ When code starts using another required-reason API (file timestamps, system boot
 
 ## Synchronized folders
 
-The project uses Xcode synchronized folders.
-
 - New files inside existing folders are picked up automatically.
-- Do not add duplicate source references to `project.pbxproj`; doing so causes duplicate-build warnings.
+- Do not add source references to `project.pbxproj` by hand; doing so causes duplicate-build warnings. Change membership through the synchronized-folder exceptions.
 - Moving a shared file that belongs to the widget requires updating both the `hidayah-app-widget` and `hidayah-app-widget-tests` membership exceptions.
 - Resource bundles and localized files must remain inside the target that uses them.
 
