@@ -55,7 +55,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "853B26A895C64D481F47659F"
             BuildableName = "hidayah-app-watch.app"
-            BlueprintName = "hidayah-app-watch"
             ReferencedContainer = "container:hidayah-app.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -72,7 +71,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "853B26A895C64D481F47659F"
             BuildableName = "hidayah-app-watch.app"
-            BlueprintName = "hidayah-app-watch"
             ReferencedContainer = "container:hidayah-app.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
