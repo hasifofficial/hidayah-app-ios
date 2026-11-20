@@ -138,7 +138,7 @@ hidayah-app-watch/
   Tracker/     Today's tasks
   Tasbih/      Counter with tap and Digital Crown
   Qibla/       Compass
-  Resources/   Assets, Fonts.bundle (Amiri Bold only), en.lproj/Localizable.strings
+  Resources/   Assets, en.lproj/Localizable.strings
   HidayahWatchApp.swift
   WatchRootView.swift
   PrivacyInfo.xcprivacy
@@ -187,7 +187,7 @@ Some `Core` files are shared with the widget to support task toggling and snapsh
 
 The shared files are listed in **two** exception sets on the `hidayah-app` folder: one for `hidayah-app-widget` and one for `hidayah-app-widget-tests`, which compiles the same Core files. The two lists must stay identical; a file added to only one breaks the other target's build.
 
-`hidayah-app-watch` has its own exception set on the `hidayah-app` folder listing the files it compiles: `Font+Extensions` (for Amiri Bold, loaded from the Watch's own `Resources/Fonts.bundle`, which holds only that font), `Category`, `TaskDetails`, `QiblaMath`, `QiblaSensor`, `WatchTrackerSnapshot`, `WatchTrackerState`, `QiblaViewModel`, `TasbihViewModel` and `AppHaptics`. Anything added to that list must build for watchOS (no UIKit, SwiftData or WidgetKit). `WatchSyncService` is iPhone only and stays out of it.
+`hidayah-app-watch` has its own exception set on the `hidayah-app` folder listing the files it compiles: `Category`, `TaskDetails`, `QiblaMath`, `QiblaSensor`, `WatchTrackerSnapshot`, `WatchTrackerState`, `QiblaViewModel`, `TasbihViewModel`, `AppHaptics` and `LevelColor`. Anything added to that list must build for watchOS (no UIKit, SwiftData or WidgetKit). `WatchSyncService` is iPhone only and stays out of it.
 
 `hidayah-app-widget-tests` excludes `HidayahAppWidgetBundle.swift` (it has `@main`) and `Info.plist` from the `hidayah-app-widget/` folder.
 

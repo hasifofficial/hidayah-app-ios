@@ -19,7 +19,7 @@ struct WatchRootView: View {
                         WatchHomeRow(
                             title: String(localized: "watch_home_tracker"),
                             subtitle: trackerSubtitle(now: context.date),
-                            systemImage: "checklist"
+                            illustration: "IllustrationTracker"
                         )
                     }
                 }
@@ -30,8 +30,7 @@ struct WatchRootView: View {
                     WatchHomeRow(
                         title: String(localized: "watch_home_tasbih"),
                         subtitle: nil,
-                        systemImage: "circle.grid.3x3.fill",
-                        assetImage: "TasbihIconFill"
+                        illustration: "IllustrationTasbih"
                     )
                 }
 
@@ -41,7 +40,7 @@ struct WatchRootView: View {
                     WatchHomeRow(
                         title: String(localized: "watch_home_qibla"),
                         subtitle: nil,
-                        systemImage: "location.north.circle.fill"
+                        illustration: "IllustrationQibla"
                     )
                 }
                 } header: {
@@ -76,16 +75,16 @@ struct WatchRootView: View {
 private struct WatchHomeRow: View {
     let title: String
     let subtitle: String?
-    /// The same icons as the iPhone app's `AppFeature.icon` and
-    /// `AppFeature.assetIcon`; an asset image wins when given.
-    let systemImage: String
-    var assetImage: String?
+    /// The same illustration as the iPhone app's `AppFeature.illustration`.
+    let illustration: String
 
     var body: some View {
         HStack(spacing: 10) {
-            icon
-                .foregroundStyle(Color.lightGreen)
-                .frame(width: 28)
+            Image(illustration)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 34, height: 34)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.headline)
@@ -97,19 +96,5 @@ private struct WatchHomeRow: View {
             }
         }
         .padding(.vertical, 4)
-    }
-
-    @ViewBuilder
-    private var icon: some View {
-        if let assetImage {
-            Image(assetImage)
-                .renderingMode(.template)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 22, height: 22)
-        } else {
-            Image(systemName: systemImage)
-                .font(.title3)
-        }
     }
 }

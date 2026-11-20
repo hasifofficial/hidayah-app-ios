@@ -140,7 +140,6 @@
 		EBC1A3E6471D1666F314A9B3 /* Exceptions for "hidayah-app" folder in "hidayah-app-watch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Core/Extensions/Font+Extensions.swift",
 				Core/Models/Category.swift,
 				Core/Models/TaskDetails.swift,
 				Core/Qibla/QiblaMath.swift,

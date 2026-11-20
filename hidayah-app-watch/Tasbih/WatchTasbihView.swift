@@ -29,62 +29,72 @@ struct WatchTasbihView: View {
         }
         .navigationTitle(String(localized: "tasbih_header_title"))
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Button {
-                    viewModel.resetCurrent()
-                    crownBaseline = crownValue
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
-                        .foregroundStyle(.white)
-                }
-                .accessibilityLabel(String(localized: "tasbih_reset"))
+            // The completion screen has its own Start Again button, which
+            // these would cover.
+            if !viewModel.showCompletion {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button {
+                        viewModel.resetCurrent()
+                        crownBaseline = crownValue
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                            .foregroundStyle(.white)
+                    }
+                    .accessibilityLabel(String(localized: "tasbih_reset"))
 
-                Spacer()
+                    Spacer()
 
-                Button {
-                    viewModel.toggleFreeCount()
-                } label: {
-                    // The button is filled with the tint, so the icon is white.
-                    Image(systemName: viewModel.isFreeCount ? "infinity.circle.fill" : "infinity")
-                        .foregroundStyle(.white)
+                    Button {
+                        viewModel.toggleFreeCount()
+                    } label: {
+                        // The button is filled with the tint, so the icon is white.
+                        Image(systemName: viewModel.isFreeCount ? "infinity.circle.fill" : "infinity")
+                            .foregroundStyle(.white)
+                    }
+                    .accessibilityLabel(String(localized: "tasbih_free_count"))
                 }
-                .accessibilityLabel(String(localized: "tasbih_free_count"))
             }
         }
     }
 
-    private var counter: some View {
-        VStack(spacing: 4) {
-            if !viewModel.isFreeCount {
-                Text(viewModel.currentPhrase.arabic)
-                    .font(.amiriBold(size: 22))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                Text(String(localized: String.LocalizationValue(viewModel.currentPhrase.nameKey)))
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            } else {
-                Text(String(localized: "tasbih_free_count"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+    /// Matches the Istiqamah progress ring on the Watch.
+    private static let lineWidth: CGFloat = 14
 
+    private var counter: some View {
+        VStack {
             ZStack {
+                // A stroke is centred on the shape's edge, so inset the
+                // circle by half the line width to keep the whole ring
+                // inside its frame.
                 Circle()
-                    .stroke(Color.lightGreen.opacity(0.2), lineWidth: 7)
+                    .inset(by: Self.lineWidth / 2)
+                    .stroke(Color.lightGreen.opacity(0.22), lineWidth: Self.lineWidth)
                 if !viewModel.isFreeCount {
                     Circle()
+                        .inset(by: Self.lineWidth / 2)
                         .trim(from: 0, to: viewModel.progress)
                         .stroke(
                             Color.lightGreen,
-                            style: StrokeStyle(lineWidth: 7, lineCap: .round)
+                            style: StrokeStyle(lineWidth: Self.lineWidth, lineCap: .round)
                         )
                         .rotationEffect(.degrees(-90))
                         .animation(.easeOut(duration: 0.15), value: viewModel.progress)
                 }
                 VStack(spacing: 0) {
+                    Text(
+                        viewModel.isFreeCount
+                            ? String(localized: "tasbih_free_count")
+                            : String(localized: String.LocalizationValue(viewModel.currentPhrase.nameKey))
+                    )
+                    .font(.caption2)
+                    .foregroundStyle(Color.lightGreen)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    // Above the count the circle is narrower, so keep the
+                    // name to a width that clears the ring.
+                    .frame(maxWidth: 76)
                     Text("\(viewModel.displayedCount)")
-                        .font(.system(size: 34, weight: .semibold, design: .rounded))
+                        .font(.system(size: 40, weight: .semibold, design: .rounded))
                         .monospacedDigit()
                         .contentTransition(.numericText())
                     if !viewModel.isFreeCount {
@@ -94,13 +104,15 @@ struct WatchTasbihView: View {
                                 viewModel.target
                             )
                         )
-                        .font(.caption2)
+                        .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .monospacedDigit()
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .scaleEffect(viewModel.isCompleting ? 1.06 : 1)
+            .padding(.horizontal, 8)
+            .frame(maxHeight: .infinity)
+            .scaleEffect(viewModel.isCompleting ? 1.04 : 1)
             .animation(.spring(duration: 0.3), value: viewModel.isCompleting)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
