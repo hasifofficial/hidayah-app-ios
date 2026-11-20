@@ -26,10 +26,13 @@ final class EditTaskViewTests: XCTestCase {
 
     func test_body_should_focusTheNameField_when_shown() {
         // Arrange
+        AutoFocus.isEnabled = true
+        defer { AutoFocus.isEnabled = false }
         let (taskManager, _, _) = makeTrackerFixture()
 
         // Act
         let host = makeHost(taskManager, task: taskManager.tasks[0])
+        host.keepSystemKeyboardAway()
         let focused = host.pump(until: { host.textFields().first?.isFirstResponder == true })
 
         // Assert

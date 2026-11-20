@@ -105,6 +105,18 @@ extension ViewHost {
         presentedRoots().flatMap { Self.subviews(of: UITextField.self, in: $0) }
     }
 
+    /// Gives every text field an empty input view in place of the system
+    /// keyboard, so focusing one never waits on the simulator's keyboard
+    /// service, which can stall and leave the whole run stuck.
+    func keepSystemKeyboardAway() {
+        for field in textFields() {
+            field.inputView = UIView(frame: .zero)
+            field.inputAccessoryView = nil
+            field.autocorrectionType = .no
+            field.spellCheckingType = .no
+        }
+    }
+
     /// Every picker wheel in the host window and presented controllers.
     func pickerViews() -> [UIPickerView] {
         presentedRoots().flatMap { Self.subviews(of: UIPickerView.self, in: $0) }
@@ -123,6 +135,7 @@ extension ViewHost {
             return
         }
         let field = fields[index]
+        keepSystemKeyboardAway()
         field.becomeFirstResponder()
         pump()
         if let range = field.textRange(

@@ -112,7 +112,7 @@ struct AppTextField: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
         .task {
-            guard focusesOnAppear else { return }
+            guard focusesOnAppear, AutoFocus.isEnabled else { return }
 
             // Wait for the push or sheet animation, or the keyboard
             // won't come up.
@@ -126,6 +126,11 @@ struct AppTextField: View {
 enum AutoFocus {
     /// Long enough for a push or sheet presentation to settle.
     static let delay: TimeInterval = 0.45
+
+    /// Off under unit tests, where raising the simulator's keyboard can
+    /// stall the main thread and leave the whole run stuck. Tests of the
+    /// focus itself turn it on.
+    @MainActor static var isEnabled = !AppEnvironment.isRunningUnitTests
 }
 
 /// A labelled field that opens a menu of tracker categories.

@@ -82,6 +82,8 @@ final class AppFormComponentsTests: ViewsTestCase {
         let field = host.firstView(of: UITextField.self)
 
         // Act
+        // An empty input view keeps the system keyboard out of the test.
+        field?.inputView = UIView(frame: .zero)
         field?.becomeFirstResponder()
         field?.insertText("Dhikr")
         host.pump(0.2)
