@@ -58,8 +58,8 @@ final class SettingsViewTests: ViewsTestCase {
             "Quran", "Recitation", "Alafasy", "Translation", "English",
             "Reading Settings", "Istiqamah Tracker", "Tracker Settings",
             "Widgets", "Widget Guide", "Notification", "Al-Kahf Reminder",
-            "Istiqamah Reminders", "What’s New", "About Us", "Privacy Policy",
-            "Terms & Condition", "Support", "Feedback", "Version "
+            "Istiqamah Reminders", "Support", "Feedback", "What’s New",
+            "About Us", "Privacy Policy", "Terms & Condition", "Version "
         ] {
             XCTAssertTrue(host.contains(text), "Missing \(text)")
         }
