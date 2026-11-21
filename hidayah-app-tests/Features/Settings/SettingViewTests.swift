@@ -79,7 +79,7 @@ final class SettingsViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertTrue(host.contains("A Fresh New Look"))
-        XCTAssertTrue(host.contains("Feature 1 of 6"))
+        XCTAssertTrue(host.contains("Feature 1 of 8"))
     }
 
     func test_settingsView_should_chooseRecitationFromSheet() async {

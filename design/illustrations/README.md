@@ -14,3 +14,18 @@ python3 gen.py && swift render.swift *.svg
 
 Copy each `<Name>.png` over
 `Illustrations/Illustration<Name>.imageset/Illustration<Name>.png`.
+
+## What's New
+
+`gen_whatsnew.py` builds the What's New pages' 320×220 illustrations
+from the SVGs `gen.py` writes, in a light and a dark version, into
+`whatsnew/`. They stay SVG in the catalogue (`Assets.xcassets/WhatsNew`),
+which keeps them as vectors. From this folder run:
+
+```bash
+python3 gen.py && python3 gen_whatsnew.py
+```
+
+Copy each `whatsnew/whatsnew_<name>_<light|dark>.svg` over the file of
+the same name in `WhatsNew/WhatsNew<Name>.imageset/`. Keep them free of
+`<text>`, since SVG text isn't reliable once Xcode compiles the catalogue.
