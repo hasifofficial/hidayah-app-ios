@@ -82,8 +82,7 @@ struct MathuratView: View {
                         }
                     }
                 }
-                .frame(maxWidth: 700)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 100)
                 .onGeometryChange(for: CGRect.self) { geometry in
                     geometry.frame(in: .named(Self.scrollSpace))
@@ -248,7 +247,7 @@ struct MathuratView: View {
             }
         }
         .buttonStyle(.plain)
-        .frame(maxWidth: 700)
+        // Inset like the rows, so it lines up with them.
         .padding(.horizontal, 16)
         .padding(.top, 8)
         .accessibilityLabel(

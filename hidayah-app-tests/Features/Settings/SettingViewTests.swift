@@ -58,8 +58,8 @@ final class SettingsViewTests: ViewsTestCase {
             "Quran", "Recitation", "Alafasy", "Translation", "English",
             "Reading Settings", "Istiqamah Tracker", "Tracker Settings",
             "Widgets", "Widget Guide", "Notification", "Al-Kahf Reminder",
-            "Istiqamah Reminders", "What’s New", "About Us", "Privacy Policy",
-            "Terms & Condition", "Support", "Feedback", "Version "
+            "Istiqamah Reminders", "Support", "Feedback", "What’s New",
+            "About Us", "Privacy Policy", "Terms & Condition", "Version "
         ] {
             XCTAssertTrue(host.contains(text), "Missing \(text)")
         }
@@ -79,7 +79,7 @@ final class SettingsViewTests: ViewsTestCase {
 
         // Assert
         XCTAssertTrue(host.contains("A Fresh New Look"))
-        XCTAssertTrue(host.contains("Feature 1 of 6"))
+        XCTAssertTrue(host.contains("Feature 1 of 8"))
     }
 
     func test_settingsView_should_chooseRecitationFromSheet() async {

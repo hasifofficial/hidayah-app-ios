@@ -151,6 +151,23 @@ struct SettingsView: View {
 
             SettingsSectionHeader(
                 title: NSLocalizedString(
+                    "setting_support_section_title",
+                    comment: ""
+                )
+            )
+
+            SettingsActionRow(
+                icon: "text.bubble",
+                title: NSLocalizedString(
+                    "setting_support_feedback_title",
+                    comment: ""
+                )
+            ) {
+                sendFeedback()
+            }
+
+            SettingsSectionHeader(
+                title: NSLocalizedString(
                     "setting_about_section_title",
                     comment: ""
                 )
@@ -194,23 +211,6 @@ struct SettingsView: View {
                 )
             ) {
                 openSafari(Constants.termConditionUrl)
-            }
-
-            SettingsSectionHeader(
-                title: NSLocalizedString(
-                    "setting_support_section_title",
-                    comment: ""
-                )
-            )
-
-            SettingsActionRow(
-                icon: "text.bubble",
-                title: NSLocalizedString(
-                    "setting_support_feedback_title",
-                    comment: ""
-                )
-            ) {
-                sendFeedback()
             }
         }
         .listStyle(.plain)

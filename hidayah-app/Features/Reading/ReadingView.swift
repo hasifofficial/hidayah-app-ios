@@ -33,8 +33,7 @@ struct ReadingView: View {
                 )
                 .loadAnimation(delay: 0.05, offset: 12)
             }
-            .frame(maxWidth: 700)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.top, 8)
             .padding(.bottom, 100)

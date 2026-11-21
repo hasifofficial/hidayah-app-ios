@@ -426,6 +426,10 @@
 "whats_new_tracker_body" = "Tick off your daily deeds, keep your streak going and level up. Choose when your day resets, so late-night ibadah still counts.";
 "whats_new_widgets_title" = "Widgets for Your Home Screen";
 "whats_new_widgets_body" = "Keep your Istiqamah Tracker progress and favourite surahs one tap away.";
+"whats_new_qibla_title" = "Find the Qibla";
+"whats_new_qibla_body" = "Face the right way for every prayer, wherever you are. Turn until the compass points to the Kaaba, and Hidayah gives a gentle tap when you're facing the Qibla.";
+"whats_new_watch_title" = "Hidayah on Apple Watch";
+"whats_new_watch_body" = "Tick off your Istiqamah tasks, count your dhikr and find the Qibla right from your wrist. Your tracker stays in sync with your iPhone.";
 "setting_whats_new_title" = "What’s New";
 
 "qibla_header_title" = "Qibla";

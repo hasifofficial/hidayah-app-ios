@@ -26,18 +26,12 @@ struct HomeView: View {
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var today = Date()
-    @State private var containerWidth: CGFloat = 0
     /// The user's chosen shortcuts, watched so Home updates as soon as
     /// they change in Settings.
     @AppStorage(
         Storage.StorageKey.homeShortcuts.rawValue,
         store: Storage.userDefaults
     ) private var shortcutsSetting = ""
-
-    /// The widest the readable column gets on iPad and other wide screens:
-    /// 700pt of cards plus their 16pt side margins, so cards line up with
-    /// Explore's, which caps at 700 and pads outside that.
-    static let columnWidth: CGFloat = 700 + 2 * 16
 
     var body: some View {
         ScrollView {
@@ -64,11 +58,6 @@ struct HomeView: View {
             .padding(.top, 4)
             .padding(.bottom, 100)
             .modifier(ExactProposedWidth())
-        }
-        .onGeometryChange(for: CGFloat.self) { geometry in
-            geometry.size.width
-        } action: { width in
-            containerWidth = width
         }
         .background {
             AppGradientBackground()
@@ -443,10 +432,8 @@ struct HomeView: View {
     }
 
     /// Side space for the sideways rows, so they run to the screen edges
-    /// while their first card lines up with the readable column.
-    private var rowInset: CGFloat {
-        max(16, (containerWidth - Self.columnWidth) / 2 + 16)
-    }
+    /// while their first card lines up with the other sections.
+    private let rowInset: CGFloat = 16
 
     // MARK: Section header
 
@@ -480,10 +467,11 @@ struct HomeView: View {
 }
 
 private extension View {
-    /// Keeps a Home section to the readable column, centred on wide screens.
+    /// Stretches a Home section across the screen, leading-aligned, so on
+    /// wide screens it fills the width like the Surah and Tracker screens
+    /// and starts under the large title.
     func readableColumn() -> some View {
-        frame(maxWidth: HomeView.columnWidth, alignment: .leading)
-            .frame(maxWidth: .infinity)
+        frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

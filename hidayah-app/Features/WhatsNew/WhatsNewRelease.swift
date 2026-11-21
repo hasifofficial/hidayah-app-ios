@@ -53,6 +53,16 @@ struct WhatsNewRelease: Equatable {
                 illustration: "WhatsNewWidgets",
                 titleKey: "whats_new_widgets_title",
                 bodyKey: "whats_new_widgets_body"
+            ),
+            WhatsNewFeature(
+                illustration: "WhatsNewQibla",
+                titleKey: "whats_new_qibla_title",
+                bodyKey: "whats_new_qibla_body"
+            ),
+            WhatsNewFeature(
+                illustration: "WhatsNewWatch",
+                titleKey: "whats_new_watch_title",
+                bodyKey: "whats_new_watch_body"
             )
         ]
     )
