@@ -35,21 +35,8 @@ jobs:
           key: spm-${{ runner.os }}-${{ hashFiles('hidayah-app.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
           restore-keys: spm-${{ runner.os }}-
 
-      - name: Pick iPhone simulator
-        id: sim
-        run: |
-          UDID=$(xcrun simctl list devices available -j | python3 -c '
-          import json, sys
-          data = json.load(sys.stdin)["devices"]
-          runtimes = sorted((r for r in data if "iOS" in r), key=lambda r: [int(x) for x in r.rsplit("iOS-", 1)[-1].split("-")])
-          for r in reversed(runtimes):
-              phones = [d for d in data[r] if d["name"].startswith("iPhone")]
-              if phones:
-                  print(phones[0]["udid"]); break
-          ')
-          echo "Simulator: $UDID"
-          test -n "$UDID"
-          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: List available simulators
+        run: xcrun simctl list devices available
 
       - name: Run unit tests
         run: |
@@ -57,7 +44,7 @@ jobs:
           xcodebuild test \
             -project hidayah-app.xcodeproj \
             -scheme hidayah-app \
-            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
             -derivedDataPath DerivedData \
             -resultBundlePath TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO \
