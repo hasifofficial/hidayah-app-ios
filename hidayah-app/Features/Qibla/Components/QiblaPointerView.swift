@@ -67,7 +67,7 @@ struct QiblaPointerView: View {
     }
 }
 
-/// The white disc with expanding rings shown once aligned.
+/// The white disc with the Kaaba and expanding rings, shown once aligned.
 private struct AlignedDisc: View {
     let diameter: CGFloat
 
@@ -93,6 +93,13 @@ private struct AlignedDisc: View {
                 .fill(.white)
                 .frame(width: diameter, height: diameter)
                 .shadow(color: .black.opacity(0.15), radius: 20, y: 8)
+
+            Image(Illustration.kaaba)
+                .resizable()
+                .scaledToFit()
+                .frame(width: diameter * 0.62, height: diameter * 0.62)
+                // The drawing's shadow sits low, so nudge it up to look centred.
+                .offset(y: -diameter * 0.02)
         }
         .onAppear { pulse = true }
     }

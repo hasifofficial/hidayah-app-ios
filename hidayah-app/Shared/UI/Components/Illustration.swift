@@ -16,6 +16,9 @@ enum Illustration {
     static let mathuratEvening = "IllustrationMathuratEvening"
     static let calendar = "IllustrationCalendar"
     static let search = "IllustrationSearch"
+    /// The Kaaba, shown on the Qibla screen once you face it. A vector, so
+    /// it stays sharp at the size of the disc.
+    static let kaaba = "IllustrationKaaba"
 
     /// The size of an illustration in an empty state.
     static let emptyStateSize: CGFloat = 96

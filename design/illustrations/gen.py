@@ -187,5 +187,34 @@ body += '<circle cx="50" cy="50" r="32" fill="url(#rimg)"/><circle cx="50" cy="5
 body += '<path d="M33 44 A18 18 0 0 1 46 31" stroke="#fff" stroke-opacity="0.9" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="31" cy="53" r="2.4" fill="#fff" fill-opacity="0.8"/>'
 out['Search'] = svg(defs, body)
 
+# Kaaba: seen from the left, so the door wall faces you and the Black Stone
+# (Hajar Aswad) shows in its silver frame on the corner left of the door
+sd, se = shadow(60, 108, 40, 5)
+defs = sd + lg('kf', '#2E2E2E', '#0B0B0B') + lg('ks', '#1B1B1B', '#050505') + lg('kt', '#4A4A4A', '#2A2A2A', 0, 0, 1, 0) + lg('gold', '#F6D77A', '#C08A1E') + lg('golds', '#D9B456', '#8E6312') + lg('door', '#F3CF6A', '#A9740F') + lg('silver', '#F4F6F8', '#9AA3AD', 0, 0, 1, 1) + '<radialGradient id="stone" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#5A4A44"/><stop offset="1" stop-color="#1C1412"/></radialGradient>'
+body = se
+# faces: left side, front (the door wall), top
+body += '<path d="M20 26 L44 36 L44 104 L20 94 Z" fill="url(#ks)"/>'
+body += '<path d="M44 36 L100 36 L100 104 L44 104 Z" fill="url(#kf)"/>'
+body += '<path d="M20 26 L76 26 L100 36 L44 36 Z" fill="url(#kt)"/>'
+# gold band (hizam) on the side and front
+body += '<path d="M20 38 L44 48 L44 57 L20 47 Z" fill="url(#golds)"/>'
+body += '<rect x="44" y="48" width="56" height="9" fill="url(#gold)"/>'
+for x in range(48, 98, 6):
+    body += f'<rect x="{x}" y="51" width="3.5" height="3" rx="1" fill="#8E5F10" fill-opacity="0.45"/>'
+for i in range(3):
+    x = 24 + i * 6.5
+    y = 40.2 + i * 2.7
+    body += f'<path d="M{x} {y} L{x+3.5} {y+1.4} L{x+3.5} {y+4.4} L{x} {y+3} Z" fill="#5E3F08" fill-opacity="0.45"/>'
+# door, raised on the front wall toward the Black Stone corner
+body += '<rect x="51" y="62" width="13" height="28" rx="2" fill="url(#door)"/>'
+body += '<rect x="53.5" y="65" width="8" height="22" rx="1.2" fill="none" stroke="#8E5F10" stroke-opacity="0.55" stroke-width="1"/>'
+body += '<path d="M57.5 65 L57.5 87" stroke="#8E5F10" stroke-opacity="0.55" stroke-width="1"/>'
+# the Black Stone in its silver frame, on the corner and a little lower
+body += '<ellipse cx="44" cy="83" rx="3.6" ry="4.8" fill="url(#silver)"/>'
+body += '<ellipse cx="44" cy="83.4" rx="2" ry="2.9" fill="url(#stone)"/>'
+# a soft highlight on the front edge
+body += '<path d="M46 38 L98 38" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5" stroke-linecap="round"/>'
+out['Kaaba'] = svg(defs, body)
+
 for k, v in out.items():
     open(f'{k}.svg', 'w').write(v)

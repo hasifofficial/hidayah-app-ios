@@ -58,7 +58,8 @@ final class AppFeatureTests: XCTestCase {
                 Illustration.bookmark,
                 Illustration.mathuratEvening,
                 Illustration.calendar,
-                Illustration.search
+                Illustration.search,
+                Illustration.kaaba
             ]
 
         // Act
