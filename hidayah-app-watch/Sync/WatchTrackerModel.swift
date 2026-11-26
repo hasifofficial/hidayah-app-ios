@@ -17,6 +17,9 @@ final class WatchTrackerModel: NSObject {
     @ObservationIgnored private let session: WCSession?
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private static let stateKey = "watchTrackerState"
+    /// Receives the iPhone's live rakaat session. The session has one
+    /// delegate, so rakaat updates come through here.
+    @ObservationIgnored var onRakaatState: ((RakaatLiveState) -> Void)?
 
     init(
         session: WCSession? = WCSession.isSupported() ? .default : nil,
@@ -71,6 +74,18 @@ final class WatchTrackerModel: NSObject {
         send(completion)
     }
 
+    /// Sends a rakaat correction to the iPhone's live session. Only a live
+    /// message is useful: a queued one would arrive after the prayer.
+    func send(_ command: RakaatCommand) {
+        guard let session,
+              session.activationState == .activated,
+              session.isReachable,
+              let payload = WatchMessage.payload(for: command) else {
+            return
+        }
+        session.sendMessage(payload, replyHandler: nil, errorHandler: nil)
+    }
+
     private func settle(_ completion: WatchTaskCompletion, with snapshot: WatchTrackerSnapshot?) {
         state.settle(taskID: completion.taskID, with: snapshot)
         save()
@@ -122,10 +137,15 @@ extension WatchTrackerModel: WCSessionDelegate {
         activationDidCompleteWith activationState: WCSessionActivationState,
         error: Error?
     ) {
-        let snapshot = WatchMessage.snapshot(from: session.receivedApplicationContext)
+        let context = session.receivedApplicationContext
+        let snapshot = WatchMessage.snapshot(from: context)
+        let rakaat = WatchMessage.rakaatState(from: context)
         Task { @MainActor in
             if let snapshot {
                 self.apply(snapshot)
+            }
+            if let rakaat {
+                self.onRakaatState?(rakaat)
             }
             self.refresh()
         }
@@ -135,9 +155,15 @@ extension WatchTrackerModel: WCSessionDelegate {
         _ session: WCSession,
         didReceiveApplicationContext applicationContext: [String: Any]
     ) {
-        guard let snapshot = WatchMessage.snapshot(from: applicationContext) else { return }
+        let snapshot = WatchMessage.snapshot(from: applicationContext)
+        let rakaat = WatchMessage.rakaatState(from: applicationContext)
         Task { @MainActor in
-            self.apply(snapshot)
+            if let snapshot {
+                self.apply(snapshot)
+            }
+            if let rakaat {
+                self.onRakaatState?(rakaat)
+            }
         }
     }
 
@@ -145,6 +171,12 @@ extension WatchTrackerModel: WCSessionDelegate {
         _ session: WCSession,
         didReceiveMessage message: [String: Any]
     ) {
+        if let rakaat = WatchMessage.rakaatState(from: message) {
+            Task { @MainActor in
+                self.onRakaatState?(rakaat)
+            }
+            return
+        }
         guard let snapshot = WatchMessage.snapshot(from: message) else { return }
         Task { @MainActor in
             self.apply(snapshot)

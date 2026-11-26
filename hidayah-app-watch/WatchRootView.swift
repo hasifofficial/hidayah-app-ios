@@ -7,6 +7,7 @@ import SwiftUI
 
 struct WatchRootView: View {
     let trackerModel: WatchTrackerModel
+    let rakaatModel: WatchRakaatModel
 
     var body: some View {
         NavigationStack {
@@ -35,6 +36,16 @@ struct WatchRootView: View {
                 }
 
                 NavigationLink {
+                    WatchRakaatView(model: rakaatModel)
+                } label: {
+                    WatchHomeRow(
+                        title: String(localized: "watch_home_rakaat"),
+                        subtitle: rakaatSubtitle,
+                        illustration: "IllustrationRakaat"
+                    )
+                }
+
+                NavigationLink {
                     WatchQiblaView()
                 } label: {
                     WatchHomeRow(
@@ -57,6 +68,16 @@ struct WatchRootView: View {
             }
         }
         .tint(.lightGreen)
+    }
+
+    /// Shows the iPhone's live count, so you can glance at it from Home.
+    private var rakaatSubtitle: String? {
+        guard rakaatModel.isMirroring else { return nil }
+        return String(
+            format: String(localized: "watch_home_rakaat_live_format"),
+            rakaatModel.completedRakaat,
+            rakaatModel.rakaatCount
+        )
     }
 
     private func trackerSubtitle(now: Date) -> String {

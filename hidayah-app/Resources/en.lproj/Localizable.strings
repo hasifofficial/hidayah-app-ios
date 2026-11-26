@@ -385,6 +385,7 @@
 "explore_tasbih_subtitle" = "Count your dhikr with a digital tasbih.";
 "explore_qibla_subtitle" = "Find the direction of the Kaaba wherever you are.";
 "explore_tracker_subtitle" = "Build your daily Istiqamah routine.";
+"explore_rakaat_subtitle" = "Keep count of your rakaat while you pray.";
 
 "reading_tab_title" = "Reading";
 "reading_header_title" = "Reading";
@@ -450,3 +451,37 @@
 "qibla_denied_action" = "Open Settings";
 "qibla_unavailable_title" = "No Compass";
 "qibla_unavailable_message" = "This device doesn’t have a compass, so the Qibla direction can’t be shown.";
+
+/* Rakaat */
+"rakaat_header_title" = "Rakaat Counter";
+"rakaat_prayer_fajr" = "Fajr";
+"rakaat_prayer_dhuhr" = "Dhuhr";
+"rakaat_prayer_asr" = "Asr";
+"rakaat_prayer_maghrib" = "Maghrib";
+"rakaat_prayer_isha" = "Isha";
+"rakaat_prayer_sunnah" = "Sunnah";
+"rakaat_prayer_witir" = "Witir";
+"rakaat_prayer_custom" = "Custom";
+"rakaat_count_format" = "%d rakaat";
+"rakaat_count_of_format" = "of %d";
+"rakaat_choose_prayer" = "Prayer";
+"rakaat_how_title" = "How it works";
+"rakaat_how_place" = "Place your iPhone face up on the mat, where your forehead touches in sujood.";
+"rakaat_how_sujood" = "Each sujood is counted when your forehead comes close. Two sujood complete a rakaat.";
+"rakaat_how_watch" = "Open Hidayah on your Apple Watch to feel a tap after each rakaat and a double tap for tashahhud.";
+"rakaat_start" = "Start Praying";
+"rakaat_current_format" = "Rakaat %d";
+"rakaat_tashahhud_prompt" = "Sit for tashahhud";
+"rakaat_listening" = "Counting sujood with the proximity sensor.";
+"rakaat_sensor_unavailable" = "This device has no proximity sensor. Use +1 to count each rakaat.";
+"rakaat_accessibility_progress_format" = "%1$d of %2$d rakaat";
+"rakaat_increment" = "Add a rakaat";
+"rakaat_decrement" = "Remove a rakaat";
+"rakaat_end" = "End";
+"rakaat_complete_title" = "Prayer Complete";
+"rakaat_complete_message_format" = "You completed %1$d rakaat of %2$@. May Allah accept your prayer.";
+"rakaat_done" = "Done";
+"rakaat_pray_again" = "Pray Again";
+"rakaat_focus_toggle" = "Dark screen while praying";
+"rakaat_focus_toggle_detail" = "Dims the display to black with only the count and tashahhud cue. On OLED screens the black pixels stay off.";
+"rakaat_focus_hint" = "Tap to show controls";

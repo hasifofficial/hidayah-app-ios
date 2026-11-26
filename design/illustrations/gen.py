@@ -216,5 +216,26 @@ body += '<ellipse cx="44" cy="83.4" rx="2" ry="2.9" fill="url(#stone)"/>'
 body += '<path d="M46 38 L98 38" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5" stroke-linecap="round"/>'
 out['Kaaba'] = svg(defs, body)
 
+# Rakaat: a prayer mat with a mihrab arch and a badge counting rakaat
+sd, se = shadow(60, 110, 36, 5)
+defs = sd + lg('mat', '#3FC283', '#13623F', 0, 0, 1, 1) + lg('gold', '#F6D77A', '#C08A1E') + lg('arch', '#1D7A50', '#0F5537') + lg('okb', '#58D894', '#178F55')
+body = se
+body += '<rect x="26" y="16" width="62" height="90" rx="7" fill="#0F4E33"/><rect x="26" y="12" width="62" height="90" rx="7" fill="url(#mat)"/>'
+body += '<rect x="32" y="18" width="50" height="78" rx="4" fill="none" stroke="url(#gold)" stroke-width="2.5"/>'
+body += '<path d="M40 60 L40 40 Q40 30 57 22 Q74 30 74 40 L74 60 Z" fill="url(#arch)"/>'
+body += '<path d="M40 60 L40 40 Q40 30 57 22 Q74 30 74 40 L74 60" fill="none" stroke="url(#gold)" stroke-width="1.8"/>'
+body += star8(57, 44, 6, '#E9BF4C')
+for x in range(30, 86, 6):
+    body += f'<path d="M{x} 102 L{x} 108" stroke="#C08A1E" stroke-width="1.6" stroke-linecap="round"/>'
+body += '<path d="M30 70 L84 70 M30 76 L84 76" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5"/>'
+body += '<path d="M30 20 Q30 15 36 15 L60 15" stroke="#fff" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round"/>'
+body += '<circle cx="88" cy="90" r="17" fill="#fff"/><circle cx="88" cy="90" r="14" fill="url(#okb)"/>'
+for i, (dx, dy) in enumerate([(-4.5, -4.5), (4.5, -4.5), (-4.5, 4.5), (4.5, 4.5)]):
+    if i < 3:
+        body += f'<circle cx="{88+dx}" cy="{90+dy}" r="3" fill="#fff"/>'
+    else:
+        body += f'<circle cx="{88+dx}" cy="{90+dy}" r="2.4" fill="none" stroke="#fff" stroke-width="1.4"/>'
+out['Rakaat'] = svg(defs, body)
+
 for k, v in out.items():
     open(f'{k}.svg', 'w').write(v)

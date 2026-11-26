@@ -133,6 +133,7 @@ enum AppRoute: Hashable {
     case mathurat
     case tasbih
     case qibla
+    case rakaat
     case surahDetail(
         surahNumber: Int,
         title: String?,

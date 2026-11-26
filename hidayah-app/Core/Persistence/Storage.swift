@@ -40,6 +40,8 @@ class Storage {
         case hasMigratedToSwiftData
         case whatsNewLastSeenVersion
         case homeShortcuts
+        case rakaatLastPrayer
+        case rakaatFocusScreen
     }
 
     static func save(_ key: StorageKey, _ value: Any) {
