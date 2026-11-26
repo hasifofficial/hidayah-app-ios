@@ -5,8 +5,9 @@
 
 import SwiftUI
 
-/// A compact Qibla compass: an arrow that points to the Kaaba and the screen
-/// turns green when you face it. Logic lives in the shared `QiblaViewModel`.
+/// A compact Qibla compass: an arrow that points to the Kaaba, and once you
+/// face it the screen turns green and a white disc shows the Kaaba, as on
+/// the iPhone. Logic lives in the shared `QiblaViewModel`.
 struct WatchQiblaView: View {
     @State private var viewModel = QiblaViewModel(sensor: CoreLocationQiblaSensor())
 
@@ -66,14 +67,22 @@ struct WatchQiblaView: View {
         VStack(spacing: 4) {
             ZStack {
                 Circle()
-                    .stroke(.white.opacity(viewModel.isAligned ? 0.5 : 0.2), lineWidth: 2)
+                    .stroke(.white.opacity(0.2), lineWidth: 2)
+                    .opacity(viewModel.isAligned ? 0 : 1)
                 Image(systemName: "arrow.up")
                     .font(.system(size: 52, weight: .bold))
-                    .foregroundStyle(viewModel.isAligned ? .white : Color.lightGreen)
+                    .foregroundStyle(Color.lightGreen)
                     .rotationEffect(.degrees(viewModel.arrowRotation))
                     .animation(.interpolatingSpring(stiffness: 120, damping: 18), value: viewModel.arrowRotation)
+                    .opacity(viewModel.isAligned ? 0 : 1)
+                    .scaleEffect(viewModel.isAligned ? 0.4 : 1)
+
+                kaabaDisc
+                    .opacity(viewModel.isAligned ? 1 : 0)
+                    .scaleEffect(viewModel.isAligned ? 1 : 0.3)
             }
             .frame(width: 100, height: 100)
+            .animation(.spring(response: 0.45, dampingFraction: 0.72), value: viewModel.isAligned)
             .accessibilityHidden(true)
 
             Text(viewModel.isAligned ? String(localized: "qibla_aligned_title") : viewModel.offsetText)
@@ -96,6 +105,21 @@ struct WatchQiblaView: View {
             }
         }
         .accessibilityElement(children: .combine)
+    }
+
+    /// The white disc with the Kaaba shown once you face the Qibla.
+    private var kaabaDisc: some View {
+        ZStack {
+            Circle()
+                .fill(.white)
+                .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
+            Image(Illustration.kaaba)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 62, height: 62)
+                // The drawing's shadow sits low, so nudge it up to look centred.
+                .offset(y: -2)
+        }
     }
 }
 
