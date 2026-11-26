@@ -464,8 +464,10 @@
 "rakaat_count_of_format" = "of %d";
 "rakaat_choose_prayer" = "Prayer";
 "rakaat_how_title" = "How it works";
-"rakaat_how_place" = "Place your iPhone face up on the mat, where your forehead touches in sujood.";
-"rakaat_how_sujood" = "Each sujood is counted when your forehead comes close. Two sujood complete a rakaat.";
+"rakaat_how_picture_place" = "Between your hands, top edge at your forehead spot";
+"rakaat_how_picture_sujood" = "Your forehead comes down over the top of the phone";
+"rakaat_how_place" = "Place your iPhone face up between your hands, with its top edge right next to where your forehead touches in sujood.";
+"rakaat_how_sujood" = "The sensor at the top of the phone counts a sujood when your forehead and nose come close. Two sujood complete a rakaat.";
 "rakaat_how_watch" = "Open Hidayah on your Apple Watch to feel a tap after each rakaat and a double tap for tashahhud.";
 "rakaat_start" = "Start Praying";
 "rakaat_current_format" = "Rakaat %d";

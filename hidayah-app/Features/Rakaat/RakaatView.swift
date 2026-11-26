@@ -175,6 +175,11 @@ struct RakaatView: View {
     private var instructions: some View {
         VStack(alignment: .leading, spacing: 12) {
             sectionTitle("rakaat_how_title")
+            HStack(alignment: .top, spacing: 12) {
+                howToPicture(Illustration.rakaatPlacement, captionKey: "rakaat_how_picture_place")
+                howToPicture(Illustration.rakaatSujood, captionKey: "rakaat_how_picture_sujood")
+            }
+            .padding(.bottom, 4)
             instructionRow(icon: "iphone", key: "rakaat_how_place")
             instructionRow(icon: "hand.raised", key: "rakaat_how_sujood")
             instructionRow(icon: "applewatch.radiowaves.left.and.right", key: "rakaat_how_watch")
@@ -182,6 +187,25 @@ struct RakaatView: View {
         .padding(16)
         .background(Color.backgroundGray)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    /// A picture of how to set up, with a short caption under it.
+    private func howToPicture(_ name: String, captionKey: String) -> some View {
+        VStack(spacing: 6) {
+            Image(name)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity)
+                .background(Color.appBackground.opacity(0.6))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .accessibilityHidden(true)
+            Text(NSLocalizedString(captionKey, comment: ""))
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.textGray)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private func instructionRow(icon: String, key: String) -> some View {
