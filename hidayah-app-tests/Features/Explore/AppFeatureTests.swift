@@ -61,7 +61,8 @@ final class AppFeatureTests: XCTestCase {
                 Illustration.search,
                 Illustration.kaaba,
                 Illustration.rakaatPlacement,
-                Illustration.rakaatSujood
+                Illustration.rakaatSujood,
+                Illustration.rakaatWatch
             ]
 
         // Act

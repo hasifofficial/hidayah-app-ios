@@ -319,5 +319,39 @@ for x in (134, 137.5, 141):
     b += f'<path d="M{x} 113.2 L{x+2.5} 115.4" stroke="#B57E55" stroke-width="0.6" stroke-linecap="round"/>'
 out['RakaatSujood'] = svg_wide(defs, b)
 
+# Rakaat on the wrist: an Apple Watch showing the count and tapping
+defs = (lg('arm', '#EDC29B', '#C98F62', 0, 0, 0, 1) + lg('sleeve', '#F4F8F6', '#C9D9D1', 0, 0, 0, 1)
+        + lg('band', '#2E3B36', '#141B18', 0, 0, 1, 0) + lg('case', '#5B636B', '#22272C', 0, 0, 1, 1)
+        + lg('gold', '#F6D77A', '#C08A1E'))
+b = '<ellipse cx="100" cy="122" rx="78" ry="3.5" fill="#000" fill-opacity="0.08"/>'
+# forearm across the picture, from the sleeve on the left to the hand on the right
+b += '<path d="M14 72 C40 70 120 70 168 74 C180 75 188 80 188 88 C188 96 180 100 168 101 C120 104 40 104 14 102 Z" fill="url(#arm)"/>'
+b += '<path d="M10 66 C24 64 36 65 44 67 L44 108 C36 110 24 110 10 108 Z" fill="url(#sleeve)"/>'
+b += '<path d="M44 67 L44 108" stroke="#AFC4BA" stroke-width="1.2"/>'
+# strap over the wrist
+b += '<rect x="88" y="54" width="26" height="62" rx="5" fill="url(#band)"/>'
+for y in (60, 66, 104, 110):
+    b += f'<rect x="91" y="{y}" width="20" height="1.4" rx="0.7" fill="#fff" fill-opacity="0.08"/>'
+# watch case, crown and screen
+b += '<rect x="80" y="62" width="42" height="46" rx="12" fill="url(#case)"/>'
+b += '<rect x="122" y="76" width="4" height="9" rx="2" fill="#7A838C"/>'
+b += '<rect x="84" y="66" width="34" height="38" rx="9" fill="#050607"/>'
+# on the screen: a progress ring two rakaat round, and the rakaat dots
+cx, cy, r = 101, 82, 11
+b += f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#47B881" stroke-opacity="0.25" stroke-width="3"/>'
+b += f'<path d="M{cx} {cy-r} A{r} {r} 0 0 1 {cx} {cy+r}" fill="none" stroke="#47B881" stroke-width="3" stroke-linecap="round"/>'
+for i, x in enumerate((92, 98, 104, 110)):
+    if i % 2 == 1:
+        b += f'<circle cx="{x}" cy="98" r="2" fill="#47B881"/>'
+    else:
+        b += f'<circle cx="{x}" cy="98" r="1.7" fill="none" stroke="#47B881" stroke-opacity="0.6" stroke-width="0.9"/>'
+# the taps: ripples either side of the watch
+for d, o in ((8, 0.9), (15, 0.55), (22, 0.3)):
+    b += f'<path d="M{78-d} {72} Q{72-d} {85} {78-d} {98}" fill="none" stroke="#47B881" stroke-opacity="{o}" stroke-width="2" stroke-linecap="round"/>'
+    b += f'<path d="M{128+d} {72} Q{134+d} {85} {128+d} {98}" fill="none" stroke="#47B881" stroke-opacity="{o}" stroke-width="2" stroke-linecap="round"/>'
+# highlight on the case
+b += '<path d="M85 66 Q86 63 90 63 L110 63" stroke="#fff" stroke-opacity="0.3" stroke-width="1.2" fill="none" stroke-linecap="round"/>'
+out['RakaatWatch'] = svg_wide(defs, b)
+
 for k, v in out.items():
     open(f'{k}.svg', 'w').write(v)

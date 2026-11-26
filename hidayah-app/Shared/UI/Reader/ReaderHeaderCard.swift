@@ -14,6 +14,9 @@ struct ReaderHeaderCard<Content: View>: View {
     var illustration: String? = nil
     let label: String
     let title: String
+    /// Adds the screen-edge margin reading screens need. Off when the card
+    /// sits inside a layout that already has its own margins.
+    var insetsFromEdges = true
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -68,7 +71,7 @@ struct ReaderHeaderCard<Content: View>: View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .stroke(Color.lightGreen.opacity(0.16), lineWidth: 1)
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 16)
+        .padding(.horizontal, insetsFromEdges ? 16 : 0)
+        .padding(.top, insetsFromEdges ? 16 : 0)
     }
 }

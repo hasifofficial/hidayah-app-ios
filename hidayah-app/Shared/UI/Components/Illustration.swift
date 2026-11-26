@@ -23,6 +23,8 @@ enum Illustration {
     /// forehead coming down over it in sujood. Vectors, wider than square.
     static let rakaatPlacement = "IllustrationRakaatPlacement"
     static let rakaatSujood = "IllustrationRakaatSujood"
+    /// The Apple Watch on the wrist, tapping with each rakaat.
+    static let rakaatWatch = "IllustrationRakaatWatch"
 
     /// The size of an illustration in an empty state.
     static let emptyStateSize: CGFloat = 96

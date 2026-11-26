@@ -11,11 +11,19 @@ struct RakaatView: View {
     @Bindable var viewModel: RakaatViewModel
 
     @State private var customRakaat = 2
+    @State private var showingGuide = false
+    @State private var showingTashahhudInfo = false
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         ZStack {
-            AppGradientBackground()
+            // The setup screen is plain like Explore; counting keeps the
+            // soft green gradient.
+            if viewModel.phase == .setup {
+                Color.appBackground.ignoresSafeArea()
+            } else {
+                AppGradientBackground()
+            }
 
             switch viewModel.phase {
             case .setup:
@@ -68,80 +76,185 @@ struct RakaatView: View {
 
     private var setup: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                sectionTitle("rakaat_choose_prayer")
-
-                LazyVGrid(
-                    columns: [GridItem(.adaptive(minimum: 100), spacing: 10)],
-                    spacing: 10
-                ) {
-                    ForEach(RakaatPrayer.presets) { prayer in
-                        prayerChip(prayer)
-                    }
-                    prayerChip(.custom(rakaat: customRakaat))
+            VStack(spacing: 16) {
+                heroCard
+                prayerPills
+                VStack(spacing: 10) {
+                    guideRow
+                    darkScreenRow
                 }
-
-                if viewModel.prayer.isCustom {
-                    Stepper(
-                        value: $customRakaat,
-                        in: RakaatPrayer.customRange
-                    ) {
-                        Text(rakaatCountText(customRakaat))
-                            .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(.title)
-                    }
-                    .onChange(of: customRakaat) { _, value in
-                        viewModel.prayer = .custom(rakaat: value)
-                    }
-                    .padding(14)
-                    .background(Color.backgroundGray)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                }
-
-                instructions
-
-                Toggle(isOn: $viewModel.usesFocusScreen) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(NSLocalizedString("rakaat_focus_toggle", comment: ""))
-                            .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(.title)
-                        Text(NSLocalizedString("rakaat_focus_toggle_detail", comment: ""))
-                            .font(.system(size: 12))
-                            .foregroundColor(.textGray)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .tint(.lightGreen)
-                .padding(14)
-                .background(Color.backgroundGray)
-                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                .accessibilityIdentifier("rakaat_focus_toggle")
-
-                Button {
-                    AppHaptics.selection()
-                    viewModel.start()
-                } label: {
-                    Text(NSLocalizedString("rakaat_start", comment: ""))
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(Color.lightGreen)
-                        .clipShape(Capsule())
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("rakaat_start")
             }
             .padding(.horizontal, 20)
-            .padding(.top, 16)
-            // Clear the floating tab bar.
-            .padding(.bottom, 110)
+            .padding(.top, 8)
+            .padding(.bottom, 16)
             .frame(maxWidth: 560)
             .frame(maxWidth: .infinity)
         }
+        .safeAreaInset(edge: .bottom) {
+            startButton
+                .padding(.horizontal, 20)
+                .padding(.bottom, 12)
+                .frame(maxWidth: 560)
+        }
+        .sheet(isPresented: $showingGuide) {
+            RakaatGuideView()
+        }
     }
 
-    private func prayerChip(_ prayer: RakaatPrayer) -> some View {
+    /// The chosen prayer: its name, how many rakaat it has, and a dot for
+    /// each rakaat with the tashahhud ones filled. For Custom, − and +
+    /// change the count here.
+    private var heroCard: some View {
+        ReaderHeaderCard(
+            icon: "figure.mind.and.body",
+            illustration: AppFeature.rakaat.illustration,
+            label: NSLocalizedString("rakaat_hero_label", comment: ""),
+            title: viewModel.prayer.displayName,
+            insetsFromEdges: false
+        ) {
+            HStack(alignment: .center, spacing: 12) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text("\(viewModel.prayer.rakaatCount)")
+                        .font(.system(size: 64, weight: .light, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundColor(.title)
+                        .contentTransition(.numericText(value: Double(viewModel.prayer.rakaatCount)))
+                    Text(NSLocalizedString("rakaat_unit", comment: ""))
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(.textGray)
+                }
+
+                Spacer(minLength: 0)
+
+                if viewModel.prayer.isCustom {
+                    stepButton(systemName: "minus", accessibilityKey: "rakaat_custom_fewer") {
+                        setCustomRakaat(customRakaat - 1)
+                    }
+                    .disabled(customRakaat <= RakaatPrayer.customRange.lowerBound)
+                    stepButton(systemName: "plus", accessibilityKey: "rakaat_custom_more") {
+                        setCustomRakaat(customRakaat + 1)
+                    }
+                    .disabled(customRakaat >= RakaatPrayer.customRange.upperBound)
+                }
+            }
+
+            rakaatDots
+
+            Button {
+                showingTashahhudInfo = true
+            } label: {
+                HStack(spacing: 6) {
+                    Label(tashahhudText, systemImage: "circle.fill")
+                        .labelStyle(TashahhudLegendStyle())
+                    Image(systemName: "info.circle")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.lightGreen)
+                }
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(.textGray)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint(NSLocalizedString("rakaat_tashahhud_info_hint", comment: ""))
+            .popover(isPresented: $showingTashahhudInfo) {
+                tashahhudInfo
+                    .presentationCompactAdaptation(.popover)
+            }
+        }
+        .animation(.spring(duration: 0.3), value: viewModel.prayer)
+    }
+
+    /// One dot per rakaat, numbered; the rakaat you sit for tashahhud after
+    /// are filled.
+    private var rakaatDots: some View {
+        let count = viewModel.prayer.rakaatCount
+        let size: CGFloat = count > 8 ? 22 : 28
+        return HStack(spacing: count > 8 ? 4 : 8) {
+            ForEach(1...count, id: \.self) { rakaat in
+                let isTashahhud = viewModel.prayer.tashahhudRakaat.contains(rakaat)
+                Text("\(rakaat)")
+                    .font(.system(size: size * 0.45, weight: .bold, design: .rounded))
+                    .foregroundColor(isTashahhud ? .white : .lightGreen)
+                    .frame(width: size, height: size)
+                    .background(
+                        Circle().fill(isTashahhud ? Color.lightGreen : Color.appBackground.opacity(0.8))
+                    )
+                    .overlay {
+                        Circle().stroke(Color.lightGreen.opacity(isTashahhud ? 0 : 0.4), lineWidth: 1.5)
+                    }
+            }
+        }
+        .accessibilityHidden(true)
+    }
+
+    /// What tashahhud is, for anyone who doesn't know the word.
+    private var tashahhudInfo: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(NSLocalizedString("rakaat_tashahhud_info_title", comment: ""))
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.title)
+            Text(NSLocalizedString("rakaat_tashahhud_info_body", comment: ""))
+                .font(.system(size: 14))
+                .foregroundColor(.textGray)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(16)
+        .frame(width: 290, alignment: .leading)
+    }
+
+    private var tashahhudText: String {
+        let positions = viewModel.prayer.tashahhudRakaat
+        if positions.count == 2 {
+            return String(
+                format: NSLocalizedString("rakaat_tashahhud_two_format", comment: ""),
+                positions[0], positions[1]
+            )
+        }
+        return String(
+            format: NSLocalizedString("rakaat_tashahhud_one_format", comment: ""),
+            positions.last ?? viewModel.prayer.rakaatCount
+        )
+    }
+
+    private func stepButton(
+        systemName: String,
+        accessibilityKey: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button {
+            AppHaptics.selection()
+            action()
+        } label: {
+            Image(systemName: systemName)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.lightGreen)
+                .frame(width: 40, height: 40)
+                .background(Color.appBackground.opacity(0.8), in: Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(NSLocalizedString(accessibilityKey, comment: ""))
+    }
+
+    private func setCustomRakaat(_ value: Int) {
+        let clamped = min(max(value, RakaatPrayer.customRange.lowerBound), RakaatPrayer.customRange.upperBound)
+        customRakaat = clamped
+        viewModel.prayer = .custom(rakaat: clamped)
+    }
+
+    /// Every choice visible at once: two rows of three.
+    private var prayerPills: some View {
+        LazyVGrid(
+            columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3),
+            spacing: 8
+        ) {
+            ForEach(RakaatPrayer.presets) { prayer in
+                prayerPill(prayer)
+            }
+            prayerPill(.custom(rakaat: customRakaat))
+        }
+    }
+
+    private func prayerPill(_ prayer: RakaatPrayer) -> some View {
         let isSelected = prayer.isCustom
             ? viewModel.prayer.isCustom
             : viewModel.prayer == prayer
@@ -149,84 +262,86 @@ struct RakaatView: View {
             AppHaptics.selection()
             viewModel.prayer = prayer
         } label: {
-            VStack(spacing: 2) {
-                Text(prayer.displayName)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(isSelected ? .white : .title)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                Text(rakaatCountText(prayer.rakaatCount))
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(isSelected ? .white.opacity(0.85) : .textGray)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(isSelected ? Color.lightGreen : Color.backgroundGray)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.textGray.opacity(isSelected ? 0 : 0.1), lineWidth: 1)
-            }
+            Text(prayer.displayName)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(isSelected ? .white : .title)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity)
+                .frame(height: 40)
+                .background(isSelected ? Color.lightGreen : Color.backgroundGray, in: Capsule())
+                .overlay {
+                    Capsule().stroke(Color.textGray.opacity(isSelected ? 0 : 0.1), lineWidth: 1)
+                }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(prayer.displayName), \(rakaatCountText(prayer.rakaatCount))")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
-    private var instructions: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("rakaat_how_title")
-            HStack(alignment: .top, spacing: 12) {
-                howToPicture(Illustration.rakaatPlacement, captionKey: "rakaat_how_picture_place")
-                howToPicture(Illustration.rakaatSujood, captionKey: "rakaat_how_picture_sujood")
+    private var guideRow: some View {
+        Button {
+            showingGuide = true
+        } label: {
+            HStack(spacing: 12) {
+                rowIcon("iphone")
+                Text(NSLocalizedString("rakaat_how_open", comment: ""))
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(.title)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.textGray)
+                    .accessibilityHidden(true)
             }
-            .padding(.bottom, 4)
-            instructionRow(icon: "iphone", key: "rakaat_how_place")
-            instructionRow(icon: "hand.raised", key: "rakaat_how_sujood")
-            instructionRow(icon: "applewatch.radiowaves.left.and.right", key: "rakaat_how_watch")
+            .padding(12)
+            .background(Color.backgroundGray)
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
-        .padding(16)
+        .buttonStyle(.plain)
+    }
+
+    private var darkScreenRow: some View {
+        Toggle(isOn: $viewModel.usesFocusScreen) {
+            HStack(spacing: 12) {
+                rowIcon("moon.fill")
+                Text(NSLocalizedString("rakaat_focus_toggle", comment: ""))
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(.title)
+            }
+        }
+        .tint(.lightGreen)
+        .padding(12)
         .background(Color.backgroundGray)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .accessibilityHint(NSLocalizedString("rakaat_focus_toggle_detail", comment: ""))
+        .accessibilityIdentifier("rakaat_focus_toggle")
     }
 
-    /// A picture of how to set up, with a short caption under it.
-    private func howToPicture(_ name: String, captionKey: String) -> some View {
-        VStack(spacing: 6) {
-            Image(name)
-                .resizable()
-                .scaledToFit()
+    private func rowIcon(_ systemName: String) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundColor(.lightGreen)
+            .frame(width: 32, height: 32)
+            .background(Color.lightGreen.opacity(0.14), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+            .accessibilityHidden(true)
+    }
+
+    private var startButton: some View {
+        Button {
+            AppHaptics.selection()
+            viewModel.start()
+        } label: {
+            Text(NSLocalizedString("rakaat_start", comment: ""))
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .background(Color.appBackground.opacity(0.6))
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .accessibilityHidden(true)
-            Text(NSLocalizedString(captionKey, comment: ""))
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.textGray)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+                .frame(height: 52)
+                .background(Color.lightGreen)
+                .clipShape(Capsule())
         }
-        .frame(maxWidth: .infinity)
-    }
-
-    private func instructionRow(icon: String, key: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 17, weight: .medium))
-                .foregroundColor(.lightGreen)
-                .frame(width: 24)
-                .accessibilityHidden(true)
-            Text(NSLocalizedString(key, comment: ""))
-                .font(.system(size: 14))
-                .foregroundColor(.title)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    private func sectionTitle(_ key: String) -> some View {
-        Text(NSLocalizedString(key, comment: ""))
-            .font(.system(size: 13, weight: .semibold))
-            .foregroundColor(.textGray)
-            .textCase(.uppercase)
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("rakaat_start")
     }
 
     // MARK: - Praying
@@ -427,5 +542,17 @@ struct RakaatView: View {
 
     private func rakaatCountText(_ count: Int) -> String {
         String(format: NSLocalizedString("rakaat_count_format", comment: ""), count)
+    }
+}
+
+/// The legend under the rakaat dots: a small filled green dot, then the text.
+private struct TashahhudLegendStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 6) {
+            configuration.icon
+                .font(.system(size: 8))
+                .foregroundColor(.lightGreen)
+            configuration.title
+        }
     }
 }

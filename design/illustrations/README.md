@@ -16,7 +16,7 @@ Copy each `<Name>.png` over
 `Illustrations/Illustration<Name>.imageset/Illustration<Name>.png`.
 
 The rakaat counter's how-it-works pictures (`RakaatPlacement`,
-`RakaatSujood`) are 200×140 and stay SVG in the catalogue, which keeps
+`RakaatSujood`, `RakaatWatch`) are 200×140 and stay SVG in the catalogue, which keeps
 them sharp: copy each `<Name>.svg` over
 `Illustrations/Illustration<Name>.imageset/Illustration<Name>.svg`.
 
