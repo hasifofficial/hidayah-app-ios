@@ -219,6 +219,18 @@ final class RakaatViewModelTests: XCTestCase {
         XCTAssertEqual(link.sent, [])
     }
 
+    func test_prayer_should_fallBackToDhuhr_when_savedPrayerWasRemoved() {
+        // Arrange
+        // Sunnah was a choice in earlier builds; it is saved like this.
+        Storage.save(.rakaatLastPrayer, Data(#"{"sunnah":{}}"#.utf8))
+
+        // Act
+        let viewModel = makeViewModel()
+
+        // Assert
+        XCTAssertEqual(viewModel.prayer, .dhuhr)
+    }
+
     func test_prayer_should_beRemembered() {
         // Arrange
         let viewModel = makeViewModel()

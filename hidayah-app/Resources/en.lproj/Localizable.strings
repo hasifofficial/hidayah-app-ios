@@ -459,8 +459,6 @@
 "rakaat_prayer_asr" = "Asr";
 "rakaat_prayer_maghrib" = "Maghrib";
 "rakaat_prayer_isha" = "Isha";
-"rakaat_prayer_sunnah" = "Sunnah";
-"rakaat_prayer_witir" = "Witir";
 "rakaat_prayer_custom" = "Custom";
 "rakaat_count_format" = "%d rakaat";
 "rakaat_count_of_format" = "of %d";

@@ -9,13 +9,13 @@ import XCTest
 final class RakaatPrayerTests: XCTestCase {
     func test_presets_should_haveFardRakaatCounts() {
         // Arrange
-        let prayers: [RakaatPrayer] = [.fajr, .dhuhr, .asr, .maghrib, .isha, .sunnah, .witir]
+        let prayers: [RakaatPrayer] = [.fajr, .dhuhr, .asr, .maghrib, .isha]
 
         // Act
         let counts = prayers.map(\.rakaatCount)
 
         // Assert
-        XCTAssertEqual(counts, [2, 4, 4, 3, 4, 2, 3])
+        XCTAssertEqual(counts, [2, 4, 4, 3, 4])
         XCTAssertEqual(RakaatPrayer.presets, prayers)
     }
 

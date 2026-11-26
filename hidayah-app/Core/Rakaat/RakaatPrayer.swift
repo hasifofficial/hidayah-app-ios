@@ -13,17 +13,15 @@ enum RakaatPrayer: Codable, Hashable, Identifiable {
     case asr
     case maghrib
     case isha
-    /// Two rakaat of sunnah or nafl.
-    case sunnah
-    case witir
-    /// Any number of rakaat, clamped to `customRange`.
+    /// Any number of rakaat, clamped to `customRange`, for sunnah, witir
+    /// and other prayers.
     case custom(rakaat: Int)
 
     static let customRange = 1...12
 
     /// The choices offered in the picker, in order. Custom is offered
     /// separately with its own stepper.
-    static let presets: [RakaatPrayer] = [.fajr, .dhuhr, .asr, .maghrib, .isha, .sunnah, .witir]
+    static let presets: [RakaatPrayer] = [.fajr, .dhuhr, .asr, .maghrib, .isha]
 
     var id: String {
         switch self {
@@ -36,9 +34,9 @@ enum RakaatPrayer: Codable, Hashable, Identifiable {
 
     var rakaatCount: Int {
         switch self {
-        case .fajr, .sunnah:
+        case .fajr:
             return 2
-        case .maghrib, .witir:
+        case .maghrib:
             return 3
         case .dhuhr, .asr, .isha:
             return 4
@@ -66,8 +64,6 @@ enum RakaatPrayer: Codable, Hashable, Identifiable {
         case .asr: return "rakaat_prayer_asr"
         case .maghrib: return "rakaat_prayer_maghrib"
         case .isha: return "rakaat_prayer_isha"
-        case .sunnah: return "rakaat_prayer_sunnah"
-        case .witir: return "rakaat_prayer_witir"
         case .custom: return "rakaat_prayer_custom"
         }
     }
