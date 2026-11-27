@@ -8,9 +8,9 @@ OUT = 'whatsnew'
 
 THEMES = {
     'light': dict(blob='#E6F4EC', blob2='#D3ECDF', phone='#1C2420', screen=('#FFFFFF', '#EEF5F0'),
-                  card=('#FFFFFF', '#F1F6F3'), line='#D5E2DA', line2='#E4EDE7', ground='#0F2A1C', ground_op=0.10),
+                  card=('#FFFFFF', '#F1F6F3'), line='#D5E2DA', line2='#E4EDE7', ground='#0F2A1C', ground_op=0.10, ink='#1C2420'),
     'dark': dict(blob='#16291F', blob2='#1C3528', phone='#0B0F0D', screen=('#24302A', '#18211C'),
-                 card=('#2C3832', '#202A25'), line='#3E4C45', line2='#34413A', ground='#000000', ground_op=0.35),
+                 card=('#2C3832', '#202A25'), line='#3E4C45', line2='#34413A', ground='#000000', ground_op=0.35, ink='#E8EFEA'),
 }
 
 def read_art(name):
@@ -181,6 +181,29 @@ def qibla(t):
     body += sparkles([(270, 56, 7), (262, 160, 5), (100, 40, 4, '#E6B54A', 0.8)])
     return doc(t, defs, body)
 scenes['qibla'] = qibla
+
+# Rakaat counter: the prayer mat, and a phone lying beside it showing the
+# count ring and the two sujood dots, one filled.
+def rakaat(t):
+    pd, pb, (sx, sy, sw, sh) = phone(t, 190, 34, 86, 160, 'k')
+    defs = pd
+    body = art('Rakaat', 30, 14, 176) + pb
+    cx, cy = sx + sw / 2, sy + sh * 0.44
+    rd, rb = ring(cx, cy, 24, 0.5, 'k', 7)
+    defs += rd
+    body += rb
+    # The count, a "2" drawn as a stroke (SVG text isn't reliable in the
+    # catalogue), with a short line for "of 4" under it.
+    body += (f'<path d="M{cx-6} {cy-7} Q{cx-6} {cy-13} {cx} {cy-13} Q{cx+6} {cy-13} {cx+6} {cy-7} '
+             f'Q{cx+6} {cy-3} {cx-6} {cy+5} L{cx+7} {cy+5}" stroke="{t["ink"]}" stroke-width="3.2" '
+             f'fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+    body += f'<rect x="{cx-9}" y="{cy+10}" width="18" height="3.5" rx="1.75" fill="{t["line"]}"/>'
+    # Sujood dots: one done, one to go.
+    body += f'<circle cx="{cx-6}" cy="{cy+40}" r="4" fill="#2FB872"/><circle cx="{cx+6}" cy="{cy+40}" r="4" fill="{t["line"]}"/>'
+    body += lines(t, sx + 12, sy + sh - 30, (sw - 24, sw - 40), 8)
+    body += sparkles([(46, 50, 7), (288, 60, 5), (176, 182, 4, '#E6B54A', 0.8)])
+    return doc(t, defs, body)
+scenes['rakaat'] = rakaat
 
 # Apple Watch: a watch showing the tracker ring, with Tasbih and Qibla beside it.
 def watch(t):
