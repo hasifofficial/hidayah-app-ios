@@ -19,6 +19,12 @@ enum Illustration {
     /// The Kaaba, shown on the Qibla screen once you face it. A vector, so
     /// it stays sharp at the size of the disc.
     static let kaaba = "IllustrationKaaba"
+    /// Rakaat counter: where to place the phone on the mat, and the
+    /// forehead coming down over it in sujood. Vectors, wider than square.
+    static let rakaatPlacement = "IllustrationRakaatPlacement"
+    static let rakaatSujood = "IllustrationRakaatSujood"
+    /// The Apple Watch on the wrist, tapping with each rakaat.
+    static let rakaatWatch = "IllustrationRakaatWatch"
 
     /// The size of an illustration in an empty state.
     static let emptyStateSize: CGFloat = 96

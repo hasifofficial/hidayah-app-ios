@@ -216,5 +216,142 @@ body += '<ellipse cx="44" cy="83.4" rx="2" ry="2.9" fill="url(#stone)"/>'
 body += '<path d="M46 38 L98 38" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5" stroke-linecap="round"/>'
 out['Kaaba'] = svg(defs, body)
 
+# Rakaat: a prayer mat with a mihrab arch and a badge counting rakaat
+sd, se = shadow(60, 110, 36, 5)
+defs = sd + lg('mat', '#3FC283', '#13623F', 0, 0, 1, 1) + lg('gold', '#F6D77A', '#C08A1E') + lg('arch', '#1D7A50', '#0F5537') + lg('okb', '#58D894', '#178F55')
+body = se
+body += '<rect x="26" y="16" width="62" height="90" rx="7" fill="#0F4E33"/><rect x="26" y="12" width="62" height="90" rx="7" fill="url(#mat)"/>'
+body += '<rect x="32" y="18" width="50" height="78" rx="4" fill="none" stroke="url(#gold)" stroke-width="2.5"/>'
+body += '<path d="M40 60 L40 40 Q40 30 57 22 Q74 30 74 40 L74 60 Z" fill="url(#arch)"/>'
+body += '<path d="M40 60 L40 40 Q40 30 57 22 Q74 30 74 40 L74 60" fill="none" stroke="url(#gold)" stroke-width="1.8"/>'
+body += star8(57, 44, 6, '#E9BF4C')
+for x in range(30, 86, 6):
+    body += f'<path d="M{x} 102 L{x} 108" stroke="#C08A1E" stroke-width="1.6" stroke-linecap="round"/>'
+body += '<path d="M30 70 L84 70 M30 76 L84 76" stroke="#fff" stroke-opacity="0.18" stroke-width="1.5"/>'
+body += '<path d="M30 20 Q30 15 36 15 L60 15" stroke="#fff" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round"/>'
+body += '<circle cx="88" cy="90" r="17" fill="#fff"/><circle cx="88" cy="90" r="14" fill="url(#okb)"/>'
+for i, (dx, dy) in enumerate([(-4.5, -4.5), (4.5, -4.5), (-4.5, 4.5), (4.5, 4.5)]):
+    if i < 3:
+        body += f'<circle cx="{88+dx}" cy="{90+dy}" r="3" fill="#fff"/>'
+    else:
+        body += f'<circle cx="{88+dx}" cy="{90+dy}" r="2.4" fill="none" stroke="#fff" stroke-width="1.4"/>'
+out['Rakaat'] = svg(defs, body)
+
+# How-it-works pictures for the rakaat counter. They are wider than the
+# feature illustrations (200x140) and stay SVG in the catalogue.
+def svg_wide(defs, body, w=200, h=140):
+    return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><defs>{defs}</defs>{body}</svg>'
+GLOW = '<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>'
+def hand(cx, cy, flip):
+    # a simple palm print: palm plus four fingers and a thumb
+    # thumbs point in, toward the head
+    s = 1 if flip else -1
+    out = f'<ellipse cx="{cx}" cy="{cy}" rx="6.5" ry="8" fill="#fff" fill-opacity="0.28"/>'
+    for i, dx in enumerate((-4.5, -1.5, 1.5, 4.5)):
+        out += f'<rect x="{cx+dx-1.3:.1f}" y="{cy-16+abs(i-1.5)*1.2:.1f}" width="2.6" height="9" rx="1.3" fill="#fff" fill-opacity="0.28"/>'
+    out += f'<rect x="{cx-s*9-1.3:.1f}" y="{cy-4}" width="2.6" height="7.5" rx="1.3" fill="#fff" fill-opacity="0.28" transform="rotate({s*-35} {cx-s*9} {cy})"/>'
+    return out
+
+# Rakaat placement: the mat from above. Phone between the hands, top edge at the forehead spot.
+defs = lg('mat', '#3FC283', '#13623F', 0, 0, 1, 1) + lg('gold', '#F6D77A', '#C08A1E') + lg('arch', '#1D7A50', '#0F5537') + lg('ph', '#3A3F45', '#15181B', 0, 0, 1, 1) + GLOW
+b = ''
+b += '<rect x="62" y="12" width="76" height="124" rx="7" fill="#0F4E33"/><rect x="62" y="8" width="76" height="124" rx="7" fill="url(#mat)"/>'
+b += '<rect x="68" y="14" width="64" height="112" rx="4" fill="none" stroke="url(#gold)" stroke-width="2"/>'
+b += '<path d="M80 40 L80 28 Q80 21 100 16 Q120 21 120 28 L120 40 Z" fill="url(#arch)" stroke="url(#gold)" stroke-width="1.5"/>'
+b += star8(100, 29, 4.5, '#E9BF4C')
+# forehead spot, just above the phone's top edge
+b += '<ellipse cx="100" cy="52" rx="10" ry="6" fill="#fff" fill-opacity="0.22" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 2.5"/>'
+# hands either side
+b += hand(80, 70, False) + hand(120, 70, True)
+# phone, face up, top edge (sensor) toward the forehead spot
+b += '<ellipse cx="100" cy="61" rx="9" ry="4.5" fill="url(#glow)"/>'
+b += '<g transform="translate(100 78)"><rect x="-9" y="-17" width="18" height="34" rx="4" fill="url(#ph)"/><rect x="-7.5" y="-15.5" width="15" height="31" rx="3" fill="#2B5D49"/><rect x="-3.5" y="-13.9" width="7" height="2.4" rx="1.2" fill="#0B0D0F"/></g>'
+for x in range(66, 136, 6):
+    b += f'<path d="M{x} 132 L{x} 138" stroke="#C08A1E" stroke-width="1.6" stroke-linecap="round"/>'
+out['RakaatPlacement'] = svg_wide(defs, b)
+
+# Rakaat sujood: side view. The phone lies between the hands under the face;
+# the forehead and nose come down over its top edge, where the sensor is.
+defs = (lg('robe', '#F4F8F6', '#C9D9D1', 0, 0, 0.4, 1) + lg('robeShade', '#DDE8E3', '#AFC4BA', 0, 0, 0, 1)
+        + lg('skin', '#EDC29B', '#C98F62', 0, 0, 1, 1) + lg('cap', '#2E3B36', '#141B18')
+        + lg('ph', '#3A3F45', '#15181B', 0, 0, 1, 1) + lg('matside', '#3FC283', '#13623F', 0, 0, 1, 0))
+b = ''
+# mat and soft floor shadow
+b += '<ellipse cx="96" cy="121" rx="78" ry="3.4" fill="#000" fill-opacity="0.09"/>'
+b += '<rect x="12" y="115" width="176" height="5" rx="2.5" fill="url(#matside)"/>'
+# far arm (behind): sleeve and hand on the far side of the head
+b += '<path d="M116 86 C121 92 124 100 125 107 L131 107 C130 99 127 90 122 84 Z" fill="url(#robeShade)"/>'
+b += '<path d="M124 106 C128 109 134 112 141 113.5 C142 114.6 141 115.4 139 115.4 L127 115.4 C124 114.5 123 110 124 106 Z" fill="#C08A63"/>'
+# feet: toes tucked under, heels up
+b += '<path d="M24 115.4 C23 111 24 106 28 104 C31 103 34 104 35 107 L36 115.4 Z" fill="url(#skin)"/>'
+b += '<path d="M24 115 L36 115" stroke="#B57E55" stroke-width="0.8"/>'
+# robe: shins on the mat, thighs up to the raised hips, back sloping to the shoulders
+b += ('<path d="M33 115.4 C32 109 33 104 38 102 L70 101 '
+      'C68 90 68 78 72 68 C76 60 84 56 92 58 '
+      'C104 62 116 72 126 82 C130 86 132 90 132 95 '
+      'C128 98 121 99 114 98 C104 97 96 99 90 103 '
+      'C86 106 84 111 84 115.4 Z" fill="url(#robe)"/>')
+# robe folds and the line between thigh and torso
+b += '<path d="M72 70 C76 82 80 94 84 104" fill="none" stroke="#AFC4BA" stroke-width="1.1" stroke-linecap="round"/>'
+b += '<path d="M40 108 C52 106 62 106 74 108" fill="none" stroke="#C3D4CC" stroke-width="1" stroke-linecap="round"/>'
+b += '<path d="M96 64 C106 70 114 77 121 85" fill="none" stroke="#FFFFFF" stroke-opacity="0.8" stroke-width="1.4" stroke-linecap="round"/>'
+# phone between the hands, under the face; sensor at its top edge (right)
+b += '<rect x="108" y="111" width="31" height="4.4" rx="1.6" fill="url(#ph)"/><rect x="109.5" y="110.6" width="28" height="1.2" rx="0.6" fill="#2B5D49"/><circle cx="136.5" cy="111.2" r="0.9" fill="#0B0D0F"/>'
+# neck between the collar and the head
+b += '<path d="M129 92 C132 94 135 98 137 103 L134 106 C132 102 130 98 127 95 Z" fill="#D9A47A"/>'
+# the sensor noticing the face: rings from the phone's top edge, drawn
+# behind the head so they show in the gap between arm and face
+for r, o in ((7, 0.9), (11.5, 0.55), (16, 0.3)):
+    b += f'<path d="M{134-r*0.9:.1f} {111-r*0.45:.1f} A{r} {r} 0 0 1 {134+r*0.15:.1f} {111-r:.1f}" fill="none" stroke="#2FA36C" stroke-opacity="{o}" stroke-width="1.6" stroke-linecap="round"/>'
+# head: a little smaller, tilted forward, forehead and nose on the mat
+b += '<g transform="translate(-2.5 2.6) rotate(24 145 104)">'
+b += '<ellipse cx="145" cy="104" rx="9.6" ry="8.6" fill="url(#skin)"/>'
+b += '<path d="M135.6 101.5 C136 95.6 140.6 95 145.4 95.4 C150 95.8 153.6 97.4 154.4 100 C148 99 141 99.6 135.6 101.5 Z" fill="url(#cap)"/>'
+b += '<path d="M141.2 103 C140 103 139.8 105.2 141 106" fill="none" stroke="#B57E55" stroke-width="0.9" stroke-linecap="round"/>'
+b += '</g>'
+# nose touching the mat in front of the forehead
+b += '<path d="M150.4 114.2 C151.8 114 152.8 114.6 153 115.4 L150 115.4 Z" fill="#D9A47A"/>'
+# near arm: sleeve from the shoulder to the raised elbow, forearm down to the hand flat beside the head
+b += '<path d="M118 82 C124 86 129 92 131 99 C132 103 132 106 131 108 L125 108 C125 102 122 95 116 89 Z" fill="url(#robe)"/>'
+b += '<path d="M118 84 C123 88 127 94 129 100" fill="none" stroke="#AFC4BA" stroke-width="0.9" stroke-linecap="round"/>'
+b += '<path d="M125 107 C129 110 135 112.5 143 113.6 C145 114.2 145 115.4 142.5 115.6 L128 115.6 C124.5 114.8 123.5 110.5 125 107 Z" fill="url(#skin)"/>'
+for x in (134, 137.5, 141):
+    b += f'<path d="M{x} 113.2 L{x+2.5} 115.4" stroke="#B57E55" stroke-width="0.6" stroke-linecap="round"/>'
+out['RakaatSujood'] = svg_wide(defs, b)
+
+# Rakaat on the wrist: an Apple Watch showing the count and tapping
+defs = (lg('arm', '#EDC29B', '#C98F62', 0, 0, 0, 1) + lg('sleeve', '#F4F8F6', '#C9D9D1', 0, 0, 0, 1)
+        + lg('band', '#2E3B36', '#141B18', 0, 0, 1, 0) + lg('case', '#5B636B', '#22272C', 0, 0, 1, 1)
+        + lg('gold', '#F6D77A', '#C08A1E'))
+b = '<ellipse cx="100" cy="122" rx="78" ry="3.5" fill="#000" fill-opacity="0.08"/>'
+# forearm across the picture, from the sleeve on the left to the hand on the right
+b += '<path d="M14 72 C40 70 120 70 168 74 C180 75 188 80 188 88 C188 96 180 100 168 101 C120 104 40 104 14 102 Z" fill="url(#arm)"/>'
+b += '<path d="M10 66 C24 64 36 65 44 67 L44 108 C36 110 24 110 10 108 Z" fill="url(#sleeve)"/>'
+b += '<path d="M44 67 L44 108" stroke="#AFC4BA" stroke-width="1.2"/>'
+# strap over the wrist
+b += '<rect x="88" y="54" width="26" height="62" rx="5" fill="url(#band)"/>'
+for y in (60, 66, 104, 110):
+    b += f'<rect x="91" y="{y}" width="20" height="1.4" rx="0.7" fill="#fff" fill-opacity="0.08"/>'
+# watch case, crown and screen
+b += '<rect x="80" y="62" width="42" height="46" rx="12" fill="url(#case)"/>'
+b += '<rect x="122" y="76" width="4" height="9" rx="2" fill="#7A838C"/>'
+b += '<rect x="84" y="66" width="34" height="38" rx="9" fill="#050607"/>'
+# on the screen: a progress ring two rakaat round, and the rakaat dots
+cx, cy, r = 101, 82, 11
+b += f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#47B881" stroke-opacity="0.25" stroke-width="3"/>'
+b += f'<path d="M{cx} {cy-r} A{r} {r} 0 0 1 {cx} {cy+r}" fill="none" stroke="#47B881" stroke-width="3" stroke-linecap="round"/>'
+for i, x in enumerate((92, 98, 104, 110)):
+    if i % 2 == 1:
+        b += f'<circle cx="{x}" cy="98" r="2" fill="#47B881"/>'
+    else:
+        b += f'<circle cx="{x}" cy="98" r="1.7" fill="none" stroke="#47B881" stroke-opacity="0.6" stroke-width="0.9"/>'
+# the taps: ripples either side of the watch
+for d, o in ((8, 0.9), (15, 0.55), (22, 0.3)):
+    b += f'<path d="M{78-d} {72} Q{72-d} {85} {78-d} {98}" fill="none" stroke="#47B881" stroke-opacity="{o}" stroke-width="2" stroke-linecap="round"/>'
+    b += f'<path d="M{128+d} {72} Q{134+d} {85} {128+d} {98}" fill="none" stroke="#47B881" stroke-opacity="{o}" stroke-width="2" stroke-linecap="round"/>'
+# highlight on the case
+b += '<path d="M85 66 Q86 63 90 63 L110 63" stroke="#fff" stroke-opacity="0.3" stroke-width="1.2" fill="none" stroke-linecap="round"/>'
+out['RakaatWatch'] = svg_wide(defs, b)
+
 for k, v in out.items():
     open(f'{k}.svg', 'w').write(v)

@@ -11,7 +11,7 @@ import XCTest
 final class AppFeatureTests: XCTestCase {
     func test_allCases_should_listMainFeaturesInOrder() {
         // Arrange
-        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .qibla, .tracker]
+        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .qibla, .rakaat, .tracker]
 
         // Act
         let features = AppFeature.allCases
@@ -59,7 +59,10 @@ final class AppFeatureTests: XCTestCase {
                 Illustration.mathuratEvening,
                 Illustration.calendar,
                 Illustration.search,
-                Illustration.kaaba
+                Illustration.kaaba,
+                Illustration.rakaatPlacement,
+                Illustration.rakaatSujood,
+                Illustration.rakaatWatch
             ]
 
         // Act

@@ -85,6 +85,9 @@ struct RootView: View {
     @State private var reflectionModel: HomeReflectionModel
     /// Shared so the count survives leaving and reopening Tasbih.
     @State private var tasbihViewModel = TasbihViewModel()
+    /// The phone lies face up on the mat, where vibrations can't be felt,
+    /// so it shows the count and cues on screen; the Watch taps instead.
+    @State private var rakaatViewModel = RakaatViewModel(playsHaptics: false)
     @State private var qiblaViewModel: QiblaViewModel
 
     /// The release whose What's New screen shows on launch until seen;
@@ -574,6 +577,10 @@ struct RootView: View {
             tasbihDestination
         case .qibla:
             QiblaView(viewModel: qiblaViewModel)
+        case .rakaat:
+            RakaatView(viewModel: rakaatViewModel) {
+                router.open(.tasbih)
+            }
         case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
             SurahDetailScreen(
                 surahService: surahService,

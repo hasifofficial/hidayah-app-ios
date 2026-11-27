@@ -20,6 +20,10 @@ final class WatchSyncService: NSObject {
     private let now: () -> Date
     private weak var taskManager: TaskManager?
     private var lastSentSnapshot: WatchTrackerSnapshot?
+    /// The live rakaat session, kept in the application context beside the
+    /// tracker so a Watch app opened mid-prayer catches up.
+    private var rakaatPayload: [String: Any]?
+    var rakaatCommandHandler: ((RakaatCommand) -> Void)?
 
     init(
         session: WCSession?,
@@ -91,7 +95,7 @@ final class WatchSyncService: NSObject {
 
         do {
             // The latest context survives until the Watch app next runs.
-            try session.updateApplicationContext(payload)
+            try session.updateApplicationContext(context(with: payload))
             lastSentSnapshot = snapshot
         } catch {
             #if DEBUG
@@ -103,6 +107,47 @@ final class WatchSyncService: NSObject {
         if session.isReachable {
             session.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
+    }
+}
+
+extension WatchSyncService: RakaatWatchLink {
+    var isWatchReachable: Bool {
+        guard let session else { return false }
+        return session.activationState == .activated
+            && session.isWatchAppInstalled
+            && session.isReachable
+    }
+
+    func sendRakaat(_ state: RakaatLiveState) {
+        guard let payload = WatchMessage.payload(for: state) else { return }
+        rakaatPayload = payload
+
+        guard let session,
+              session.activationState == .activated,
+              session.isPaired,
+              session.isWatchAppInstalled else {
+            return
+        }
+
+        // A live message reaches an open Watch app at once, which the
+        // haptic cues need.
+        if session.isReachable {
+            session.sendMessage(payload, replyHandler: nil, errorHandler: nil)
+        }
+
+        let snapshotPayload = lastSentSnapshot.flatMap(WatchMessage.payload(for:)) ?? [:]
+        try? session.updateApplicationContext(context(with: snapshotPayload))
+    }
+
+    /// The whole application context: `payload` plus the rakaat session.
+    /// Each update replaces the context, so both go in every time.
+    private func context(with payload: [String: Any]) -> [String: Any] {
+        payload.merging(rakaatPayload ?? [:]) { current, _ in current }
+    }
+
+    /// Applies a correction the Watch sent for the live rakaat session.
+    func handle(_ command: RakaatCommand) {
+        rakaatCommandHandler?(command)
     }
 }
 
@@ -134,6 +179,12 @@ extension WatchSyncService: WCSessionDelegate {
         _ session: WCSession,
         didReceiveUserInfo userInfo: [String: Any] = [:]
     ) {
+        if let command = WatchMessage.rakaatCommand(from: userInfo) {
+            Task { @MainActor in
+                self.handle(command)
+            }
+            return
+        }
         guard let completion = WatchMessage.completion(from: userInfo) else { return }
         Task { @MainActor in
             self.handle(completion)
@@ -146,6 +197,12 @@ extension WatchSyncService: WCSessionDelegate {
         _ session: WCSession,
         didReceiveMessage message: [String: Any]
     ) {
+        if let command = WatchMessage.rakaatCommand(from: message) {
+            Task { @MainActor in
+                self.handle(command)
+            }
+            return
+        }
         guard let completion = WatchMessage.completion(from: message) else { return }
         Task { @MainActor in
             self.handle(completion)
@@ -157,6 +214,14 @@ extension WatchSyncService: WCSessionDelegate {
         didReceiveMessage message: [String: Any],
         replyHandler: @escaping ([String: Any]) -> Void
     ) {
+        if let command = WatchMessage.rakaatCommand(from: message) {
+            Task { @MainActor in
+                self.handle(command)
+                replyHandler([:])
+            }
+            return
+        }
+
         if let completion = WatchMessage.completion(from: message) {
             // Reply with the result so the Watch can settle the tap now.
             Task { @MainActor in

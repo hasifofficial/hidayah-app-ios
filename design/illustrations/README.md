@@ -15,6 +15,11 @@ python3 gen.py && swift render.swift *.svg
 Copy each `<Name>.png` over
 `Illustrations/Illustration<Name>.imageset/Illustration<Name>.png`.
 
+The rakaat counter's how-it-works pictures (`RakaatPlacement`,
+`RakaatSujood`, `RakaatWatch`) are 200×140 and stay SVG in the catalogue, which keeps
+them sharp: copy each `<Name>.svg` over
+`Illustrations/Illustration<Name>.imageset/Illustration<Name>.svg`.
+
 ## What's New
 
 `gen_whatsnew.py` builds the What's New pages' 320×220 illustrations

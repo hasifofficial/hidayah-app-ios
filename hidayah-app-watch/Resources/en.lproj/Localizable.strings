@@ -4,6 +4,8 @@
 "watch_home_tracker" = "Istiqamah";
 "watch_home_tasbih" = "Tasbih";
 "watch_home_qibla" = "Qibla";
+"watch_home_rakaat" = "Rakaat";
+"watch_home_rakaat_live_format" = "Live · %1$d of %2$d";
 "watch_home_tracker_progress_format" = "%1$d of %2$d today";
 "watch_home_tracker_not_synced" = "Not synced yet";
 
@@ -60,3 +62,20 @@
 "default_category_maghrib" = "Maghrib (Sunset Prayer)";
 "default_category_isha" = "Isha (Night Prayer)";
 "default_category_bedtime" = "Before Sleeping";
+
+/* Rakaat */
+"rakaat_header_title" = "Rakaat";
+"rakaat_prayer_fajr" = "Fajr";
+"rakaat_prayer_dhuhr" = "Dhuhr";
+"rakaat_prayer_asr" = "Asr";
+"rakaat_prayer_maghrib" = "Maghrib";
+"rakaat_prayer_isha" = "Isha";
+"rakaat_prayer_custom" = "Custom";
+"rakaat_count_format" = "%d rakaat";
+"rakaat_count_of_format" = "of %d";
+"rakaat_start" = "Start";
+"rakaat_tashahhud_prompt" = "Tashahhud";
+"rakaat_complete_title" = "Prayer Complete";
+"rakaat_done" = "Done";
+"watch_rakaat_hint" = "Tap or turn the Crown after each rakaat";
+"watch_rakaat_live" = "From iPhone";

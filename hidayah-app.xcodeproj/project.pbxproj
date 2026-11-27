@@ -144,6 +144,10 @@
 				Core/Models/TaskDetails.swift,
 				Core/Qibla/QiblaMath.swift,
 				Core/Qibla/QiblaSensor.swift,
+				Core/Rakaat/RakaatCounter.swift,
+				Core/Rakaat/RakaatFeedback.swift,
+				Core/Rakaat/RakaatLiveState.swift,
+				Core/Rakaat/RakaatPrayer.swift,
 				Core/Watch/WatchTrackerSnapshot.swift,
 				Core/Watch/WatchTrackerState.swift,
 				Features/Qibla/QiblaViewModel.swift,
@@ -151,6 +155,13 @@
 				Shared/Services/AppHaptics.swift,
 				Shared/UI/Components/Illustration.swift,
 				Shared/UI/Components/LevelColor.swift,
+			);
+			target = 853B26A895C64D481F47659F /* hidayah-app-watch */;
+		};
+		5A1C0D2E7F3B4A6C8D9E0F12 /* Exceptions for "hidayah-app-watch" folder in "hidayah-app-watch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
 			);
 			target = 853B26A895C64D481F47659F /* hidayah-app-watch */;
 		};
@@ -199,6 +210,7 @@
 		C9534FFEE0A9AFF6E35B54D6 /* hidayah-app-watch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				5A1C0D2E7F3B4A6C8D9E0F12 /* Exceptions for "hidayah-app-watch" folder in "hidayah-app-watch" target */,
 			);
 			path = "hidayah-app-watch";
 			sourceTree = "<group>";
@@ -610,6 +622,7 @@
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "hidayah-app-watch/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Hidayah;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Hidayah uses your location to point you toward the Qibla. Your location never leaves your device.";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.hasifofficial.simple-quran";
@@ -953,6 +966,7 @@
 				DEVELOPMENT_TEAM = R53DENZ7QG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "hidayah-app-watch/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Hidayah;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Hidayah uses your location to point you toward the Qibla. Your location never leaves your device.";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.hasifofficial.simple-quran";
