@@ -15,10 +15,20 @@ struct QiblaHaptics {
     var step: (_ closeness: Double) -> Void
     var aligned: () -> Void
 
+    #if os(watchOS)
+    // Every Watch haptic carries a sound. Turning uses the quiet click
+    // (the firmer one chimes), so the only real sound is the success chime
+    // once you face the Qibla.
+    static let live = QiblaHaptics(
+        step: { _ in AppHaptics.tap() },
+        aligned: { AppHaptics.success() }
+    )
+    #else
     static let live = QiblaHaptics(
         step: { AppHaptics.impact(intensity: 0.35 + 0.65 * $0) },
         aligned: { AppHaptics.success() }
     )
+    #endif
 
     static let none = QiblaHaptics(step: { _ in }, aligned: {})
 }
