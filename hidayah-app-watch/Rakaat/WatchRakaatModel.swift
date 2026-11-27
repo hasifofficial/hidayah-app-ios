@@ -7,21 +7,17 @@ import Foundation
 import Observation
 import WatchKit
 
-/// Rakaat on the wrist. While the iPhone counts a prayer, this mirrors it
-/// and plays the cues the phone on the mat can't make you feel. Without the
-/// iPhone it counts on its own from taps and the Crown.
+/// Rakaat on the wrist. The iPhone on the mat does the counting; this
+/// mirrors its session and plays the cues the phone can't make you feel.
 @MainActor
 @Observable
 final class WatchRakaatModel: NSObject {
     /// The iPhone's session while it is running.
     private(set) var live: RakaatLiveState?
-    /// The Watch's own count, while one runs.
-    private(set) var counter: RakaatCounter?
     /// The prayer just finished, shown until you dismiss it.
     private(set) var completedPrayer: RakaatPrayer?
     /// Set by the latest tashahhud cue, until the next rakaat.
     private(set) var isTashahhudPrompt = false
-    var prayer: RakaatPrayer = .dhuhr
 
     @ObservationIgnored private let link: WatchTrackerModel
     @ObservationIgnored private let now: () -> Date
@@ -41,11 +37,11 @@ final class WatchRakaatModel: NSObject {
     var isMirroring: Bool { live != nil }
 
     var completedRakaat: Int {
-        live?.completedRakaat ?? counter?.completedRakaat ?? 0
+        live?.completedRakaat ?? 0
     }
 
     var rakaatCount: Int {
-        live?.prayer.rakaatCount ?? counter?.rakaatCount ?? prayer.rakaatCount
+        live?.prayer.rakaatCount ?? 0
     }
 
     var sujoodInCurrentRakaat: Int {
@@ -57,49 +53,8 @@ final class WatchRakaatModel: NSObject {
         return min(Double(completedRakaat) / Double(rakaatCount), 1)
     }
 
-    var displayedPrayer: RakaatPrayer {
-        live?.prayer ?? counter?.prayer ?? prayer
-    }
-
-    // MARK: - Standalone counting
-
-    func start() {
-        counter = RakaatCounter(prayer: prayer)
-        isTashahhudPrompt = false
-        completedPrayer = nil
-        startRuntime()
-    }
-
-    func increment() {
-        if let live {
-            link.send(RakaatCommand(sessionID: live.sessionID, action: .increment))
-            return
-        }
-        guard var counter else { return }
-        let events = counter.manualIncrement()
-        self.counter = counter
-        handle(events, prayer: counter.prayer)
-        if events.contains(.prayerCompleted) {
-            self.counter = nil
-            stopRuntimeIfIdle()
-        }
-    }
-
-    func decrement() {
-        if let live {
-            link.send(RakaatCommand(sessionID: live.sessionID, action: .decrement))
-            return
-        }
-        guard var counter else { return }
-        counter.manualDecrement()
-        self.counter = counter
-        isTashahhudPrompt = false
-        AppHaptics.tap()
-    }
-
-    func stop() {
-        counter = nil
-        stopRuntimeIfIdle()
+    var displayedPrayer: RakaatPrayer? {
+        live?.prayer
     }
 
     func dismissCompletion() {
@@ -129,8 +84,6 @@ final class WatchRakaatModel: NSObject {
 
         if state.isActive {
             if live == nil {
-                // The phone's session takes over from a local count.
-                counter = nil
                 completedPrayer = nil
             }
             live = state
@@ -166,7 +119,7 @@ final class WatchRakaatModel: NSObject {
     }
 
     private func stopRuntimeIfIdle() {
-        guard live == nil, counter == nil else { return }
+        guard live == nil else { return }
         runtimeSession?.invalidate()
         runtimeSession = nil
     }

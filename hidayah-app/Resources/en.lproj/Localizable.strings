@@ -432,7 +432,7 @@
 "whats_new_rakaat_title" = "Count Your Rakaat";
 "whats_new_rakaat_body" = "No more doubt about how many rakaat you’ve prayed. Place your iPhone on the prayer mat and it counts each one as you make sujood, reminding you to sit for tashahhud.";
 "whats_new_watch_title" = "Hidayah on Apple Watch";
-"whats_new_watch_body" = "Tick off your Istiqamah tasks, count your dhikr and find the Qibla right from your wrist. Your tracker stays in sync with your iPhone.";
+"whats_new_watch_body" = "Tick off your Istiqamah tasks, count your dhikr, find the Qibla and follow your rakaat count right from your wrist. Your tracker stays in sync with your iPhone.";
 "setting_whats_new_title" = "What’s New";
 
 "qibla_header_title" = "Qibla";
@@ -501,5 +501,5 @@
 "rakaat_guide_place_detail" = "Screen up, top edge at your forehead spot";
 "rakaat_guide_sujood_detail" = "Two sujood count as one rakaat";
 "rakaat_tashahhud_info_body" = "The sitting in prayer where you recite at-tahiyyat. In prayers of three or four rakaat you sit for it after the second rakaat and again at the end; in Fajr, only at the end. The counter shows \"Sit for tashahhud\" when it's time, and your Apple Watch taps twice.";
-"rakaat_guide_watch_title" = "Feel it on your wrist";
-"rakaat_guide_watch_detail" = "Open Hidayah on your Apple Watch for a tap after each rakaat and a double tap for tashahhud";
+"rakaat_guide_watch_title" = "Follow it on your wrist";
+"rakaat_guide_watch_detail" = "Your Apple Watch shows the count, taps after each rakaat and taps twice for tashahhud";

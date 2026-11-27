@@ -71,11 +71,9 @@
 "rakaat_prayer_maghrib" = "Maghrib";
 "rakaat_prayer_isha" = "Isha";
 "rakaat_prayer_custom" = "Custom";
-"rakaat_count_format" = "%d rakaat";
 "rakaat_count_of_format" = "of %d";
-"rakaat_start" = "Start";
 "rakaat_tashahhud_prompt" = "Tashahhud";
 "rakaat_complete_title" = "Prayer Complete";
 "rakaat_done" = "Done";
-"watch_rakaat_hint" = "Tap or turn the Crown after each rakaat";
-"watch_rakaat_live" = "From iPhone";
+"watch_rakaat_waiting_title" = "Start on your iPhone";
+"watch_rakaat_waiting_message" = "Start the Rakaat counter on your iPhone. Your count will show here.";
