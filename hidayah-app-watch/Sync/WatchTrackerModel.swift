@@ -74,18 +74,6 @@ final class WatchTrackerModel: NSObject {
         send(completion)
     }
 
-    /// Sends a rakaat correction to the iPhone's live session. Only a live
-    /// message is useful: a queued one would arrive after the prayer.
-    func send(_ command: RakaatCommand) {
-        guard let session,
-              session.activationState == .activated,
-              session.isReachable,
-              let payload = WatchMessage.payload(for: command) else {
-            return
-        }
-        session.sendMessage(payload, replyHandler: nil, errorHandler: nil)
-    }
-
     private func settle(_ completion: WatchTaskCompletion, with snapshot: WatchTrackerSnapshot?) {
         state.settle(taskID: completion.taskID, with: snapshot)
         save()

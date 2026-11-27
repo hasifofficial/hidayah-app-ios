@@ -94,7 +94,7 @@ struct RakaatCounter: Equatable {
         return settle()
     }
 
-    /// Counts a whole rakaat by hand, for taps, the Crown or a missed
+    /// Counts a whole rakaat by hand, for the +1 button or a missed
     /// sujood.
     mutating func manualIncrement() -> [RakaatEvent] {
         guard !isComplete else { return [] }

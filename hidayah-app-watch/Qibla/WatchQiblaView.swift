@@ -96,8 +96,11 @@ struct WatchQiblaView: View {
             if viewModel.needsCalibration {
                 Text(String(localized: "watch_qibla_calibration_hint"))
                     .font(.caption2)
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(.white.opacity(0.6))
                     .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+                    .fixedSize(horizontal: false, vertical: true)
             } else if let distanceText = viewModel.distanceText {
                 Text(distanceText)
                     .font(.caption2)
