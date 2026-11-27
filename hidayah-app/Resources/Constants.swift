@@ -9,9 +9,9 @@ import Foundation
 
 struct Constants {
     static let feedbackEmail = "mohammadhasifafiq@gmail.com"
-    static let websiteUrl = "https://www.hasifofficial.com"
-    static let privacyUrl = "https://www.hasifofficial.com/hidayah/privacy_policy.html"
-    static let termConditionUrl = "https://www.hasifofficial.com/hidayah/term_condition.html"
+    static let websiteUrl = "https://hidayah.hasifofficial.com"
+    static let privacyUrl = "https://hidayah.hasifofficial.com/privacy_policy.html"
+    static let termConditionUrl = "https://hidayah.hasifofficial.com/term_condition.html"
     
     static func getLanguageFromCode(code: String) -> String {
         guard !code.isEmpty else {
