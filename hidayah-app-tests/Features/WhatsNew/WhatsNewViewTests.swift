@@ -27,6 +27,8 @@ private struct WhatsNewHarness: View {
 
 @MainActor
 final class WhatsNewViewTests: ViewsTestCase {
+    private var pageCount: Int { WhatsNewRelease.current.features.count }
+
     override func setUp() {
         super.setUp()
         resetStorage()
@@ -51,7 +53,7 @@ final class WhatsNewViewTests: ViewsTestCase {
         // Assert
         XCTAssertTrue(host.contains("What’s New"))
         XCTAssertTrue(host.contains("A Fresh New Look"))
-        XCTAssertTrue(host.contains("Feature 1 of 8"))
+        XCTAssertTrue(host.contains("Feature 1 of \(pageCount)"))
         XCTAssertTrue(host.contains("Skip"))
     }
 
@@ -76,7 +78,7 @@ final class WhatsNewViewTests: ViewsTestCase {
         host.pump(0.4)
 
         // Assert
-        XCTAssertTrue(host.contains("Feature 2 of 8"))
+        XCTAssertTrue(host.contains("Feature 2 of \(pageCount)"))
         XCTAssertTrue(state.isPresented)
     }
 
@@ -86,13 +88,13 @@ final class WhatsNewViewTests: ViewsTestCase {
         let host = present(state)
 
         // Act
-        for _ in 0..<7 {
+        for _ in 1..<pageCount {
             host.tap("Next")
             host.pump(0.4)
         }
 
         // Assert
-        XCTAssertTrue(host.contains("Feature 8 of 8"))
+        XCTAssertTrue(host.contains("Feature \(pageCount) of \(pageCount)"))
         XCTAssertTrue(host.contains("Get Started"))
         XCTAssertFalse(host.contains("Skip"))
     }
@@ -101,7 +103,7 @@ final class WhatsNewViewTests: ViewsTestCase {
         // Arrange
         let state = WhatsNewSheetState()
         let host = present(state)
-        for _ in 0..<7 {
+        for _ in 1..<pageCount {
             host.tap("Next")
             host.pump(0.4)
         }
