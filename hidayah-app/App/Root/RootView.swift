@@ -578,7 +578,9 @@ struct RootView: View {
         case .qibla:
             QiblaView(viewModel: qiblaViewModel)
         case .rakaat:
-            RakaatView(viewModel: rakaatViewModel)
+            RakaatView(viewModel: rakaatViewModel) {
+                router.open(.tasbih)
+            }
         case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
             SurahDetailScreen(
                 surahService: surahService,

@@ -34,13 +34,16 @@ final class RakaatViewModel {
     var prayer: RakaatPrayer {
         didSet { Storage.saveRakaatPrayer(prayer) }
     }
-    /// Shows a black screen with only the count while you pray, and dims
-    /// the display. On OLED screens black pixels are off.
+    /// Fades the counting screen to black with only the count while you
+    /// pray, and dims the display. On OLED screens black pixels are off.
     var usesFocusScreen: Bool {
         didSet {
             Storage.save(.rakaatFocusScreen, usesFocusScreen)
-            if phase == .praying {
-                usesFocusScreen ? dimScreen() : restoreBrightness()
+            guard phase == .praying else { return }
+            if usesFocusScreen {
+                scheduleFade(after: Self.fadeDelay)
+            } else {
+                cancelFade()
             }
         }
     }
@@ -49,6 +52,8 @@ final class RakaatViewModel {
     private(set) var isSensorAvailable = true
     /// The latest tashahhud cue, shown on screen until the next rakaat.
     private(set) var isTashahhudPrompt = false
+    /// True once the counting screen has faded to black.
+    private(set) var isScreenDark = false
 
     @ObservationIgnored private let sensor: ProximitySensing
     @ObservationIgnored private let watchLink: RakaatWatchLink?
@@ -60,9 +65,16 @@ final class RakaatViewModel {
     @ObservationIgnored private let screen: ScreenBrightnessControlling?
     /// Your brightness before dimming, while the screen is dimmed.
     @ObservationIgnored private var savedBrightness: CGFloat?
+    /// Bumped whenever a pending fade should no longer happen.
+    @ObservationIgnored private var fadeGeneration = 0
 
     /// Low enough to read in a dark room without lighting it up.
     static let focusBrightness: CGFloat = 0.05
+    /// How long the counting screen shows before it fades to black, so you
+    /// can see the prayer has started.
+    static let fadeDelay: TimeInterval = 3
+    /// How long the counting screen stays after you wake it.
+    static let wakeDuration: TimeInterval = 8
 
     init(
         sensor: ProximitySensing = DeviceProximitySensor(),
@@ -85,7 +97,7 @@ final class RakaatViewModel {
     }
 
     /// Whether the black focus screen is showing now.
-    var showsFocusScreen: Bool { phase == .praying && usesFocusScreen }
+    var showsFocusScreen: Bool { phase == .praying && usesFocusScreen && isScreenDark }
 
     var completedRakaat: Int { counter.completedRakaat }
     var rakaatCount: Int { counter.rakaatCount }
@@ -109,10 +121,20 @@ final class RakaatViewModel {
             self?.proximityChanged(isNear: isNear)
         }
         isSensorAvailable = sensor.isAvailable
+        isScreenDark = false
         if usesFocusScreen {
-            dimScreen()
+            scheduleFade(after: Self.fadeDelay)
         }
         sendState(events: [])
+    }
+
+    /// Brings back the counting screen, then fades to black again after
+    /// a while. Call it when you touch the screen.
+    func wakeScreen() {
+        guard phase == .praying, usesFocusScreen else { return }
+        isScreenDark = false
+        restoreBrightness()
+        scheduleFade(after: Self.wakeDuration)
     }
 
     /// iOS puts your brightness back when the app leaves the foreground,
@@ -197,7 +219,7 @@ final class RakaatViewModel {
         if events.contains(.prayerCompleted) {
             sendState(events: events, isActive: false)
             sensor.stop()
-            restoreBrightness()
+            cancelFade()
             watchLink?.rakaatCommandHandler = nil
             phase = .finished
         } else {
@@ -207,9 +229,27 @@ final class RakaatViewModel {
 
     private func endSession() {
         sensor.stop()
-        restoreBrightness()
+        cancelFade()
         watchLink?.rakaatCommandHandler = nil
         sendState(events: [], isActive: false)
+    }
+
+    private func scheduleFade(after delay: TimeInterval) {
+        fadeGeneration += 1
+        let generation = fadeGeneration
+        schedule(delay) { [weak self] in
+            guard let self, generation == self.fadeGeneration,
+                  self.phase == .praying, self.usesFocusScreen else { return }
+            self.isScreenDark = true
+            self.dimScreen()
+        }
+    }
+
+    /// Back to the normal screen and brightness, with no fade pending.
+    private func cancelFade() {
+        fadeGeneration += 1
+        isScreenDark = false
+        restoreBrightness()
     }
 
     private func dimScreen() {

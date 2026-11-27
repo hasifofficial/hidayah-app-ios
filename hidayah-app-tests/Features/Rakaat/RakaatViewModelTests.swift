@@ -82,6 +82,13 @@ final class RakaatViewModelTests: XCTestCase {
         )
     }
 
+    /// Runs whatever is waiting on the scheduler, such as the fade to black.
+    private func runScheduled() {
+        let actions = scheduled
+        scheduled = []
+        actions.forEach { $0() }
+    }
+
     /// One sujood through the fake sensor, then runs the scheduled settle.
     private func sujood(_ viewModel: RakaatViewModel) {
         sensor.send(isNear: true)
@@ -257,7 +264,7 @@ final class RakaatViewModelTests: XCTestCase {
 
     // MARK: - Focus screen
 
-    func test_start_should_dimScreen_when_focusScreenIsOn() {
+    func test_start_should_showCountingScreenFirst_when_focusScreenIsOn() {
         // Arrange
         let viewModel = makeViewModel()
 
@@ -266,14 +273,77 @@ final class RakaatViewModelTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(viewModel.usesFocusScreen)
+        XCTAssertFalse(viewModel.showsFocusScreen)
+        XCTAssertEqual(screen.brightness, 0.8)
+    }
+
+    func test_start_should_fadeToBlackAndDim_when_delayPasses() {
+        // Arrange
+        let viewModel = makeViewModel()
+        viewModel.start()
+
+        // Act
+        runScheduled()
+
+        // Assert
         XCTAssertTrue(viewModel.showsFocusScreen)
         XCTAssertEqual(screen.brightness, RakaatViewModel.focusBrightness)
+    }
+
+    func test_wakeScreen_should_restoreBrightnessThenFadeAgain() {
+        // Arrange
+        let viewModel = makeViewModel()
+        viewModel.start()
+        runScheduled()
+
+        // Act
+        viewModel.wakeScreen()
+        let isDarkAfterWaking = viewModel.showsFocusScreen
+        let brightnessAfterWaking = screen.brightness
+        runScheduled()
+
+        // Assert
+        XCTAssertFalse(isDarkAfterWaking)
+        XCTAssertEqual(brightnessAfterWaking, 0.8)
+        XCTAssertTrue(viewModel.showsFocusScreen)
+        XCTAssertEqual(screen.brightness, RakaatViewModel.focusBrightness)
+    }
+
+    func test_wakeScreen_should_cancelEarlierFade() {
+        // Arrange
+        let viewModel = makeViewModel()
+        viewModel.start()
+        let startFade = scheduled
+        scheduled = []
+        viewModel.wakeScreen()
+
+        // Act
+        startFade.forEach { $0() }
+
+        // Assert
+        XCTAssertFalse(viewModel.showsFocusScreen)
+        XCTAssertEqual(screen.brightness, 0.8)
+    }
+
+    func test_fade_should_notHappen_when_stoppedFirst() {
+        // Arrange
+        let viewModel = makeViewModel()
+        viewModel.start()
+        viewModel.stop()
+
+        // Act
+        runScheduled()
+
+        // Assert
+        XCTAssertFalse(viewModel.showsFocusScreen)
+        XCTAssertEqual(screen.brightness, 0.8)
     }
 
     func test_stop_should_restoreBrightness() {
         // Arrange
         let viewModel = makeViewModel()
         viewModel.start()
+        runScheduled()
 
         // Act
         viewModel.stop()
@@ -288,12 +358,14 @@ final class RakaatViewModelTests: XCTestCase {
         let viewModel = makeViewModel()
         viewModel.prayer = .custom(rakaat: 1)
         viewModel.start()
+        runScheduled()
 
         // Act
         viewModel.increment()
 
         // Assert
         XCTAssertEqual(viewModel.phase, .finished)
+        XCTAssertFalse(viewModel.isScreenDark)
         XCTAssertEqual(screen.brightness, 0.8)
     }
 
@@ -304,6 +376,7 @@ final class RakaatViewModelTests: XCTestCase {
 
         // Act
         viewModel.start()
+        runScheduled()
 
         // Assert
         XCTAssertFalse(viewModel.showsFocusScreen)
@@ -314,11 +387,13 @@ final class RakaatViewModelTests: XCTestCase {
         // Arrange
         let viewModel = makeViewModel()
         viewModel.start()
+        runScheduled()
 
         // Act
         viewModel.usesFocusScreen = false
 
         // Assert
+        XCTAssertFalse(viewModel.showsFocusScreen)
         XCTAssertEqual(screen.brightness, 0.8)
         XCTAssertEqual(makeViewModel().usesFocusScreen, false)
     }
@@ -327,6 +402,7 @@ final class RakaatViewModelTests: XCTestCase {
         // Arrange
         let viewModel = makeViewModel()
         viewModel.start()
+        runScheduled()
         viewModel.sceneWillResignActive()
 
         // Act

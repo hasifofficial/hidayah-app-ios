@@ -475,10 +475,13 @@
 "rakaat_end" = "End";
 "rakaat_complete_title" = "Prayer Complete";
 "rakaat_complete_message_format" = "You completed %1$d rakaat of %2$@. May Allah accept your prayer.";
+"rakaat_dhikr_title" = "Don’t rush off";
+"rakaat_dhikr_body" = "Take a moment for dhikr after your prayer.";
+"rakaat_dhikr_hint" = "Opens Tasbih";
 "rakaat_done" = "Done";
 "rakaat_pray_again" = "Pray Again";
-"rakaat_focus_toggle" = "Dark screen";
-"rakaat_focus_toggle_detail" = "Shows only the count while you pray";
+"rakaat_focus_toggle" = "Focus mode";
+"rakaat_focus_toggle_detail" = "The screen fades to black once you start, leaving only the count. Tap to bring it back.";
 "rakaat_focus_hint" = "Tap to show controls";
 "rakaat_how_open" = "How to place your phone";
 "rakaat_unit" = "rakaat";
