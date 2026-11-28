@@ -30,14 +30,16 @@ final class SettingsViewTests: ViewsTestCase {
     private func makeHost(
         _ viewModel: SettingsViewModel,
         onOpenTrackerSettings: (() -> Void)? = nil,
-        onOpenWidgetGuide: (() -> Void)? = nil
+        onOpenWidgetGuide: (() -> Void)? = nil,
+        rakaatFocusMode: Binding<Bool>? = nil
     ) -> ViewHost<some View> {
         sceneHost(
             NavigationStack {
                 SettingsView(
                     viewModel: viewModel,
                     onOpenTrackerSettings: onOpenTrackerSettings,
-                    onOpenWidgetGuide: onOpenWidgetGuide
+                    onOpenWidgetGuide: onOpenWidgetGuide,
+                    rakaatFocusMode: rakaatFocusMode
                 )
             }
         )
@@ -217,5 +219,33 @@ final class SettingsViewTests: ViewsTestCase {
         // Assert
         XCTAssertNil(host.controller.presentedViewController)
         XCTAssertTrue(host.contains("Tracker Settings"))
+    }
+
+    func test_settingsView_should_hideRakaatSection_when_noFocusBinding() {
+        // Arrange
+        ViewsFixtures.route()
+
+        // Act
+        let host = makeHost(makeViewModel())
+
+        // Assert
+        XCTAssertFalse(host.contains("Rakaat Counter"))
+        XCTAssertFalse(host.contains("Focus Mode"))
+    }
+
+    func test_settingsView_should_toggleRakaatFocusMode() {
+        // Arrange
+        ViewsFixtures.route()
+        var focusMode = true
+        let binding = Binding(get: { focusMode }, set: { focusMode = $0 })
+        let host = makeHost(makeViewModel(), rakaatFocusMode: binding)
+        XCTAssertTrue(host.contains("Rakaat Counter"))
+        XCTAssertTrue(host.contains("Focus Mode"))
+
+        // Act
+        host.toggleSwitch(at: 0)
+
+        // Assert
+        XCTAssertFalse(focusMode)
     }
 }

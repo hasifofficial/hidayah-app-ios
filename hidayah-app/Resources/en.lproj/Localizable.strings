@@ -56,6 +56,8 @@
 "setting_quran_translation_title" = "Translation";
 "setting_tracker_section_title" = "Istiqamah Tracker";
 "setting_tracker_title" = "Tracker Settings";
+"setting_rakaat_section_title" = "Rakaat Counter";
+"setting_rakaat_focus_title" = "Focus Mode";
 "setting_notification_section_title" = "Notification";
 "setting_notification_alkahf_title" = "Al-Kahf Reminder";
 "setting_about_section_title" = "About";
@@ -365,6 +367,12 @@
 "home_tracker_summary_one_left" = "Just one more task to go. You’re almost there!";
 "home_tracker_summary_done" = "Alhamdulillah, you’ve completed everything today!";
 "home_tracker_streak_format" = "%d-day streak";
+"home_qada_left" = "%d fasts left to make up";
+"home_qada_left_one" = "%d fast left to make up";
+"home_qada_done_format" = "%1$d of %2$d done";
+"home_qada_deadline_days" = "Ramadan in %d days";
+"home_qada_deadline_tomorrow" = "Ramadan starts tomorrow";
+"home_qada_deadline_today" = "Ramadan starts today";
 "home_tracker_level_format" = "Level %d";
 
 "home_today_title" = "Today";
@@ -386,6 +394,7 @@
 "explore_qibla_subtitle" = "Find the direction of the Kaaba wherever you are.";
 "explore_tracker_subtitle" = "Build your daily Istiqamah routine.";
 "explore_rakaat_subtitle" = "Keep count of your rakaat while you pray.";
+"explore_qada_subtitle" = "Make up the Ramadan fasts you missed.";
 
 "reading_tab_title" = "Reading";
 "reading_header_title" = "Reading";
@@ -503,3 +512,52 @@
 "rakaat_tashahhud_info_body" = "The sitting in prayer where you recite at-tahiyyat. In prayers of three or four rakaat you sit for it after the second rakaat and again at the end; in Fajr, only at the end. The counter shows \"Sit for tashahhud\" when it's time, and your Apple Watch taps twice.";
 "rakaat_guide_watch_title" = "Follow it on your wrist";
 "rakaat_guide_watch_detail" = "Your Apple Watch shows the count, taps after each rakaat and taps twice for tashahhud";
+
+/* Qada Fasting */
+"qada_header_title" = "Qada Fasting";
+"qada_empty_title" = "Track the fasts you owe";
+"qada_empty_message" = "Add each Ramadan you missed days in and how many, then log every Qada fast as you keep it.";
+"qada_summary_title" = "Qada fasts";
+"qada_summary_made_up" = "%1$d of %2$d made up";
+"qada_days_left" = "days left";
+"qada_day_left" = "day left";
+"qada_next_badge" = "Next";
+"qada_toast_logged" = "Taqabbal Allahu minna wa minkum";
+"qada_toast_complete" = "Every fast made up. Alhamdulillah!";
+"qada_deadline_label" = "Ramadan %d begins";
+"qada_deadline_in_days" = "in %d days";
+"qada_deadline_tomorrow" = "tomorrow";
+"qada_deadline_today" = "today";
+"qada_log_fast_menu" = "Log a Fast";
+"qada_log_fast_title" = "Log a Fast";
+"qada_all_made_up" = "All made up, alhamdulillah";
+"qada_add_menu" = "Add";
+"qada_log_date_section" = "Day you fasted";
+"qada_log_fast" = "Log fast";
+"qada_error_already_logged" = "You've already logged a fast on this day.";
+"qada_error_future" = "You can't log a fast for a day that hasn't come yet.";
+"qada_error_nothing_owed" = "Every Ramadan is already made up.";
+"qada_years_section" = "Ramadan years";
+"qada_fasts_section" = "Fasts kept";
+"qada_year_title" = "Ramadan %d";
+"qada_year_progress" = "%1$d of %2$d made up";
+"qada_year_complete" = "Complete";
+"qada_fast_for_year" = "For Ramadan %d";
+"qada_day_count" = "%d days";
+"qada_day_count_one" = "%d day";
+"qada_add_year" = "Add Ramadan";
+"qada_edit_year" = "Edit Ramadan";
+"qada_add_year_intro_title" = "Days you missed";
+"qada_edit_year_intro_title" = "Change days owed";
+"qada_year_intro_subtitle" = "New fasts count against your oldest Ramadan first.";
+"qada_year_section" = "Ramadan";
+"qada_year_label" = "Year (Hijri)";
+"qada_days_owed_label" = "Days owed";
+"qada_already_made_up" = "%d already made up, so you can't go lower.";
+"qada_save_year" = "Save";
+"qada_cancel" = "Cancel";
+"qada_remove_year" = "Remove Ramadan";
+"qada_remove_year_title" = "Remove %@?";
+"qada_remove_year_message" = "The days owed and every fast logged for it will be deleted.";
+"qada_remove_fast_title" = "Remove this fast?";
+"qada_remove_fast_action" = "Remove fast";

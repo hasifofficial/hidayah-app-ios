@@ -11,6 +11,8 @@ struct RakaatView: View {
     @Bindable var viewModel: RakaatViewModel
     /// Opens Tasbih from the banner after a prayer. No banner when nil.
     var onOpenTasbih: (() -> Void)? = nil
+    /// Opens Settings from the navigation bar. No button when nil.
+    var onOpenSettings: (() -> Void)? = nil
 
     @State private var customRakaat = 2
     @State private var showingGuide = false
@@ -52,6 +54,16 @@ struct RakaatView: View {
             isDark ? .easeInOut(duration: 1.5) : .easeOut(duration: 0.3),
             value: isDark
         )
+        .toolbar {
+            if let onOpenSettings {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: onOpenSettings) {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
+        }
         // Hidden for the whole prayer, not just while dark, so the count
         // doesn't shift when the screen fades.
         .toolbar(viewModel.phase == .praying ? .hidden : .automatic, for: .navigationBar, .tabBar)
@@ -298,7 +310,7 @@ struct RakaatView: View {
             showingGuide = true
         } label: {
             HStack(spacing: 12) {
-                rowIcon("iphone")
+                rowIllustration(Illustration.rakaatPhone)
                 Text(NSLocalizedString("rakaat_how_open", comment: ""))
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(.title)
@@ -318,7 +330,7 @@ struct RakaatView: View {
     private var focusModeRow: some View {
         Toggle(isOn: $viewModel.usesFocusScreen) {
             HStack(alignment: .top, spacing: 12) {
-                rowIcon("moon.fill")
+                rowIllustration(Illustration.rakaatFocus)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(NSLocalizedString("rakaat_focus_toggle", comment: ""))
                         .font(.system(size: 15, weight: .semibold))
@@ -337,13 +349,8 @@ struct RakaatView: View {
         .accessibilityIdentifier("rakaat_focus_toggle")
     }
 
-    private func rowIcon(_ systemName: String) -> some View {
-        Image(systemName: systemName)
-            .font(.system(size: 15, weight: .semibold))
-            .foregroundColor(.lightGreen)
-            .frame(width: 32, height: 32)
-            .background(Color.lightGreen.opacity(0.14), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            .accessibilityHidden(true)
+    private func rowIllustration(_ name: String) -> some View {
+        IllustrationImage(name: name, size: 40)
     }
 
     private var startButton: some View {

@@ -237,6 +237,98 @@ for i, (dx, dy) in enumerate([(-4.5, -4.5), (4.5, -4.5), (-4.5, 4.5), (4.5, 4.5)
         body += f'<circle cx="{88+dx}" cy="{90+dy}" r="2.4" fill="none" stroke="#fff" stroke-width="1.4"/>'
 out['Rakaat'] = svg(defs, body)
 
+# Qada: a bowl of dates under a crescent, with a badge ticking off a fast
+sd, se = shadow(58, 110, 38, 5)
+defs = sd + lg('moon', '#FFF0B0', '#F2B437', 0, 0, 1, 1) + lg('bowl', '#3FC283', '#13623F') + lg('rim', '#F6D77A', '#C08A1E') + lg('date', '#B5652E', '#5E2A10', 0, 0, 1, 1) + lg('ok', '#5ADB98', '#139454')
+body = se
+# crescent from two circles
+c1, r1, c2, r2 = (40, 34), 20, (50, 28), 17
+d = math.dist(c1, c2); a = (r1*r1 - r2*r2 + d*d) / (2*d); h = math.sqrt(r1*r1 - a*a)
+mx, my = c1[0] + a*(c2[0]-c1[0])/d, c1[1] + a*(c2[1]-c1[1])/d
+p1 = (mx + h*(c2[1]-c1[1])/d, my - h*(c2[0]-c1[0])/d); p2 = (mx - h*(c2[1]-c1[1])/d, my + h*(c2[0]-c1[0])/d)
+body += f'<path d="M{p1[0]:.2f} {p1[1]:.2f} A{r1} {r1} 0 1 0 {p2[0]:.2f} {p2[1]:.2f} A{r2} {r2} 0 0 1 {p1[0]:.2f} {p1[1]:.2f} Z" fill="url(#moon)"/>'
+body += sparkle(74, 20, 5, '#FFE48A') + sparkle(86, 38, 3.5, '#FFF3C4') + sparkle(16, 58, 3.5, '#FFF3C4')
+# dates heaped in the bowl
+for x, y, rot in [(38, 66, -25), (52, 62, 10), (66, 64, 30), (78, 69, -10), (45, 72, 20), (60, 71, -15), (72, 74, 5)]:
+    body += f'<ellipse cx="{x}" cy="{y}" rx="8" ry="5" fill="url(#date)" transform="rotate({rot} {x} {y})"/>'
+    body += f'<ellipse cx="{x-2}" cy="{y-1.5}" rx="3" ry="1.2" fill="#fff" fill-opacity="0.3" transform="rotate({rot} {x} {y})"/>'
+# bowl
+body += '<path d="M24 74 L96 74 Q94 104 60 104 Q26 104 24 74 Z" fill="url(#bowl)"/>'
+body += '<rect x="20" y="71" width="80" height="7" rx="3.5" fill="url(#rim)"/>'
+body += '<path d="M32 84 Q36 96 50 99" stroke="#fff" stroke-opacity="0.3" stroke-width="2.5" fill="none" stroke-linecap="round"/>'
+# tick badge
+body += '<circle cx="92" cy="92" r="15" fill="#fff"/><circle cx="92" cy="92" r="12" fill="url(#ok)"/>'
+body += '<path d="M86 92 l4 4 l8 -8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+out['Qada'] = svg(defs, body)
+
+# Qada year cards: a crescent for a Ramadan still being made up, and a full
+# moon with a tick once it's complete. Bold shapes so they read at 44pt.
+def crescent_path(c1, r1, c2, r2):
+    d = math.dist(c1, c2); a = (r1*r1 - r2*r2 + d*d) / (2*d); h = math.sqrt(r1*r1 - a*a)
+    mx, my = c1[0] + a*(c2[0]-c1[0])/d, c1[1] + a*(c2[1]-c1[1])/d
+    p1 = (mx + h*(c2[1]-c1[1])/d, my - h*(c2[0]-c1[0])/d); p2 = (mx - h*(c2[1]-c1[1])/d, my + h*(c2[0]-c1[0])/d)
+    return f'M{p1[0]:.2f} {p1[1]:.2f} A{r1} {r1} 0 1 0 {p2[0]:.2f} {p2[1]:.2f} A{r2} {r2} 0 0 1 {p1[0]:.2f} {p1[1]:.2f} Z'
+
+sd, se = shadow(56, 108, 30, 5)
+defs = sd + lg('moon', '#FFF0B0', '#F2B437', 0, 0, 1, 1) + lg('moond', '#E0A12C', '#B87414', 0, 0, 1, 1)
+body = se
+body += f'<path d="{crescent_path((54, 62), 40, (74, 48), 33)}" fill="url(#moond)" transform="translate(3 4)"/>'
+body += f'<path d="{crescent_path((54, 62), 40, (74, 48), 33)}" fill="url(#moon)"/>'
+body += '<path d="M24 52 Q26 34 42 26" stroke="#fff" stroke-opacity="0.55" stroke-width="4" fill="none" stroke-linecap="round"/>'
+body += sparkle(92, 30, 9, '#F6C94C') + sparkle(100, 58, 5, '#FFE48A') + sparkle(80, 88, 4, '#FFE48A')
+out['QadaMoon'] = svg(defs, body)
+
+sd, se = shadow(58, 110, 34, 5)
+defs = sd + '<radialGradient id="fm" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#FFF6CC"/><stop offset="0.55" stop-color="#FFD25C"/><stop offset="1" stop-color="#E39A1E"/></radialGradient>' + lg('ok', '#5ADB98', '#139454')
+body = se
+body += '<circle cx="58" cy="58" r="42" fill="#C98312"/><circle cx="56" cy="55" r="42" fill="url(#fm)"/>'
+for cx, cy, r in [(42, 46, 7), (66, 70, 9), (70, 40, 4.5), (44, 74, 4)]:
+    body += f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#E7A93A" fill-opacity="0.28"/>'
+body += '<path d="M28 44 Q34 26 52 20" stroke="#fff" stroke-opacity="0.6" stroke-width="4" fill="none" stroke-linecap="round"/>'
+body += '<circle cx="90" cy="88" r="18" fill="#fff"/><circle cx="90" cy="88" r="14.5" fill="url(#ok)"/>'
+body += '<path d="M83 88 l5 5 l9.5 -9.5" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+out['QadaMoonFull'] = svg(defs, body)
+
+# Rakaat setup rows: a phone lying face up on a prayer mat ("How to place
+# your phone"), and a phone gone dark with only a faint count (focus mode).
+sd, se = shadow(60, 110, 40, 5)
+defs = sd + lg('mat', '#3FC283', '#13623F', 0, 0, 1, 1) + lg('gold', '#F6D77A', '#C08A1E') + lg('rim', '#5B6660', '#1A201D', 0, 0, 1, 1) + lg('scr', '#FFFFFF', '#E6F2EB') + lg('ring', '#5ADB98', '#139454', 0, 0, 1, 1)
+body = se
+# mat in slight perspective
+body += '<path d="M30 30 L90 30 L104 104 L16 104 Z" fill="#0F4E33" transform="translate(0 4)"/>'
+body += '<path d="M30 30 L90 30 L104 104 L16 104 Z" fill="url(#mat)"/>'
+body += '<path d="M36 36 L84 36 L95 98 L25 98 Z" fill="none" stroke="url(#gold)" stroke-width="2.2"/>'
+# mihrab arch at the head of the mat, peeking out around the phone
+body += '<path d="M38 70 L38 48 Q38 36 60 28 Q82 36 82 48 L82 70" fill="#1D7A50" fill-opacity="0.55" stroke="url(#gold)" stroke-width="2"/>'
+body += '<path d="M26 84 L94 84 M24 90 L96 90" stroke="#fff" stroke-opacity="0.18" stroke-width="1.6"/>'
+# phone lying on the mat near the top, where the forehead goes
+body += '<g transform="rotate(-6 60 52)">'
+body += '<rect x="44" y="20" width="32" height="58" rx="7" fill="#000" fill-opacity="0.25" transform="translate(2 4)"/>'
+body += '<rect x="44" y="20" width="32" height="58" rx="7" fill="url(#rim)"/>'
+body += '<rect x="47" y="23" width="26" height="52" rx="5" fill="url(#scr)"/>'
+body += '<rect x="55" y="25" width="10" height="3" rx="1.5" fill="#1A201D"/>'
+body += '<circle cx="60" cy="47" r="8" fill="none" stroke="#5ADB98" stroke-opacity="0.25" stroke-width="3"/>'
+body += '<path d="M60 39 A8 8 0 0 1 66.9 51" fill="none" stroke="url(#ring)" stroke-width="3" stroke-linecap="round"/>'
+body += '<rect x="52" y="62" width="16" height="2.5" rx="1.25" fill="#D5E2DA"/><rect x="54" y="67" width="12" height="2.5" rx="1.25" fill="#E4EDE7"/>'
+body += '<path d="M47 30 Q47 25 52 24" stroke="#fff" stroke-opacity="0.5" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
+body += '</g>'
+out['RakaatPhone'] = svg(defs, body)
+
+sd, se = shadow(60, 110, 30, 5)
+defs = sd + lg('rim', '#5B6660', '#1A201D', 0, 0, 1, 1) + lg('moon', '#FFF0B0', '#F2B437', 0, 0, 1, 1) + '<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#5ADB98" stop-opacity="0.55"/><stop offset="1" stop-color="#5ADB98" stop-opacity="0"/></radialGradient>'
+body = se
+body += '<rect x="34" y="18" width="52" height="88" rx="11" fill="#000" fill-opacity="0.25" transform="translate(3 4)"/>'
+body += '<rect x="34" y="18" width="52" height="88" rx="11" fill="url(#rim)"/>'
+body += '<rect x="38" y="22" width="44" height="80" rx="8" fill="#050807"/>'
+body += '<rect x="53" y="25" width="14" height="4" rx="2" fill="#1A201D"/>'
+body += '<circle cx="60" cy="64" r="20" fill="url(#glow)"/>'
+# a soft "2" drawn as a stroke, like the dimmed count
+body += '<path d="M53 56 Q53 49 60 49 Q67 49 67 56 Q67 61 53 72 L68 72" stroke="#7FE6B0" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+body += '<path d="M38 34 Q38 25 46 24" stroke="#fff" stroke-opacity="0.25" stroke-width="2" fill="none" stroke-linecap="round"/>'
+body += f'<path d="{crescent_path((88, 26), 15, (95, 21), 12.5)}" fill="url(#moon)"/>'
+body += sparkle(104, 46, 4.5, '#FFE48A') + sparkle(24, 40, 4, '#FFF3C4')
+out['RakaatFocus'] = svg(defs, body)
+
 # How-it-works pictures for the rakaat counter. They are wider than the
 # feature illustrations (200x140) and stay SVG in the catalogue.
 def svg_wide(defs, body, w=200, h=140):

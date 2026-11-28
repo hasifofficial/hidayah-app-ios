@@ -11,18 +11,24 @@ struct AppFormHeader: View {
     let icon: String
     let title: String
     let subtitle: String
+    /// A 3D illustration from the asset catalogue shown in place of `icon`.
+    var illustration: String?
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.lightGreen.opacity(0.14))
+            if let illustration {
+                IllustrationImage(name: illustration, size: 46)
+            } else {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color.lightGreen.opacity(0.14))
 
-                Image(systemName: icon)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.lightGreen)
+                    Image(systemName: icon)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.lightGreen)
+                }
+                .frame(width: 42, height: 42)
             }
-            .frame(width: 42, height: 42)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)

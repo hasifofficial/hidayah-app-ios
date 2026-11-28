@@ -7,6 +7,8 @@ import SwiftUI
 
 /// The app's main features in one list, opened from Home.
 struct ExploreView: View {
+    /// Opens Settings from the navigation bar. No button when nil.
+    var onOpenSettings: (() -> Void)? = nil
     let onOpen: (AppFeature) -> Void
 
     var body: some View {
@@ -33,5 +35,15 @@ struct ExploreView: View {
         .background(.appBackground)
         .navigationTitle(NSLocalizedString("explore_header_title", comment: ""))
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            if let onOpenSettings {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: onOpenSettings) {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
+        }
     }
 }

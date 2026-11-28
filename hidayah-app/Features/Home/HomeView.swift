@@ -23,6 +23,9 @@ struct HomeView: View {
     let onSelectBookmark: (BookmarkedSurah) -> Void
     let onSelectSurah: (SurahListResponse) -> Void
     let onOpenSettings: () -> Void
+    /// Shows a Qada card under the tracker while fasts are still owed.
+    var qadaManager: QadaFastingManager? = nil
+    var onOpenQada: () -> Void = {}
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var today = Date()
@@ -158,6 +161,15 @@ struct HomeView: View {
             sectionHeader(NSLocalizedString("home_today_title", comment: ""))
 
             trackerCard
+
+            if let qadaManager, qadaManager.ledger.totalRemaining > 0 {
+                HomeQadaCard(
+                    ledger: qadaManager.ledger,
+                    daysUntilRamadan: qadaManager.daysUntilNextRamadan,
+                    onOpen: onOpenQada
+                )
+                .transition(.opacity)
+            }
         }
         .readableColumn()
     }

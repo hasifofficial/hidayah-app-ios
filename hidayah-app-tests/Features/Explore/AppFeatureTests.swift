@@ -11,7 +11,7 @@ import XCTest
 final class AppFeatureTests: XCTestCase {
     func test_allCases_should_listMainFeaturesInOrder() {
         // Arrange
-        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .qibla, .rakaat, .tracker]
+        let expected: [AppFeature] = [.quran, .mathurat, .tasbih, .qibla, .rakaat, .qada, .tracker]
 
         // Act
         let features = AppFeature.allCases
@@ -62,7 +62,11 @@ final class AppFeatureTests: XCTestCase {
                 Illustration.kaaba,
                 Illustration.rakaatPlacement,
                 Illustration.rakaatSujood,
-                Illustration.rakaatWatch
+                Illustration.rakaatWatch,
+                Illustration.qadaMoon,
+                Illustration.qadaMoonFull,
+                Illustration.rakaatPhone,
+                Illustration.rakaatFocus
             ]
 
         // Act
@@ -110,5 +114,19 @@ final class AppFeatureTests: XCTestCase {
         // Assert
         XCTAssertEqual(router.homePath, [.explore, .qibla])
         XCTAssertEqual(AppFeature.qibla.title, "Qibla")
+    }
+
+    func test_open_should_pushQadaFasting() {
+        // Arrange
+        let router = AppRouter()
+        router.homePath = [.explore]
+
+        // Act
+        router.open(.qada)
+
+        // Assert
+        XCTAssertEqual(router.homePath, [.explore, .qadaFasting])
+        XCTAssertEqual(AppFeature.qada.title, "Qada Fasting")
+        XCTAssertEqual(AppFeature.qada.illustration, "IllustrationQada")
     }
 }

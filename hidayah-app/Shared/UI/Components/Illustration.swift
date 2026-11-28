@@ -25,6 +25,14 @@ enum Illustration {
     static let rakaatSujood = "IllustrationRakaatSujood"
     /// The Apple Watch on the wrist, tapping with each rakaat.
     static let rakaatWatch = "IllustrationRakaatWatch"
+    /// Rakaat setup rows: the phone face up on the mat, and the screen gone
+    /// dark in focus mode.
+    static let rakaatPhone = "IllustrationRakaatPhone"
+    static let rakaatFocus = "IllustrationRakaatFocus"
+    /// Qada fasting Ramadan cards: a crescent while days are still owed,
+    /// a full moon with a tick once they're all made up.
+    static let qadaMoon = "IllustrationQadaMoon"
+    static let qadaMoonFull = "IllustrationQadaMoonFull"
 
     /// The size of an illustration in an empty state.
     static let emptyStateSize: CGFloat = 96

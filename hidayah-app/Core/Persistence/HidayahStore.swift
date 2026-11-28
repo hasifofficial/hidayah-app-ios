@@ -11,11 +11,9 @@ import OSLog
 
 // MARK: - Schema
 
-/// The current store layout. Before changing any `@Model` below, freeze this
-/// version by nesting copies of the current models inside it, add
-/// `HidayahSchemaV2` with the new models, and add a stage to
-/// `HidayahMigrationPlan`. Changing a model without a new version makes the
-/// on-disk store fail to open.
+/// The first store layout, frozen: these nested copies must stay exactly as
+/// they shipped so SwiftData can recognise a V1 store on disk and migrate
+/// it. Never edit them.
 enum HidayahSchemaV1: VersionedSchema {
     static let versionIdentifier = Schema.Version(1, 0, 0)
 
@@ -27,16 +25,112 @@ enum HidayahSchemaV1: VersionedSchema {
             StoredBookmark.self
         ]
     }
+
+    @Model
+    final class StoredTask {
+        @Attribute(.unique) var id: UUID
+        var name: String
+        var categoryID: String
+        var isCompleted: Bool
+        var sortOrder: Int
+
+        init(
+            id: UUID,
+            name: String,
+            categoryID: String,
+            isCompleted: Bool,
+            sortOrder: Int
+        ) {
+            self.id = id
+            self.name = name
+            self.categoryID = categoryID
+            self.isCompleted = isCompleted
+            self.sortOrder = sortOrder
+        }
+    }
+
+    @Model
+    final class StoredCategory {
+        @Attribute(.unique) var id: UUID
+        var name: String
+        var icon: String
+        var sortOrder: Int
+
+        init(id: UUID, name: String, icon: String, sortOrder: Int) {
+            self.id = id
+            self.name = name
+            self.icon = icon
+            self.sortOrder = sortOrder
+        }
+    }
+
+    @Model
+    final class StoredDay {
+        @Attribute(.unique) var dayKey: String
+        var payload: Data
+        var updatedAt: Date
+        var completedCount: Int = 0
+        var totalCount: Int = 0
+        var points: Int = 0
+
+        init(dayKey: String, payload: Data) {
+            self.dayKey = dayKey
+            self.payload = payload
+            updatedAt = Date()
+        }
+    }
+
+    @Model
+    final class StoredBookmark {
+        @Attribute(.unique) var key: String
+        var surahNumber: Int
+        var numberInSurah: Int
+        var createdAt: Date
+
+        init(surahNumber: Int, numberInSurah: Int) {
+            key = "\(surahNumber)-\(numberInSurah)"
+            self.surahNumber = surahNumber
+            self.numberInSurah = numberInSurah
+            createdAt = Date()
+        }
+    }
+}
+
+/// The current store layout: V1 plus the Qada fasting ledger. Before
+/// changing any `@Model` below, freeze this version the way V1 is frozen
+/// (nested copies of the current models), add `HidayahSchemaV3` with the
+/// new models, and add a stage to `HidayahMigrationPlan`. Changing a model
+/// without a new version makes the on-disk store fail to open.
+enum HidayahSchemaV2: VersionedSchema {
+    static let versionIdentifier = Schema.Version(2, 0, 0)
+
+    static var models: [any PersistentModel.Type] {
+        [
+            StoredTask.self,
+            StoredCategory.self,
+            StoredDay.self,
+            StoredBookmark.self,
+            StoredQadaYear.self,
+            StoredQadaFast.self
+        ]
+    }
 }
 
 enum HidayahMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [HidayahSchemaV1.self]
+        [HidayahSchemaV1.self, HidayahSchemaV2.self]
     }
 
     static var stages: [MigrationStage] {
-        []
+        [migrateV1toV2]
     }
+
+    /// V2 only adds the two Qada models, so existing rows carry over as
+    /// they are.
+    static let migrateV1toV2 = MigrationStage.lightweight(
+        fromVersion: HidayahSchemaV1.self,
+        toVersion: HidayahSchemaV2.self
+    )
 }
 
 @Model
@@ -108,6 +202,34 @@ final class StoredBookmark {
     }
 }
 
+/// Ramadan days owed for one Hijri year.
+@Model
+final class StoredQadaYear {
+    @Attribute(.unique) var hijriYear: Int
+    var owedDays: Int
+    var createdAt: Date
+
+    init(hijriYear: Int, owedDays: Int) {
+        self.hijriYear = hijriYear
+        self.owedDays = owedDays
+        createdAt = Date()
+    }
+}
+
+/// One Qada fast that was kept, counted against `hijriYear`.
+@Model
+final class StoredQadaFast {
+    @Attribute(.unique) var id: UUID
+    var date: Date
+    var hijriYear: Int
+
+    init(id: UUID, date: Date, hijriYear: Int) {
+        self.id = id
+        self.date = date
+        self.hijriYear = hijriYear
+    }
+}
+
 struct TrackerStorageSnapshot {
     let tasks: [TaskDetails]
     let customCategories: [CustomCategory]
@@ -156,7 +278,7 @@ final class HidayahStore {
     )
 
     private static let schema = Schema(
-        versionedSchema: HidayahSchemaV1.self
+        versionedSchema: HidayahSchemaV2.self
     )
 
     init(makeContainer: @escaping @MainActor () throws -> ModelContainer) {
@@ -203,9 +325,15 @@ final class HidayahStore {
             throw StoreError.appGroupUnavailable
         }
 
+        return try makeContainer(at: groupURL.appendingPathComponent("Hidayah.store"))
+    }
+
+    /// Opens (and migrates, if needed) the store file at `url`. Tests use it
+    /// to open a store written by an older schema.
+    static func makeContainer(at url: URL) throws -> ModelContainer {
         let configuration = ModelConfiguration(
             schema: schema,
-            url: groupURL.appendingPathComponent("Hidayah.store")
+            url: url
         )
 
         return try ModelContainer(
@@ -555,7 +683,9 @@ final class HidayahStore {
         return nil
     }
 
-    private func fetch<T: PersistentModel>(_ descriptor: FetchDescriptor<T>) -> [T] {
+    // Internal so feature extensions in other files (HidayahStore+Qada) can
+    // share them.
+    func fetch<T: PersistentModel>(_ descriptor: FetchDescriptor<T>) -> [T] {
         (try? context.fetch(descriptor)) ?? []
     }
 
@@ -572,7 +702,7 @@ final class HidayahStore {
         }
     }
 
-    private func save() {
+    func save() {
         do {
             try context.save()
         } catch {

@@ -178,3 +178,26 @@ extension URLRequest {
         return data
     }
 }
+
+// MARK: - Qada fasting
+
+let utcRamadanCalendar = RamadanCalendar(timeZone: TimeZone(identifier: "UTC")!)
+
+/// Midday UTC on a Umm al-Qura date.
+func hijriDate(_ year: Int, _ month: Int, _ day: Int) -> Date {
+    var calendar = Calendar(identifier: .islamicUmmAlQura)
+    calendar.timeZone = TimeZone(identifier: "UTC")!
+    return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: 12))!
+}
+
+@MainActor
+func makeQadaManager(
+    store: HidayahStore = makeInMemoryStore(),
+    clock: TestClock
+) -> QadaFastingManager {
+    QadaFastingManager(
+        store: store,
+        calendar: utcRamadanCalendar,
+        now: { clock.now }
+    )
+}

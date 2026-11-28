@@ -13,6 +13,9 @@ struct SettingsView: View {
     var onOpenTrackerSettings: (() -> Void)? = nil
     var onOpenWidgetGuide: (() -> Void)? = nil
     var onOpenHomeShortcuts: (() -> Void)? = nil
+    /// The Rakaat counter's focus mode. The Rakaat section is left out when
+    /// nil.
+    var rakaatFocusMode: Binding<Bool>? = nil
 
     @State private var activeSelection: SettingsSelection?
     @State private var safariURL: URL?
@@ -99,6 +102,24 @@ struct SettingsView: View {
                 )
             ) {
                 onOpenTrackerSettings?()
+            }
+
+            if let rakaatFocusMode {
+                SettingsSectionHeader(
+                    title: NSLocalizedString(
+                        "setting_rakaat_section_title",
+                        comment: ""
+                    )
+                )
+
+                SettingsToggleRow(
+                    icon: "moon",
+                    title: NSLocalizedString(
+                        "setting_rakaat_focus_title",
+                        comment: ""
+                    ),
+                    isOn: rakaatFocusMode
+                )
             }
 
             SettingsSectionHeader(

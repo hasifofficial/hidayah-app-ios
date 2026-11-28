@@ -89,6 +89,7 @@ struct RootView: View {
     /// so it shows the count and cues on screen; the Watch taps instead.
     @State private var rakaatViewModel = RakaatViewModel(playsHaptics: false)
     @State private var qiblaViewModel: QiblaViewModel
+    @State private var qadaViewModel: QadaFastingViewModel
 
     /// The release whose What's New screen shows on launch until seen;
     /// nil never shows it.
@@ -101,9 +102,11 @@ struct RootView: View {
         mathuratLoader: MathuratLoading = BundleMathuratLoader(),
         reflectionGenerator: any TrackerReflectionGenerating = TrackerReflection.makeDefault(),
         whatsNewRelease: WhatsNewRelease? = .current,
-        qiblaSensor: QiblaSensing? = nil
+        qiblaSensor: QiblaSensing? = nil,
+        qadaManager: QadaFastingManager = .shared
     ) {
         self.surahService = surahService
+        _qadaViewModel = State(initialValue: QadaFastingViewModel(manager: qadaManager))
         _qiblaViewModel = State(
             initialValue: QiblaViewModel(sensor: qiblaSensor ?? CoreLocationQiblaSensor())
         )
@@ -193,7 +196,8 @@ struct RootView: View {
         .sheet(isPresented: $router.settingsPresented) {
             SettingsSheet(
                 surahService: surahService,
-                taskManager: taskManager
+                taskManager: taskManager,
+                rakaatFocusMode: $rakaatViewModel.usesFocusScreen
             )
             .presentationBackground(.sheetBackground)
             .environment(taskManager)
@@ -428,6 +432,10 @@ struct RootView: View {
                 },
                 onOpenSettings: {
                     router.settingsPresented = true
+                },
+                qadaManager: qadaViewModel.manager,
+                onOpenQada: {
+                    router.homePath.append(.qadaFasting)
                 }
             )
             .navigationDestination(for: AppRoute.self) { route in
@@ -566,9 +574,10 @@ struct RootView: View {
     private func destination(for route: AppRoute) -> some View {
         switch route {
         case .explore:
-            ExploreView { feature in
-                router.open(feature)
-            }
+            ExploreView(
+                onOpenSettings: { router.settingsPresented = true },
+                onOpen: { feature in router.open(feature) }
+            )
         case .quranList:
             quranListDestination
         case .mathurat:
@@ -578,9 +587,16 @@ struct RootView: View {
         case .qibla:
             QiblaView(viewModel: qiblaViewModel)
         case .rakaat:
-            RakaatView(viewModel: rakaatViewModel) {
-                router.open(.tasbih)
-            }
+            RakaatView(
+                viewModel: rakaatViewModel,
+                onOpenTasbih: { router.open(.tasbih) },
+                onOpenSettings: { router.settingsPresented = true }
+            )
+        case .qadaFasting:
+            QadaFastingView(
+                viewModel: qadaViewModel,
+                onOpenSettings: { router.settingsPresented = true }
+            )
         case .surahDetail(let surahNumber, let title, let bookmarkedAyah):
             SurahDetailScreen(
                 surahService: surahService,
@@ -636,6 +652,9 @@ struct RootView: View {
 
 private struct SettingsSheet: View {
     let taskManager: TaskManager
+    /// The Rakaat counter's own focus mode setting, so a change here shows
+    /// at once on a counter screen open behind the sheet.
+    @Binding var rakaatFocusMode: Bool
 
     @Environment(\.dismiss) private var dismiss
     @State private var path: [SettingsRoute] = []
@@ -644,9 +663,11 @@ private struct SettingsSheet: View {
 
     init(
         surahService: SurahService,
-        taskManager: TaskManager
+        taskManager: TaskManager,
+        rakaatFocusMode: Binding<Bool>
     ) {
         self.taskManager = taskManager
+        _rakaatFocusMode = rakaatFocusMode
         _viewModel = State(
             initialValue: SettingsViewModel(
                 surahService: surahService
@@ -666,7 +687,8 @@ private struct SettingsSheet: View {
                 },
                 onOpenHomeShortcuts: {
                     path.append(.homeShortcuts)
-                }
+                },
+                rakaatFocusMode: $rakaatFocusMode
             )
             .navigationTitle(
                 NSLocalizedString(

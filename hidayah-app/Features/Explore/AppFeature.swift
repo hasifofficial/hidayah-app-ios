@@ -14,6 +14,7 @@ enum AppFeature: String, CaseIterable, Identifiable {
     case tasbih
     case qibla
     case rakaat
+    case qada
     case tracker
 
     var id: String { rawValue }
@@ -37,6 +38,8 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return NSLocalizedString("qibla_header_title", comment: "")
         case .rakaat:
             return NSLocalizedString("rakaat_header_title", comment: "")
+        case .qada:
+            return NSLocalizedString("qada_header_title", comment: "")
         case .tracker:
             return NSLocalizedString("tracker_list_header_title", comment: "")
         }
@@ -68,6 +71,8 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return "location.north.circle.fill"
         case .rakaat:
             return "figure.mind.and.body"
+        case .qada:
+            return "moon.stars.fill"
         case .tracker:
             return "checklist.checked"
         }
@@ -103,6 +108,8 @@ enum AppFeature: String, CaseIterable, Identifiable {
             return .route(.qibla)
         case .rakaat:
             return .route(.rakaat)
+        case .qada:
+            return .route(.qadaFasting)
         case .tracker:
             return .tab(.tracker)
         }

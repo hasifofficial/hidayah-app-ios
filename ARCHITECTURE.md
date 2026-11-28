@@ -49,7 +49,7 @@ App/
 - `AppController` is the composition root for services and shared state. Its initializer takes the task manager, store, notification scheduler and notification center, defaulting to the shared instances.
 - `RootView` owns tab and split-view navigation.
 - `AppRouter` owns tab selection, navigation paths, and sheet state.
-- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker`, `mathurat[/<order>]` or `qibla` (opens Home › Explore › Qibla).
+- `DeeplinkManager` maps URLs to router destinations. Links use `hidayahapp://inAppDeeplink/` followed by `quran[/<surah>[/<ayah>]]`, `bookmark`, `tracker`, `mathurat[/<order>]`, `qibla` (opens Home › Explore › Qibla) or `qada` (opens Home › Explore › Qada Fasting).
 
 ## Core
 
@@ -59,12 +59,14 @@ Core/
   Networking/    Base, Endpoints, Services
   Persistence/   HidayahStore, Storage
   Tracker/       TaskManager, TrackerHistoryEngine, TrackerNotificationScheduler
+  Fasting/       QadaFastingManager, RamadanCalendar
   Mathurat/      MathuratLibrary
   Mushaf/        MushafLibrary
   Extensions/
 ```
 
 - `TaskManager` is the tracker domain facade. It takes its store, notification scheduler and clock (`now: () -> Date`) through `init`.
+- `QadaFastingManager` is the Qada fasting facade: Ramadan days owed per Hijri year (`QadaLedger`) and the makeup fasts kept against them, each counted against the oldest Ramadan still owed. It takes its store, `RamadanCalendar` (Umm al-Qura) and clock through `init`. Its store methods live in `HidayahStore+Qada.swift`, which is app-only.
 - `HidayahStore` owns SwiftData persistence, including the schema version and migration plan (see Persistence).
 - `Storage` owns App Group `UserDefaults` access and the widget snapshot.
 - `TrackerNotificationScheduler` posts tracker reminders through the `NotificationScheduling` protocol, which `UNUserNotificationCenter` conforms to.
@@ -75,7 +77,7 @@ Core/
 
 ## Features
 
-One folder per feature: `Home`, `Explore`, `Quran`, `Reading`, `Mathurat`, `Tasbih`, `Qibla`, `Tracker`, `Search`, `Settings` and `WhatsNew`. Larger features split into sub-folders by screen (for example `Quran/List`, `Quran/Mushaf`, `Tracker/Calendar`), each with its own `Components/` where needed.
+One folder per feature: `Home`, `Explore`, `Quran`, `Reading`, `Mathurat`, `Tasbih`, `Qibla`, `Rakaat`, `QadaFasting`, `Tracker`, `Search`, `Settings` and `WhatsNew`. Larger features split into sub-folders by screen (for example `Quran/List`, `Quran/Mushaf`, `Tracker/Calendar`), each with its own `Components/` where needed.
 
 ### MVVM rules
 
@@ -194,6 +196,8 @@ The shared files are listed in **two** exception sets on the `hidayah-app` folde
 ## Persistence
 
 - SwiftData store in App Group container: `group.com.hasifofficial.simple-quran`.
+- The schema is versioned. `HidayahSchemaV1` is frozen as shipped; `HidayahSchemaV2` adds `StoredQadaYear` and `StoredQadaFast` through a lightweight stage. `HidayahStoreMigrationTests` opens a V1 store file and checks nothing is lost. Freeze V2 the same way before changing any model.
+- Resetting the tracker leaves the Qada ledger alone.
 - App Group `UserDefaults` for small preferences and the widget snapshot.
 - Widget display data comes from the snapshot; widget task toggles use the shared tracker domain.
 - No automatic destructive reset is allowed.

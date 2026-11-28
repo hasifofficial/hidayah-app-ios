@@ -187,6 +187,21 @@ final class DeeplinkManagerTests: XCTestCase {
         XCTAssertFalse(router.settingsPresented)
     }
 
+    func test_handleDeepLink_should_openQadaFastingFromExplore() {
+        // Arrange
+        router.selectTab(.tracker)
+        router.settingsPresented = true
+
+        // Act
+        let handled = handle("hidayahapp://inAppDeeplink/qada")
+
+        // Assert
+        XCTAssertTrue(handled)
+        XCTAssertEqual(router.selectedTab, .home)
+        XCTAssertEqual(router.homePath, [.explore, .qadaFasting])
+        XCTAssertFalse(router.settingsPresented)
+    }
+
     func test_handleDeepLink_should_rejectUnknownHost() {
         // Arrange
         router.settingsPresented = true
